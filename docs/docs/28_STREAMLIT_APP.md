@@ -1,6 +1,6 @@
 # 28 — Streamlit Level Studio (app specification)
 
-> **Owner track:** G. **Days:** D12 (studio skeleton), D13 ("Type it, play it" MVP), D18 (hardening), D19 (optional report-card lite).
+> **Owner track:** G. **Days:** D12 (studio skeleton), D13 ("Type it, play it" MVP), D16 (hardening), D17 (optional report-card lite).
 > **Ledger rows:** S2 (MVP), S3 (seams), S5 (Streamlit), V4 (Streamlit version), H2–H3 (VRAM cap), H10 (CPU fast mode), G1–G5 (generation, framing, verification), G-P7 (app gate), A1–A3 (skins).
 > **Depends on:** doc 12 (normalizer), doc 20 (`generate/full_level.py`, including the G5 verification loop), doc 21 (checker), doc 27 (game HTML builder), doc 29 (level JSON schema v1).
 
@@ -15,10 +15,12 @@ The app is the viva demo and the product. **Acceptance (G-P7 plus MVP):**
 4. Works **offline** (Wi-Fi off). Keyboard play works in Chrome and Edge.
 5. Exports: PNG, level JSON (schema v1), CSV, VGLC text, and a standalone playable HTML file.
 
-## 2. Version note (Streamlit API change, verified 2026-11)
+## 2. Version note (Streamlit API change; **unverified, to verify on Day 0**)
+
+> The statements below (deprecation in 1.56, `st.iframe`, latest 1.66) came from an earlier draft and could not be confirmed. On Day 0 run `pip index versions streamlit`, read the changelog of the pinned version and choose; the shim works either way. The same pinned version is used locally and on Streamlit Community Cloud (ledger V4).
 
 - `st.components.v1.html` is **deprecated since Streamlit 1.56.0**; the documented replacement is **`st.iframe(src, *, width="stretch", height="content", tab_index=None, alt=None)`**. It accepts a raw HTML string (or a URL, or a `pathlib.Path` to an `.html` file) and runs the HTML with JavaScript enabled and same-origin access.
-- Ledger V4 allows Streamlit ≥ 1.52. **Recommendation: pin `streamlit>=1.56,<2`** so `st.iframe` is available (see "Ledger conflicts" in the fork report). The shim below keeps 1.52–1.55 working anyway.
+- Ledger V4: pin the **exact** version chosen on Day 0 in `requirements.txt`. The shim below uses `st.iframe` when it exists and otherwise `components.v1.html`.
 
 ```python
 # app/components/game_embed.py
@@ -48,7 +50,7 @@ app/
   components/game_embed.py  # §2 shim
   components/badges.py      # verification badge, timing caption
   state.py                  # session_state schema + helpers (§5)
-  showcase/                 # 12 cached levels: *.level.json + *.png + manifest.json (Day 18)
+  showcase/                 # 12 cached levels: *.level.json + *.png + manifest.json (generated Day 14 with the frozen model, checked Day 16)
   static/                   # doc 26/27: vendor/, game/, assets/ (served only in optional static mode)
 src/text2mario/app/
   service.py                # LevelService: normalize → generate (+verify) → render → artifacts (§7)
@@ -92,7 +94,7 @@ A form means moving sliders doesn't trigger reruns. That matters because a rerun
 
 | Key | Widget | Range / default | Notes |
 |---|---|---|---|
-| `prompt` | `st.text_area` "Describe your level" | ≤ 500 chars; placeholder example | Trimmed; empty → submit shows a warning |
+| `prompt` | `st.text_area` "Describe your level" | ≤ 300 chars (FR-A-01); placeholder example | Trimmed; empty → submit shows a warning |
 | `example` | `st.selectbox` | 8 curated prompts (2 per difficulty mood) | Outside the form: selecting fills `prompt` via callback |
 | `w` | `st.slider` | 1.0–10.0, step 0.5; default = `FROZEN.json → default_w` (M13) | w = 1 means no guidance |
 | `width` | `st.segmented_control` / `st.radio` | 16 / 48 / 80 / 112; default 80 (G2) | Generated columns; framing adds 3 + 6 (G3) |
@@ -215,14 +217,14 @@ Changes 3–4 alter outputs relative to the evaluated configuration, so they mus
 | CSV (tile IDs) | `t2m_<level_id>.ids.csv` | `text/csv` |
 | VGLC text (16 rows) | `t2m_<level_id>.vglc16.txt` | `text/plain` |
 | Playable HTML (standalone) | `t2m_<level_id>.html` | `text/html` |
-| Tiled map (optional, Day 19+) | `t2m_<level_id>.tmj` | `application/json` |
+| Tiled map (MAY, cut) | `t2m_<level_id>.tmj` | `application/json` |
 
 Use `st.download_button(label, data, file_name, mime, key=...)`. Where the installed version supports `on_click="ignore"`, use it so a download doesn't trigger a rerun.
 
-## 10. Report card (📋 tab) — placeholder in the MVP, "lite" on Day 19
+## 10. Report card (📋 tab) — placeholder in the MVP; "lite" version cut (MAY)
 
 - **MVP:** the tab shows "Coming soon", plus the raw `metrics` block if the generator filled it (doc 29: per-scene requested vs detected concepts, C-score, broken structures).
-- **Lite version (Day 19 buffer, seam for future feature F6):**
+- **Lite version (MAY, cut; seam for future feature F6):**
 
 | Row | Source | Display |
 |---|---|---|
@@ -233,13 +235,13 @@ Use `st.download_button(label, data, file_name, mime, key=...)`. Where the insta
 
 ## 11. Showcase, errors, About page
 
-**Showcase (`app/showcase/`, Day 18):** `scripts/make_showcase.py` generates 12 levels from a curated prompt list with the frozen checkpoint, keeps only `verified` ones (re-seeding up to 5 times), and writes `*.level.json`, `*.png` and `manifest.json` (`level_id, prompt, seed, w, width, verified, png`). Committed. The Gallery page shows a 3-column grid of thumbnails; "▶ Play" loads the level into session state and calls `st.switch_page("pages/studio.py")`. If the model can't load, the Studio switches to `t2m_mode = "showcase"`: a banner explains why, Generate is disabled, and a showcase picker appears inline.
+**Showcase (`app/showcase/`, generated Day 14, checked Day 16):** `scripts/make_showcase.py` generates 12 levels from a curated prompt list with the frozen checkpoint, keeps only `verified` ones (re-seeding up to 5 times), and writes `*.level.json`, `*.png` and `manifest.json` (`level_id, prompt, seed, w, width, verified, png`). Committed. The Gallery page shows a 3-column grid of thumbnails; "▶ Play" loads the level into session state and calls `st.switch_page("pages/studio.py")`. If the model can't load, the Studio switches to `t2m_mode = "showcase"`: a banner explains why, Generate is disabled, and a showcase picker appears inline.
 
 **Error handling**
 | Failure | Detection | What the user sees | Logged |
 |---|---|---|---|
 | Empty prompt | validation | Inline warning; nothing runs | — |
-| Prompt > 500 chars | validation | Truncated + caption | — |
+| Prompt > 300 chars | validation | Truncated + caption | — |
 | Normalizer understood nothing | empty normalized caption | Info: "Using your words directly"; the raw prompt goes to the encoder | event |
 | CUDA OOM / CUDA error | exception type | Toast: "GPU problem, retrying on CPU (fast mode)" | event |
 | Checkpoint missing or hash ≠ `FROZEN.json` | at `load_service` | Showcase mode banner with the reason | event |
@@ -249,7 +251,7 @@ Use `st.download_button(label, data, file_name, mime, key=...)`. Where the insta
 
 Events go to `logs/app_events.jsonl` (git-ignored): timestamp, level_id, stage timings, device, status, error kind.
 
-**About page:** renders `MODEL_CARD.md` and `DATA_CARD.md` if present. Licences table: MarioDiffusion code/data **MIT**; levels derived from the VGLC; Kenney Pixel Platformer **CC0**; Phaser **MIT**; `all-MiniLM-L6-v2` (confirm the licence from the model card in the local snapshot; Apache-2.0 expected). It shows `FROZEN.json` (checkpoint sha256, config hash, default w), the physics hash, and the results table from `reports/final/RESULTS.md` ("not evaluated yet" before Day 16). Honesty notes: framing is templated (G3); repairs are display-only (G4); "verified" means our checker with physics hash X (doc 27 §4.4); any latency compromises from §8.4.
+**About page:** renders `MODEL_CARD.md` and `DATA_CARD.md` if present. Licences table: MarioDiffusion code/data **MIT**; levels derived from the VGLC; Kenney Pixel Platformer **CC0**; Phaser **MIT**; `all-MiniLM-L6-v2` (confirm the licence from the model card in the local snapshot; Apache-2.0 expected). It shows `FROZEN.json` (checkpoint sha256, config hash, default w), the physics hash, and the results table from `reports/final/RESULTS.md` ("not evaluated yet" before Day 15). Honesty notes: framing is templated (G3); repairs are display-only (G4); "verified" means our checker with physics hash X (doc 27 §4.4); any latency compromises from §8.4.
 
 ## 12. Configuration, offline mode, launch
 
@@ -262,7 +264,7 @@ runOnSave = false
 enableStaticServing = true      # only needed for the optional static game mode (doc 27 §10.4)
 
 [browser]
-gatherUsageStats = false        # no telemetry, works offline
+gatherUsageStats = false        # no telemetry, works offline (both profiles)
 
 [client]
 toolbarMode = "minimal"
@@ -285,7 +287,21 @@ MiniLM is loaded from the local snapshot path in the config (`text_encoder.local
 **Launch**
 - Windows (PowerShell): `scripts\run_app.ps1` (activates `.venv`, sets the env vars above, runs `streamlit run app/streamlit_app.py`, opens the browser).
 - Linux: `scripts/run_app.sh`.
-- Force CPU (rehearsal, Day 18): `$env:T2M_DEVICE="cpu"` (PowerShell) or `T2M_DEVICE=cpu scripts/run_app.sh`. Also try `CUDA_VISIBLE_DEVICES=""`.
+- Force CPU (rehearsal, Day 16): `$env:T2M_DEVICE="cpu"` (PowerShell) or `T2M_DEVICE=cpu scripts/run_app.sh`. Also try `CUDA_VISIBLE_DEVICES=""`.
+
+### 12.1 Local profile vs cloud profile (ledger §3b; FR-A-16, FR-A-17; G-P8)
+| Aspect | Local (development, live demo) | Cloud (Streamlit Community Cloud) |
+|---|---|---|
+| Switch | default | `T2M_PROFILE=cloud` in the app settings |
+| Binding | `localhost` by default | managed by the platform (public URL) |
+| Device | CUDA if present, else CPU fast mode | CPU only, fast mode (25 steps, r = 0), width default 48 |
+| Weights | run directory / `app/model/` | `app/model/t2m_ema.safetensors` (committed, below GitHub's 100 MB file limit) + `app/model/minilm/` (fp16, bundled), `local_files_only=True` |
+| Dependencies | `requirements.txt` + `requirements-dev.txt` | `requirements.txt` only, exact pins, CPU torch wheel |
+| Time guard | none | `cloud.time_budget_s` (provisional 60 s): abort and serve the closest cached showcase level, labelled; logged |
+| Cold start | measured on the laptop (G-P7, pinned after Day 12) | first request after sleep is slower; status line "Loading model..."; showcase levels selectable immediately; measured Day 12 |
+| Showcase | 12 levels | same 12 levels; also the fallback |
+| Logs | `runs/app_logs/<date>.jsonl` | platform log + in-app counters (fallbacks, timings) |
+`app/components/profile.py` reads the profile once; every profile-dependent branch is logged (CLAUDE.md §2.12). The cloud app stores no user data and holds no secrets (NFR-SEC-02). Memory: one model + encoder + Python must fit the platform limit (verified and pinned on Day 12).
 
 ## 13. Testing
 
@@ -309,7 +325,7 @@ def test_generate_and_play(monkeypatch):
 ```
 Also: empty prompt → warning and no level; showcase mode when the checkpoint path is missing; history restore. (AppTest does not run iframe JavaScript; the game itself is covered by doc 27 §12. If the AppTest element API differs in the installed version, adapt to the Streamlit testing docs.)
 
-**End-to-end (slow; Day 13 and Day 18):** `tests/e2e/test_app_e2e.py` starts `streamlit run` on port 8599 in a subprocess (real model), opens the page with Playwright, fills the prompt, clicks "Generate & Play", waits for the iframe titled "Playable generated level", clicks into it, holds → for 1 s, and asserts via `frame.evaluate("T2M_DEBUG.getState()")` that the player moved. It times submit → `ready` (must be < 10 s on the GPU).
+**End-to-end (slow; Day 13 and Day 16):** `tests/e2e/test_app_e2e.py` starts `streamlit run` on port 8599 in a subprocess (real model), opens the page with Playwright, fills the prompt, clicks "Generate & Play", waits for the iframe titled "Playable generated level", clicks into it, holds → for 1 s, and asserts via `frame.evaluate("T2M_DEBUG.getState()")` that the player moved. It times submit → `ready` (must be < 10 s on the GPU).
 
 **Bench:** `scripts/bench_app.py [--cold] [--cpu]` → `reports/app/bench_<machine>.json` (p50/p95 per stage), the evidence for G-P7.
 
@@ -318,5 +334,6 @@ Also: empty prompt → warning and no level; showcase mode when the checkpoint p
 |---|---|---|
 | D12 | Pages skeleton, sidebar form, service + fake service, normalized-prompt chips, PNG, GIF, exports (JSON/CSV/VGLC/PNG), caching, CPU fast mode | Cold start measured; AppTest green |
 | D13 | `embed_game` + game HTML, badge, standalone HTML export, e2e test | G-P7 timings on the laptop; e2e green |
-| D18 | Showcase (12), offline run, CPU rehearsal, browser matrix, 768p layout check | Day 18 checklist (doc 03) |
-| D19 (optional) | Report-card lite (§10) | Screenshot in `reports/app/` |
+| D16 | Showcase (12), offline run, CPU rehearsal, browser matrix, 768p layout check | Day 16 checklist (doc 03) |
+| D12, D14 | Cloud profile (§12.1): dry run D12, final deploy D14 (G-P8) | `reports/app/cloud_dryrun.json`, `evidence/deployment/` |
+| (cut) | Report-card lite (§10) | MAY, only if everything else is done |

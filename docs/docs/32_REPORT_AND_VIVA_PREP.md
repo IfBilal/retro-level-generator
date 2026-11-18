@@ -1,6 +1,6 @@
 # 32 — Report & Viva Preparation
 
-> **Owner:** B. **Used on:** Day 14 (freeze inputs), Day 16 (results), Day 17 (figures, model/data cards), Day 18 (demo hardening), Day 20 (rehearsal).
+> **Owner:** B (report editor: C if three members; see doc 36). **Used on:** Days 0-13 (prose of each section as soon as its work is done, §1.2), Day 14 (freeze inputs), Day 15 (results), Day 16 (figures, model/data cards, slides, demo hardening), Day 17 (rehearsal, PDF, zip), Day 18 (upload).
 > **Hard rules:** every figure and table is produced by a script from saved artifacts (CLAUDE.md §3; doc 30 §11). Every number carries a provenance tag (doc 30 §11.1). Test numbers come only from `runs/final/test_eval/` (D4).
 > **Ledger links:** F1–F19 (data facts), D3–D6 (splits), M1–M13 (model), G1–G5 (generation), E1–E4 (evaluation), H8/H10 (size, cost), A1–A4 (assets).
 
@@ -13,11 +13,11 @@ Target: 20–25 pages of main text plus appendices. The section order follows th
 | § | Section | Target length | Must contain |
 |---|---|---|---|
 | — | **Abstract** | 150–200 words | Task; method in one sentence; the leakage finding; the headline test numbers with CIs; the app |
-| 1 | **Introduction** | 1.5 p | PCG motivation; text-to-level; why levels must be *playable*, not just plausible; **contributions list** (below) |
+| 1 | **Introduction** | 1.5 p | **Problem statement and real-world justification** (doc 02 §2: indie/hobbyist designers, educators; no invented user research); **selected path: Path A (software, Streamlit)**; **objectives O-1..O-6** and success criteria; PCG motivation; why levels must be *playable*, not just plausible; **contributions list** (below); **Originality and attribution** box (doc 02 §15) |
 | 2 | **Related work** | 1.5 p | PCGML (Summerville et al. 2018 survey); VGLC (Summerville et al. 2016); MarioGAN (Volz et al. 2018); MarioGPT (Sudhakaran et al. 2023); DDPM (Ho et al. 2020); improved DDPM / cosine schedule (Nichol & Dhariwal 2021); DDIM (Song et al. 2021); classifier-free guidance (Ho & Salimans 2022); RePaint (Lugmayr et al. 2022); discrete-tile diffusion for Mario (Lee & Simo-Serra 2023); text-to-level diffusion for Mario (Schrum et al., AIIDE 2025); discrete diffusion alternative D3PM (Austin et al. 2021); Sentence-BERT (Reimers & Gurevych 2019), MiniLM (Wang et al. 2020); A* Mario agent (Togelius, Karakovskiy & Baumgarten 2010) |
-| 3 | **Data** | 2.5 p | Source and licence; audit facts (Table T1); level reconstruction; **leakage analysis of the official split** (Fig 4: the F17 numbers); our level-grouped split + CV (Table T2, Fig 5); EDA (Figs 2–3) |
-| 4 | **Method** | 4 p | Representation (D7); diffusion maths (compact: forward, ε-loss, DDIM, CFG; full derivations in Appendix A); architecture (Table T3, Fig 7); text path (M7–M8); training (Table T4); full-level generation (G1–G5, Fig 16); playability checker (doc 21) |
-| 5 | **Experimental setup** | 1.5 p | Prompt sets (E2); metrics (E1, definitions in Appendix B); statistics (E3); dev composite (E4); hardware + budgets (H1, M12); the pre-registered test plan (doc 30 §8.4) |
+| 3 | **Data** (dataset description: source, relevant features, target, preprocessing, limitations) | 2.5 p | Source and licence; audit facts (Table T1); level reconstruction; **leakage analysis of the official split** (Fig 4: the F17 numbers); our level-grouped split + CV (Table T2, Fig 5); EDA (Figs 2–3) |
+| 4 | **Method** (methodology, algorithm description and **pipeline diagram**, Fig 1) | 4 p | Why diffusion for this problem (doc 02 §2.4); Representation (D7); diffusion maths (compact: forward, ε-loss, DDIM, CFG; full derivations in Appendix A); architecture (Table T3, Fig 7); text path (M7–M8); training (Table T4); full-level generation (G1–G5, Fig 16); playability checker (doc 21) |
+| 5 | **Implementation and testing** (implementation details, test strategy, gate scripts, pytest inventory, E2E and fuzz evidence) · **Experimental setup** | 1.5 p | Prompt sets (E2); metrics (E1, definitions in Appendix B); statistics (E3); dev composite (E4); hardware + budgets (H1, M12); the pre-registered test plan (doc 30 §8.4) |
 | 6 | **Results** | 5 p | 6.1 Unconditional baseline (Table T5, Figs 8–9) · 6.2 Conditional, dev (Fig 10, Table T6) · 6.3 CFG trade-off (Fig 11, Fig 12) · 6.4 Ablations (Fig 19, Table T7) · 6.5 5-fold CV (Fig 20, Table T8) · 6.6 **One-shot test** (Table T9 with reference rows) · 6.7 Full levels & seams (Figs 16–17) · 6.8 Playability validity (Fig 18) · 6.9 Casual prompts (Table T10) |
 | 7 | **Analysis** | 2.5 p | Bias–variance & memorisation evidence (Figs 8, 14, 15); per-game (SMB1 vs SMB2); per-concept and rare concepts (Fig 13); failure gallery (Fig 21); detector–human agreement (R14) |
 | 8 | **The application** | 1.5 p | Architecture diagram (Fig 1, app half); "Type it, play it" flow; screenshots (Fig 22); denoising filmstrip (Fig 23); latency (Table T11) |
@@ -31,6 +31,40 @@ Target: 20–25 pages of main text plus appendices. The section order follows th
 | App. E | PDF audit summary | — | Table T13 (top 10 of the 30 findings) |
 | App. F | Risk outcomes | — | Table T14 + risk burn-down |
 | App. G | Reproduction commands | — | doc 30 §15 |
+
+### 1.1 Statement-mandated section map (project statement, "Project Report")
+
+| Statement requires | Report section | Draft on | Final by |
+|---|---|---|---|
+| Problem statement | 1 (from doc 02 §2.1) | Day 0 | Day 16 |
+| Real-world justification | 1 (doc 02 §2.2, §2.4) | Day 0 | Day 16 |
+| Selected path | 1 (Path A: software-based, Streamlit deployed) | Day 0 | Day 16 |
+| Objectives | 1 (O-1..O-6, doc 02 §2.3) | Day 0 | Day 16 |
+| Methodology | 4 and 5 | Day 4-9 | Day 16 |
+| Algorithm description | 4 + Appendix A (doc 13-15) | Day 3-7 | Day 16 |
+| System architecture / workflow (proper pipeline diagram) | Fig 1 (generated by `fig01_pipeline.py`) | Day 8 sketch | Day 16 |
+| Dataset description | 3 + DATA_CARD.md | Day 2 | Day 16 |
+| Implementation details | 5 + 8 | Day 4-13 | Day 16 |
+| Testing | 5 + evidence folder | Day 7, 13 | Day 16 |
+| Results (qualitative and quantitative) | 6, 7 | Day 14-15 | Day 16 |
+| Limitations | 9 (§3.3) | Day 8 onward, append | Day 16 |
+| Conclusion | 11 | Day 16 | Day 17 |
+| Originality and attribution (own addition) | 1 box + 10 | Day 1 | Day 16 |
+
+### 1.2 Prose schedule (dated; the report is written as sections are finished, never in one night)
+
+| Day (date) | Prose task | Who (doc 36) |
+|---|---|---|
+| D0 Wed 18 Nov | Sections 1.x: problem, justification, path, objectives (copy from doc 02 §2, edit into prose) | all review |
+| D2 Fri 20 Nov | Dataset section from audit/EDA/split results | M-data owner |
+| D4 Sun 22 Nov | Algorithm description draft (forward process, loss, U-Net) | M-model owner |
+| D8 Thu 26 Nov | Methodology: training protocol, text path; pipeline diagram v1 | M-model owner |
+| D11 Sun 29 Nov | Methodology: generation and playability checker | G owner |
+| D13 Tue 1 Dec | Implementation + app + testing sections | G owner |
+| D14 Wed 2 Dec | Slides draft (12) from the report skeleton | all |
+| D15 Thu 3 Dec | Results prose after the one-shot test; limitations list final | evaluator |
+| D16 Fri 4 Dec | Full draft assembled; figures regenerated; slides final; evidence folder | all |
+| D17 Sat 5 Dec | Proof-read, PDF build, provenance check, zip build and check | all |
 
 **Contributions list (draft wording; adjust to the actual results):**
 1. A leakage audit of the public MarioDiffusion split. Test windows are near-copies of training windows (median 8/256 tiles from the nearest training window); we release a level-grouped split with a 5-fold grouped CV protocol.
@@ -60,8 +94,8 @@ All figure scripts live in `scripts/figures/`, are orchestrated by `scripts/make
 | Fig 10 | Conditional training: dev composite + components vs step; early-stop marker; train/val bucket losses | `fig10_cond_training.py` | `runs/<C-main>/metrics.jsonl` | D9 |
 | Fig 11 | **CFG trade-off:** C-score, exact match, broken rate, playability, novelty vs w ∈ {1, 2, 3, 5, 7.5, 10} with 95 % CIs | `fig11_cfg_sweep.py` | `runs/<C-main>/evals/*_P-dev_*_w*/metrics.json` | D9 |
 | Fig 12 | PDF contrast test: "full floor with three pipes and no enemies" vs "staircase with gap and several enemies" × 8 seeds | `fig12_contrast.py` | `runs/<C-main>/evals/<contrast_eval>/samples.npz` | D9 |
-| Fig 13 | Per-concept exact match (dev and test) with CIs and n per concept | `fig13_per_concept.py` | dev eval + `runs/final/test_eval/per_prompt.parquet` | D16 |
-| Fig 14 | **Memorisation check:** distribution of NN distance to train — generated (P-dev, P-test) vs real dev/test windows; copy-rate threshold line at 4 | `fig14_novelty.py` | eval `per_prompt.parquet` (`nn_dist`) + `reports/eda/real_nn_ref.csv` | D16 |
+| Fig 13 | Per-concept exact match (dev and test) with CIs and n per concept | `fig13_per_concept.py` | dev eval + `runs/final/test_eval/per_prompt.parquet` | D15 |
+| Fig 14 | **Memorisation check:** distribution of NN distance to train — generated (P-dev, P-test) vs real dev/test windows; copy-rate threshold line at 4 | `fig14_novelty.py` | eval `per_prompt.parquet` (`nn_dist`) + `reports/eda/real_nn_ref.csv` | D15 |
 | Fig 15 | Diversity vs novelty per prompt (scatter), coloured by w | `fig15_div_vs_nov.py` | eval `per_prompt.parquet` | D14 |
 | Fig 16 | Full-level gallery: 3 prompts × width 112, seams marked, scene-prompt spans annotated | `fig16_full_levels.py` | `reports/final/showcase/*.json` (level schema v1, doc 29) | D11 |
 | Fig 17 | Seam score: seam/interior NLL ratio for {stride 8 r = 0, stride 8 r = 2, stride 4 r = 2} | `fig17_seams.py` | `reports/gates/P5/seams.csv` | D11 |
@@ -69,9 +103,9 @@ All figure scripts live in `scripts/figures/`, are orchestrated by `scripts/make
 | Fig 19 | Ablation forest plot: Δ dev composite (and Δ C-score, Δ copy rate) vs baseline with paired-bootstrap 95 % CIs (X1–X7) | `fig19_ablation_forest.py` | `reports/experiments/*.md` → `runs/<X*>/evals/*` | D15 |
 | Fig 20 | 5-fold grouped CV: fold-wise points + mean ± std for each metric | `fig20_cv.py` | `runs/cv/fold*/` → evals | D15 |
 | Fig 21 | Failure gallery (annotated): ignored counts, broken structure, unbeatable, near-copy, seam | `fig21_failures.py` | error-analysis list `reports/analysis/worst20.json` | D14 |
-| Fig 22 | App screenshots: prompt → animation → game → badge | `fig22_app_screens.py` (Playwright screenshots) | live app at the frozen checkpoint | D18 |
+| Fig 22 | App screenshots: prompt → animation → game → badge | `fig22_app_screens.py` (Playwright screenshots) | live app at the frozen checkpoint | D16 |
 | Fig 23 | Denoising filmstrip (every 5 DDIM steps) for one prompt | `fig23_filmstrip.py` | sampler callback frames (doc 31 seam S-2) | D12 |
-| Fig A1 | Risk burn-down (sum of open risk scores per day) | `figA1_risk_burndown.py` | `reports/risks/risk_log.csv` | D20 |
+| Fig A1 | Risk burn-down (sum of open risk scores per day) | `figA1_risk_burndown.py` | `reports/risks/risk_log.csv` | D17 |
 
 ### 2.2 Tables
 
@@ -120,7 +154,7 @@ The retrieval baseline must be implemented in `src/text2mario/eval/baselines.py`
 | Sanitizer | "Metrics are computed on raw samples; repair is display-only." | Reporting post-repair broken rates as model quality. |
 | Adherence | "Adherence measured by the rule-based detector that produced the training captions; on a 50-sample human check, the detector agreed with humans on H %." | "The model understands the prompt." Prefer "conditions on" / "follows". |
 | Statistics | Report n, seeds, CI method; call a difference "significant" only if a test was run. | Bare point estimates; "clearly better" without a CI. |
-| Test set | "Evaluated once, on Day 16, with a pre-registered plan." Disclose any metric-code rerun (doc 30 §8.4). | Silent re-runs. |
+| Test set | "Evaluated once, on Day 15, with a pre-registered plan." Disclose any metric-code rerun (doc 30 §8.4). | Silent re-runs. |
 | Compute | "Trained on a 6 GB laptop GPU budget (≤ 4.5 GiB)." | Wall-clock claims without the machine named. |
 | Casual text | "A rule-based normalizer maps casual words to the caption grammar before the frozen encoder." | Implying MiniLM alone understands "goombas". |
 
@@ -129,7 +163,7 @@ The retrieval baseline must be implemented in `src/text2mario/eval/baselines.py`
 - Comparison sentence: "X3 changed the dev composite by **+δ** [paired 95 % CI δ₁–δ₂]; because the interval includes 0, we kept the simpler baseline."
 
 ### 3.3 Limitations (include all that apply, with numbers)
-1. **Small corpus:** 42 levels, 8,317 distinct columns (F11); held-out sets are 5–6 levels → wide CIs; CV mitigates but doesn't remove this.
+1. **Small corpus:** 42 levels, 8,317 columns in total of which 653 are distinct patterns (F11); held-out sets are 5 (dev) and 6 (test) levels, so the level-clustered bootstrap intervals are **wide**; per-level results are reported next to every headline number; CV (if run) mitigates but doesn't remove this.
 2. **Caption vocabulary:** 44 words, 62 phrases (F14). The model can only be asked for what the detector can describe. The normalizer bridges casual words, not new concepts.
 3. **Detector circularity:** the same rules create the training captions and score adherence (R14).
 4. **Single enemy type** and static cannons: all enemies share one tile, and the game renders them as a single walker type.
@@ -170,7 +204,7 @@ The retrieval baseline must be implemented in `src/text2mario/eval/baselines.py`
 ## Evaluation data
 - Dev: 5 held-out levels (stride-8 prompts: <n>); Test: 6 held-out levels (<n> prompts), evaluated once; P-rand (100 random captions); P-casual (30 dev / 30 test).
 
-## Metrics (test, one-shot; 95 % bootstrap CI grouped by prompt)
+## Metrics (test, one-shot; 95 % bootstrap CI clustered by held-out level; 6 levels, so wide; per-level table in RESULTS.md)
 | Metric | Value | CI | Real-window reference | Retrieval baseline |
 |---|---|---|---|---|
 | C-score | | | | |
@@ -243,7 +277,7 @@ Text-to-level training/evaluation with an honest, level-grouped split.
 | 2:15–2:40 | **Hand the keyboard to the examiner** with a cached showcase level (or their own prompt) | "Please, try one yourself." |
 | 2:40–2:50 | Close | "Limitations: small corpus, rule-based captions, templated flag. Next: ghost-bot repair, difficulty dial." |
 
-**Contingency branches (practised on Day 18):**
+**Contingency branches (practised on Day 16):**
 - GPU/CUDA error → toggle **CPU fast mode** (≈ 25 s for 112 wide, H10). Say: "this is the CPU fallback."
 - App won't start → open a standalone HTML level from the showcase folder (no Python needed).
 - Laptop dead → desktop or USB: standalone HTML levels + report PDF + slides PDF.
@@ -251,7 +285,7 @@ Text-to-level training/evaluation with an honest, level-grouped split.
 
 ---
 
-## 7. Viva Q&A bank (52 questions)
+## 7. Viva Q&A bank (53 questions)
 
 Answers are short on purpose; expand only if asked. "Evidence" points to where the proof lives.
 
@@ -308,6 +342,8 @@ Answers are short on purpose; expand only if asked. "Evidence" points to where t
 
 **C5. What does the 5-fold grouped CV add?** Each fold holds out different levels, so the spread estimates how results vary with *which* levels are unseen, plus training noise. It gives error bars that a single dev set can't. The test levels stay out of CV entirely.
 
+**C7. Is this just MarioDiffusion again? What is yours?** No. We build on its published dataset and its idea of captioned tile diffusion (Schrum et al., arXiv 2507.00184) and say so. Our own work: a level-grouped split with a leakage audit of theirs, a from-scratch U-Net/diffusion/trainer, a caption detector written from the grammar description and *checked* against their stored captions (not ported line by line), a physics-consistent playability checker with its own validation, the browser game and deployed app, and a level-clustered evaluation with a one-shot test. External pieces (MiniLM, Phaser, Kenney sprites) are listed in doc 02 §15 with licences. *Evidence: doc 02 §15, `DATA_CARD.md`.*
+
 **C6. Why sub-sample prompts at stride 8 for generative metrics?** Stride-1 windows are near-duplicates, which would inflate n and shrink CIs dishonestly. Stride 8 keeps half-overlapping windows at most.
 
 **C7. Doesn't a level-grouped split still leak? Levels reuse patterns.** Some reuse is real game design (e.g. flat floor stretches). We measured test-to-train NN distances, listed every window within 2 tiles, and checked that real test windows are as far from train as the gate requires. The remaining overlap is documented, not hidden. *Evidence: `leakage_ours.csv`.*
@@ -340,7 +376,7 @@ Answers are short on purpose; expand only if asked. "Evidence" points to where t
 
 **E4. Why a copy threshold of 4 tiles?** That's 1.6 % of a 256-tile window, a few isolated tile flips. We calibrate against real held-out windows: their NN distance to train is the natural baseline (novelty_ref). Generated levels shouldn't be closer to train than real unseen levels are.
 
-**E5. Why bootstrap grouped by prompt?** The 3 samples per prompt are correlated. Resampling prompts (with all their seeds) gives honest CIs. For ablations we use a paired bootstrap on the same prompts and seeds, so prompt difficulty cancels out.
+**E5. Why is the bootstrap clustered by level, and how reliable are the intervals?** Windows, prompts and seeds from one level are correlated (adjacent windows share 15 of 16 columns), so the independent unit is the **level**. We resample levels with all their prompts and seeds. A prompt-level interval is shown only as a labelled secondary "conditional on these levels" figure because it is too narrow. With 5 dev and 6 test levels the intervals are **wide**, which is why per-level results and the leave-one-level-out range accompany every headline number. For ablations we use the paired, level-clustered bootstrap on the same prompts and seeds.
 
 **E6. How do you know "verified beatable" means anything?** (1) The checker and the game read the same `physics.json`. (2) The checker's jumps are deliberately more conservative than the game's. (3) It agrees with the Baumgarten A* agent on A % of 300 levels. (4) We played every showcase level by hand. *Evidence: Fig 18.*
 
@@ -350,7 +386,7 @@ Answers are short on purpose; expand only if asked. "Evidence" points to where t
 
 **E9. Why include a retrieval baseline?** It shows what "copying the right training window" achieves: high C-score with ~100 % copy rate. Our model must earn its C-score *with* novelty. *Evidence: Table T9.*
 
-**E10. How many times did you look at the test set?** Once, on Day 16, with an analysis plan committed before the freeze and hashed into `FROZEN.json`. All tuning used dev.
+**E10. How many times did you look at the test set?** Once, on Day 15, with an analysis plan committed before the freeze and hashed into `FROZEN.json`. All tuning used dev.
 
 **E11. Why that composite score for selection?** It balances adherence (0.4) with structure, playability and novelty (0.2 each). Selecting on C-score alone would pick memorising, high-w, structure-breaking checkpoints. We checked that the chosen checkpoint is stable under ±0.1 weight perturbations (report it).
 
@@ -368,11 +404,11 @@ Answers are short on purpose; expand only if asked. "Evidence" points to where t
 ### G. App & engineering
 **G1. How does a level become a game?** The tile grid is exported as level JSON (schema v1), embedded with the sprite atlas into a self-contained Phaser 3 page, and shown inside Streamlit. It works offline, and every level can be downloaded as a standalone HTML file.
 
-**G2. How fast is it?** A 112-wide level generates and verifies in under 10 s on the laptop GPU (G-P7). On CPU, one guided forward pass is ~75 ms, so full quality would take ~107 s; the CPU fast mode (25 steps, no resampling) takes ~25 s (H10). *Evidence: Table T11.*
+**G2. How fast is it?** The G-P7 target is a 112-wide level generated and verified in under 10 s on the laptop GPU; this is provisional and the measured value from Day 12 goes here (`___` s, Table T11). On CPU, one guided forward pass is ~75 ms, so full quality would take ~107 s; the CPU fast mode (25 steps, no resampling) takes ~25 s (H10). *Evidence: Table T11.*
 
 **G3. Why cap VRAM at 4.5 GiB when the model needs under 2 GiB?** So anything that runs on the 8 GB desktop is guaranteed to run on the 6 GB laptop, with room left for the display and browser (H2–H3).
 
-**G4. What if CUDA fails during the viva?** CPU fast mode, then cached standalone levels. Both were rehearsed on Day 18.
+**G4. What if CUDA fails during the viva?** CPU fast mode, then cached standalone levels. Both were rehearsed on Day 16.
 
 ### H. Ethics & licensing
 **H1. Is using Nintendo levels legal or ethical?** It is non-commercial academic research on public research data (MarioDiffusion, MIT; derived from VGLC), with attribution. We ship no Nintendo sprites; the game uses CC0 Kenney art (A1, A3).
@@ -396,12 +432,12 @@ Answers are short on purpose; expand only if asked. "Evidence" points to where t
 
 ---
 
-## 8. Numbers card (memorise; fill the blanks on Day 16)
+## 8. Numbers card (memorise; fill the blanks on Day 15)
 
 | Fact | Value | Source |
 |---|---|---|
 | Windows / unique / levels | 7,687 / 7,620 / 42 (20 + 22) | F3, F4, F7 |
-| Distinct columns | 8,317 | F11 |
+| Total columns / distinct column patterns | 8,317 / 653 | F11 |
 | Sky share | 87.13 % | F13 |
 | Official-split leakage | median 8/256 tiles; 83.9 % ≤ 16; 2.1 % exact | F17 |
 | Split | 31 / 5 / 6 levels; seed 20261117 | D3 |
@@ -418,24 +454,45 @@ Answers are short on purpose; expand only if asked. "Evidence" points to where t
 
 ---
 
-## 9. Rehearsal checklist
+## 9. Slides, rehearsal and delivery checklist
 
-**Content (Day 17–19)**
-- [ ] Slides ≤ 12: problem · leakage (Fig 4) · method (Fig 1, Fig 7) · training evidence (Fig 8/10) · CFG trade-off (Fig 11) · test table (T9) · playability validity (Fig 18) · app (Fig 22) · limitations · future features.
-- [ ] Every number on the slides has a provenance tag in the speaker notes (doc 30 §11).
-- [ ] The report PDF builds from source; `check_provenance.py` green.
+### 9.1 The 12-slide deck (statement: problem, motivation, proposed solution, selected AI/ML technique, implementation, testing, results (qualitative and quantitative), limitations, conclusion)
 
-**Demo (Day 18–20)**
-- [ ] 3 timed run-throughs of §6 (≤ 2:50 each); 1 run-through with Wi-Fi off; 1 with `CUDA_VISIBLE_DEVICES=""`.
+| # | Slide | Content / figure |
+|---|---|---|
+| 1 | Title | Project, group, members, **Streamlit Cloud URL**, date |
+| 2 | Problem and motivation | doc 02 §2: indie/hobbyist designers, educators; the practical need; no invented numbers |
+| 3 | Proposed solution | "Type it, play it" in one picture (Fig 22) |
+| 4 | Data and the leakage finding | F17 (Fig 4); our level-grouped split |
+| 5 | Selected ML technique | Conditional discrete-tile diffusion; why diffusion (doc 02 §2.4); pipeline diagram (Fig 1) |
+| 6 | Model and conditioning | U-Net, MiniLM + adapter, cross-attention, CFG (Fig 7) |
+| 7 | Generation and playability | Outpainting, framing, checker, verified resampling (Fig 16) |
+| 8 | Implementation and testing | Gates G-P1..G-P8, pytest counts, fuzz, E2E; evidence-folder pointer |
+| 9 | Results, quantitative | Table T9 with level-clustered CIs, per-level table, real/retrieval references |
+| 10 | Results, qualitative | Sample levels, the contrast test, failure gallery (Fig 21) |
+| 11 | Limitations | §3.3 list, honest |
+| 12 | Conclusion, originality and future work | What is ours vs external (doc 02 §15); 9 reserved features |
+
+Every number on a slide has a provenance tag in the speaker notes (doc 30 §11). Draft Day 14, final Day 16.
+
+### 9.2 Rehearsal checklist
+
+**Content (Day 16)**
+- [ ] The 12 slides above exist; the report PDF builds from source; `check_provenance.py` green.
+- [ ] Evidence folder complete (doc 35 §3).
+
+**Demo (Days 16–17)**
+- [ ] 3 timed run-throughs of §6 (≤ 2:50 each); 1 run-through with Wi-Fi off; 1 with `CUDA_VISIBLE_DEVICES=""`; 1 on the Streamlit Cloud URL.
+- [ ] **Every member's laptop runs the project** (rubric: otherwise -20 %). Each member does the setup from the zip on their own laptop on Day 17.
 - [ ] 12 cached showcase levels, all **human-played to the flag**; standalone HTML copies on USB.
 - [ ] Examiner prompts drill: 15 random casual prompts typed by someone else; note any normalizer misses and add synonyms **before** the freeze only. After the freeze, use prompt chips; do not change the frozen lexicon (FROZEN.json hashes it).
 
-**Q&A (Day 19–20)**
-- [ ] Two mock vivas: 15 random questions from §7, 60 s per answer, the other person scoring clarity.
+**Q&A (Day 17)**
+- [ ] Two mock vivas: 15 random questions from §7, 60 s per answer, the other person scoring clarity (plus doc 36 §4 member-specific questions).
 - [ ] Be able to write A1, A4 and A5 on a whiteboard from memory.
 - [ ] Practise saying "I don't know, but here's how I'd find out" for questions outside scope.
 
-**Logistics (Day 20, evening before)**
+**Logistics (Day 17, evening before; presentations are 7-9 Dec, upload is Day 18)**
 - [ ] Laptop: OS updates paused, notifications off, power plan "Performance", charger, display scaling 100 %, HDMI/USB-C adapter, mouse, **external keyboard for the examiner**.
 - [ ] USB stick: standalone levels, report PDF, slides PDF, `FROZEN.json`, `RESULTS.md`, a short screen recording of the demo (last resort).
 - [ ] If two presenters: roles fixed (one drives the demo, one answers maths), hand-off phrases agreed.

@@ -12,7 +12,7 @@
 | Machine profile name / run tag | `desktop_3060ti` / `DT` | `laptop_4050` / `LT` | doc 07 §2 |
 | OS | Windows 11 or Ubuntu 22.04/24.04 | Windows 11 | — |
 | Python | 3.12.x (same minor on both) | 3.12.x | V1 |
-| PyTorch | 2.15.x CUDA 13 wheel, **or** 2.14.x + cu126 on both | identical to DT | V2 |
+| PyTorch | **to verify on Day 0 (`pip index versions torch`)**; earlier drafts proposed 2.15.x CUDA 13 or 2.14.x + cu126, unverified | identical to DT | V2 |
 | NVIDIA driver | ≥ 580 for CUDA 13 wheels; ≥ 525 for cu126 wheels | same rule | V2 + NVIDIA minor-version compatibility table |
 | VRAM cap | 4.5 GiB (fraction ≈ 0.56 of 8 GB) | 4.5 GiB (fraction ≈ 0.75 of 6 GB) | H2, H3 |
 | Precision | bf16 autocast | bf16 autocast | H5 |
@@ -55,7 +55,9 @@ NVIDIA's minor-version-compatibility table: **CUDA 13.x runtimes need driver ≥
 | 4 | Either driver < 525 | Must update; no supported channel |
 | 5 | Always | Record `torch_channel` in `env/capabilities.json` for both machines. **Never mix channels or torch minors across machines** (V2). |
 
-Verified on 2026-11-17: a plain `pip install torch` on Linux resolved to `2.15.0+cu132`, so the 2.15 stable CUDA wheel is CUDA 13.2. On Windows the CUDA wheels come from the PyTorch index. **Always confirm the `--index-url` for your OS on pytorch.org/get-started/locally** (Stable → Pip → Python → CUDA 13.x) and pass it to the install script if it differs from the default.
+> **Version claims in this section (torch 2.15/2.14, CUDA 13/12 channels, driver numbers) are unverified (ledger V2).** Treat every version below as a hypothesis; Day 0 task: `pip index versions torch`, `pip download --no-deps` of the intended wheels (CUDA and CPU), read NVIDIA's compatibility table, then record the real pins in the ledger.
+
+Earlier note (unverified): a plain `pip install torch` on Linux resolved to `2.15.0+cu132`, so the 2.15 stable CUDA wheel is CUDA 13.2. On Windows the CUDA wheels come from the PyTorch index. **Always confirm the `--index-url` for your OS on pytorch.org/get-started/locally** (Stable → Pip → Python → CUDA 13.x) and pass it to the install script if it differs from the default.
 
 ### 3.3 Updating drivers
 - **Windows (both machines):** install the latest driver from the NVIDIA App or nvidia.com (Studio or Game Ready both work; Studio is the steadier choice). The RTX 4050 Laptop GPU is supported by NVIDIA's generic notebook driver; Lenovo Vantage may offer an OEM build, and either is fine if it is ≥ 580. Reboot, then re-run §3.1.
@@ -328,7 +330,7 @@ python -m playwright install --with-deps chromium       # Linux: also installs s
 Node.js is optional, only if someone wants JS linting of `app/static/game/game.js` (`winget install OpenJS.NodeJS.LTS` / `sudo apt install nodejs npm`). Nothing in the build depends on it.
 
 ## 12. Streamlit local settings
-`.streamlit/config.toml` is specified in doc 28. Environment-level requirements: the app binds to `localhost`, usage statistics are off (`browser.gatherUsageStats = false`), and the launcher sets `T2M_OFFLINE=1` (NFR-OFF-01, NFR-SEC-02). Always run `streamlit run app/streamlit_app.py` **from the repo root**, so the project `.streamlit/` folder is picked up.
+`.streamlit/config.toml` is specified in doc 28. Environment-level requirements: the local profile binds to `localhost` (the cloud profile is managed by Streamlit Community Cloud, ledger §3b), usage statistics are off (`browser.gatherUsageStats = false`), and the launcher sets `T2M_OFFLINE=1` (NFR-OFF-01, NFR-SEC-02). Always run `streamlit run app/streamlit_app.py` **from the repo root**, so the project `.streamlit/` folder is picked up.
 
 ## 13. Day-0 sign-off checklist (do it on DT, then on LT)
 

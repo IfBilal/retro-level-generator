@@ -1,8 +1,14 @@
-# Text-to-Mario Level Diffusion — Implementation Harness (v1.0)
+# Text-to-Mario Level Diffusion — Implementation Harness (v1.1)
 
 A complete, multi-document plan that Claude Code follows to build, train, evaluate and ship a **text-conditioned discrete-tile diffusion model for Super Mario Bros. levels**, plus a **Streamlit app where a typed sentence becomes a real, playable browser game** ("Type it, play it").
 
 It starts from the 6-page PDF blueprint, audits it hard (`docs/01_PDF_AUDIT.md`), fixes what it gets wrong, and adds what it lacks: an honest level-grouped data split, playability verification, a two-GPU workflow, a browser game engine, licensed assets, and a test discipline you can defend at a viva.
+
+## The problem, the users, the deadline
+**Problem.** Indie and hobbyist 2D-platformer developers and level designers need many fast, steerable, *playability-checked* first-draft levels; educators and students of procedural content generation need a small, honest, end-to-end example. This pack builds a typed-sentence-to-playable-level tool for Super Mario Bros.-style tile levels (input: a sentence, width, guidance, seed; output: a full level, the canonical caption, a "verified beatable" badge, a playable browser game, exports). **No user research was done**; users and needs are stated, not measured (details and success criteria: `docs/02_SCOPE_AND_REQUIREMENTS.md` §2).
+**Path A (software, Streamlit)**, deployed on **Streamlit Community Cloud** (mandatory) and run locally for development and the live demo.
+**Originality.** It builds on the published MarioDiffusion dataset and idea (Schrum et al., arXiv 2507.00184, MIT licence). External vs own work: `docs/02` §15.
+**Schedule.** Day 0 = Wed 18 Nov 2026, Day 18 = **Sun 6 Dec 2026 (submission on GCR, one zip)**; presentations 7-9 Dec. Submission mapping: `docs/35_SUBMISSION_CHECKLIST.md`. Team ownership, viva and live-modification drills: `docs/36_TEAM_OWNERSHIP_AND_VIVA.md`.
 
 ## How to use this pack with Claude Code
 
@@ -19,8 +25,10 @@ It starts from the 6-page PDF blueprint, audits it hard (`docs/01_PDF_AUDIT.md`)
 | 2 | `00_DECISIONS_LEDGER.md` | **Single source of truth**: every number, verified facts |
 | 3 | `01_PDF_AUDIT.md` | 30 findings against the PDF and how each is fixed |
 | 4 | `02_SCOPE_AND_REQUIREMENTS.md` | MVP definition, acceptance criteria, non-goals |
-| 5 | `03_TIMELINE_DAY_BY_DAY.md` | Day 0–20 plan, gates, fallbacks |
+| 5 | `03_TIMELINE_DAY_BY_DAY.md` | Day 0–18 plan with calendar dates (18 Nov – 6 Dec 2026), gates, fallbacks |
 | 6 | `04_CRITICAL_PATH_AND_DEPENDENCIES.md` | Dependency graph, slack, what can run in parallel |
+| 7 | `35_SUBMISSION_CHECKLIST.md` | Deliverables, rubric rows and deduction rules mapped to artifacts and days |
+| 8 | `36_TEAM_OWNERSHIP_AND_VIVA.md` | Who owns what, daily walk-through, live-modification drills |
 
 ## Full index
 
@@ -30,7 +38,7 @@ It starts from the 6-page PDF blueprint, audits it hard (`docs/01_PDF_AUDIT.md`)
 - `04_CRITICAL_PATH_AND_DEPENDENCIES.md` — DAG, critical path, buffers
 - `05_REPO_STRUCTURE.md` — repo tree, module contracts, coding conventions
 - `06_ENVIRONMENT_SETUP.md` — Windows/Linux setup for both machines, version pins, verification
-- `07_DUAL_GPU_HANDOFF_PROTOCOL.md` — min-VRAM contract, machine profiles, checkpoint sync, resume
+- `07_DUAL_GPU_HANDOFF_PROTOCOL.md` — min-VRAM contract, machine profiles, checkpoint sync, resume (simplified in the 18-day plan)
 
 **Data engineering**
 - `08_DATA_ACQUISITION.md` — pinned sources, checksums, licences
@@ -68,6 +76,10 @@ It starts from the 6-page PDF blueprint, audits it hard (`docs/01_PDF_AUDIT.md`)
 - `32_REPORT_AND_VIVA_PREP.md` — figure list, tables, viva Q&A bank
 - `33_RISK_REGISTER.md` — risks, likelihood/impact, mitigations, triggers
 - `34_CLAUDE_CODE_OPERATING_RULES.md` — the rules (also at root as `CLAUDE.md`)
+- `35_SUBMISSION_CHECKLIST.md` — mandatory deliverables, rubric rows 1–11 (135 marks), deduction rules, zip build
+- `36_TEAM_OWNERSHIP_AND_VIVA.md` — ownership, daily walk-through, 15+ live-modification drills, demo-laptop rule
+
+**Status:** `STATUS.md` lists what is written, what was cut or demoted, and what remains to be measured.
 
 **Reference code**
 - `reference/ref_unet.py` — reference U-Net + scheduler checks used to verify this pack's numbers (18,312,013 params; oracle-DDIM exact reconstruction)
@@ -76,5 +88,5 @@ It starts from the 6-page PDF blueprint, audits it hard (`docs/01_PDF_AUDIT.md`)
 - **Data:** 7,687 16×16 windows from 42 SMB1/SMB2 levels with rule-based captions. Split **by level**: 31 train / 5 dev / 6 locked test.
 - **Model:** from-scratch 18.3 M-parameter conditional U-Net (16→8→4), ε-prediction DDPM (T = 1000), frozen MiniLM + trainable adapter, cross-attention at 8×8 and 4×4, CFG.
 - **Generation:** DDIM 50 steps, sliding-window outpainting with RePaint harmonisation, templated start/flag framing, playability-verified resampling.
-- **Evaluation:** C-score, exact match, broken-structure rate, playability, novelty vs train, copy rate, diversity; bootstrap CIs; 5-fold grouped CV; one-shot test.
-- **App:** Streamlit studio + Phaser 3 game. Type a sentence and play the level in the browser.
+- **Evaluation:** C-score, exact match, broken-structure rate, playability, novelty vs train, copy rate, diversity; bootstrap CIs clustered by held-out level (wide: only 5 dev / 6 test levels); optional 5-fold grouped CV; one-shot test.
+- **App:** Streamlit studio + Phaser 3 game. Type a sentence and play the level in the browser. Two profiles: local-GPU (development, live demo) and cloud-CPU on Streamlit Community Cloud (committed `.safetensors` checkpoint, bundled MiniLM, cached-showcase fallback; ledger §3b).

@@ -1,6 +1,6 @@
 # 27 — Browser Game Engine ("Type it, play it")
 
-> **Owner track:** G. **Days:** D3 (skeleton plays a real level), D9 (mechanics), D13 (Streamlit embedding, MVP), D18 (hardening).
+> **Owner track:** G. **Days:** D3 (skeleton plays a real level), D9 (mechanics), D13 (Streamlit embedding, MVP), D16 (hardening).
 > **Ledger rows:** S2 (MVP), V5 (Phaser 3.90.0), A1–A4 (assets), G3 (framing), G5 (verification badge), G-P7 (app gate), F6 (tile IDs).
 > **Companion docs:** 21 (playability checker, which **must** read the same `physics.json`), 26 (atlas contract), 28 (Streamlit app), 29 (level JSON schema).
 
@@ -129,7 +129,7 @@ Arcade with `fixedStep: true, fps: 60` advances physics in fixed steps of `dt = 
 ### 4.5 Physics calibration and freeze (protects the evaluation)
 - **Day 5–6:** checker v0 runs on all real levels. Calibration target: ≥ **90 %** of the **train + dev** real levels (full width) are judged beatable, and every failure is inspected and classified (VGLC artifact, springboard/warp the tile set can't express, or physics too strict).
 - If physics is too strict, tune **only** within `jump_velocity ∈ [20.5, 23.0]` and `run_speed ∈ [5.5, 7.0]`, re-derive, and record the change in the ledger change log. **Never look at test levels for this** (that would be test-set leakage via the checker).
-- **Freeze physics by Day 9**, before playability enters the dev composite score (E4) in Phase 4 model selection. Changing physics after the freeze invalidates every stored playability number, and the evaluation must be re-run.
+- **Freeze physics at the end of Day 6**, before the checker validation gate G-P5b (Day 7) and therefore before playability may enter the dev composite score (E4) in any model selection (Day 8 onward). (The earlier "Day 9" freeze would have let an unvalidated, still-changing checker steer selection.) Changing physics after the freeze invalidates every stored playability number, and the evaluation must be re-run.
 
 ## 5. Level → tilemap (Phaser 3.90 APIs, verified in the source)
 
@@ -265,10 +265,17 @@ def build_game_html(level: dict, *, skin: str = "kenney", sound: str = "synth", 
 With `server.enableStaticServing = true`, Streamlit serves `app/static/*` at `/app/static/...`. In `mode="static"`, the template references `/app/static/vendor/phaser.min.js`, `/app/static/game/game.js` and the atlas URLs (cached by the browser), and the level travels in the URL fragment: `st.iframe("/app/static/game/index.html#lvl=<base64url(json)>")`.
 Pitfall (Windows): Streamlit picks Content-Type with Python's `mimetypes` and sends `X-Content-Type-Options: nosniff`. A Windows registry mapping of `.js` → `text/plain` makes the browser refuse to run the script. Fix: `mimetypes.add_type("text/javascript", ".js")` at app start. Inline mode avoids this whole class of problem, which is why it is the default.
 
+### 10.5 Cloud iframe case (Streamlit Community Cloud, ledger §3b)
+- The game HTML is delivered **inline** through the embed shim (doc 28 §2): `st.iframe` if the pinned Streamlit has it, otherwise `components.v1.html`. Nothing is fetched by URL, so no CDN, no static-serving route and no `enableStaticServing` dependency: **the mode is always `inline`** on cloud (mode `static`, §10.4, is local-only).
+- Keyboard focus inside a cross-origin-style iframe is the main risk (doc 33 R26): keep the click-to-focus overlay (§8), `tabindex=0` on the frame when the API allows it, `preventDefault` on game keys, and a visible hint "click the game first".
+- Size budget (§10.3) matters more on cloud (slower upload per rerun): the HTML is rebuilt only when the level changes, and it is kept in `st.session_state`.
+- Test on the **public URL** (gate P8.05), not only on localhost; CSP/sandbox differences between the two are the usual cause of "works locally, dead on cloud".
+- The downloadable standalone HTML (§11) remains the fallback if the embedded game fails on a viewer's browser.
+
 ## 11. Standalone download and the replay seam
 
 - `mode="standalone"` → the same game, plus a header (prompt via `textContent`, level ID, verification badge), a "Download level JSON" link (`data:application/json` of the full schema-v1 level), a controls legend and a `<noscript>` notice. File name `t2m_<level_id>.html`. It opens by double-click, offline. Debug API disabled.
-- **Replay (reserved for future feature F1, "watch the proof"):** `T2M_DEBUG.replay(actions)`, where `actions` is an array of per-physics-step bitmasks (`1 = left, 2 = right, 4 = jump, 8 = run`). It feeds the input abstraction (§6) one entry per fixed step (listen on `this.physics.world.on('worldstep')`), so the checker's path can be played back exactly. The MVP **must** ship the input abstraction; implementing `replay` is SHOULD (Day 19 buffer).
+- **Replay (reserved for future feature F1, "watch the proof"):** `T2M_DEBUG.replay(actions)`, where `actions` is an array of per-physics-step bitmasks (`1 = left, 2 = right, 4 = jump, 8 = run`). It feeds the input abstraction (§6) one entry per fixed step (listen on `this.physics.world.on('worldstep')`), so the checker's path can be played back exactly. The MVP **must** ship the input abstraction; implementing `replay` is SHOULD (Day 17 buffer).
 
 ## 12. Tests
 
@@ -284,7 +291,7 @@ Setup: `pip install playwright` and `playwright install chromium` (one-time, nee
 4. **Win path:** `teleport(flag.col − 3, spawn.row)`, hold right → `won === true` within 3 s.
 5. **Death/respawn:** teleport above a pit → `deaths` increments, and the player reappears at checkpoint 0 within 2 s.
 6. **Focus:** after `page.evaluate("window.dispatchEvent(new Event('blur'))")` → `paused === true`.
-7. Soft performance check: `fps ≥ 30` headless (the real 60 fps target is checked manually on the laptop, Day 18).
+7. Soft performance check: `fps ≥ 30` headless (the real 60 fps target is checked manually on the laptop, Day 16).
 Run on Chromium; also with `channel="msedge"` when Edge is installed (Windows laptop).
 
 ## 13. Performance budget
@@ -299,4 +306,4 @@ Run on Chromium; also with `channel="msedge"` when Edge is installed (Windows la
 | D3 | `physics.json` + `derive_physics.py`; skeleton: tilemap from a real level, move/jump/collide, camera | Plays level 0; `test_physics_contract` green |
 | D9 | Enemies, blocks, coins, pits, checkpoints, flag/win, DOM HUD, pause/restart, synth audio | Manual playthrough of 3 real levels; e2e tests 1–6 green |
 | D13 | `build_game_html` inline + standalone; Streamlit embed (doc 28); badge | G-P7 timing; e2e on 20 generated levels |
-| D18 | Offline, browser matrix, 768p layout | Day 18 checklist (doc 03) |
+| D16 | Offline, browser matrix, 768p layout | Day 16 checklist (doc 03) |
