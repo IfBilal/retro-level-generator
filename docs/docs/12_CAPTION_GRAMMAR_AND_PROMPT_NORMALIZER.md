@@ -1,5 +1,7 @@
 # 12 — Caption Grammar and Prompt Normalizer
 
+> **Originality note (ledger O3):** the canonical grammar of §2 is the specification from which `captions/detector.py` is implemented; the detector is then *checked against* the stored captions, not ported from MarioDiffusion's code.
+
 > **Days:** 2 (grammar file, lexicon, P-casual set committed), 8 (normalizer v1), 13 (UI wiring). **Ledger rows:** F14, F15, D8c, E2 (P-casual), S2, S3.
 > **Modules:** `src/text2mario/captions/grammar.py` (canonical grammar, parser, emitter), `src/text2mario/text/normalizer.py` (casual → canonical), data files `data/prompts/lexicon.yaml`, `data/prompts/clamp_table.json`, `data/prompts/p_casual.jsonl`.
 > **Pipeline position:** `user text → normalize() → [SceneSpec…] → canonical caption per scene → MiniLM → U-Net`. The model is trained on canonical captions (plus 27 % casual paraphrases, D8c, doc 11 §5.2). The normalizer makes inference text look like training text.
@@ -304,7 +306,7 @@ Stored in `data/prompts/p_casual.jsonl`, one record per prompt:
 | cas-dev-29 H | full floor. two enemies. one pipe. | floor full, enemy two, pipe one; PASSTHROUGH | full floor. two enemies. one pipe. |
 | cas-dev-30 H | floor with one gap. a few coins. one coin line. two platforms. | as given; PASSTHROUGH | floor with one gap. a few coins. one coin line. two platforms. |
 
-### 8.2 Test (30) — evaluated once, Day 16 (heavy use of heldout variants; one deliberate OOV)
+### 8.2 Test (30) — evaluated once, Day 15 (heavy use of heldout variants; one deliberate OOV)
 
 | pid | Prompt | Expected raw topics (forbid) | Expected caption(s) (full-corpus clamp) |
 |---|---|---|---|
@@ -344,7 +346,7 @@ Notes: (i) cas-test-24: "ten coin lines" → raw coin line many → clamp to two
 ### 8.3 Honesty about P-casual-test
 The test prompts are published in this plan, so the implementer can see them. P-casual-test is therefore a **frozen acceptance set**, not a blind test. Two safeguards:
 1. **Code review rule:** the normalizer source and tests may not contain any P-casual-test prompt substring (`tests/test_normalizer_hygiene.py` greps for them). Behaviour must come from the lexicon and rules of §5–§7.
-2. **P-casual-blind (optional, recommended):** on Day 16 the user writes 10 fresh casual prompts with expected topics *without showing them to Claude Code first*, and runs them once. Report them separately as the true out-of-sample normalizer estimate.
+2. **P-casual-blind (optional, recommended):** on Day 15 the user writes 10 fresh casual prompts with expected topics *without showing them to Claude Code first*, and runs them once. Report them separately as the true out-of-sample normalizer estimate.
 
 ---
 
@@ -363,7 +365,7 @@ The test prompts are published in this plan, so the implementer can see them. P-
 
 ### 9.2 Targets
 - **Dev (gate for normalizer v1, Day 8):** N4 ≥ 90 % (≥ 27/30), N2 F1 ≥ 0.97, N6 = 100 %.
-- **Test (Day 16, report only):** reported with exact counts. Expectation: N4 ≥ 80 %.
+- **Test (Day 15, report only):** reported with exact counts. Expectation: N4 ≥ 80 %.
 - Unit tests: every lexicon variant, sg and pl, maps to its topic; every §5.1 row; every §7 marker; the paraphrase invariant of doc 11 (T-A4).
 
 ### 9.3 Downstream and robustness studies (reported in doc 22/23)

@@ -21,9 +21,10 @@
 | G-P3 | G-P2 |
 | G-P4 | G-P3 |
 | G-P5 | G-P4 |
-| G-P5b | G-P4 (it uses conditional samples) |
+| G-P5b | G-P3 (it uses Phase-3 unconditional samples and real train/dev levels; **must pass before the playable term is used in any selection, Day 8 onward**) |
 | G-P7 | G-P5, G-P5b |
-| G-P6 | G-P7 (the demo and the reported numbers come from the same frozen checkpoint) |
+| G-P8 | G-P7 (dry run on a candidate checkpoint Day 12; final with the frozen checkpoint Day 14) |
+| G-P6 | G-P7, G-P8 (the demo, the deployment and the reported numbers come from the same frozen checkpoint) |
 
 - **Thresholds are read from `configs/gates.yaml`**, whose values mirror ledger §9 (each key has a comment naming the ledger row). Gate scripts never hard-code thresholds.
 - **Borderline rule** (doc 22 §7.6): if a proportion or mean threshold lies inside the check's 95 % CI, the script draws **one** extension of equal size with fresh seeds, decides on the pooled estimate, and records `"extended": true`.
@@ -159,9 +160,10 @@
 
 **Artifacts:** 6 full-level renders (best/median/worst by S_level), a seam close-up figure, `levels/*.json` (schema doc 29).
 
-### G-P5b — Playability checker agreement (Day 11) · `scripts/gate_p5b.py`
-**Inputs:** `src/text2mario/playability/checker.py`, `physics.json`, `env/capabilities.json` (Java available?), MarioEval.jar bridge (doc 21).
-**Agreement set (fixed, seeded, saved as `reports/gates/P5b/agreement_set.json`):** 100 real windows from **train + dev** levels (stratified to ~50/50 by fast-checker verdict where possible), 100 conditional P-dev scene samples, 100 framed L-single-dev levels at W_gen = 48 (keeps jar runtime modest). **Never test levels.**
+### G-P5b — Playability checker agreement / validity (**Day 7**, before any use of the playable term) · `scripts/gate_p5b.py`
+**Why Day 7:** the `playable` term of the dev composite S (E4) is used for checkpoint/CFG selection from Day 8. A checker used for selection must be validated first (ledger E4 circularity rule). Until `reports/gates/P5b/RESULT.json` has `pass: true`, all selections use `S_noplay`.
+**Inputs:** `src/text2mario/playability/checker.py`, `physics.json` (frozen end of Day 6), `env/capabilities.json` (Java available?), MarioEval.jar bridge (doc 21).
+**Agreement set (fixed, seeded, saved as `reports/gates/P5b/agreement_set.json`):** 100 real windows from **train + dev** levels (stratified to ~50/50 by fast-checker verdict where possible), 100 **unconditional Phase-3 samples** (no conditional model exists on Day 7), 100 framed real train/dev level segments of width 48 (keeps jar runtime modest). On Day 11 the agreement is re-run as a non-gating monitor on 30 generated full levels. Test levels are never used. **Never test levels.**
 
 | ID | Check | Threshold | Ledger |
 |---|---|---|---|
@@ -171,7 +173,7 @@
 
 Jar failures on levels a human can beat do happen (agent imperfections). Disagreements are inspected and categorised (checker too lenient / too strict / jar artefact) in `disagreements.md` before any fix (doc 25 R-5.5).
 
-### G-P6 — Evaluation discipline (Day 14–16) · `scripts/gate_p6.py`
+### G-P6 — Evaluation discipline (Day 14–15) · `scripts/gate_p6.py`
 
 | ID | Check | Threshold | Ledger |
 |---|---|---|---|
@@ -182,7 +184,8 @@ Jar failures on levels a human can beat do happen (agent imperfections). Disagre
 | P6.05 | locks untouched | `LOCK` and `PROMPTS_LOCK` each have exactly one commit in `git log` (Day 2) and still match | D4 |
 | P6.06 | results | `RESULTS.md` exists, names the test-run ID, and contains H1–H4 verdicts | doc 22 §6.5 |
 
-### G-P7 — App: "Type it, play it" (Day 13; re-run Day 18) · `scripts/gate_p7.py`
+### G-P7 — App: "Type it, play it" (Day 13; re-run Day 16) · `scripts/gate_p7.py`
+**Measure first, then pin (ledger G-P7):** the thresholds below (20 s, 10 s, 45 s) are **provisional**; no GPU measurement exists yet. The Day-12 run writes `reports/app/latency.json`; the pinned values replace them in the ledger and in `configs/gates.yaml` (with a ledger §14 row). Gate scripts read `configs/gates.yaml`, never constants in code.
 **Must run on the laptop profile** (`laptop_4050`) for P7.01–P7.03. Otherwise those checks are marked `not_on_target`, which fails the gate.
 
 | ID | Check | Threshold | Ledger |
@@ -193,6 +196,19 @@ Jar failures on levels a human can beat do happen (agent imperfections). Disagre
 | P7.04 | keyboard play, Chrome + Edge | Playwright, channels `chrome` and `msedge`: open the exported standalone HTML of 3 levels; click to focus; hold ArrowRight 1 s → player x increases ≥ 2 tiles; press jump → player y rises then returns; no uncaught console errors | §9 G-P7 |
 | P7.05 | offline | the standalone HTML contains no `http(s)://` URLs; the Playwright run blocks all network requests except `file://` and localhost, and the game still loads | doc 27 |
 | P7.06 | badge truth (diag.) | for 20 prompts, the badge state equals the checker verdict stored in the level JSON | G5 |
+
+### G-P8 — Streamlit Community Cloud deployment (dry run Day 12, final Day 14; re-check Days 16-18) · `scripts/gate_p8.py`
+**Inputs:** the public app URL, the deployed commit SHA, the checkpoint sidecar (sha256 must equal `FROZEN.json` on the final run).
+| ID | Check | Threshold | Ledger |
+|---|---|---|---|
+| P8.01 | URL reachable | HTTP 200 and the "Ready" marker within the cold-start time measured on Day 12 (pinned) | §9 G-P8 |
+| P8.02 | profile | About panel shows `profile: cloud` and checkpoint sha256 (first 12) equal to `FROZEN.json` (final run) | CL3 |
+| P8.03 | generation | 3 prompts, width 48, fast mode: level, canonical caption, badge and PNG appear; median time within `cloud.time_budget_s` (provisional 60 s, pinned Day 12) | CL2, CL6 |
+| P8.04 | fallback | with `time_budget_s` forced to 1 s the app serves a labelled cached showcase level and logs the fallback | CL6 |
+| P8.05 | game | Playwright on the public URL: canvas present, ArrowRight moves the player, no console errors, inside the Streamlit iframe | doc 27 cloud iframe |
+| P8.06 | no external requests | no requests to hosts other than the Streamlit platform | CL7 |
+| P8.07 | memory (diag.) | resident memory vs the pinned cap | CL5 |
+Evidence is copied to `evidence/deployment/`. If the build fails, the documented state is the cached-only fallback (doc 25 R-6.6).
 
 ---
 
@@ -251,7 +267,7 @@ Jar failures on levels a human can beat do happen (agent imperfections). Disagre
 | `test_novelty.py::test_copy_threshold_inclusive` | nn = 4 counts as a copy; nn = 5 does not | — |
 | `test_novelty.py::test_gpu_cpu_equal` | identical nn on CPU and CUDA | gpu |
 | `test_stats.py::test_bootstrap_coverage` | ≥ 93 % of nominal 95 % CIs cover the truth over 200 simulations | slow |
-| `test_stats.py::test_cluster_unit` | resampling draws prompts (clusters), not samples | — |
+| `test_stats.py::test_cluster_unit` | resampling draws **levels** (clusters; all of a level's prompts and seeds travel together), not prompts or samples; prompt-only sets are flagged as prompt-clustered | — |
 | `test_stats.py::test_paired_sign_and_seed` | Δ sign is correct; results are deterministic with seed 12345 | — |
 | `test_stats.py::test_holm` | known textbook example | — |
 

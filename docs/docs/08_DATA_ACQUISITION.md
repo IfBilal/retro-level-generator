@@ -177,7 +177,7 @@ Downloaded repositories are **untrusted data**:
 
 1. **Separate directories.** Each download goes into its own new, empty directory under `data/raw/`. Our scripts live in `scripts/` and `src/` and receive paths as arguments.
 2. **Never execute or import their code.** No `import` from `data/raw/`, no `sys.path` insertion pointing there, no running their `.py`/`.bat` files, no `pip install -r data/raw/.../requirements.txt`. Python that reads their files runs with `python -I` (isolated mode: ignores `PYTHONPATH`, user site-packages, and the script's directory) from **our** working directory. Reason: an interpreter started inside the folder would pick up a planted `json.py` on `import json`.
-3. **Read their logic as documentation.** The caption detector, C-score and random-caption grammar are re-implemented cleanly in `src/text2mario/captions/` from reading the source, with an MIT attribution header:
+3. **Do not port their code.** The caption detector is implemented **from the caption-grammar description (doc 12 §2 and the paper)** and then *checked against* the stored captions; it is not transcribed from `create_ascii_captions.py` (ledger O3). The C-score and random-caption grammar follow the paper's published definitions. Where a module does use an idea or definition from their work, add an attribution header like:
    ```python
    # Logic re-implemented from schrum2/MarioDiffusion (MIT License, (c) 2025 Jacob Schrum),
    # commit 561c76d4…, files create_ascii_captions.py, captions/util.py, captions/caption_match.py.

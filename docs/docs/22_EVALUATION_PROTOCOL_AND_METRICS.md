@@ -15,7 +15,7 @@
 5. **Every metric has a real-data reference** (§4). A number without its reference line is not reported.
 6. **Common random numbers.** Two arms compared on the same prompt set use **identical initial noise** x_T per (prompt, replicate) (§2.3). Differences then reflect the treatment, not the noise.
 7. **Uncertainty always.** Every headline number carries a 95 % CI (§7). CV numbers carry mean ± std over folds.
-8. **Test levels are invisible to models until Day 16.** Data-construction scripts (`make_splits.py`, leakage tests, gate P1) may read test-level *tiles* to validate the split; no model generates for, or is scored against, a test-derived prompt before `scripts/eval_test.py` runs.
+8. **Test levels are invisible to models until Day 15.** Data-construction scripts (`make_splits.py`, leakage tests, gate P1) may read test-level *tiles* to validate the split; no model generates for, or is scored against, a test-derived prompt before `scripts/eval_test.py` runs.
 
 ---
 
@@ -48,7 +48,7 @@
 | **P-casual-dev / -test** | handwritten (doc 12) | 30 / 30 | 3 | normalizer + end-to-end casual prompting | Day 2 |
 | **P-uncond** | none (null context) | — | 256 samples | gate P3, unconditional baseline B1 | — |
 | **P-div** | 20 P-dev prompts, chosen by seeded draw (seed 7) | 20 | 10 | diversity probe (the PDF's "10 seeds, same prompt") | Day 2 |
-| **L-single-dev / -test** | 50 P-dev (resp. P-test) captions as whole-level prompts | 50 | 2 levels at W_gen = 112 | full-level metrics (§3.14), gate P5 | Day 11 / Day 16 |
+| **L-single-dev / -test** | 50 P-dev (resp. P-test) captions as whole-level prompts | 50 | 2 levels at W_gen = 112 | full-level metrics (§3.14), gate P5 | Day 11 / Day 15 |
 | **L-multi-dev** | 25 multi-scene prompts: 2–4 consecutive P-dev captions of the same dev level joined with `" then "` | 25 | 2 | secondary full-level metric (needs `scene_spans`, §3.14) | Day 11 |
 
 Sample counts per full evaluation: P-dev ≈ 350 scenes, P-test ≈ 420, P-rand 300, P-casual 90. These give a 95 % CI half-width of about ±0.03 on C-score and ±3 pp on proportions near 0.9 (§7.6).
@@ -60,7 +60,7 @@ Sample counts per full evaluation: P-dev ≈ 350 scenes, P-test ≈ 420, P-rand 
   The caption is used **verbatim** (canonical grammar). Phrase order is shuffled with `random.Random(hash(prompt_id))` so that order is not an accidental cue (training also shuffles, D8).
 - **P-rand (paper protocol, our seed):** for each of 100 captions: draw `k ~ Uniform{1,…,10}` topics without replacement from **T16**. For each topic, draw a phrase uniformly from the canonical phrases observed for that topic **in train-split captions** (so every phrase is grammatical and in-vocabulary). Shuffle the phrase order, join with `". "`, end with `"."`. Never emit "broken" phrases. Physically contradictory combinations are allowed (as in the paper): this set measures composition, not realism. Expect low scores (the paper's best random-caption C-score was < 0.5).
 - **P-casual:** item format, gold canonical caption and expected-attribute dicts are defined in doc 12. Scoring is in §3.12.
-- **Locks:** `scripts/make_prompt_sets.py` writes `data/prompts/PROMPTS_LOCK` = sha256 over (`p_test.jsonl`, `p_rand_test.jsonl`, `p_casual_test.jsonl`) on Day 2. `tests/data/test_splits.py::test_prompts_lock` fails if the files change. Test-side prompt files may be *created* on Day 2 but are **not opened by any model-facing code** before Day 16.
+- **Locks:** `scripts/make_prompt_sets.py` writes `data/prompts/PROMPTS_LOCK` = sha256 over (`p_test.jsonl`, `p_rand_test.jsonl`, `p_casual_test.jsonl`) on Day 2. `tests/data/test_splits.py::test_prompts_lock` fails if the files change. Test-side prompt files may be *created* on Day 2 but are **not opened by any model-facing code** before Day 15.
 
 ### 2.3 Seeds and common random numbers
 
@@ -234,7 +234,7 @@ Cost: m ≈ 5.5k → `B` = 73 MB, which is within the VRAM cap. Keep `arg` to re
 **Diagnostic:** per-row JS (row-conditional tile histograms, rows 2–15), shown as a 14-bar chart. It catches floors in the wrong row and ceiling or sky-row artefacts.
 
 ### 3.11 Seam metric ↓ (G-P5; estimator defined in doc 20 §seam)
-`seam_ratio = mean NLL(column transitions crossing window seams) / mean NLL(interior transitions)`, using the column-transition model fitted on train levels (doc 20). The corpus has **653 distinct columns** in 8,317, so the estimator must be smoothed (doc 20). **Reference:** the same estimator on real dev levels with pseudo-seams at the generator's seam positions (expected ≈ 1.0). Gate: model ratio ≤ 1.3 (ledger §9). Reported with a cluster-bootstrap CI over levels.
+`seam_ratio = mean NLL(column transitions crossing window seams) / mean NLL(interior transitions)`, using the column-transition model fitted on train levels (doc 20). The corpus has **653 distinct columns** in 8,317, so the estimator must be smoothed (doc 20). **Reference:** the same estimator on real dev levels with pseudo-seams at the generator's seam positions (expected ≈ 1.0). Gate: model ratio ≤ 1.3 (ledger §9). Reported with a level-clustered bootstrap CI.
 
 ### 3.12 Casual-prompt metrics (P-casual; normalizer = doc 12)
 - **Normalizer accuracy** (text only, no model): `norm_exact` = share of items whose normalised canonical phrase set equals the gold canonical caption; `norm_attr_acc` = share of gold attributes recovered with the correct bucket.
@@ -278,7 +278,7 @@ S = 0.4·Cscore + 0.2·(1 − broken_rate) + 0.2·playable + 0.2·min(1, novelty
 | `playable_real_level` | fast checker on all real train+dev levels (full) | measured Day 5 (≈ 1.0 expected) |
 | `seam_ratio_real` | doc 20 estimator on real dev levels at pseudo-seams | measured Day 11 (≈ 1.0) |
 
-Test-level references (natural novelty and solvability of test windows) are computed **inside** `eval_test.py` on Day 16 only.
+Test-level references (natural novelty and solvability of test windows) are computed **inside** `eval_test.py` on Day 15 only.
 
 ---
 
@@ -316,8 +316,8 @@ Outputs (§8): `samples.npz`, `per_sample.parquet`, `metrics.json`, `tables.md`,
 ### 6.4 Cross-validation evaluation (Day 15; D5)
 For fold k: train on the other 4 folds (final config), select the checkpoint with S computed on **fold-k stride-8 prompts**, then report all metrics on fold-k prompts + P-rand-dev. Report **mean ± std (ddof = 1), min and max over 5 folds**, plus the per-fold table. Prompts differ between folds, so CV measures variance from *both* the training-level sample *and* the evaluated levels. This is the honest generalisation spread.
 
-### 6.5 One-shot test (Day 16): pre-registration and guards
-**(a) Pre-registration.** Before Day 16, commit `reports/final/eval_plan.json` (it must be in `git log` before the test run starts):
+### 6.5 One-shot test (Day 15): pre-registration and guards
+**(a) Pre-registration.** Before Day 15, commit `reports/final/eval_plan.json` (it must be in `git log` before the test run starts):
 ```json
 {
   "schema_version": 1,
@@ -329,7 +329,7 @@ For fold k: train on the other 4 folds (final config), select the checkpoint wit
   "comparators": ["B0", "B1", "B2", "B3"],
   "metrics": ["cscore", "em", "per_concept", "broken_rate", "floor_valid", "playable_fast", "playable_jar_subset",
               "novelty_med", "copy_rate", "diversity", "js", "seam_ratio", "attr_sat"],
-  "statistics": {"ci": "percentile cluster bootstrap by prompt", "B": 10000, "rng_seed": 12345, "multiplicity": "Holm"},
+  "statistics": {"ci": "percentile cluster bootstrap by level", "cluster_unit": "level_id", "prompt_level_secondary": true, "B": 10000, "rng_seed": 12345, "multiplicity": "Holm"},
   "hypotheses": [
     {"id": "H1", "claim": "CFG improves adherence on unseen levels", "test": "paired ΔCscore(B3 − B2) > 0, 95% CI excludes 0"},
     {"id": "H2", "claim": "Text conditioning beats realism-only", "test": "paired ΔCscore(B3 − B1) > 0"},
@@ -353,19 +353,24 @@ For fold k: train on the other 4 folds (final config), select the checkpoint wit
 
 ## 7. Statistics
 
-### 7.1 Unit of analysis and cluster bootstrap (E3)
-Samples of the same prompt share content, so they are not independent. **The resampling unit is the prompt**, carrying all of its replicates.
+### 7.1 Unit of analysis and cluster bootstrap (E3, amended 2026-11-18)
+Samples of one **level** are not independent: adjacent windows share 15 of 16 columns, prompts of the same level describe the same content, and the 3 seeds of a prompt share it too. **The resampling unit is therefore the held-out LEVEL**, carrying all of its prompts and all their replicates. (The earlier draft clustered by prompt; that treats 117 prompts from 5 levels as 117 independent draws and gives intervals that are too narrow.)
 ```python
-def cluster_bootstrap(per_prompt, stat, B=10_000, seed=12345):
-    """per_prompt: list of per-prompt sample arrays (or records); stat: list -> float (recomputed per replicate)."""
-    rng = np.random.default_rng(seed); P = len(per_prompt)
-    boots = np.array([stat([per_prompt[i] for i in rng.integers(0, P, P)]) for _ in range(B)])
-    return stat(per_prompt), np.percentile(boots, [2.5, 97.5])
+def level_cluster_bootstrap(per_level, stat, B=10_000, seed=12345):
+    """per_level: list with one entry per held-out level; each entry holds ALL samples (prompts x seeds)
+    generated for prompts that originate from that level. stat: list-of-entries -> float (recomputed per replicate)."""
+    rng = np.random.default_rng(seed); L = len(per_level)      # L = 5 (dev) or 6 (test)
+    boots = np.array([stat([per_level[i] for i in rng.integers(0, L, L)]) for _ in range(B)])
+    return stat(per_level), np.percentile(boots, [2.5, 97.5])
 ```
-Mean-type metrics use the vectorised form (multinomial counts × per-prompt sums / per-prompt n). Quantile-type metrics (novelty_med) and composites (S) are recomputed per replicate. The bootstrap RNG seed is fixed (12345) for reproducibility. CIs use the percentile method; switch to BCa only if a metric is highly skewed (report which).
+- **Few clusters, wide intervals.** With L = 5 (dev) or 6 (test) there are only 5^5 = 3,125 or 6^6 = 46,656 distinct level resamples, so the percentile interval is coarse and **wide**; it is still the honest one. The report says so in words next to every headline table: "intervals are wide because only 5 (dev) / 6 (test) levels are held out".
+- **Always report per-level results too** (§7.3 table): one row per held-out level with n, the metric and its seed spread. A reader can then see which level drives a number.
+- **Prompts without a level of origin** (P-rand, P-casual) have no cluster: they are bootstrapped **by prompt** and every such interval is labelled "prompt-clustered; conditional on the trained model, not on levels". They are never mixed into a level-clustered headline number.
+- **Secondary, labelled interval:** the old prompt-clustered interval may be printed in a second column titled "conditional on these levels".
+- Mean-type metrics use the vectorised form (multinomial counts over levels x per-level sums / per-level n). Quantile-type metrics (novelty_med) and composites (S) are recomputed per replicate. The bootstrap RNG seed is fixed (12345) for reproducibility. CIs use the percentile method; switch to BCa only if a metric is highly skewed (report which). Results JSON key: `statistics.ci = "percentile cluster bootstrap by LEVEL"` (§6.5 `eval_plan.json`).
 
 ### 7.2 Paired comparisons (A/B, CFG, ablations)
-With CRN (§2.3), for each prompt p: `d_p = mean_r [m_A(p, r) − m_B(p, r)]`. Bootstrap the prompts → CI of `mean_p d_p` (for composites, recompute S_A − S_B per replicate). **Decision rule:** "A beats B" if the 95 % CI of Δ lies above 0 **and** Δ exceeds the minimum effect of interest: ΔS ≥ 0.01, ΔCscore ≥ 0.02, Δplayable or Δbroken ≥ 2 pp. Otherwise "no detectable difference" → the simpler option wins (doc 23 §6).
+With CRN (§2.3), for each prompt p: `d_p = mean_r [m_A(p, r) − m_B(p, r)]`. Compute `d_p` per prompt, average within each level, then bootstrap the **levels** → CI of the mean over levels (for composites, recompute S_A − S_B per replicate). **Decision rule:** "A beats B" if the 95 % CI of Δ lies above 0 **and** Δ exceeds the minimum effect of interest: ΔS ≥ 0.01, ΔCscore ≥ 0.02, Δplayable or Δbroken ≥ 2 pp. Otherwise "no detectable difference" → the simpler option wins (doc 23 §6).
 
 ### 7.3 Level-level uncertainty (be honest)
 Prompt-level CIs are **conditional on the particular held-out levels**: 5 dev and 6 test levels are few, and per-level difficulty varies (per-level novelty medians range 2–56.5). Always add: (a) a **per-level table** (each held-out level's Cscore, playable, broken, novelty_med); (b) a **leave-one-level-out jackknife range** for headline metrics (min/max over dropping each level); (c) the 5-fold CV spread (§6.4) as the primary estimate of level-sampling variance.
@@ -377,7 +382,7 @@ Each experiment pre-declares **one primary metric: S** (dev). Secondary metrics 
 Report mean ± sample std (ddof = 1), min and max over 5 folds. Don't compute p-values from folds: the training sets overlap, so fold results are dependent and the variance of the CV mean has no unbiased estimator (Bengio & Grandvalet, 2004). Present the std as "spread", not as a standard error.
 
 ### 7.6 Precision expectations and the borderline rule for gates
-- A proportion near 0.85 with n = 256 has a 95 % half-width of ±4.4 pp. Near 0.90 with n ≈ 350: ±3.1 pp. C-score (per-sample SD ≈ 0.15–0.20) with ≈ 117 prompt clusters: ±0.03.
+- A proportion near 0.85 with n = 256 independent samples would have a 95 % half-width of ±4.4 pp (an *optimistic* binomial figure for gates; the borderline rule below uses it only as a guide). Near 0.90 with n ≈ 350: ±3.1 pp. C-score (per-sample SD ≈ 0.15–0.20): the prompt-level half-width with ≈ 117 prompts would be ±0.03, **but that treats prompts as independent; the level-clustered interval from 5-6 levels will be considerably wider** (to be measured on Day 9/15; no number is claimed here). Proportions are likewise binomial approximations only; the reported CI is the level-clustered one.
 - Gates compare the **point estimate** with the ledger threshold. **Borderline rule (pre-declared):** if the threshold lies inside the 95 % CI, draw **one** extension of equal size with fresh seeds (base + 500,000) and decide on the pooled estimate. Only one extension is allowed. It is logged in RESULT.json (doc 24).
 
 ---

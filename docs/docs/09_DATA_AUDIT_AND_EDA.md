@@ -24,7 +24,7 @@ Each assertion writes `{id, description, expected, observed, pass, severity}` to
 | F8 | Within every chain, `S[i][:,1:] == S[i+1][:,:-1]` (stride 1) | all 7,645 within-chain pairs | H |
 | F9 | `records[0:3606]` scenes equal `SMB1_Levels.json` element-wise; `records[3606:]` equal `SMB2_Levels.json` | exact | H |
 | F10 | No record has a level-id field | true | H |
-| F11 | Chain lengths: min **130**, max **358**; level widths (= windows + 15): min **145**, median **193**, max **373**; Σ widths = **8,317** distinct columns | exact | H |
+| F11 | Chain lengths: min **130**, max **358**; level widths (= windows + 15): min **145**, median **193**, max **373**; Σ widths = **8,317 columns in total (with repeats); only 653 distinct column patterns** | exact | H |
 | F12 | Rows 0–1 contain exactly **64** non-sky cells, all tile ids **9 or 10** (`[`/`]`, 32 each), in **17** windows; row 2 contains **32** non-sky cells | exact | H |
 | F13 | Window-level tile frequencies (%) | `- 87.13, < 0.18, > 0.18, ? 0.05, B 0.04, E 0.62, Q 0.19, S 1.70, X 8.66, [ 0.43, ] 0.43, b 0.03, o 0.34` (±0.01) | H |
 | F14 | Captions: words 2–28 (mean 11.39); phrases 1–10 (mean 4.03); **62** distinct phrases; **44**-word vocabulary | exact | H |
@@ -238,7 +238,9 @@ The scene tensor itself is **not** in the parquet. It is stored once as `data/pr
 
 ---
 
-## 6. Caption detector port (`src/text2mario/captions/detector.py`)
+## 6. Caption detector (`src/text2mario/captions/detector.py`), written from the grammar and checked against the stored captions
+
+> **Originality rule (ledger O3):** implement the rules from the grammar description in doc 12 §2 and the paper; do not port or transcribe MarioDiffusion's source. The stored captions are the *test oracle*, not the template. Mismatches are listed and explained.
 
 The detector turns any tile grid into a canonical caption. It is the **measuring instrument** for C-score, exact match, the report card, word highlighting (future F5), and the generation verify loop. It must reproduce the stored captions.
 
