@@ -1,7 +1,9 @@
 # 23 — Ablations & Experiment Matrix (X1–X12)
 
+> **18-day scope note (2026-11-18, doc 02 §14):** the experiment set is **reduced to X1 (auxiliary CE) plus the linear-vs-cosine schedule comparison (U-lin/U-cos, Day 5)**. X11 and X12 (free, inference-only) and X7 (free analysis) stay SHOULD. X2, X3, X4, X9 are MAY and run only if time remains or their trigger fires. X5, X6, X8, X10 are **cut** (listed as future work in the report). The matrix below is kept as reference; the tag in the "Priority" column of this note overrides it.
+
 > **Purpose:** decide **config v1** (Day 10) and the **final config** (Day 14 freeze) with controlled, cheap, dev-only experiments, and produce the ablation table for the report. Ledger rows touched: M2, M9, M11, M13, D8, D9, G1, H10, E3, E4.
-> **Primary decision metric:** the dev composite **S** (E4, doc 22 §3.13), compared with a **paired cluster bootstrap under common random numbers** (doc 22 §7.2). Everything else is secondary or a tie-breaker.
+> **Primary decision metric:** the dev composite **S** (E4, doc 22 §3.13), compared with a **paired, level-clustered bootstrap under common random numbers** (doc 22 §7.1-7.2; 5 dev levels, so intervals are wide). Everything else is secondary or a tie-breaker.
 > **Configs:** `configs/ablations/X*.yaml` (diffs over a base config). **Runner:** `scripts/launch.py`. **Analysis:** `scripts/analyze_ablation.py`. **Registry:** `reports/ablations/REGISTRY.csv`.
 
 ---
@@ -11,7 +13,7 @@
 1. **One change per arm** relative to its baseline (the only exception is the explicit combination check in §6).
 2. **Same everything else:** same base config, `train_seed`, data order (where the architecture permits), step budget, evaluation cadence, prompt sets and **sampling seeds** (CRN, doc 22 §2.3), and the same checkpoint-selection rule (argmax S, patience 5).
 3. **Dev only.** P-dev (+ P-rand-dev for robustness). No ablation ever touches a test-side prompt file. `eval_dev.py` hard-refuses them.
-4. **Batch 1 (Day 10) can change the model; batch 2 (Day 15) cannot.** The freeze happens on Day 14 (`FROZEN.json`), so batch-2 results are **report-only**. If a batch-2 arm is much better, it goes into "future work" and the frozen model stays as it is.
+4. **Batch 1 (Day 10) can change the model; batch 2 (cut in the 18-day plan; only X7 may run, on Day 15) cannot.** The freeze happens on Day 14 (`FROZEN.json`), so any batch-2 result is **report-only**. If a batch-2 arm is much better, it goes into "future work" and the frozen model stays as it is.
 5. **Training-free experiments** (X2 if dual-EMA, X7, X11, X12) reuse a trained checkpoint and only change inference or evaluation. Run them first: they're nearly free.
 6. **Everything is logged:** each arm gets a run directory (doc 30), one registry row, and a `summary.md` with the paired-bootstrap table and a figure.
 
@@ -36,15 +38,15 @@ Batch-1 arms train for **40k steps** (timeline Day 10). The baseline used for pa
 | ID | Name | Type | Priority | Day | Machine | Budget | Baseline | Changes the model? |
 |---|---|---|---|---|---|---|---|---|
 | **X1** | Auxiliary CE loss (λ = 0.001, ᾱ_t-weighted) | train | **P0** | D10 | DT | 40k | C-main | yes (batch 1) |
-| **X2** | EMA decay 0.995 vs 0.999 | free* / train | P1 | D10 | — / LT | 0 / 40k | C-main | yes (batch 1) |
-| **X3** | Pooled text → time embedding | train | P1 | D10 | LT | 40k | C-main | yes (batch 1) |
-| **X4** | Concept-balanced sampling (inverse-sqrt) | train, **conditional** | P1 | D10 | DT | 40k | C-main | yes (batch 1) |
-| **X5** | Horizontal flip + tile/caption remap | train | P2 | D15 | DT/LT | final steps | final | **no** (report-only) |
-| **X6** | Schedule confirmation at the final config | train | P1 | D15 | DT/LT | final steps | final | **no** (report-only) |
-| **X7** | Per-concept guidance-scale analysis | free | P1 | D15 | ANY | 0 | final | **no** |
-| **X8** | Base width 48 / 96 (capacity) | train | P2 | D15 (if time) | DT | 40k ×2 | config v1 | **no** |
-| **X9** | ResBlock dropout 0 / 0.2 | train, **conditional** | P1 | D10 (if triggered) / D15 | LT | 40k ×1–2 | C-main | yes if D10 |
-| **X10** | p_uncond 0.05 / 0.2 | train | P2 | D15 (if time) | ANY | 40k ×2 | config v1 | **no** |
+| **X2** | EMA decay 0.995 vs 0.999 | free* / train | MAY | D10 | — / LT | 0 / 40k | C-main | yes (batch 1) |
+| **X3** | Pooled text → time embedding | train | MAY | D10 | LT | 40k | C-main | yes (batch 1) |
+| **X4** | Concept-balanced sampling (inverse-sqrt) | train, **conditional** | MAY (trigger) | D10 | DT | 40k | C-main | yes (batch 1) |
+| **X5** | Horizontal flip + tile/caption remap | train | CUT | D15 | DT/LT | final steps | final | **no** (report-only) |
+| **X6** | Schedule confirmation at the final config | train | CUT (Day 5 comparison replaces it) | D15 | DT/LT | final steps | final | **no** (report-only) |
+| **X7** | Per-concept guidance-scale analysis | free | SHOULD | D15 | ANY | 0 | final | **no** |
+| **X8** | Base width 48 / 96 (capacity) | train | CUT | D15 (if time) | DT | 40k ×2 | config v1 | **no** |
+| **X9** | ResBlock dropout 0 / 0.2 | train, **conditional** | MAY (trigger) | D10 (if triggered) / D15 | LT | 40k ×1–2 | C-main | yes if D10 |
+| **X10** | p_uncond 0.05 / 0.2 | train | CUT | D15 (if time) | ANY | 40k ×2 | config v1 | **no** |
 | **X11** | DDIM steps 25 / 50 / 100 (+ CPU fast mode) | free | **P0** | D11 | ANY | 0 | config v1 | inference only |
 | **X12** | Direct wide sampling vs sliding-window outpainting | free | P1 | D11 | ANY | 0 | config v1 | inference only |
 
@@ -148,7 +150,7 @@ Every card gives the hypothesis, the exact change (YAML keys are indicative; mat
 
 ## 5. Compute budget
 
-Planning throughput (**replace with Day-4 `hw_report.json` values**): DT 15 it/s, LT 12 it/s at batch 64 (bf16), plus ≈ 30 s per dev evaluation (≈ 350 samples incl. checker) every 2k steps.
+Planning throughput (**replace with Day-4 `hw_report.json` values**): DT 15 it/s, LT 9 it/s at batch 64 (bf16), the single planning assumption of ledger H11, plus ≈ 30 s per dev evaluation (≈ 350 samples incl. checker) every 2k steps.
 `hours(steps) = steps / (it_s × 3600) + (steps / 2000) × 0.5 / 60`
 
 | Job | Steps | DT h | LT h | Notes |

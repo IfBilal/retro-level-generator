@@ -292,7 +292,7 @@ Result → `reports/repro/cross_machine.json`. If (a) fails, the usual cause is 
 
 All manifests are JSON, git-tracked, and checked by `scripts/verify_hashes.py`. It is cross-platform (no `sha256sum`) and runs inside `verify_env.py --quick`.
 
-**Chain:** `data/MANIFEST.json` → `data/splits/LOCK` + `data/prompts/PROMPTS_LOCK` → `reports/references/REFERENCES.json` → runs (`meta.json` records the three hashes) → `FROZEN.json` (Day 14) → `reports/final/eval_plan.json` (references FROZEN; doc 22 §6.5) → `reports/final/test_runs/<UTC>_<gitsha>/` (Day 16) → `RESULTS.md` + `number_provenance.json`.
+**Chain:** `data/MANIFEST.json` → `data/splits/LOCK` + `data/prompts/PROMPTS_LOCK` → `reports/references/REFERENCES.json` → runs (`meta.json` records the three hashes) → `FROZEN.json` (Day 14) → `reports/final/eval_plan.json` (references FROZEN; doc 22 §6.5) → `reports/final/test_runs/<UTC>_<gitsha>/` (Day 15) → `RESULTS.md` + `number_provenance.json`.
 
 ### 9.1 `data/MANIFEST.json` (Day 1)
 ```json
@@ -318,7 +318,7 @@ All manifests are JSON, git-tracked, and checked by `scripts/verify_hashes.py`. 
 - `data/splits/LOCK`: one line, `<sha256>  split_v1.json`. `tests/test_splits.py` recomputes it on every `pytest`. Changing the split after Day 2 is a ledger-level change, and it invalidates every run whose `meta.json → split_lock_sha256` differs.
 
 ### 9.3 Prompt lock (Day 2; doc 22 §2.2)
-`data/prompts/PROMPTS_LOCK` = sha256 over the test-side prompt files. Model-facing code never opens test-side prompt files before Day 16 (doc 22).
+`data/prompts/PROMPTS_LOCK` = sha256 over the test-side prompt files. Model-facing code never opens test-side prompt files before Day 15 (doc 22).
 
 ### 9.4 `assets/ASSET_MANIFEST.json` (Day 0; schema owned by doc 26 §7)
 It records every fetched or built asset: source URL, licence SPDX + licence-file path (e.g. `app/static/vendor/LICENSE.phaser.md`), sha256, bytes, and whether a fallback was used. `verify_hashes.py` checks the files on disk against it. A fallback (placeholder sprites, A2) must also appear in `events.jsonl` and `PROGRESS.md` (CLAUDE.md rule 12).
@@ -398,7 +398,7 @@ After the freeze, any change to a hashed file makes `eval_test.py` and the app's
   - a test number doesn't come from `reports/final/test_runs/`;
   - a test-run folder isn't recorded in `reports/final/TEST_LEDGER.md` (doc 22).
 
-  It is on the Day 17 checklist.
+  It is on the Day 16 checklist.
 
 ---
 
@@ -415,7 +415,7 @@ After the freeze, any change to a hashed file makes `eval_test.py` and the app's
 - `prune_runs.py --dry-run` lists deletions first. It never deletes the newest two good checkpoints of a run (CLAUDE.md rule 9), nor anything referenced by `FROZEN.json`, a gate `RESULT.json`, or `runs/cv/fold*.json`.
 - `launch.py` refuses to start if the run drive has < 10 GB free. Day 0 records free disk in `env/capabilities.json`; ≥ 30 GB free on both machines is recommended.
 - Budget: a main run ≈ 6 full checkpoints × 0.30 GB ≈ 1.8 GB; an ablation ≈ 0.6 GB; project worst case ≈ 15–25 GB.
-- **Day 20 archive:** `release/text2mario_v1.0_artifacts.zip` = the frozen run directory (full checkpoint + EMA + `eval/` + samples), the five CV best EMA files, `reports/`, and all manifests. Its sha256 is recorded in `PROGRESS.md`.
+- **Day 17 archive (before the zip build):** `release/text2mario_v1.0_artifacts.zip` = the frozen run directory (full checkpoint + EMA + `eval/` + samples), the five CV best EMA files, `reports/`, and all manifests. Its sha256 is recorded in `PROGRESS.md`.
 
 ---
 
@@ -546,7 +546,7 @@ python scripts/compare_to_reported.py --dev reports/dev/<new_run_id>/metrics.jso
 
 ---
 
-## 17. Reproducibility checklist (before the Day 14 freeze and the Day 17 figures)
+## 17. Reproducibility checklist (before the Day 14 freeze and the Day 16 figures)
 - [ ] `verify_hashes.py` green on both machines (data, scenes, split, prompts, val noise, references, assets).
 - [ ] Same torch **minor** version on both machines; locks committed.
 - [ ] `check_determinism.py` passed (repro mode bitwise; fast-mode drift documented).
@@ -554,5 +554,5 @@ python scripts/compare_to_reported.py --dev reports/dev/<new_run_id>/metrics.jso
 - [ ] `check_cross_machine_eval.py` passed (criterion a; plus b if the §6.4 upgrade is adopted).
 - [ ] Every cited run: `git_dirty = false`, listed in `runs_index.csv`.
 - [ ] `FROZEN.json` committed and tagged → then `eval_plan.json` committed (references FROZEN) → only then `eval_test.py`.
-- [ ] `check_provenance.py` green (Day 17).
-- [ ] Release archive built; its sha256 recorded (Day 20).
+- [ ] `check_provenance.py` green (Day 16).
+- [ ] Release archive built; its sha256 recorded (Day 17).

@@ -46,7 +46,7 @@ The PDF has the right skeleton: a small discrete-tile DDPM, a frozen sentence en
 | 26 | Golden Rule | "If MSE plateaus above 0.15 … stop" | ε-MSE level depends on the schedule and the t-distribution; one global number is fragile. For one-hot data the low-t loss is near 0 and the high-t loss near 1. | S2 | Loss logged per t-bucket (10 buckets) with deterministic validation noise; plateau rules defined per bucket (doc 19). |
 | 27 | Whole PDF | No assets, game engine or level framing (start/flag) | "Real game in the browser" needs sprites with clear licences, a physics engine and an end goal. | S1 | Assets pipeline (CC0, doc 26), Phaser game (doc 27), deterministic framing (G3). |
 | 28 | Whole PDF | No reproducibility protocol (seeds, manifests, versions, config hashes) | Two machines + many runs → irreproducible results. | S1 | Doc 30. |
-| 29 | Whole PDF | No test-set discipline (how many times the test set may be looked at) | Repeated test peeking inflates results. | S1 | Test set locked on Day 2, evaluated once on Day 16 (D4). |
+| 29 | Whole PDF | No test-set discipline (how many times the test set may be looked at) | Repeated test peeking inflates results. | S1 | Test set locked on Day 2, evaluated once on Day 15 (D4). |
 | 30 | Phase 2.1 | "linear … or cosine" (unresolved) | A choice left open is a guess for Claude Code. | S3 | Train both in Phase 3, select by dev score, tie → cosine (M2). Verified ᾱ_T: linear 4.04e-5, cosine 2.43e-9. |
 
 ---
@@ -63,7 +63,7 @@ The PDF has the right skeleton: a small discrete-tile DDPM, a frozen sentence en
 
 ## D. Consequences for the schedule
 
-Fixing #3, #4, #5 and #27 adds roughly **4 working days** to the PDF's 16. The plan therefore runs **21 days (Day 0–20)** with 1.5 days of explicit buffer. If the deadline is hard at 16 days, use the compressed variant in `03_TIMELINE_DAY_BY_DAY.md §Compressed`, which drops 5-fold CV and the MarioEval.jar agreement study. Those are what get cut first; the level-grouped split and the playability checker are never cut.
+Fixing #3, #4, #5 and #27 adds roughly **4 working days** to the PDF's 16. The first draft of this pack ran 21 days (Day 0–20), which **overran the 6 Dec 2026 deadline**; the plan is now **18 days (Day 0 = 18 Nov to Day 18 = 6 Dec)** (`03_TIMELINE_DAY_BY_DAY.md`, ledger §10). Optional CV, ablation batch 2 and the extra buffer day were cut first; the level-grouped split, the playability checker, the one-shot test, the MVP game and the Streamlit Cloud deployment are never cut.
 
 ## E. Open items Claude Code must confirm on Day 0–1 (not guessable)
 

@@ -1,5 +1,7 @@
 # 07 — Dual-GPU Handoff Protocol (min-VRAM contract, checkpoints, sync, resume)
 
+> **18-day plan note (2026-11-18, doc 02 §14): this protocol is SIMPLIFIED.** What is required: one owner per run recorded in `HANDOFF.md`, atomic checkpoints, the same hyperparameters on both machines, and **one** minimal resume drill (AT-08, SHOULD). The rest of this document (sync alternatives, recovery of crashed handoffs, fold re-balancing, retention nuances) is reference material to be used only if a problem actually occurs, not a gate. Quoted torch versions in examples are unverified (ledger V2).
+
 > **Authority:** ledger H1–H10, V2, D4, M10–M12, CLAUDE.md §2.5/§2.6/§2.9/§2.12. This document guarantees two properties:
 > 1. **Any job runs on either machine.** Desktop RTX 3060 Ti 8 GB (`desktop_3060ti`, tag **DT**) or laptop RTX 4050 6 GB (`laptop_4050`, tag **LT**).
 > 2. **A run can move mid-flight** from one machine to the other and continue with full state, verified, without ever being trained on both machines at once.
@@ -580,7 +582,7 @@ if NVML and nvidia-smi both fail:
 | **(e) Data divergence** | `data_manifest_hash` differs between machines | Data artifacts are identified by **content hashes over canonical arrays** (`data.manifest.content_hash`), not file bytes, because parquet files embed writer metadata. Regenerate with `fetch_data.py` + `audit_dataset.py` from the pinned commit; the hashes must match. If they do not, there is a non-determinism bug in the pipeline: fix it before any training |
 | **(f) Sync divergence** | Bundle sha256 mismatch, missing files | Wait (sync in progress); if it persists, the source re-runs `handoff.py release` (the bundle is rebuilt from the local checkpoint). Never train from an unverified bundle |
 
-**Single-machine rule for final numbers.** The frozen run's training lineage may span both machines (it is recorded). But the D14 freeze evaluation, the D16 one-shot test evaluation and the report's main tables are computed on **one reference machine in one environment**. Default reference machine: **DT**. `FROZEN.json` records `eval_machine`, `torch`, `driver`, and the checkpoint sha256. The viva laptop (LT) runs the app on the same frozen weights; its cross-machine tile agreement is reported per §9.5. Before D18, `frozen/` is pulled to the laptop and its sha256 values are verified against `FROZEN.json`.
+**Single-machine rule for final numbers.** The frozen run's training lineage may span both machines (it is recorded). But the D14 freeze evaluation, the D15 one-shot test evaluation and the report's main tables are computed on **one reference machine in one environment**. Default reference machine: **DT**. `FROZEN.json` records `eval_machine`, `torch`, `driver`, and the checkpoint sha256. The viva laptop (LT) runs the app on the same frozen weights; its cross-machine tile agreement is reported per §9.5. Before D16, `frozen/` is pulled to the laptop and its sha256 values are verified against `FROZEN.json`.
 
 ## 12. CV folds and parallel experiment distribution
 

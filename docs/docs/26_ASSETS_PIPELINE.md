@@ -1,6 +1,6 @@
 # 26 — Assets Pipeline (autonomous fetch, licences, tile mapping, skins)
 
-> **Owner track:** G (Game/App). **Days:** D0 (fetch), D1 (mapping + gate), D3 (first use by the game), D18 (offline check).
+> **Owner track:** G (Game/App). **Days:** D0 (fetch), D1 (mapping + gate), D3 (first use by the game), D16 (offline check).
 > **Ledger rows:** A1–A4 (assets), V5 (Phaser), F6 (tile IDs), S2 (MVP), G3 (framing objects), G-P7 (app gate).
 > **Hard rule (CLAUDE.md §2.11):** only CC0 / MIT assets are committed. Nintendo-derived art is never committed and never ships by default (A3).
 
@@ -12,7 +12,7 @@
 1. Claude Code fetches every runtime asset **by itself on Day 0** (no human download step on the happy path). Every file gets a pinned sha256 and its licence text.
 2. Before the model is finished (Day 13), the game and the PNG renderer already have **a complete, licence-clean sprite set** for all 13 tile IDs (F6) plus player, enemy, coin, flag and checkpoint art.
 3. **Nothing ever blocks.** If a download fails, a deterministic procedural "placeholder" skin is generated locally (A2), and the failure is logged (no silent fallbacks, CLAUDE.md §2.12).
-4. **Offline at runtime.** After Day 0, the app and the game never touch the network (viva requirement, Day 18).
+4. **Offline at runtime.** After Day 0, the app and the game never touch the network (viva requirement, Day 16).
 5. **One stable interface.** The game and the renderer only see *our* atlas layout (`atlas_layout.json`), never Kenney's internal sheet layout. Swapping skins = rebuilding the atlas, never touching game code.
 
 **Non-goals:** custom art, animated backgrounds, music (sound effects are optional, §9).
@@ -350,7 +350,7 @@ The `classic-local` builder reads a user-supplied 16 px sheet. It refuses to wri
 1. After Day 0, every runtime asset is in git (Phaser, the Kenney subset, built atlases, the optional audio subset).
 2. The game HTML is self-contained (doc 27 §10). `tests/test_offline_assets.py` parses the built HTML and fails on any `src=`, `href=` or CSS `url(` that is not `data:` or `#…`, and on any `fetch(`/`XMLHttpRequest` with an http(s) URL.
 3. The Playwright smoke test (doc 27 §12) runs with **all network requests aborted**, and must still pass.
-4. Day 18 rehearsal: Wi-Fi off, cold boot, `fetch_assets.py --offline` exits 0, the app plays a level.
+4. Day 16 rehearsal: Wi-Fi off, cold boot, `fetch_assets.py --offline` exits 0, the app plays a level.
 
 ---
 

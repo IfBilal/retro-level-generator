@@ -17,7 +17,7 @@ Consequences if we used it:
 3. **Novelty** is meaningless: a perfect memoriser scores a small NN distance on train and on "test" alike.
 4. Any claim of "generates new levels" fails at the viva the moment an examiner asks how the split was made.
 
-So: **split by level**, keep **near-duplicate level families together**, **lock the test set** (D4), and evaluate it **once** (Day 16).
+So: **split by level**, keep **near-duplicate level families together**, **lock the test set** (D4), and evaluate it **once** (Day 15).
 
 ---
 
@@ -240,7 +240,7 @@ Re-implementation of the paper's random-caption grammar (read from `captions/cap
 **P-rand-paper (optional, comparison only):** the paper's exact 100 captions (read from `data/source/Mar1and2_RandomTest-regular.json`) are evaluated with the same metrics for the paper-comparison table in the report.
 
 ### 9.4 P-casual (60 handwritten prompts)
-Defined in full in `12_CAPTION_GRAMMAR_AND_PROMPT_NORMALIZER.md` §8 (30 dev / 30 test, with expected attributes). The test half is evaluated once, on Day 16, together with P-test.
+Defined in full in `12_CAPTION_GRAMMAR_AND_PROMPT_NORMALIZER.md` §8 (30 dev / 30 test, with expected attributes). The test half is evaluated once, on Day 15, together with P-test.
 
 ---
 

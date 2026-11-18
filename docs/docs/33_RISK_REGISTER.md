@@ -1,6 +1,7 @@
 # 33 — Risk Register
 
-> **Owner:** B (both tracks). **Reviewed:** daily trigger scan, at every gate, and in full on Days 6, 13 and 20 (§6).
+> **Owner:** B (both tracks). **Reviewed:** daily trigger scan, at every gate, and in full on Days 6, 13 and 17 (§6).
+> **Keep-short rule (18-day plan, doc 02 §14):** only the **top 10 risks by score (§6) plus R39-R41 below** are scanned daily; the other entries are reference and are read only when their trigger fires.
 > **ID convention:** risks are **R1–R38** (no hyphen). Rows of the rollback matrix in doc 25 use the hyphenated form **R-<phase>.<n>** (e.g. `R-3.x` = Phase 3 rows). Don't confuse the two. A risk's "Contingency" often points to an R-x.y rollback row.
 > **Ledger links:** IDs in brackets (F*, D*, M*, G*, E*, H*, V*, A*, G-P*) point to `00_DECISIONS_LEDGER.md`.
 
@@ -44,7 +45,7 @@
 | R2 | Data | Level-chain reconstruction wrong → wrong level IDs → leaky split | 2 | 5 | 10 | M | 09, 10; F7–F11 |
 | R3 | Data | Cross-level segment reuse leaks content across the split | 3 | 3 | 9 | M | 10; G-P1 |
 | R4 | Data | Rare concepts too sparse in dev/test → unstable per-concept metrics | 4 | 3 | 12 | M | 10, 22; D6, D9 |
-| R5 | Data/Eval | Caption-detector port doesn't reproduce stored captions → adherence metric invalid | 3 | 5 | **15** | M | 09, 22; F19 |
+| R5 | Data/Eval | Grammar-based caption detector doesn't reproduce stored captions → adherence metric invalid | 3 | 5 | **15** | M | 09, 22; F19 |
 | R6 | Process | Test-set contamination (tuning on test levels/prompts) | 2 | 5 | 10 | B | 10, 22, 30; D4 |
 | R7 | Model | Unconditional baseline fails G-P3 (sky-dominant / noisy samples) | 3 | 4 | 12 | M | 18, 19; doc 25 R-3.x |
 | R8 | Model | Broken multi-tile structures persist (half pipes, orphan cannons) | 3 | 3 | 9 | M | 14, 20; doc 25 R-3.x; G4 |
@@ -115,11 +116,11 @@ Each entry: **Description · Early-warning trigger · Mitigation (preventive, al
 - *Contingency:* pool rare concepts into a "rare" group for headline metrics; mark per-concept cells with n < 5 as "insufficient n"; use P-rand (which samples concepts uniformly) for rare-concept adherence.
 - *Owner:* M · *Links:* 10, 22.
 
-**R5 — Caption-detector port mismatch** (L3 × I5 = **15, critical**)
-- *Description:* C-score, exact match, the report card and future self-training all depend on `captions/detector.py`. If the re-implementation differs from MarioDiffusion's `assign_caption`, every adherence number is silently wrong.
+**R5 — Caption-detector mismatch (detector written from the grammar)** (L3 × I5 = **15, critical**)
+- *Description:* C-score, exact match, the report card and future self-training all depend on `captions/detector.py`. If our grammar-based detector differs from the stored captions, every adherence number is silently wrong.
 - *Trigger:* Day 1 reproduction check < 100 % phrase-set equality on the 7,687 scenes; any mismatch cluster (e.g. staircases, ceilings).
-- *Mitigation:* port rule by rule with the original's thresholds, keeping its structure (floor/ceiling rows, staircase verticality, `already_accounted` sets); property tests (rendered fixtures for each concept); the reproduction check is a Day 1 exit criterion and a CI test.
-- *Contingency:* diff mismatching scenes against the original (read-only, in `data/raw/`); fix until ≥ 99.5 % with documented exceptions (timeline Day 1). **Block all evaluation work until fixed.**
+- *Mitigation:* implement rule by rule from the caption-grammar description (floor/ceiling rows, staircase verticality, per-phrase thresholds as published); do **not** copy their code (ledger O3); property tests (rendered fixtures for each concept); the reproduction check is a Day 1 exit criterion and a CI test.
+- *Contingency:* inspect the mismatching scenes against the stored captions (data only, never their code); fix our rules until ≥ 99.5 % with documented exceptions (timeline Day 1). **Block all evaluation work until fixed.**
 - *Owner:* M · *Links:* 09, 22; F19.
 
 ### Process / test discipline
@@ -203,8 +204,8 @@ Each entry: **Description · Early-warning trigger · Mitigation (preventive, al
 
 **R21 — Playability checker gives a false "verified beatable"** (L3 × I5 = **15, critical**)
 - *Description:* the badge is the product promise. If the checker's jump model is more generous than the Phaser game, a "verified" level can be impossible to play, possibly in front of the examiner.
-- *Trigger:* G-P5b agreement < 85 % (or < 90 % on hand labels); any showcase level a human can't finish on Day 18; the checker marks unbeatable a real full level that has no missing-mechanic explanation (see R38).
-- *Mitigation:* one `physics.json` read by both the game and the checker (doc 21/27); the checker's jump arcs are **conservative** (a subset of what the game allows), so checker-beatable implies game-beatable; agreement study vs MarioEval.jar; real-level baseline on all 42 full levels; Day 18 human playthrough of every cached showcase level.
+- *Trigger:* G-P5b agreement < 85 % (or < 90 % on hand labels); any showcase level a human can't finish on Day 16; the checker marks unbeatable a real full level that has no missing-mechanic explanation (see R38).
+- *Mitigation:* one `physics.json` read by both the game and the checker (doc 21/27); the checker's jump arcs are **conservative** (a subset of what the game allows), so checker-beatable implies game-beatable; agreement study vs MarioEval.jar; real-level baseline on all 42 full levels; Day 16 human playthrough of every cached showcase level.
 - *Contingency:* tighten the arcs (more conservative) and re-verify; the badge text becomes "verified by automated checker"; showcase only levels that have been hand-verified.
 - *Owner:* G · *Links:* 21, 27; G-P5b.
 
@@ -314,12 +315,12 @@ Each entry: **Description · Early-warning trigger · Mitigation (preventive, al
 - *Description:* Phases 1 → 2 → 3 → 4 → 5 → 7b → 6 are serial (doc 04). Two failed gates can consume both buffers.
 - *Trigger:* any gate more than 1 day late vs doc 03; Day 6 buffer consumed by Phase 3; G-P4 not passed by end of Day 10.
 - *Mitigation:* the G track runs in parallel (game, checker, normalizer); buffers on Days 6 and 19; failing gates go straight to doc 25 rollbacks (no "train longer").
-- *Contingency:* switch to the compressed variant (doc 03 §Compressed): cut CV, cut ablations to X1, merge D17 and D18. **Never cut** the level-grouped split, the checker, the one-shot test or the MVP.
+- *Contingency:* use the cuts of doc 03 'If the schedule slips' and doc 02 §14: CV optional, ablations X1 only. **Never cut** the level-grouped split, the checker, the one-shot test or the MVP.
 - *Owner:* B · *Links:* 03, 04.
 
 **R31 — Scope creep** (L3 × I4 = 12)
 - *Trigger:* commits under `src/text2mario/features/` or feature branches before the Day 13 MVP gate.
-- *Mitigation:* S3; doc 31 lists seams only; CLAUDE.md workflow rules; FF6-lite is the only feature allowed, and only in the Day 19 buffer.
+- *Mitigation:* S3; doc 31 lists seams only; CLAUDE.md workflow rules; no feature work at all in the 18-day plan (report card lite is cut).
 - *Contingency:* park the work on a branch; revert from `main`.
 - *Owner:* B · *Links:* 02, 31.
 
@@ -330,7 +331,7 @@ Each entry: **Description · Early-warning trigger · Mitigation (preventive, al
 - *Owner:* B · *Links:* 34, 30.
 
 **R33 — Demo-day failure** (L2 × I5 = 10)
-- *Trigger:* any failure in the Day 18 hardening checklist; a pending OS update on the laptop.
+- *Trigger:* any failure in the Day 16 hardening checklist; a pending OS update on the laptop.
 - *Mitigation:* offline cold-boot rehearsal, CPU fast mode, 12 cached showcase levels, standalone HTML on USB, OS updates paused, charger and adapters packed (doc 32 §8).
 - *Contingency:* use the desktop or another laptop with the standalone HTML files; a recorded screen capture of the demo as the last resort.
 - *Owner:* G · *Links:* 28, 32.
@@ -351,7 +352,7 @@ Ranking rule: score → impact → on the critical path → earliest trigger day
 | 1 | **R5** Detector mismatch | Silently invalidates every adherence number and the report card | Day 1 | 100 % caption reproduction as a hard exit criterion + CI test |
 | 2 | **R9** Text ignored | Fails G-P4, the core claim of "text-to-level" | Day 8–9 | Day 7 optimiser/mask/null tests before the long run |
 | 3 | **R30** Critical-path slip | Two failed gates eat both buffers | Day 5 onward | Pre-agreed rollbacks + the compressed variant |
-| 4 | **R21** False "verified beatable" | Demo credibility; the product promise | Day 11, Day 18 | Shared `physics.json` + conservative arcs + human playthrough of showcase levels |
+| 4 | **R21** False "verified beatable" | Demo credibility; the product promise | Day 11, Day 16 | Shared `physics.json` + conservative arcs + human playthrough of showcase levels |
 | 5 | **R7** Unconditional baseline fails | First model gate; blocks Phase 4 | Day 5 | G-P2 oracle test + overfit-one-batch before any long run |
 
 **Watchlist (score 12):** R4, R10, R15, R26, R28, R31.
@@ -370,7 +371,7 @@ Ranking rule: score → impact → on the critical path → earliest trigger day
 **`reports/risks/risk_log.csv` columns:** `date, day, risk_id, event (rescored|triggered|realised|closed|added), L, I, score, note, link`.
 `scripts/make_figures.py` plots the **risk burn-down** (sum of open scores per day) for the report appendix. Adding a risk: next free ID (R39…), all fields filled, linked doc named, and a log row with `event=added`.
 
-**Closing rules:** a risk closes when its trigger window has passed and its gate is green (e.g. R1/R2/R3 close at G-P1; R7 at G-P3; R9 at G-P4; R21 stays open until Day 20 because the demo depends on it).
+**Closing rules:** a risk closes when its trigger window has passed and its gate is green (e.g. R1/R2/R3 close at G-P1; R7 at G-P3; R9 at G-P4; R21 stays open until Day 17 because the demo depends on it).
 
 ---
 
@@ -378,17 +379,16 @@ Ranking rule: score → impact → on the critical path → earliest trigger day
 
 | Day | Watch | Day | Watch |
 |---|---|---|---|
-| D0 | R17, R18, R25, R19 | D11 | R21, R22, R37, R38 |
-| D1 | R1, R2, R5 | D12 | R27, R28 |
+| D0 | R17, R18, R25, R19, R39 (account/limits check) | D11 | R21, R22, R37, R38 |
+| D1 | R1, R2, R5 | D12 | R27, R28, R39 (cloud dry run) |
 | D2 | R3, R4, R6 | D13 | R26, R21 |
-| D3 | R36, R26 (skeleton) | D14 | R6, R10, R14, R24 |
-| D4 | R15, R16, R12, R19 | D15 | R15, R16, R20 (parallel CV runs) |
-| D5 | R7, R8, R16, R38 | D16 | R6 (one-shot discipline) |
-| D6 | R7 (rollback), R22 | D17 | R29, R32 |
-| D7 | R9 (tests), R35 | D18 | R33, R21, R26 |
-| D8 | R9, R23, R10 | D19 | R31 (only FF6-lite allowed) |
-| D9 | R9, R13, R14 | D20 | R33, R34 |
-| D10 | R24, R10 | **Always** | R30, R31, R32, R20 |
+| D3 | R36, R26 (skeleton) | D14 | R6, R10, R14, R24, R39, R40 (freeze + deploy) |
+| D4 | R15, R16, R12, R19 | D15 | R6 (one-shot discipline), R15, R16, R20 (optional CV) |
+| D5 | R7, R8, R16, R38 | D16 | R29, R32, R33, R21, R26, R40, R41 |
+| D6 | R7 (rollback), R22 | D17 | R33, R34, R41, R42 (zip, mock viva) |
+| D7 | R9 (tests), R35, R22 (G-P5b) | D18 | R41 (upload), R40 |
+| D8 | R9, R23, R10 | D9 | R9, R13, R14 |
+| D10 | R24, R10 | **Always** | R30, R31, R32, R20, R42 |
 
 ---
 
@@ -402,3 +402,21 @@ Ranking rule: score → impact → on the critical path → earliest trigger day
 - Residual risk / re-score: L? × I? = ?
 - Lessons → doc/ledger changes: … (change-log row id)
 ```
+
+## 9. Added risks (2026-11-18: cloud deployment, deliverables, schedule)
+
+**R39 — Streamlit Community Cloud deployment fails or is too slow** (L3 x I5 = **15, critical**)
+- *Description:* rubric row 6 gives 5 marks for deployment and the statement makes it mandatory. Build may fail (dependency size, Python version), memory may be exceeded, or CPU generation may be too slow.
+- *Trigger:* Day 12 dry run fails or exceeds the provisional caps (RSS 1 GB, 60 s); platform limits differ from the assumptions.
+- *Mitigation:* dry run on Day 12 (not Day 14); CPU torch wheel, pinned `requirements.txt`, bundled safetensors + MiniLM fp16 (ledger §3b); time guard with cached showcase fallback (CL6).
+- *Contingency:* cached-only mode (the app still demonstrates the model on pre-generated levels, clearly labelled), smaller fp16 weights, width cap 48; local demo remains primary. Owner: G · Links: ledger §3b, doc 28, G-P8.
+
+**R40 — Cloud app down or sleeping at demo time** (L2 x I3 = 6)
+- *Mitigation:* every member runs the app locally on their laptop (rubric requirement); the cloud URL is re-checked on Days 16, 17, 18 and before presentations; cold start behaviour is rehearsed. Owner: G.
+
+**R41 — Missing deliverable or bad zip at the deadline** (L2 x I5 = 10)
+- *Description:* a missing report/slides/evidence item costs -20 %; a wrong upload costs -2 or more.
+- *Mitigation:* doc 35 checklist, report written section by section on dated days, zip clean-room test on Day 17, upload on Day 18 morning. Owner: all.
+
+**R42 — Members cannot explain or modify the code** (L3 x I4 = 12)
+- *Mitigation:* doc 36 daily walk-through, 15+ drills per member by Day 15, explain-me notes in every module. Owner: all.
