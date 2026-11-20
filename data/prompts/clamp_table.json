@@ -1,0 +1,352 @@
+{
+ "min_support": 20,
+ "supported": {
+  "enemy": [
+   "one",
+   "two",
+   "a few",
+   "several"
+  ],
+  "question block": [
+   "one",
+   "two",
+   "a few",
+   "several",
+   "many"
+  ],
+  "cannon": [
+   "one",
+   "two",
+   "a few"
+  ],
+  "coin": [
+   "one",
+   "two",
+   "a few",
+   "several"
+  ],
+  "coin line": [
+   "one",
+   "two"
+  ],
+  "platform": [
+   "one",
+   "two",
+   "a few",
+   "several"
+  ],
+  "ascending staircase": [
+   "one",
+   "two"
+  ],
+  "descending staircase": [
+   "one"
+  ],
+  "pipe": [
+   "one",
+   "two",
+   "a few"
+  ],
+  "upside down pipe": [
+   "one",
+   "two"
+  ],
+  "tower": [
+   "one",
+   "two"
+  ],
+  "rectangular block cluster": [
+   "one",
+   "two",
+   "a few"
+  ],
+  "irregular block cluster": [
+   "one"
+  ],
+  "loose block": [
+   "one",
+   "two",
+   "a few",
+   "several"
+  ],
+  "floor_gaps": [
+   "one",
+   "two",
+   "a few"
+  ],
+  "floor_chunks": [
+   "one",
+   "two",
+   "a few"
+  ],
+  "ceiling_gaps": [
+   "one"
+  ]
+ },
+ "nearest": {
+  "enemy": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "several",
+   "many": "several"
+  },
+  "question block": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "several",
+   "many": "many"
+  },
+  "cannon": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "a few",
+   "many": "a few"
+  },
+  "coin": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "several",
+   "many": "several"
+  },
+  "coin line": {
+   "one": "one",
+   "two": "two",
+   "a few": "two",
+   "several": "two",
+   "many": "two"
+  },
+  "platform": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "several",
+   "many": "several"
+  },
+  "ascending staircase": {
+   "one": "one",
+   "two": "two",
+   "a few": "two",
+   "several": "two",
+   "many": "two"
+  },
+  "descending staircase": {
+   "one": "one",
+   "two": "one",
+   "a few": "one",
+   "several": "one",
+   "many": "one"
+  },
+  "pipe": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "a few",
+   "many": "a few"
+  },
+  "upside down pipe": {
+   "one": "one",
+   "two": "two",
+   "a few": "two",
+   "several": "two",
+   "many": "two"
+  },
+  "tower": {
+   "one": "one",
+   "two": "two",
+   "a few": "two",
+   "several": "two",
+   "many": "two"
+  },
+  "rectangular block cluster": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "a few",
+   "many": "a few"
+  },
+  "irregular block cluster": {
+   "one": "one",
+   "two": "one",
+   "a few": "one",
+   "several": "one",
+   "many": "one"
+  },
+  "loose block": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "several",
+   "many": "several"
+  },
+  "floor_gaps": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "a few",
+   "many": "a few"
+  },
+  "floor_chunks": {
+   "one": "one",
+   "two": "two",
+   "a few": "a few",
+   "several": "a few",
+   "many": "a few"
+  },
+  "ceiling_gaps": {
+   "one": "one",
+   "two": "one",
+   "a few": "one",
+   "several": "one",
+   "many": "one"
+  }
+ },
+ "bare_plural_default": {
+  "enemy": "two",
+  "question block": "a few",
+  "cannon": "two",
+  "coin": "a few",
+  "coin line": "two",
+  "platform": "two",
+  "ascending staircase": "two",
+  "descending staircase": "two",
+  "pipe": "two",
+  "upside down pipe": "two",
+  "tower": "two",
+  "rectangular block cluster": "two",
+  "irregular block cluster": "two",
+  "loose block": "two",
+  "floor_gaps": "two",
+  "floor_chunks": "two",
+  "ceiling_gaps": "two"
+ },
+ "counts": {
+  "enemy": {
+   "one": 1639,
+   "two": 1115,
+   "a few": 1100,
+   "several": 154,
+   "many": 0
+  },
+  "question block": {
+   "one": 458,
+   "two": 141,
+   "a few": 237,
+   "several": 159,
+   "many": 42
+  },
+  "cannon": {
+   "one": 232,
+   "two": 109,
+   "a few": 60,
+   "several": 8,
+   "many": 0
+  },
+  "coin": {
+   "one": 202,
+   "two": 276,
+   "a few": 595,
+   "several": 297,
+   "many": 16
+  },
+  "coin line": {
+   "one": 884,
+   "two": 188,
+   "a few": 8,
+   "several": 0,
+   "many": 0
+  },
+  "platform": {
+   "one": 1147,
+   "two": 1208,
+   "a few": 863,
+   "several": 82,
+   "many": 0
+  },
+  "ascending staircase": {
+   "one": 579,
+   "two": 41,
+   "a few": 0,
+   "several": 0,
+   "many": 0
+  },
+  "descending staircase": {
+   "one": 59,
+   "two": 1,
+   "a few": 0,
+   "several": 0,
+   "many": 0
+  },
+  "pipe": {
+   "one": 1060,
+   "two": 402,
+   "a few": 196,
+   "several": 3,
+   "many": 0
+  },
+  "upside down pipe": {
+   "one": 149,
+   "two": 22,
+   "a few": 13,
+   "several": 0,
+   "many": 0
+  },
+  "tower": {
+   "one": 619,
+   "two": 93,
+   "a few": 15,
+   "several": 0,
+   "many": 0
+  },
+  "rectangular block cluster": {
+   "one": 420,
+   "two": 99,
+   "a few": 21,
+   "several": 0,
+   "many": 0
+  },
+  "irregular block cluster": {
+   "one": 167,
+   "two": 2,
+   "a few": 0,
+   "several": 0,
+   "many": 0
+  },
+  "loose block": {
+   "one": 1083,
+   "two": 503,
+   "a few": 203,
+   "several": 34,
+   "many": 0
+  },
+  "floor_gaps": {
+   "one": 1162,
+   "two": 404,
+   "a few": 148,
+   "several": 11,
+   "many": 0
+  },
+  "floor_chunks": {
+   "one": 529,
+   "two": 223,
+   "a few": 108,
+   "several": 2,
+   "many": 0
+  },
+  "ceiling_gaps": {
+   "one": 95,
+   "two": 6,
+   "a few": 0,
+   "several": 0,
+   "many": 0
+  }
+ },
+ "implied_coins": {
+  "one": "a few",
+  "two": "several",
+  "a few": "several"
+ }
+}

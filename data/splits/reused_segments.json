@@ -1,0 +1,317 @@
+[
+ {
+  "idx": 590,
+  "split": "dev",
+  "level": 3,
+  "nn_idx": 1221,
+  "nn_level": 7,
+  "distance": 1,
+  "caption": "floor with one gap."
+ },
+ {
+  "idx": 591,
+  "split": "dev",
+  "level": 3,
+  "nn_idx": 1222,
+  "nn_level": 7,
+  "distance": 1,
+  "caption": "floor with one gap."
+ },
+ {
+  "idx": 592,
+  "split": "dev",
+  "level": 3,
+  "nn_idx": 1223,
+  "nn_level": 7,
+  "distance": 2,
+  "caption": "floor with one gap. one enemy."
+ },
+ {
+  "idx": 593,
+  "split": "dev",
+  "level": 3,
+  "nn_idx": 1224,
+  "nn_level": 7,
+  "distance": 2,
+  "caption": "floor with one gap. one enemy."
+ },
+ {
+  "idx": 1938,
+  "split": "dev",
+  "level": 11,
+  "nn_idx": 2686,
+  "nn_level": 16,
+  "distance": 2,
+  "caption": "floor with one gap. one enemy. one cannon."
+ },
+ {
+  "idx": 1939,
+  "split": "dev",
+  "level": 11,
+  "nn_idx": 2687,
+  "nn_level": 16,
+  "distance": 1,
+  "caption": "full floor. one enemy. one cannon."
+ },
+ {
+  "idx": 1940,
+  "split": "dev",
+  "level": 11,
+  "nn_idx": 908,
+  "nn_level": 5,
+  "distance": 2,
+  "caption": "full floor. one enemy. one cannon."
+ },
+ {
+  "idx": 1941,
+  "split": "dev",
+  "level": 11,
+  "nn_idx": 909,
+  "nn_level": 5,
+  "distance": 2,
+  "caption": "full floor. one enemy. one cannon."
+ },
+ {
+  "idx": 1942,
+  "split": "dev",
+  "level": 11,
+  "nn_idx": 910,
+  "nn_level": 5,
+  "distance": 2,
+  "caption": "full floor. one enemy. one cannon."
+ },
+ {
+  "idx": 7372,
+  "split": "dev",
+  "level": 40,
+  "nn_idx": 4619,
+  "nn_level": 25,
+  "distance": 2,
+  "caption": "giant gap with one chunk of floor. one coin. two platforms. two loose blocks."
+ },
+ {
+  "idx": 7373,
+  "split": "dev",
+  "level": 40,
+  "nn_idx": 4620,
+  "nn_level": 25,
+  "distance": 2,
+  "caption": "giant gap with one chunk of floor. two platforms. two loose blocks."
+ },
+ {
+  "idx": 7374,
+  "split": "dev",
+  "level": 40,
+  "nn_idx": 4621,
+  "nn_level": 25,
+  "distance": 2,
+  "caption": "giant gap with one chunk of floor. one platform. one irregular block cluster. one loose block."
+ },
+ {
+  "idx": 7375,
+  "split": "dev",
+  "level": 40,
+  "nn_idx": 4622,
+  "nn_level": 25,
+  "distance": 2,
+  "caption": "giant gap with one chunk of floor. two platforms. two loose blocks."
+ },
+ {
+  "idx": 7376,
+  "split": "dev",
+  "level": 40,
+  "nn_idx": 4623,
+  "nn_level": 25,
+  "distance": 2,
+  "caption": "two platforms."
+ },
+ {
+  "idx": 7425,
+  "split": "dev",
+  "level": 40,
+  "nn_idx": 5448,
+  "nn_level": 30,
+  "distance": 2,
+  "caption": "a few coins. one coin line. one platform. one loose block."
+ },
+ {
+  "idx": 823,
+  "split": "test",
+  "level": 4,
+  "nn_idx": 181,
+  "nn_level": 0,
+  "distance": 2,
+  "caption": "full floor. two enemies. one ascending staircase. one tower."
+ },
+ {
+  "idx": 824,
+  "split": "test",
+  "level": 4,
+  "nn_idx": 182,
+  "nn_level": 0,
+  "distance": 2,
+  "caption": "full floor. two enemies. one ascending staircase. one tower."
+ },
+ {
+  "idx": 825,
+  "split": "test",
+  "level": 4,
+  "nn_idx": 183,
+  "nn_level": 0,
+  "distance": 1,
+  "caption": "full floor. one enemy. one ascending staircase. one tower. one loose block."
+ },
+ {
+  "idx": 826,
+  "split": "test",
+  "level": 4,
+  "nn_idx": 184,
+  "nn_level": 0,
+  "distance": 1,
+  "caption": "full floor. one enemy. one ascending staircase. one tower. one loose block."
+ },
+ {
+  "idx": 827,
+  "split": "test",
+  "level": 4,
+  "nn_idx": 185,
+  "nn_level": 0,
+  "distance": 1,
+  "caption": "full floor. one enemy. one ascending staircase. one tower. one loose block."
+ },
+ {
+  "idx": 828,
+  "split": "test",
+  "level": 4,
+  "nn_idx": 186,
+  "nn_level": 0,
+  "distance": 0,
+  "caption": "full floor. one ascending staircase. one tower. one loose block."
+ },
+ {
+  "idx": 2536,
+  "split": "test",
+  "level": 15,
+  "nn_idx": 2206,
+  "nn_level": 13,
+  "distance": 0,
+  "caption": "floor with one gap."
+ },
+ {
+  "idx": 2537,
+  "split": "test",
+  "level": 15,
+  "nn_idx": 2207,
+  "nn_level": 13,
+  "distance": 1,
+  "caption": "floor with one gap. one loose block."
+ },
+ {
+  "idx": 4292,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 3556,
+  "nn_level": 19,
+  "distance": 2,
+  "caption": "full floor. two enemies. one pipe."
+ },
+ {
+  "idx": 4293,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 3557,
+  "nn_level": 19,
+  "distance": 2,
+  "caption": "full floor. two enemies. one pipe."
+ },
+ {
+  "idx": 4294,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 5624,
+  "nn_level": 31,
+  "distance": 1,
+  "caption": "full floor. two enemies. one pipe."
+ },
+ {
+  "idx": 4295,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 5625,
+  "nn_level": 31,
+  "distance": 1,
+  "caption": "full floor. two enemies. one pipe."
+ },
+ {
+  "idx": 4391,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 3699,
+  "nn_level": 20,
+  "distance": 2,
+  "caption": "full floor. a few enemies. one loose block."
+ },
+ {
+  "idx": 4392,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 3700,
+  "nn_level": 20,
+  "distance": 1,
+  "caption": "full floor. a few enemies."
+ },
+ {
+  "idx": 4393,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 3701,
+  "nn_level": 20,
+  "distance": 2,
+  "caption": "full floor. a few enemies. one loose block."
+ },
+ {
+  "idx": 4531,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 4288,
+  "nn_level": 23,
+  "distance": 1,
+  "caption": "full floor. a few enemies. one ascending staircase. one tower. one loose block."
+ },
+ {
+  "idx": 4532,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 4289,
+  "nn_level": 23,
+  "distance": 1,
+  "caption": "full floor. a few enemies. one ascending staircase. one tower. one loose block."
+ },
+ {
+  "idx": 4533,
+  "split": "test",
+  "level": 24,
+  "nn_idx": 4290,
+  "nn_level": 23,
+  "distance": 2,
+  "caption": "full floor. a few enemies. one ascending staircase. one tower. two loose blocks."
+ },
+ {
+  "idx": 6968,
+  "split": "test",
+  "level": 38,
+  "nn_idx": 5123,
+  "nn_level": 28,
+  "distance": 2,
+  "caption": "full floor. two enemies. one question block."
+ },
+ {
+  "idx": 6969,
+  "split": "test",
+  "level": 38,
+  "nn_idx": 5124,
+  "nn_level": 28,
+  "distance": 2,
+  "caption": "full floor. two enemies. two question blocks. one platform."
+ }
+]

@@ -21,3 +21,16 @@ seed: 20261117
 family_link_threshold: 0.05
 family_link_hamming: 2
 clamp_min_support: 20
+# Level-grouped split constraints (doc 10 §4)
+split:
+  test_smb1: 3
+  test_smb2: 3
+  test_share: 0.14
+  test_share_tol: 0.03
+  dev_share: 0.12
+  dev_share_tol: 0.03
+  min_concept_windows: 10          # C6 (relaxed to 5 only if infeasible, and logged)
+  min_train_levels_per_concept: 2  # C7
+  cv_folds: 5
+  eval_stride: 8                   # D6
+  n_p_rand: 100

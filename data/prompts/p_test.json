@@ -1,0 +1,2057 @@
+[
+ {
+  "pid": "ptest-0000",
+  "set": "P-test",
+  "prompt": "full floor. ceiling with one gap. two enemies. several question blocks. one platform. one tower.",
+  "source": {
+   "idx": 187,
+   "level": "SMB1 1-2",
+   "col_offset": 0
+  },
+  "expected_caption": "full floor. ceiling with one gap. two enemies. several question blocks. one platform. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0001",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. two enemies. several question blocks. one platform. two towers. a few loose blocks.",
+  "source": {
+   "idx": 195,
+   "level": "SMB1 1-2",
+   "col_offset": 8
+  },
+  "expected_caption": "full floor. full ceiling. two enemies. several question blocks. one platform. two towers. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0002",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. one enemy. several towers. a few loose blocks.",
+  "source": {
+   "idx": 203,
+   "level": "SMB1 1-2",
+   "col_offset": 16
+  },
+  "expected_caption": "full floor. full ceiling. one enemy. several towers. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0003",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. one enemy. one rectangular block cluster. a few towers. a few loose blocks.",
+  "source": {
+   "idx": 211,
+   "level": "SMB1 1-2",
+   "col_offset": 24
+  },
+  "expected_caption": "full floor. full ceiling. one enemy. one rectangular block cluster. a few towers. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0004",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. two enemies. several coins. one coin line. one platform. two irregular block clusters. two loose blocks.",
+  "source": {
+   "idx": 219,
+   "level": "SMB1 1-2",
+   "col_offset": 32
+  },
+  "expected_caption": "full floor. full ceiling. two enemies. several coins. one coin line. one platform. two irregular block clusters. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0005",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. a few enemies. several coins. one coin line. one platform. one rectangular block cluster. a few irregular block clusters.",
+  "source": {
+   "idx": 227,
+   "level": "SMB1 1-2",
+   "col_offset": 40
+  },
+  "expected_caption": "full floor. full ceiling. a few enemies. several coins. one coin line. one platform. one rectangular block cluster. a few irregular block clusters.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0006",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. a few enemies. a few coins. one coin line. one platform. one rectangular block cluster. two irregular block clusters.",
+  "source": {
+   "idx": 235,
+   "level": "SMB1 1-2",
+   "col_offset": 48
+  },
+  "expected_caption": "full floor. full ceiling. a few enemies. a few coins. one coin line. one platform. one rectangular block cluster. two irregular block clusters.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0007",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. two enemies. several coins. one coin line. one platform. two irregular block clusters.",
+  "source": {
+   "idx": 243,
+   "level": "SMB1 1-2",
+   "col_offset": 56
+  },
+  "expected_caption": "full floor. full ceiling. two enemies. several coins. one coin line. one platform. two irregular block clusters.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0008",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. a few enemies. one coin. one platform. one irregular block cluster. two rectangular block clusters.",
+  "source": {
+   "idx": 251,
+   "level": "SMB1 1-2",
+   "col_offset": 64
+  },
+  "expected_caption": "full floor. full ceiling. a few enemies. one coin. one platform. one irregular block cluster. two rectangular block clusters.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0009",
+  "set": "P-test",
+  "prompt": "floor with one gap. full ceiling. a few enemies. a few coins. one coin line. one platform. a few rectangular block clusters.",
+  "source": {
+   "idx": 259,
+   "level": "SMB1 1-2",
+   "col_offset": 72
+  },
+  "expected_caption": "floor with one gap. full ceiling. a few enemies. a few coins. one coin line. one platform. a few rectangular block clusters.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0010",
+  "set": "P-test",
+  "prompt": "floor with one gap. full ceiling. several coins. one coin line. one rectangular block cluster.",
+  "source": {
+   "idx": 267,
+   "level": "SMB1 1-2",
+   "col_offset": 80
+  },
+  "expected_caption": "floor with one gap. full ceiling. several coins. one coin line. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0011",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. a few enemies. two coins. one coin line. one pipe. one rectangular block cluster.",
+  "source": {
+   "idx": 275,
+   "level": "SMB1 1-2",
+   "col_offset": 88
+  },
+  "expected_caption": "full floor. full ceiling. a few enemies. two coins. one coin line. one pipe. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0012",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. several enemies. two pipes.",
+  "source": {
+   "idx": 283,
+   "level": "SMB1 1-2",
+   "col_offset": 96
+  },
+  "expected_caption": "full floor. full ceiling. several enemies. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0013",
+  "set": "P-test",
+  "prompt": "full floor. full ceiling. a few enemies. a few pipes.",
+  "source": {
+   "idx": 291,
+   "level": "SMB1 1-2",
+   "col_offset": 104
+  },
+  "expected_caption": "full floor. full ceiling. a few enemies. a few pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0014",
+  "set": "P-test",
+  "prompt": "floor with two gaps. full ceiling. two enemies. one pipe. one tower.",
+  "source": {
+   "idx": 299,
+   "level": "SMB1 1-2",
+   "col_offset": 112
+  },
+  "expected_caption": "floor with two gaps. full ceiling. two enemies. one pipe. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0015",
+  "set": "P-test",
+  "prompt": "floor with two gaps. full ceiling. two enemies. one ascending staircase. one tower.",
+  "source": {
+   "idx": 307,
+   "level": "SMB1 1-2",
+   "col_offset": 120
+  },
+  "expected_caption": "floor with two gaps. full ceiling. two enemies. one ascending staircase. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0016",
+  "set": "P-test",
+  "prompt": "floor with one gap. ceiling with one gap. two enemies. two platforms. one ascending staircase. one tower.",
+  "source": {
+   "idx": 315,
+   "level": "SMB1 1-2",
+   "col_offset": 128
+  },
+  "expected_caption": "floor with one gap. ceiling with one gap. two enemies. two platforms. one ascending staircase. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0017",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. a few platforms. one tower.",
+  "source": {
+   "idx": 323,
+   "level": "SMB1 1-2",
+   "col_offset": 136
+  },
+  "expected_caption": "floor with one gap. one enemy. a few platforms. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0018",
+  "set": "P-test",
+  "prompt": "full floor. one enemy. a few question blocks.",
+  "source": {
+   "idx": 647,
+   "level": "SMB1 3-1",
+   "col_offset": 0
+  },
+  "expected_caption": "full floor. one enemy. a few question blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0019",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. a few question blocks. one platform.",
+  "source": {
+   "idx": 655,
+   "level": "SMB1 3-1",
+   "col_offset": 8
+  },
+  "expected_caption": "full floor. two enemies. a few question blocks. one platform.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0020",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. one platform. two pipes.",
+  "source": {
+   "idx": 663,
+   "level": "SMB1 3-1",
+   "col_offset": 16
+  },
+  "expected_caption": "full floor. a few enemies. one platform. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0021",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. two pipes.",
+  "source": {
+   "idx": 671,
+   "level": "SMB1 3-1",
+   "col_offset": 24
+  },
+  "expected_caption": "floor with one gap. a few enemies. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0022",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. one pipe.",
+  "source": {
+   "idx": 679,
+   "level": "SMB1 3-1",
+   "col_offset": 32
+  },
+  "expected_caption": "floor with one gap. a few enemies. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0023",
+  "set": "P-test",
+  "prompt": "floor with one gap. several enemies. one pipe. one loose block.",
+  "source": {
+   "idx": 687,
+   "level": "SMB1 3-1",
+   "col_offset": 40
+  },
+  "expected_caption": "floor with one gap. several enemies. one pipe. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0024",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. two pipes. one loose block.",
+  "source": {
+   "idx": 695,
+   "level": "SMB1 3-1",
+   "col_offset": 48
+  },
+  "expected_caption": "full floor. a few enemies. two pipes. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0025",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one platform. one ascending staircase. one pipe.",
+  "source": {
+   "idx": 703,
+   "level": "SMB1 3-1",
+   "col_offset": 56
+  },
+  "expected_caption": "floor with one gap. one enemy. one platform. one ascending staircase. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0026",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. a few enemies. one platform. one ascending staircase. one tower. one loose block.",
+  "source": {
+   "idx": 711,
+   "level": "SMB1 3-1",
+   "col_offset": 64
+  },
+  "expected_caption": "giant gap with two chunks of floor. a few enemies. one platform. one ascending staircase. one tower. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0027",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. several enemies. two platforms. two towers. one loose block.",
+  "source": {
+   "idx": 719,
+   "level": "SMB1 3-1",
+   "col_offset": 72
+  },
+  "expected_caption": "giant gap with two chunks of floor. several enemies. two platforms. two towers. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0028",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. one platform. one tower.",
+  "source": {
+   "idx": 727,
+   "level": "SMB1 3-1",
+   "col_offset": 80
+  },
+  "expected_caption": "floor with one gap. a few enemies. one platform. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0029",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one pipe.",
+  "source": {
+   "idx": 735,
+   "level": "SMB1 3-1",
+   "col_offset": 88
+  },
+  "expected_caption": "full floor. two enemies. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0030",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. two question blocks. two platforms. one pipe.",
+  "source": {
+   "idx": 743,
+   "level": "SMB1 3-1",
+   "col_offset": 96
+  },
+  "expected_caption": "full floor. a few enemies. two question blocks. two platforms. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0031",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. two question blocks. two platforms.",
+  "source": {
+   "idx": 751,
+   "level": "SMB1 3-1",
+   "col_offset": 104
+  },
+  "expected_caption": "full floor. two enemies. two question blocks. two platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0032",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few platforms.",
+  "source": {
+   "idx": 759,
+   "level": "SMB1 3-1",
+   "col_offset": 112
+  },
+  "expected_caption": "floor with one gap. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0033",
+  "set": "P-test",
+  "prompt": "floor with two gaps. two platforms. one ascending staircase.",
+  "source": {
+   "idx": 767,
+   "level": "SMB1 3-1",
+   "col_offset": 120
+  },
+  "expected_caption": "floor with two gaps. two platforms. one ascending staircase.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0034",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one ascending staircase. two loose blocks.",
+  "source": {
+   "idx": 775,
+   "level": "SMB1 3-1",
+   "col_offset": 128
+  },
+  "expected_caption": "floor with one gap. one enemy. one ascending staircase. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0035",
+  "set": "P-test",
+  "prompt": "floor with one gap. several enemies. a few question blocks. a few platforms.",
+  "source": {
+   "idx": 783,
+   "level": "SMB1 3-1",
+   "col_offset": 136
+  },
+  "expected_caption": "floor with one gap. several enemies. a few question blocks. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0036",
+  "set": "P-test",
+  "prompt": "full floor. several enemies. a few question blocks. a few platforms. one loose block.",
+  "source": {
+   "idx": 791,
+   "level": "SMB1 3-1",
+   "col_offset": 144
+  },
+  "expected_caption": "full floor. several enemies. a few question blocks. a few platforms. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0037",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. one platform. one tower.",
+  "source": {
+   "idx": 799,
+   "level": "SMB1 3-1",
+   "col_offset": 152
+  },
+  "expected_caption": "full floor. a few enemies. one platform. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0038",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one platform. one tower.",
+  "source": {
+   "idx": 807,
+   "level": "SMB1 3-1",
+   "col_offset": 160
+  },
+  "expected_caption": "floor with one gap. two enemies. one platform. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0039",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one ascending staircase. one tower.",
+  "source": {
+   "idx": 815,
+   "level": "SMB1 3-1",
+   "col_offset": 168
+  },
+  "expected_caption": "floor with one gap. two enemies. one ascending staircase. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0040",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one ascending staircase. one tower.",
+  "source": {
+   "idx": 823,
+   "level": "SMB1 3-1",
+   "col_offset": 176
+  },
+  "expected_caption": "full floor. two enemies. one ascending staircase. one tower.",
+  "flags": {
+   "reused_segment": true,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0041",
+  "set": "P-test",
+  "prompt": "floor with one gap.",
+  "source": {
+   "idx": 2536,
+   "level": "SMB1 6-3",
+   "col_offset": 0
+  },
+  "expected_caption": "floor with one gap.",
+  "flags": {
+   "reused_segment": true,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0042",
+  "set": "P-test",
+  "prompt": "floor with a few gaps. one coin. one platform. one loose block.",
+  "source": {
+   "idx": 2544,
+   "level": "SMB1 6-3",
+   "col_offset": 8
+  },
+  "expected_caption": "floor with a few gaps. one coin. one platform. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0043",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. two coins. one coin line. a few platforms.",
+  "source": {
+   "idx": 2552,
+   "level": "SMB1 6-3",
+   "col_offset": 16
+  },
+  "expected_caption": "giant gap with two chunks of floor. two coins. one coin line. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0044",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. a few coins. one coin line. two platforms. one loose block.",
+  "source": {
+   "idx": 2560,
+   "level": "SMB1 6-3",
+   "col_offset": 24
+  },
+  "expected_caption": "giant gap with two chunks of floor. a few coins. one coin line. two platforms. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0045",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. several coins. one coin line. a few platforms.",
+  "source": {
+   "idx": 2568,
+   "level": "SMB1 6-3",
+   "col_offset": 32
+  },
+  "expected_caption": "giant gap with two chunks of floor. several coins. one coin line. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0046",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. one question block. several coins. one coin line. a few platforms. one loose block.",
+  "source": {
+   "idx": 2576,
+   "level": "SMB1 6-3",
+   "col_offset": 40
+  },
+  "expected_caption": "giant gap with one chunk of floor. one question block. several coins. one coin line. a few platforms. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0047",
+  "set": "P-test",
+  "prompt": "one question block. a few platforms. one loose block.",
+  "source": {
+   "idx": 2584,
+   "level": "SMB1 6-3",
+   "col_offset": 48
+  },
+  "expected_caption": "one question block. a few platforms. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0048",
+  "set": "P-test",
+  "prompt": "two coins. one coin line. a few platforms.",
+  "source": {
+   "idx": 2592,
+   "level": "SMB1 6-3",
+   "col_offset": 56
+  },
+  "expected_caption": "two coins. one coin line. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0049",
+  "set": "P-test",
+  "prompt": "two coins. one coin line. several platforms.",
+  "source": {
+   "idx": 2600,
+   "level": "SMB1 6-3",
+   "col_offset": 64
+  },
+  "expected_caption": "two coins. one coin line. several platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0050",
+  "set": "P-test",
+  "prompt": "a few coins. one coin line. several platforms.",
+  "source": {
+   "idx": 2608,
+   "level": "SMB1 6-3",
+   "col_offset": 72
+  },
+  "expected_caption": "a few coins. one coin line. several platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0051",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. a few coins. one coin line. a few platforms.",
+  "source": {
+   "idx": 2616,
+   "level": "SMB1 6-3",
+   "col_offset": 80
+  },
+  "expected_caption": "giant gap with two chunks of floor. a few coins. one coin line. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0052",
+  "set": "P-test",
+  "prompt": "floor with a few gaps. a few coins. one coin line. one platform. one loose block.",
+  "source": {
+   "idx": 2624,
+   "level": "SMB1 6-3",
+   "col_offset": 88
+  },
+  "expected_caption": "floor with a few gaps. a few coins. one coin line. one platform. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0053",
+  "set": "P-test",
+  "prompt": "giant gap with a few chunks of floor. a few coins. one coin line. one platform.",
+  "source": {
+   "idx": 2632,
+   "level": "SMB1 6-3",
+   "col_offset": 96
+  },
+  "expected_caption": "giant gap with a few chunks of floor. a few coins. one coin line. one platform.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0054",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. two platforms.",
+  "source": {
+   "idx": 2640,
+   "level": "SMB1 6-3",
+   "col_offset": 104
+  },
+  "expected_caption": "giant gap with two chunks of floor. two platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0055",
+  "set": "P-test",
+  "prompt": "giant gap with a few chunks of floor. two coins. one coin line. a few platforms. one loose block.",
+  "source": {
+   "idx": 2648,
+   "level": "SMB1 6-3",
+   "col_offset": 112
+  },
+  "expected_caption": "giant gap with a few chunks of floor. two coins. one coin line. a few platforms. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0056",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. two coins. one coin line. a few platforms.",
+  "source": {
+   "idx": 2656,
+   "level": "SMB1 6-3",
+   "col_offset": 120
+  },
+  "expected_caption": "giant gap with two chunks of floor. two coins. one coin line. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0057",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. two coins. one coin line. a few platforms.",
+  "source": {
+   "idx": 2664,
+   "level": "SMB1 6-3",
+   "col_offset": 128
+  },
+  "expected_caption": "giant gap with one chunk of floor. two coins. one coin line. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0058",
+  "set": "P-test",
+  "prompt": "a few coins. two coin lines. a few platforms. one loose block.",
+  "source": {
+   "idx": 2672,
+   "level": "SMB1 6-3",
+   "col_offset": 136
+  },
+  "expected_caption": "a few coins. two coin lines. a few platforms. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0059",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. two coins. one coin line. two platforms.",
+  "source": {
+   "idx": 2680,
+   "level": "SMB1 6-3",
+   "col_offset": 144
+  },
+  "expected_caption": "giant gap with one chunk of floor. two coins. one coin line. two platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0060",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one pipe.",
+  "source": {
+   "idx": 4292,
+   "level": "SMB2 2-2",
+   "col_offset": 0
+  },
+  "expected_caption": "full floor. two enemies. one pipe.",
+  "flags": {
+   "reused_segment": true,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0061",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. two pipes.",
+  "source": {
+   "idx": 4300,
+   "level": "SMB2 2-2",
+   "col_offset": 8
+  },
+  "expected_caption": "full floor. a few enemies. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0062",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. two pipes.",
+  "source": {
+   "idx": 4308,
+   "level": "SMB2 2-2",
+   "col_offset": 16
+  },
+  "expected_caption": "full floor. a few enemies. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0063",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. a few coins. one coin line. one pipe.",
+  "source": {
+   "idx": 4316,
+   "level": "SMB2 2-2",
+   "col_offset": 24
+  },
+  "expected_caption": "full floor. a few enemies. a few coins. one coin line. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0064",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. a few coins. one coin line. one descending staircase.",
+  "source": {
+   "idx": 4324,
+   "level": "SMB2 2-2",
+   "col_offset": 32
+  },
+  "expected_caption": "floor with one gap. a few enemies. a few coins. one coin line. one descending staircase.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0065",
+  "set": "P-test",
+  "prompt": "floor with two gaps. one enemy. one descending staircase. one pipe.",
+  "source": {
+   "idx": 4332,
+   "level": "SMB2 2-2",
+   "col_offset": 40
+  },
+  "expected_caption": "floor with two gaps. one enemy. one descending staircase. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0066",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. a few coins. one coin line. one pipe.",
+  "source": {
+   "idx": 4340,
+   "level": "SMB2 2-2",
+   "col_offset": 48
+  },
+  "expected_caption": "floor with one gap. a few enemies. a few coins. one coin line. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0067",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. a few coins. one coin line.",
+  "source": {
+   "idx": 4348,
+   "level": "SMB2 2-2",
+   "col_offset": 56
+  },
+  "expected_caption": "full floor. a few enemies. a few coins. one coin line.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0068",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one loose block.",
+  "source": {
+   "idx": 4356,
+   "level": "SMB2 2-2",
+   "col_offset": 64
+  },
+  "expected_caption": "floor with one gap. two enemies. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0069",
+  "set": "P-test",
+  "prompt": "floor with two gaps. one enemy. one descending staircase. one tower. one loose block.",
+  "source": {
+   "idx": 4364,
+   "level": "SMB2 2-2",
+   "col_offset": 72
+  },
+  "expected_caption": "floor with two gaps. one enemy. one descending staircase. one tower. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0070",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. one enemy. a few coins. one coin line. one descending staircase. one pipe. one tower.",
+  "source": {
+   "idx": 4372,
+   "level": "SMB2 2-2",
+   "col_offset": 80
+  },
+  "expected_caption": "giant gap with two chunks of floor. one enemy. a few coins. one coin line. one descending staircase. one pipe. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0071",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. two enemies. several coins. one coin line. one pipe. two loose blocks.",
+  "source": {
+   "idx": 4380,
+   "level": "SMB2 2-2",
+   "col_offset": 88
+  },
+  "expected_caption": "giant gap with two chunks of floor. two enemies. several coins. one coin line. one pipe. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0072",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. two coins. one coin line. two loose blocks.",
+  "source": {
+   "idx": 4388,
+   "level": "SMB2 2-2",
+   "col_offset": 96
+  },
+  "expected_caption": "floor with one gap. a few enemies. two coins. one coin line. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0073",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one loose block.",
+  "source": {
+   "idx": 4396,
+   "level": "SMB2 2-2",
+   "col_offset": 104
+  },
+  "expected_caption": "floor with one gap. two enemies. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0074",
+  "set": "P-test",
+  "prompt": "floor with two gaps. a few loose blocks.",
+  "source": {
+   "idx": 4404,
+   "level": "SMB2 2-2",
+   "col_offset": 112
+  },
+  "expected_caption": "floor with two gaps. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0075",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. a few loose blocks.",
+  "source": {
+   "idx": 4412,
+   "level": "SMB2 2-2",
+   "col_offset": 120
+  },
+  "expected_caption": "floor with one gap. a few enemies. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0076",
+  "set": "P-test",
+  "prompt": "full floor. several enemies. a few coins. one coin line.",
+  "source": {
+   "idx": 4420,
+   "level": "SMB2 2-2",
+   "col_offset": 128
+  },
+  "expected_caption": "full floor. several enemies. a few coins. one coin line.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0077",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. several coins. two coin lines.",
+  "source": {
+   "idx": 4428,
+   "level": "SMB2 2-2",
+   "col_offset": 136
+  },
+  "expected_caption": "full floor. two enemies. several coins. two coin lines.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0078",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. a few coins. one coin line.",
+  "source": {
+   "idx": 4436,
+   "level": "SMB2 2-2",
+   "col_offset": 144
+  },
+  "expected_caption": "full floor. a few enemies. a few coins. one coin line.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0079",
+  "set": "P-test",
+  "prompt": "full floor. several enemies. one pipe.",
+  "source": {
+   "idx": 4444,
+   "level": "SMB2 2-2",
+   "col_offset": 152
+  },
+  "expected_caption": "full floor. several enemies. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0080",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one question block. two pipes. a few loose blocks.",
+  "source": {
+   "idx": 4452,
+   "level": "SMB2 2-2",
+   "col_offset": 160
+  },
+  "expected_caption": "floor with one gap. two enemies. one question block. two pipes. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0081",
+  "set": "P-test",
+  "prompt": "floor with two gaps. one enemy. one question block. one pipe. several loose blocks.",
+  "source": {
+   "idx": 4460,
+   "level": "SMB2 2-2",
+   "col_offset": 168
+  },
+  "expected_caption": "floor with two gaps. one enemy. one question block. one pipe. several loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0082",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. two enemies. one pipe. a few loose blocks.",
+  "source": {
+   "idx": 4468,
+   "level": "SMB2 2-2",
+   "col_offset": 176
+  },
+  "expected_caption": "giant gap with one chunk of floor. two enemies. one pipe. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0083",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. a few enemies. one pipe. a few loose blocks.",
+  "source": {
+   "idx": 4476,
+   "level": "SMB2 2-2",
+   "col_offset": 184
+  },
+  "expected_caption": "giant gap with one chunk of floor. a few enemies. one pipe. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0084",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. two coins. one coin line. one tower. two loose blocks.",
+  "source": {
+   "idx": 4484,
+   "level": "SMB2 2-2",
+   "col_offset": 192
+  },
+  "expected_caption": "floor with one gap. two enemies. two coins. one coin line. one tower. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0085",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. two coins. one coin line. one pipe. one tower.",
+  "source": {
+   "idx": 4492,
+   "level": "SMB2 2-2",
+   "col_offset": 200
+  },
+  "expected_caption": "floor with one gap. one enemy. two coins. one coin line. one pipe. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0086",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one pipe.",
+  "source": {
+   "idx": 4500,
+   "level": "SMB2 2-2",
+   "col_offset": 208
+  },
+  "expected_caption": "floor with one gap. two enemies. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0087",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. one loose block.",
+  "source": {
+   "idx": 4508,
+   "level": "SMB2 2-2",
+   "col_offset": 216
+  },
+  "expected_caption": "floor with one gap. a few enemies. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0088",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. a few enemies. one platform. one loose block.",
+  "source": {
+   "idx": 4516,
+   "level": "SMB2 2-2",
+   "col_offset": 224
+  },
+  "expected_caption": "giant gap with two chunks of floor. a few enemies. one platform. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0089",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. one platform. one ascending staircase. one loose block.",
+  "source": {
+   "idx": 4524,
+   "level": "SMB2 2-2",
+   "col_offset": 232
+  },
+  "expected_caption": "floor with one gap. a few enemies. one platform. one ascending staircase. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0090",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. one ascending staircase. one tower. one loose block.",
+  "source": {
+   "idx": 4532,
+   "level": "SMB2 2-2",
+   "col_offset": 240
+  },
+  "expected_caption": "full floor. a few enemies. one ascending staircase. one tower. one loose block.",
+  "flags": {
+   "reused_segment": true,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0091",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one question block.",
+  "source": {
+   "idx": 6968,
+   "level": "SMB2 B-1",
+   "col_offset": 0
+  },
+  "expected_caption": "full floor. two enemies. one question block.",
+  "flags": {
+   "reused_segment": true,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0092",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. several question blocks. one platform. one loose block.",
+  "source": {
+   "idx": 6976,
+   "level": "SMB2 B-1",
+   "col_offset": 8
+  },
+  "expected_caption": "floor with one gap. a few enemies. several question blocks. one platform. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0093",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. several question blocks. one platform. two pipes. one loose block.",
+  "source": {
+   "idx": 6984,
+   "level": "SMB2 B-1",
+   "col_offset": 16
+  },
+  "expected_caption": "floor with one gap. a few enemies. several question blocks. one platform. two pipes. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0094",
+  "set": "P-test",
+  "prompt": "floor with a few gaps. two enemies. one question block. two pipes. one loose block.",
+  "source": {
+   "idx": 6992,
+   "level": "SMB2 B-1",
+   "col_offset": 24
+  },
+  "expected_caption": "floor with a few gaps. two enemies. one question block. two pipes. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0095",
+  "set": "P-test",
+  "prompt": "floor with a few gaps. one platform. one loose block.",
+  "source": {
+   "idx": 7000,
+   "level": "SMB2 B-1",
+   "col_offset": 32
+  },
+  "expected_caption": "floor with a few gaps. one platform. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0096",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one platform. one pipe. one loose block.",
+  "source": {
+   "idx": 7008,
+   "level": "SMB2 B-1",
+   "col_offset": 40
+  },
+  "expected_caption": "floor with one gap. one enemy. one platform. one pipe. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0097",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. a few question blocks. one pipe.",
+  "source": {
+   "idx": 7016,
+   "level": "SMB2 B-1",
+   "col_offset": 48
+  },
+  "expected_caption": "floor with one gap. two enemies. a few question blocks. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0098",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. a few question blocks. one platform.",
+  "source": {
+   "idx": 7024,
+   "level": "SMB2 B-1",
+   "col_offset": 56
+  },
+  "expected_caption": "floor with one gap. two enemies. a few question blocks. one platform.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0099",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one platform. two loose blocks.",
+  "source": {
+   "idx": 7032,
+   "level": "SMB2 B-1",
+   "col_offset": 64
+  },
+  "expected_caption": "floor with one gap. one enemy. one platform. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0100",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. a few platforms. one pipe. one loose block.",
+  "source": {
+   "idx": 7040,
+   "level": "SMB2 B-1",
+   "col_offset": 72
+  },
+  "expected_caption": "floor with one gap. two enemies. a few platforms. one pipe. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0101",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. two question blocks. a few platforms. two pipes.",
+  "source": {
+   "idx": 7048,
+   "level": "SMB2 B-1",
+   "col_offset": 80
+  },
+  "expected_caption": "full floor. a few enemies. two question blocks. a few platforms. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0102",
+  "set": "P-test",
+  "prompt": "floor with two gaps. a few enemies. several question blocks. two platforms. one pipe. one rectangular block cluster. one loose block.",
+  "source": {
+   "idx": 7056,
+   "level": "SMB2 B-1",
+   "col_offset": 88
+  },
+  "expected_caption": "floor with two gaps. a few enemies. several question blocks. two platforms. one pipe. one rectangular block cluster. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0103",
+  "set": "P-test",
+  "prompt": "floor with two gaps. a few enemies. a few question blocks. one platform. one pipe. two loose blocks.",
+  "source": {
+   "idx": 7064,
+   "level": "SMB2 B-1",
+   "col_offset": 96
+  },
+  "expected_caption": "floor with two gaps. a few enemies. a few question blocks. one platform. one pipe. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0104",
+  "set": "P-test",
+  "prompt": "floor with two gaps. a few enemies. one question block. two platforms.",
+  "source": {
+   "idx": 7072,
+   "level": "SMB2 B-1",
+   "col_offset": 104
+  },
+  "expected_caption": "floor with two gaps. a few enemies. one question block. two platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0105",
+  "set": "P-test",
+  "prompt": "giant gap with a few chunks of floor. one enemy. a few question blocks. a few platforms.",
+  "source": {
+   "idx": 7080,
+   "level": "SMB2 B-1",
+   "col_offset": 112
+  },
+  "expected_caption": "giant gap with a few chunks of floor. one enemy. a few question blocks. a few platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0106",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. one enemy. a few question blocks. two platforms. one pipe.",
+  "source": {
+   "idx": 7088,
+   "level": "SMB2 B-1",
+   "col_offset": 120
+  },
+  "expected_caption": "giant gap with two chunks of floor. one enemy. a few question blocks. two platforms. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0107",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. a few question blocks. two platforms. one pipe. one tower.",
+  "source": {
+   "idx": 7096,
+   "level": "SMB2 B-1",
+   "col_offset": 128
+  },
+  "expected_caption": "floor with one gap. a few enemies. a few question blocks. two platforms. one pipe. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0108",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. several question blocks. two platforms. two towers.",
+  "source": {
+   "idx": 7104,
+   "level": "SMB2 B-1",
+   "col_offset": 136
+  },
+  "expected_caption": "full floor. a few enemies. several question blocks. two platforms. two towers.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0109",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. a few question blocks. a few platforms. one tower.",
+  "source": {
+   "idx": 7112,
+   "level": "SMB2 B-1",
+   "col_offset": 144
+  },
+  "expected_caption": "full floor. a few enemies. a few question blocks. a few platforms. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0110",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. one platform. one pipe.",
+  "source": {
+   "idx": 7120,
+   "level": "SMB2 B-1",
+   "col_offset": 152
+  },
+  "expected_caption": "floor with one gap. a few enemies. one platform. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0111",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. one platform. two pipes.",
+  "source": {
+   "idx": 7128,
+   "level": "SMB2 B-1",
+   "col_offset": 160
+  },
+  "expected_caption": "floor with one gap. a few enemies. one platform. two pipes.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0112",
+  "set": "P-test",
+  "prompt": "giant gap with a few chunks of floor. two enemies. one pipe. two towers.",
+  "source": {
+   "idx": 7136,
+   "level": "SMB2 B-1",
+   "col_offset": 168
+  },
+  "expected_caption": "giant gap with a few chunks of floor. two enemies. one pipe. two towers.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0113",
+  "set": "P-test",
+  "prompt": "floor with two gaps. one enemy. two towers. one loose block.",
+  "source": {
+   "idx": 7144,
+   "level": "SMB2 B-1",
+   "col_offset": 176
+  },
+  "expected_caption": "floor with two gaps. one enemy. two towers. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0114",
+  "set": "P-test",
+  "prompt": "full floor. two platforms.",
+  "source": {
+   "idx": 7509,
+   "level": "SMB2 D-1",
+   "col_offset": 0
+  },
+  "expected_caption": "full floor. two platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0115",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. two platforms.",
+  "source": {
+   "idx": 7517,
+   "level": "SMB2 D-1",
+   "col_offset": 8
+  },
+  "expected_caption": "floor with one gap. two enemies. two platforms.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0116",
+  "set": "P-test",
+  "prompt": "giant gap with two chunks of floor. a few enemies. two platforms. one irregular block cluster. one rectangular block cluster. one loose block.",
+  "source": {
+   "idx": 7525,
+   "level": "SMB2 D-1",
+   "col_offset": 16
+  },
+  "expected_caption": "giant gap with two chunks of floor. a few enemies. two platforms. one irregular block cluster. one rectangular block cluster. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0117",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one cannon. one ascending staircase. one irregular block cluster. a few loose blocks.",
+  "source": {
+   "idx": 7533,
+   "level": "SMB2 D-1",
+   "col_offset": 24
+  },
+  "expected_caption": "floor with one gap. one enemy. one cannon. one ascending staircase. one irregular block cluster. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0118",
+  "set": "P-test",
+  "prompt": "full floor. two cannons. one ascending staircase. one tower. two loose blocks.",
+  "source": {
+   "idx": 7541,
+   "level": "SMB2 D-1",
+   "col_offset": 32
+  },
+  "expected_caption": "full floor. two cannons. one ascending staircase. one tower. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0119",
+  "set": "P-test",
+  "prompt": "full floor. one enemy. one cannon. two loose blocks.",
+  "source": {
+   "idx": 7549,
+   "level": "SMB2 D-1",
+   "col_offset": 40
+  },
+  "expected_caption": "full floor. one enemy. one cannon. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0120",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. a few question blocks. one cannon. one platform. one loose block.",
+  "source": {
+   "idx": 7557,
+   "level": "SMB2 D-1",
+   "col_offset": 48
+  },
+  "expected_caption": "floor with one gap. one enemy. a few question blocks. one cannon. one platform. one loose block.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0121",
+  "set": "P-test",
+  "prompt": "floor with one gap. a few enemies. many question blocks. one cannon. a few platforms. one pipe.",
+  "source": {
+   "idx": 7565,
+   "level": "SMB2 D-1",
+   "col_offset": 56
+  },
+  "expected_caption": "floor with one gap. a few enemies. many question blocks. one cannon. a few platforms. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0122",
+  "set": "P-test",
+  "prompt": "full floor. a few enemies. several question blocks. two platforms. one pipe.",
+  "source": {
+   "idx": 7573,
+   "level": "SMB2 D-1",
+   "col_offset": 64
+  },
+  "expected_caption": "full floor. a few enemies. several question blocks. two platforms. one pipe.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0123",
+  "set": "P-test",
+  "prompt": "full floor. one enemy. one question block. one platform. one upside down pipe. one rectangular block cluster.",
+  "source": {
+   "idx": 7581,
+   "level": "SMB2 D-1",
+   "col_offset": 72
+  },
+  "expected_caption": "full floor. one enemy. one question block. one platform. one upside down pipe. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0124",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one platform. one upside down pipe. one rectangular block cluster.",
+  "source": {
+   "idx": 7589,
+   "level": "SMB2 D-1",
+   "col_offset": 80
+  },
+  "expected_caption": "full floor. two enemies. one platform. one upside down pipe. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0125",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one platform. one pipe. two loose blocks.",
+  "source": {
+   "idx": 7597,
+   "level": "SMB2 D-1",
+   "col_offset": 88
+  },
+  "expected_caption": "full floor. two enemies. one platform. one pipe. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0126",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. two pipes. two loose blocks.",
+  "source": {
+   "idx": 7605,
+   "level": "SMB2 D-1",
+   "col_offset": 96
+  },
+  "expected_caption": "full floor. two enemies. two pipes. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0127",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one pipe. a few loose blocks.",
+  "source": {
+   "idx": 7613,
+   "level": "SMB2 D-1",
+   "col_offset": 104
+  },
+  "expected_caption": "floor with one gap. one enemy. one pipe. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0128",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. two enemies. one pipe. several loose blocks.",
+  "source": {
+   "idx": 7621,
+   "level": "SMB2 D-1",
+   "col_offset": 112
+  },
+  "expected_caption": "giant gap with one chunk of floor. two enemies. one pipe. several loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0129",
+  "set": "P-test",
+  "prompt": "giant gap with one chunk of floor. two enemies. one cannon. one ascending staircase. one pipe. one tower. two loose blocks.",
+  "source": {
+   "idx": 7629,
+   "level": "SMB2 D-1",
+   "col_offset": 120
+  },
+  "expected_caption": "giant gap with one chunk of floor. two enemies. one cannon. one ascending staircase. one pipe. one tower. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0130",
+  "set": "P-test",
+  "prompt": "floor with one gap. one enemy. one cannon. two platforms. one ascending staircase. one rectangular block cluster.",
+  "source": {
+   "idx": 7637,
+   "level": "SMB2 D-1",
+   "col_offset": 128
+  },
+  "expected_caption": "floor with one gap. one enemy. one cannon. two platforms. one ascending staircase. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0131",
+  "set": "P-test",
+  "prompt": "full floor. two enemies. one cannon. two platforms. one tower.",
+  "source": {
+   "idx": 7645,
+   "level": "SMB2 D-1",
+   "col_offset": 136
+  },
+  "expected_caption": "full floor. two enemies. one cannon. two platforms. one tower.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0132",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. one cannon. one platform. one upside down pipe. one rectangular block cluster.",
+  "source": {
+   "idx": 7653,
+   "level": "SMB2 D-1",
+   "col_offset": 144
+  },
+  "expected_caption": "floor with one gap. two enemies. one cannon. one platform. one upside down pipe. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0133",
+  "set": "P-test",
+  "prompt": "floor with one gap. two enemies. two platforms. two upside down pipes. a few loose blocks.",
+  "source": {
+   "idx": 7661,
+   "level": "SMB2 D-1",
+   "col_offset": 152
+  },
+  "expected_caption": "floor with one gap. two enemies. two platforms. two upside down pipes. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0134",
+  "set": "P-test",
+  "prompt": "floor with two gaps. one enemy. one platform. one upside down pipe. one rectangular block cluster.",
+  "source": {
+   "idx": 7669,
+   "level": "SMB2 D-1",
+   "col_offset": 160
+  },
+  "expected_caption": "floor with two gaps. one enemy. one platform. one upside down pipe. one rectangular block cluster.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0135",
+  "set": "P-test",
+  "prompt": "floor with two gaps. one enemy. one pipe. a few loose blocks.",
+  "source": {
+   "idx": 7677,
+   "level": "SMB2 D-1",
+   "col_offset": 168
+  },
+  "expected_caption": "floor with two gaps. one enemy. one pipe. a few loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ },
+ {
+  "pid": "ptest-0136",
+  "set": "P-test",
+  "prompt": "full floor. one enemy. one pipe. two loose blocks.",
+  "source": {
+   "idx": 7685,
+   "level": "SMB2 D-1",
+   "col_offset": 176
+  },
+  "expected_caption": "full floor. one enemy. one pipe. two loose blocks.",
+  "flags": {
+   "reused_segment": false,
+   "oov_phrases": []
+  }
+ }
+]
