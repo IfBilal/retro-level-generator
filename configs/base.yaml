@@ -1,0 +1,88 @@
+# Every default lives here (doc 17 §2). Overlays override only what they change; machine YAMLs may only touch
+# {num_workers, cudnn_benchmark, compile, log_every}.  No magic numbers in src/.
+name: base
+seed: 20261117
+data:
+  window: [16, 16]
+  tile_classes: 13
+  split_path: data/splits/split_v1.json
+  scenes_path: data/processed/scenes_u8.npy
+  index_path: data/processed/index.parquet
+  max_len: 48                 # text tokens (M7, provisional until measure_tokens.py)
+aug:
+  phrase_dropout_p: 0.10
+  paraphrase_caption_p: 0.30
+  paraphrase_phrase_p: 0.50
+  keep_canonical_quantity_p: 0.25
+  shuffle: true
+  null_p: 0.10
+diffusion:
+  T: 1000
+  schedule: linear            # linear | cosine (winner chosen on Day 5; tie -> cosine)
+  prediction: eps
+model:
+  in_channels: 13
+  base_channels: 64
+  channel_mult: [1, 2, 4]
+  num_res_blocks_down: 2
+  groups: 8
+  dropout: 0.1
+  attn_levels: [1, 2]
+  self_attention: true
+  cross_attention: true
+  heads: 4
+  context_dim: 128
+  zero_init: true
+  pooled_text_to_time: false
+  null_ctx_tokens: 1
+text:
+  enabled: true               # false = unconditional (learned null context)
+  encoder: sentence-transformers/all-MiniLM-L6-v2
+  encoder_dir: models/minilm  # local snapshot (git-ignored); loaded with local_files_only
+  adapter_hidden: 128
+  cache_max_mb: 512
+loss:
+  type: mse                   # mse | channel_weighted
+  aux_ce_lambda: 0.0          # X1: 0.001
+  aux_ce_tau: 1.0
+  aux_ce_weighting: alpha_bar
+optim:
+  name: AdamW
+  lr: 2.0e-4
+  betas: [0.9, 0.999]
+  weight_decay: 0.01
+  warmup_steps: 1000
+  lr_final: 1.0e-5
+  grad_clip: 1.0
+train:
+  batch_size: 64
+  precision: bf16
+  max_steps: 15000
+  vram_cap_gib: 4.5
+  uncond: true                # Phase 3: every caption is the null caption
+  max_nonfinite_skips: 5
+ema:
+  decay: 0.999
+eval:
+  every_steps: 2000
+  patience: 5
+  train_w: 5.0
+  seeds: 3
+checkpoint:
+  every_steps: 2000
+  keep_last: 2
+  milestone_every_steps: 0
+sample:
+  ddim_steps: 50
+  eta: 0.0
+  clip_x0: true
+  w_grid: [1, 2, 3, 5, 7.5, 10]
+generate:
+  stride: 8
+  resample_r: 2
+  resample_fraction: 0.6
+# performance-only knobs: the ONLY keys a machine YAML may override (H4)
+num_workers: 0
+cudnn_benchmark: false
+compile: false
+log_every: 50

@@ -1,0 +1,5 @@
+# Desktop RTX 3060 Ti 8 GB (Ampere sm_86). Performance knobs only (H4).
+num_workers: 0
+cudnn_benchmark: true
+compile: false
+log_every: 50

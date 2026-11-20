@@ -1,0 +1,3 @@
+name: cond_smoke
+text: {enabled: true}
+train: {uncond: false, max_steps: 3000}

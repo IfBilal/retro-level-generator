@@ -1,0 +1,4 @@
+name: uncond_cosine
+diffusion: {schedule: cosine}
+text: {enabled: false}
+train: {uncond: true, max_steps: 15000}

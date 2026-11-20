@@ -1,0 +1,5 @@
+# CPU-only development machine (no GPU): used for tests and smoke checks, never for reported training.
+num_workers: 0
+cudnn_benchmark: false
+compile: false
+log_every: 10

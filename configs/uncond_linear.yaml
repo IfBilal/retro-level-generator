@@ -1,0 +1,4 @@
+name: uncond_linear
+diffusion: {schedule: linear}
+text: {enabled: false}
+train: {uncond: true, max_steps: 15000}

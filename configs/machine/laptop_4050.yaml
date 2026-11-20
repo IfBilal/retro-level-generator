@@ -1,0 +1,5 @@
+# Laptop RTX 4050 6 GB (Ada sm_89). Performance knobs only (H4).
+num_workers: 0
+cudnn_benchmark: true
+compile: false
+log_every: 50

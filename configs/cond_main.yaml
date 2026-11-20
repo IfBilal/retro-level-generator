@@ -1,0 +1,4 @@
+name: cond_main
+text: {enabled: true}
+train: {uncond: false, max_steps: 60000}
+checkpoint: {milestone_every_steps: 10000}

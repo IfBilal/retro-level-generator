@@ -1,0 +1,4 @@
+name: x01_aux_ce
+text: {enabled: true}
+train: {uncond: false, max_steps: 40000}
+loss: {aux_ce_lambda: 0.001}
