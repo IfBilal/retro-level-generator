@@ -153,3 +153,14 @@ def test_overfit_one_batch_sanity(tmp_path, data):
         tr.opt.step()
         last = loss.item()
     assert last < 0.01
+
+
+def test_milestone_checkpoints_survive_pruning(tmp_path, data):
+    """Phase 3 keeps the 5k/10k/15k checkpoints for the G-P3 evaluation: milestones are never pruned."""
+    tr = make(tmp_path, data, extra=["checkpoint.milestone_every_steps=2", "checkpoint.keep_last=2"])
+    for _ in range(6):
+        tr.train_step()
+        if tr.step % 2 == 0:
+            tr.save()
+    names = sorted(p.name for p in (tmp_path / "run").glob("step_*.pt"))
+    assert names == ["step_0000002.pt", "step_0000004.pt", "step_0000006.pt"]     # all three are milestones

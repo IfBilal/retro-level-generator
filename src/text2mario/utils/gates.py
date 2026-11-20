@@ -31,11 +31,14 @@ def gate_dir(phase: str) -> Path:
     return d
 
 
-def write_result(phase: str, passed: bool, metrics: dict, checks: list[dict] | None = None) -> Path:
-    out = gate_dir(phase) / "RESULT.json"
+def write_result(phase: str, passed: bool, metrics: dict, checks: list[dict] | None = None, *, out_dir: Path | None = None,
+                 **extra) -> Path:
+    """RESULT.json (doc 24 §0.2).  `extra` carries diagnostics / warnings / artifacts / inputs."""
+    out = (Path(out_dir) if out_dir else gate_dir(phase)) / "RESULT.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"phase": phase, "pass": bool(passed), "metrics": metrics, "checks": checks or [],
-                               "timestamp": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "git_sha": git_sha()},
-                              indent=2, default=str) + "\n")
+                               "timestamp": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "git_sha": git_sha(),
+                               **extra}, indent=2, default=str) + "\n")
     return out
 
 

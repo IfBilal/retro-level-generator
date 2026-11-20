@@ -2,3 +2,4 @@ name: uncond_cosine
 diffusion: {schedule: cosine}
 text: {enabled: false}
 train: {uncond: true, max_steps: 15000}
+checkpoint: {milestone_every_steps: 5000}   # keep 5k/10k/15k for the G-P3 evaluation

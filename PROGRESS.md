@@ -22,7 +22,7 @@ uv pip install -r requirements-dev.txt
 python scripts/fetch_data.py && python scripts/build_index.py && python scripts/fetch_models.py
 python scripts/audit_dataset.py && python scripts/gate_p1.py && python scripts/gate_p2.py     # all must PASS
 python scripts/verify_env.py        # must be green, including "VRAM cap: a 5 GiB allocation must fail" (needs the GPU)
-pytest -q -m "not slow"             # 139 tests should pass
+pytest -q -m "not slow"             # ~148 tests should pass
 ```
 If torch has no wheel for your driver, tell the group: both machines must use the same torch minor version (ledger V2).
 Copy the output of `verify_env.py` and `nvidia-smi` into your report (machine name, GPU, VRAM, driver).
@@ -66,6 +66,17 @@ What healthy looks like:
 - A dev loss that keeps falling while the training loss falls is fine. Dev loss rising while training loss falls = overfitting
   (doc 19); report it, do not fix it yourself.
 
+### Step 4b: the G-P3 gate (once BOTH runs have finished; it is also written, so you can run it yourself)
+```bash
+python scripts/gate_p3.py --runs runs/U-lin runs/U-cos      # samples 256 EMA levels per milestone checkpoint (5k/10k/15k); minutes on a GPU
+```
+It writes `reports/gates/P3/RESULT.json` plus sample sheets (`sample_sheet_*.png`) and "nearest training window" figures. Look at the
+sample sheets: floors at the bottom, upright pipes, not noise and not all sky. Pass = floor-valid >= 0.85, broken-structure rate <= 0.05,
+tile-JS <= 0.05, copy rate <= 0.154 for at least one schedule; the winner is chosen by S_noplay (tie -> cosine). **A FAIL is not
+your fault and not a reason to retrain on your own:** send the RESULT.json and the sheets; the group then follows
+`docs/docs/25_ROLLBACK_DIAGNOSTIC_MATRIX.md` (rows R-3.x). Do not commit `reports/gates/P3` unless the group asks.
+Checkpoints at 5k/10k/15k are kept automatically (milestones are never pruned), the last two step checkpoints too.
+
 ### Step 5: report back (send to the group chat / drive; runs/ is git-ignored on purpose)
 Per run: `metrics.csv`, `events.jsonl`, `hw_report.json`, all `*.val.json`, the **last checkpoint `step_0015000.pt`** (+ its
 `.sha256`) and `ema.safetensors`; plus the numbers from Step 2, wall-clock time, and anything odd. Add a short dated entry to
@@ -77,10 +88,10 @@ this file under "Handover log" below and push only that (and nothing else) to Gi
 | | | | |
 
 ### What is NOT done (so nobody waits on it)
-The sampling evaluation (256 EMA samples scored with the structure metrics), `gate_p3.py` and the schedule decision (tie goes to
-cosine) are written by the original developer **while your runs go**; the metrics they use already exist in `eval/structure.py`.
-After your 15k-step checkpoints arrive, the group picks the winning schedule and starts Phase 4 (text conditioning). Not built
-yet at all: asset fetch, game, playability checker, prompt normalizer, Streamlit app, report.
+The sampling evaluation (`eval/generate.py`), `gate_p3.py` (checks P3.01-P3.04, S_noplay, schedule choice, tie -> cosine) and
+`configs/gates.yaml` are now written and tested on tiny throwaway runs (they correctly FAIL an untrained model); they have never
+run on a real checkpoint. After your 15k-step checkpoints arrive, the group picks the winning schedule and starts Phase 4 (text conditioning). Not built
+yet at all: playable-term checker validation, asset fetch, game, playability checker, prompt normalizer, Streamlit app, report.
 
 ---
 
@@ -101,7 +112,7 @@ yet at all: asset fetch, game, playability checker, prompt normalizer, Streamlit
 - **Day 4 (code only):** U-Net (18,312,013 params; oracle parity), EMA, optimiser groups + LR schedule, atomic checkpoints,
   deterministic validation, trainer + entry point (refuses to start unless gates P1/P2 passed and LOCK verifies), text
   conditioner (frozen MiniLM + adapter), CFG sampler with RePaint hook, structure/novelty/JS metrics.
-- Tests: `pytest -q -m "not slow"` -> 139 pass; slow: overfit-one-batch sanity (tiny U-Net, 8 windows, loss < 0.01 in 1,500
+- Tests: `pytest -q -m "not slow"` -> 148 pass (after the G-P3 additions); slow: overfit-one-batch sanity (tiny U-Net, 8 windows, loss < 0.01 in 1,500
   steps) passes.
 
 ### In-flight runs
@@ -117,6 +128,9 @@ Asset fetch (Phaser, Kenney), game skeleton, playability checker (needed for G-P
 paraphrase-invariant test T-A4 waits for it), C-score/adherence, composite score, bootstrap statistics, dev-eval loop inside
 the trainer, early stopping, `gate_p3.py`, full-level generator, Streamlit app, report. Floor validity, broken rate, novelty,
 copy rate, diversity and tile-JS exist (`eval/structure.py`).
+
+### Done since the handover (2026-11-20)
+- `eval/generate.py` (EMA load + per-sample-seeded sampling), `scripts/gate_p3.py`, `configs/gates.yaml`; milestone checkpoints (5k/10k/15k) in the Phase 3 overlays and never pruned; `write_result` takes extras; sampler accepts `x_init`. Plumbing tested on throwaway 4-step runs only.
 
 ### Next
 See the HANDOVER section at the top: the friend runs Phase 3; the original developer writes the sampling evaluation and `gate_p3.py` meanwhile.

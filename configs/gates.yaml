@@ -1,0 +1,10 @@
+# Gate thresholds. Each value mirrors a ledger §9 row; gate scripts never hard-code them (doc 24 §0.1).
+P3:
+  floor_valid_min: 0.85          # ledger §9 G-P3 (real dev windows: 1.00)
+  broken_rate_max: 0.05          # ledger §9 G-P3 (real data: 0)
+  tile_js_max: 0.05              # ledger §9 G-P3
+  tile_js_warn: 0.025
+  copy_margin: 0.05              # copy_rate <= copy_rate_ref + margin (ledger §9, amended 2026-11-20 -> 0.154)
+  n_samples: 256                 # P-uncond (doc 22 §2.3)
+  tie_delta: 0.01                # |S_P3 difference| below this -> cosine wins (M2)
+  seed_base: 5000000             # SET_BASE[P-uncond] (doc 22 §2.3)

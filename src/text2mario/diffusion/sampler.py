@@ -21,10 +21,11 @@ from text2mario.diffusion.guidance import guided_eps
 def ddim_sample(model, schedule, shape, *, ctx_c=None, mask_c=None, ctx_u=None, mask_u=None, w: float = 1.0,
                 steps: int = 50, eta: float = 0.0, generator: torch.Generator | None = None, clip: bool = True,
                 known: tuple[torch.Tensor, torch.Tensor] | None = None, resample_r: int = 0,
-                resample_fraction: float = 0.6, autocast_dtype: torch.dtype | None = None, device="cpu"):
+                resample_fraction: float = 0.6, autocast_dtype: torch.dtype | None = None, device="cpu",
+                x_init: torch.Tensor | None = None):
     """shape = (B, 13, H, W).  Noise is drawn on CPU from `generator` (portable) and moved to `device`."""
     B = shape[0]
-    x = torch.randn(shape, generator=generator).to(device)
+    x = (x_init.clone() if x_init is not None else torch.randn(shape, generator=generator)).to(device)
     ts = schedule.ddim_timesteps(steps).to(device)
     clipped, n_obs = 0.0, 0
     if known is not None:

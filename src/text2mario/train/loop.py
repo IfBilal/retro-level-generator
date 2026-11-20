@@ -148,6 +148,9 @@ class Trainer:
 
     def save(self, name: str | None = None) -> Path:
         p = ckpt.save(self.state(), self.run_dir / (name or f"step_{self.step:07d}.pt"))
+        every = self.cfg["checkpoint"]["milestone_every_steps"]
+        if every and self.step % every == 0:                       # milestones are never pruned (doc 16 §6)
+            p.with_suffix(".milestone").write_text("")
         ckpt.prune(self.run_dir, self.cfg["checkpoint"]["keep_last"])
         self.event("checkpoint", path=p.name)
         return p
