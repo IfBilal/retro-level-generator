@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-20T07:05:46Z",
+  "created_by": "scripts/fetch_data.py",
+  "sources": {
+    "MarioDiffusion": {
+      "url": "https://github.com/schrum2/MarioDiffusion.git",
+      "commit": "561c76d4634027fa89ff8c1cfb58a24e8c089197",
+      "license": "MIT",
+      "files": {
+        "datasets/Mar1and2_LevelsAndCaptions-regular.json": {
+          "copied_to": "data/source/Mar1and2_LevelsAndCaptions-regular.json",
+          "bytes": 42028678,
+          "sha256_bytes": "9d3eb4dbd82a90f3c74cfe869239b9cd18e8cc93670a053fcba999236d5e2a25",
+          "sha256_content": "6a15264a4beb67247a0488dba0439f257f7a94955c0df60b709b7e85024ade2c"
+        },
+        "datasets/smb.json": {
+          "copied_to": "data/source/smb.json",
+          "bytes": 658,
+          "sha256_bytes": "c1a23d7af82c7cdf0364cd1a1d6fcb4ada14092b0f383ffc7edc0e7f10987dcf",
+          "sha256_content": "833ba2141418b29852951030f24967df90cd2c318d194b8d8b31b665e00da823"
+        },
+        "datasets/SMB1_Levels.json": {
+          "copied_to": "data/source/SMB1_Levels.json",
+          "bytes": 9036365,
+          "sha256_bytes": "18ee2e2e4677ba22c030d7759302c04bcf2592e31e9d9db21cac509429df77d5",
+          "sha256_content": "40b4cfe52fa3f181e28b43a964fee578bec38f2eec2c19f1b02d2de252a65526"
+        },
+        "datasets/SMB2_Levels.json": {
+          "copied_to": "data/source/SMB2_Levels.json",
+          "bytes": 10227675,
+          "sha256_bytes": "318c0b264d1c5b994c23e28fe4fafa30ac5f6e93ed194755d7600c98259d88d6",
+          "sha256_content": "4280849a01af81e7a210315c49e71bdc3641bc0956b316f95fa0fc0c71159f5e"
+        },
+        "datasets/Mar1and2_RandomTest-regular.json": {
+          "copied_to": "data/source/Mar1and2_RandomTest-regular.json",
+          "bytes": 14231,
+          "sha256_bytes": "06ebc0ba420b6a018310d8c6b985abb0477850dc7bfdaafae77b98ee34df87b4",
+          "sha256_content": "488d2c22f6444ccd8f22a05488362205eb5ad1df8bf3b56898bbe3d17da0acfa"
+        }
+      }
+    },
+    "TheVGLC": {
+      "url": "https://github.com/schrum2/TheVGLC.git",
+      "commit": "e91316a0b53955e981e179c5ec4f8d989d02b2bb",
+      "license": "MIT",
+      "files": {
+        "SMB1/mario-1-1.txt": {
+          "sha256_bytes": "698a31ab86050b749426b37174852e127878ac6a0d463639a01ec5aa53a6161b"
+        },
+        "SMB1/mario-1-2.txt": {
+          "sha256_bytes": "617377beceaf7506de80a9a75e218ccaeb140db93f1b5e2ff505dd96d6d7b4c1"
+        },
+        "SMB1/mario-1-3.txt": {
+          "sha256_bytes": "a9b24bf6d67decd965c282a4c4be2c4f158a1295533777194353ae3f47a62396"
+        },
+        "SMB1/mario-2-1.txt": {
+          "sha256_bytes": "6d45e74e4b8143c06d3849379ebbd27f4f1202f13d8b4c83470b6072a525c86b"
+        },
+        "SMB1/mario-3-1.txt": {
+          "sha256_bytes": "400cd004ae7623b3d5c78b69146e855869ef2e2c22784a59256fc2ef56c33711"
+        },
+        "SMB1/mario-3-2.txt": {
+          "sha256_bytes": "23942b93c5de885b72dfd7d4b6f7d6d59c913609d84a91bc5352202ee2993f79"
+        },
+        "SMB1/mario-3-3.txt": {
+          "sha256_bytes": "10cc58f422e65d701eaee51a87162e97e48d1be71e358b996fc139d72f1159dc"
+        },
+        "SMB1/mario-4-1.txt": {
+          "sha256_bytes": "518cb01df5ba9614d8b3c651a1ac59e83abf67fa031a3e43132217e1ff455a1a"
+        },
+        "SMB1/mario-4-2.txt": {
+          "sha256_bytes": "5d4a84f2bfb70713190e1ccb8700cabab78400e1cc3a1302711cf56817ae67d3"
+        },
+        "SMB1/mario-4-3.txt": {
+          "sha256_bytes": "dc6e51324d2747c2b13ca3ae47f624149d0a3d48734fb4f4751c6ab2f598d9a8"
+        },
+        "SMB1/mario-5-1.txt": {
+          "sha256_bytes": "afb71309f635a2be5bae233efaed7ad33e1f1bf232fc9de55cfceb7b4ab98890"
+        },
+        "SMB1/mario-5-2.txt": {
+          "sha256_bytes": "24e597bcf3e57a635374f41494c3a44672c3884411e55a9ecf0a52c6cf74da9d"
+        },
+        "SMB1/mario-5-3.txt": {
+          "sha256_bytes": "a55f07757006378511f2d9661455e5a93597f6f1b19f7802accb479f2b7e14b4"
+        },
+        "SMB1/mario-6-1.txt": {
+          "sha256_bytes": "4d859237b08756a8b591fd56e755d4407ea66c07ed20487dc5e4efc167f094f4"
+        },
+        "SMB1/mario-6-2.txt": {
+          "sha256_bytes": "9d740e95e128b28d9d0d2af76a3719dd7d6e330d63f413c9bf5ea402ef8e9a76"
+        },
+        "SMB1/mario-6-3.txt": {
+          "sha256_bytes": "5c0b09f29861b6627b1f480c43e28ccb383be04f872ea00bf697c42198ec68ae"
+        },
+        "SMB1/mario-7-1.txt": {
+          "sha256_bytes": "719f7b514c27ed406eebf17d7643e0442f16a3e151e146fb8f892920dd7113b0"
+        },
+        "SMB1/mario-8-1.txt": {
+          "sha256_bytes": "316aeb6872acf473d36d5a957ef6f3336eca28643fd5fc63008c4ee76bb27b45"
+        },
+        "SMB1/mario-8-2.txt": {
+          "sha256_bytes": "0f92e2daada85cf37fa06ab19ba83ee2b4d0a1957716319d9d409c1fc482fd70"
+        },
+        "SMB1/mario-8-3.txt": {
+          "sha256_bytes": "9d81c7e61f8374eb5abff31d763280967738a337ec85e7147ff12ab116f56bc2"
+        },
+        "SMB2/SuperMarioBros2(J)-World1-1.txt": {
+          "sha256_bytes": "2f7a049e9d5cdbbd76cc594892e4f493d56a3273c4741f3261ef82011cbf3a5c"
+        },
+        "SMB2/SuperMarioBros2(J)-World1-2.txt": {
+          "sha256_bytes": "57829587a894ade53d24c73a84d52d41fd8a3d54f24f82275eeb81f038d423d6"
+        },
+        "SMB2/SuperMarioBros2(J)-World1-3.txt": {
+          "sha256_bytes": "0324bb8448de650493bfa7ae8f92b3a6c448741d946e45c1f503243e6a529db0"
+        },
+        "SMB2/SuperMarioBros2(J)-World2-1.txt": {
+          "sha256_bytes": "9d5ec7690ce458a216e420d5b5548b59def87acc4dc3e10cc6c3d27e1f79eb04"
+        },
+        "SMB2/SuperMarioBros2(J)-World2-2.txt": {
+          "sha256_bytes": "15182b3064afa4c9a4218dd32475584116e37e91e7ce9eb4c328bfaf5c4a8837"
+        },
+        "SMB2/SuperMarioBros2(J)-World2-3.txt": {
+          "sha256_bytes": "6ad576fe13d98ca4a53e45ebe07b9dee8d77df50553e97c82b04dc03745aceb4"
+        },
+        "SMB2/SuperMarioBros2(J)-World3-1.txt": {
+          "sha256_bytes": "b95a6a21eecffe09f21f77386de60bde788b23aa1397bc329559b46fb54e8019"
+        },
+        "SMB2/SuperMarioBros2(J)-World3-3.txt": {
+          "sha256_bytes": "6d3c66720268faf178c306f71e71203f4aeedb5595ef96b40446b123885d82d2"
+        },
+        "SMB2/SuperMarioBros2(J)-World4-1.txt": {
+          "sha256_bytes": "fb7dd4d4512ac4e1c0411db783fe55091553a84fef52a3c51ee2e9a83ddc8aec"
+        },
+        "SMB2/SuperMarioBros2(J)-World4-2.txt": {
+          "sha256_bytes": "9d1fe33cef8151751dbad493194d08bffc9f6caafc3787d0ad1a2530474645e6"
+        },
+        "SMB2/SuperMarioBros2(J)-World4-3.txt": {
+          "sha256_bytes": "99b1774291f3424178f161d2cd9c3ff14e8ad7f38c220742da63271aa3a8b8a8"
+        },
+        "SMB2/SuperMarioBros2(J)-World5-1.txt": {
+          "sha256_bytes": "b5d7051dc329345f8e50dbd44721562f7287974e63eb800a68200ffef869ee8c"
+        },
+        "SMB2/SuperMarioBros2(J)-World5-2.txt": {
+          "sha256_bytes": "c48693d6bcea402ab2d7a43aa74d63eebd48032b6c2489a700b20603276240f3"
+        },
+        "SMB2/SuperMarioBros2(J)-World6-1.txt": {
+          "sha256_bytes": "b2957289d0d6e04f2896abc160fe198a501ac40c0478fb8f3a77afff12853d38"
+        },
+        "SMB2/SuperMarioBros2(J)-World6-3.txt": {
+          "sha256_bytes": "667e79ccabab6cd6c765a46a1d81c2c0204b87ce4e06121cbb15637c2e71f59b"
+        },
+        "SMB2/SuperMarioBros2(J)-World8-1.txt": {
+          "sha256_bytes": "f87b08681737c4c9d5c6ecf33096d8d3cacb38d9a45cbcd366732252ac511129"
+        },
+        "SMB2/SuperMarioBros2(J)-WorldA-1.txt": {
+          "sha256_bytes": "19689ce3038965c549f0bf66db8a11ff5d743f8c997c63b7ac1cee8fdc6aded4"
+        },
+        "SMB2/SuperMarioBros2(J)-WorldA-3.txt": {
+          "sha256_bytes": "a4be8b6fb03e9fc7b764caa066fee6bab1a9515413bda6509a927ada8e9a02a5"
+        },
+        "SMB2/SuperMarioBros2(J)-WorldB-1.txt": {
+          "sha256_bytes": "a71b5ea9f38390565d4ed22371171c94d0870764297f01396f3477a9121d0aea"
+        },
+        "SMB2/SuperMarioBros2(J)-WorldB-3.txt": {
+          "sha256_bytes": "f77764490f78877f28cfdc5cb3f073926876acb101a7779608a5c7514aaba9f6"
+        },
+        "SMB2/SuperMarioBros2(J)-WorldC-2.txt": {
+          "sha256_bytes": "4c2bfa8d63bc780ca36972415b671eea403f3595b7cfd6392336629aaa9871c6"
+        },
+        "SMB2/SuperMarioBros2(J)-WorldD-1.txt": {
+          "sha256_bytes": "b5a463f089769fa61727c7d6b1cc9c8c7983e14a996e5aa68a7f7605661aa7d3"
+        }
+      }
+    }
+  },
+  "audit": {
+    "passed": null
+  },
+  "level_names_available": true
+}

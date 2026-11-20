@@ -1,0 +1,23 @@
+# Data pins and expected hashes (ledger D1, doc 08 §3). Every number the data code needs lives here.
+mariodiffusion_url: https://github.com/schrum2/MarioDiffusion.git
+mariodiffusion_commit: 561c76d4634027fa89ff8c1cfb58a24e8c089197
+vglc_url: https://github.com/schrum2/TheVGLC.git
+vglc_commit: e91316a0b53955e981e179c5ec4f8d989d02b2bb
+files:
+  datasets/Mar1and2_LevelsAndCaptions-regular.json:
+    sha256_bytes: 9d3eb4dbd82a90f3c74cfe869239b9cd18e8cc93670a053fcba999236d5e2a25
+    sha256_content: 6a15264a4beb67247a0488dba0439f257f7a94955c0df60b709b7e85024ade2c
+  datasets/smb.json:
+    sha256_bytes: c1a23d7af82c7cdf0364cd1a1d6fcb4ada14092b0f383ffc7edc0e7f10987dcf
+    sha256_content: 833ba2141418b29852951030f24967df90cd2c318d194b8d8b31b665e00da823
+  datasets/SMB1_Levels.json:
+    sha256_bytes: 18ee2e2e4677ba22c030d7759302c04bcf2592e31e9d9db21cac509429df77d5
+  datasets/SMB2_Levels.json:
+    sha256_bytes: 318c0b264d1c5b994c23e28fe4fafa30ac5f6e93ed194755d7600c98259d88d6
+  datasets/Mar1and2_RandomTest-regular.json:
+    sha256_bytes: 06ebc0ba420b6a018310d8c6b985abb0477850dc7bfdaafae77b98ee34df87b4
+# Split algorithm (doc 10)
+seed: 20261117
+family_link_threshold: 0.05
+family_link_hamming: 2
+clamp_min_support: 20

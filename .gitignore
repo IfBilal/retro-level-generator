@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+data/raw/
+data/source/
+data/processed/
+runs/
+*.ckpt
+*.pt
+.env
+.cache/
+.claude/settings.local.json
