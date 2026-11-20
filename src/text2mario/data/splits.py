@@ -90,7 +90,7 @@ def select_test(stats: dict, eligible: dict[str, list[int]], n_total: int, cfg: 
     c_all, t_all = conc.sum(0) / conc.sum(), tile.sum(0) / tile.sum()
     c1 = list(itertools.combinations(eligible["SMB1"], cfg["test_smb1"]))
     c2 = list(itertools.combinations(eligible["SMB2"], cfg["test_smb2"]))
-    s1 = lambda arr, cs: np.stack([arr[list(c)].sum(0) for c in cs])  # noqa: E731
+    s1 = lambda arr, cs: np.stack([arr[list(c)].sum(0) for c in cs])
     conc_s = s1(conc, c1)[:, None, :] + s1(conc, c2)[None, :, :]
     tile_s = s1(tile, c1)[:, None, :] + s1(tile, c2)[None, :, :]
     win_s = s1(win[:, None], c1)[:, None, 0] + s1(win[:, None], c2)[None, :, 0]
@@ -107,7 +107,6 @@ def select_dev(stats: dict, eligible_left: dict[str, list[int]], test: list[int]
     """Stage 2: dev = 5 levels (2+3 or 3+2 by game) from the remaining eligible levels."""
     conc, tile, win, has = stats["concept"], stats["tile"], stats["windows"], stats["concept"] > 0
     c_all, t_all = conc.sum(0) / conc.sum(), tile.sum(0) / tile.sum()
-    n_levels = len(win)
     levels_with = has.sum(0)                       # number of levels containing each concept
     test_has = has[test].sum(0)
     combos, J, feas = [], [], []
@@ -142,12 +141,14 @@ def make_cv_folds(levels_df, families: list[list[int]], test: list[int], k: int 
     units.sort(key=lambda u: (-sum(win[l] for l in u), min(u)))
     total = {g: sum(1 for l in pop if game[l] == g) for g in ("SMB1", "SMB2")}
     folds: list[list[int]] = [[] for _ in range(k)]
+    def cost(f, u):
+        """Windows in fold f after adding unit u, plus a penalty for an SMB1/SMB2 mix far from the global mix."""
+        wins = sum(win[l] for l in folds[f]) + sum(win[l] for l in u)
+        pen = sum(abs(sum(1 for l in folds[f] + u if game[l] == g) - total[g] / k) for g in total)
+        return wins + 50 * pen
+
     for u in units:
-        def cost(f):
-            wins = sum(win[l] for l in folds[f]) + sum(win[l] for l in u)
-            pen = sum(abs(sum(1 for l in folds[f] + u if game[l] == g) - total[g] / k) for g in total)
-            return wins + 50 * pen
-        best = min(range(k), key=lambda f: (cost(f), f))
+        best = min(range(k), key=lambda f: (cost(f, u), f))
         folds[best].extend(u)
     return [sorted(f) for f in folds]
 

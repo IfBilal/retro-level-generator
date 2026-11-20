@@ -17,7 +17,7 @@ import stat
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -89,7 +89,7 @@ def main() -> None:
         print("would copy", list(cfg["files"]))
         return
 
-    manifest = {"schema_version": 1, "created_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    manifest = {"schema_version": 1, "created_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "created_by": "scripts/fetch_data.py", "sources": {}, "audit": {"passed": None}}
 
     # --- S-1: MarioDiffusion ---

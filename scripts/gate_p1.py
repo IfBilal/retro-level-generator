@@ -16,11 +16,11 @@ import torch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.data import splits  # noqa: E402
-from text2mario.data import tiles as T  # noqa: E402
-from text2mario.data.dataset import MarioWindows  # noqa: E402
-from text2mario.render.renderer import grid_to_image, grid_to_tensor, sheet, tensor_to_grid  # noqa: E402
-from text2mario.utils.gates import gate_dir, write_result  # noqa: E402
+from text2mario.data import splits
+from text2mario.data import tiles as T
+from text2mario.data.dataset import MarioWindows
+from text2mario.render.renderer import grid_to_image, grid_to_tensor, sheet, tensor_to_grid
+from text2mario.utils.gates import gate_dir, write_result
 
 checks = []
 

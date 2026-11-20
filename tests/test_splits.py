@@ -6,8 +6,8 @@ import sys
 import numpy as np
 import pandas as pd
 import pytest
-
 from conftest import ROOT, needs_data
+
 from text2mario.captions.grammar import CONCEPTS
 from text2mario.data import provenance, splits
 

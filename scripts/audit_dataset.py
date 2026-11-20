@@ -21,11 +21,11 @@ import torch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.captions.detector import detect  # noqa: E402
-from text2mario.captions.grammar import caption_set  # noqa: E402
-from text2mario.data import provenance  # noqa: E402
-from text2mario.data import tiles as T  # noqa: E402
-from text2mario.data.index import N_SMB1_WINDOWS, level_grid, level_ids  # noqa: E402
+from text2mario.captions.detector import detect
+from text2mario.captions.grammar import caption_set
+from text2mario.data import provenance
+from text2mario.data import tiles as T
+from text2mario.data.index import N_SMB1_WINDOWS, level_grid, level_ids
 
 SRC = ROOT / "data" / "source"
 RESULTS: list[dict] = []
@@ -137,7 +137,6 @@ def main() -> None:
     all_phr = Counter(p for c in caps for p in caption_set(c))
     vocab = {w for c in caps for w in c.replace(".", " ").split()}
     check("F14c", "distinct phrases / vocabulary", (62, 44), (len(all_phr), len(vocab)))
-    qw = Counter(p.split()[0] if not p.startswith("a few") else "a few" for p in all_phr)
     many_topics = sorted({p for p in all_phr if p.startswith("many ")})
     check("F15", "'many' only for coins and question blocks", ["many coins", "many question blocks"], many_topics)
     check("A10", "every caption with 'coin line' has a coin phrase", True,

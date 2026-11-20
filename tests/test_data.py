@@ -5,14 +5,19 @@ from collections import Counter
 import numpy as np
 import pytest
 import torch
-
 from conftest import ROOT, needs_data
-from text2mario.captions.grammar import caption_set
+
 from text2mario.data import lexicon as lexicon_mod
 from text2mario.data import tiles as T
-from text2mario.data.augment import AugConfig, augment_caption, paraphrase_phrase, split_phrases
+from text2mario.data.augment import AugConfig, augment_caption, paraphrase_phrase
 from text2mario.data.sampler import WindowSampler, mix
-from text2mario.render.renderer import (grid_to_csv, grid_to_tensor, grid_to_vglc_text, parse_vglc, tensor_to_grid)
+from text2mario.render.renderer import (
+    grid_to_csv,
+    grid_to_tensor,
+    grid_to_vglc_text,
+    parse_vglc,
+    tensor_to_grid,
+)
 
 
 @needs_data
@@ -41,8 +46,8 @@ def test_text_exports_round_trip():
 
 @needs_data
 def test_td4_td5_dataset_orientation_and_split():
-    from text2mario.data.dataset import MarioWindows
     from text2mario.data import splits
+    from text2mario.data.dataset import MarioWindows
     d = MarioWindows("train")
     assert len(d) == splits.load()["window_counts"]["train"]
     assert sorted(set(d.level_id.tolist())) == splits.load()["splits"]["train"]

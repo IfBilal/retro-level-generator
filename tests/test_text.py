@@ -1,18 +1,17 @@
 """Text-conditioning tests (doc 15 §10, T1-T11)."""
-import numpy as np
 import pandas as pd
 import pytest
 import torch
-
 from conftest import ROOT, needs_data
-from text2mario.data.augment import AugConfig, augment_caption
+
 from text2mario.data import lexicon
+from text2mario.data.augment import AugConfig, augment_caption
 
 pytest.importorskip("transformers")
 if not (ROOT / "models/minilm/model.safetensors").exists():
     pytest.skip("run scripts/fetch_models.py first", allow_module_level=True)
 
-from text2mario.text.conditioner import PROBE, TextConditioner  # noqa: E402
+from text2mario.text.conditioner import TextConditioner
 
 
 @pytest.fixture(scope="module")

@@ -12,9 +12,9 @@ Explain-me:
 from __future__ import annotations
 
 import torch
-import torch.nn as nn
+from torch import nn
 
-from text2mario.models.blocks import Block, Downsample, ResBlock, TimeMLP, Upsample, Attention
+from text2mario.models.blocks import Attention, Block, Downsample, ResBlock, TimeMLP, Upsample
 
 
 class Level(nn.Module):

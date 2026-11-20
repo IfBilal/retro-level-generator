@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -34,7 +34,7 @@ def gate_dir(phase: str) -> Path:
 def write_result(phase: str, passed: bool, metrics: dict, checks: list[dict] | None = None) -> Path:
     out = gate_dir(phase) / "RESULT.json"
     out.write_text(json.dumps({"phase": phase, "pass": bool(passed), "metrics": metrics, "checks": checks or [],
-                               "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "git_sha": git_sha()},
+                               "timestamp": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"), "git_sha": git_sha()},
                               indent=2, default=str) + "\n")
     return out
 

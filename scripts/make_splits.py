@@ -22,10 +22,10 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.captions.grammar import BUCKETS, CONCEPTS, caption_set, parse_phrase  # noqa: E402
-from text2mario.data import provenance, splits  # noqa: E402
-from text2mario.data.hamming import nn_distance, nn_distance_by_level  # noqa: E402
-from text2mario.data.index import level_grid  # noqa: E402
+from text2mario.captions.grammar import BUCKETS, CONCEPTS, caption_set, parse_phrase
+from text2mario.data import provenance, splits
+from text2mario.data.hamming import nn_distance, nn_distance_by_level
+from text2mario.data.index import level_grid
 
 PROC = ROOT / "data" / "processed"
 COLS = {c: "c_" + c.replace(" ", "_") for c in CONCEPTS}

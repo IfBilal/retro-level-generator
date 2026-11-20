@@ -1,0 +1,20 @@
+{
+  "n_dev_windows_stride8": 115,
+  "n_train_windows": 5709,
+  "floor_valid_real_dev": 1.0,
+  "floorless_share_real_dev": 0.14585635359116023,
+  "broken_structures_in_real_train_dev": 0,
+  "pipe_components_in_real_train_dev": 3292,
+  "novelty_ref_median_stride8": 13.0,
+  "novelty_mean": 17.747826086956522,
+  "novelty_p10": 4.4,
+  "novelty_p90": 29.60000000000001,
+  "novelty_ref_median_all_stride1": 13.0,
+  "copy_rate_ref": 0.10434782608695652,
+  "copy_rate_strict_ref": 0.017391304347826087,
+  "exact_copy_rate_ref": 0.0,
+  "tile_js_real_dev_vs_train": 0.004865303044144984,
+  "tile_js_all_sky": 0.06448205422174089,
+  "tile_js_uniform_noise": 0.6221388805046602,
+  "G-P3_copy_rate_threshold": 0.1543
+}

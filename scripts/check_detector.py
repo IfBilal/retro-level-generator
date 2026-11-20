@@ -14,9 +14,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.captions.detector import caption  # noqa: E402
-from text2mario.captions.grammar import caption_set  # noqa: E402
-from text2mario.data import provenance  # noqa: E402
+from text2mario.captions.detector import caption
+from text2mario.captions.grammar import caption_set
+from text2mario.data import provenance
 
 
 def main():

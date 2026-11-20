@@ -13,7 +13,7 @@ import argparse
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import torch
@@ -23,15 +23,15 @@ from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
 
-from text2mario.data import provenance, splits  # noqa: E402
-from text2mario.train.loop import Trainer  # noqa: E402
-from text2mario.utils.config import ROOT, config_hash, load_config  # noqa: E402
-from text2mario.utils.gates import git_sha, require  # noqa: E402
-from text2mario.utils.hw import apply_vram_cap, detect_machine, hw_report  # noqa: E402
+from text2mario.data import provenance, splits
+from text2mario.train.loop import Trainer
+from text2mario.utils.config import ROOT, config_hash, load_config
+from text2mario.utils.gates import git_sha, require
+from text2mario.utils.hw import apply_vram_cap, detect_machine, hw_report
 
 
 def make_run_dir(cfg: dict, machine: str) -> Path:
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    stamp = datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
     run = ROOT / "runs" / f"{cfg['name']}_{stamp}"
     run.mkdir(parents=True, exist_ok=True)
     (run / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=True))

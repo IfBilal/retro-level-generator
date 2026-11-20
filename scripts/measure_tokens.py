@@ -16,9 +16,9 @@ from transformers import AutoTokenizer
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.data import lexicon  # noqa: E402
-from text2mario.data.augment import AugConfig, augment_caption  # noqa: E402
-from text2mario.utils.config import load_config  # noqa: E402
+from text2mario.data import lexicon
+from text2mario.data.augment import AugConfig, augment_caption
+from text2mario.utils.config import load_config
 
 
 def stats(tok, texts):

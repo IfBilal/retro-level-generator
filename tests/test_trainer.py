@@ -3,9 +3,8 @@ import json
 
 import pytest
 import torch
-
 from conftest import needs_data
-from text2mario.train import checkpoint as ckpt
+
 from text2mario.train.loop import Trainer
 from text2mario.utils.config import load_config
 

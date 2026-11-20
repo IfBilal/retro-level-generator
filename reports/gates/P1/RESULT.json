@@ -40,7 +40,7 @@
     {
       "name": "pytest: splits, detector, data tests",
       "pass": true,
-      "detail": "55 passed in 11.31s"
+      "detail": "55 passed in 11.33s"
     },
     {
       "name": "orientation: floor at the bottom, sky at the top",
@@ -73,6 +73,6 @@
       "detail": ""
     }
   ],
-  "timestamp": "2026-11-20T07:15:02Z",
-  "git_sha": "dedac513a1ee63d7df9f80ab684fcaec49969105"
+  "timestamp": "2026-11-20T07:29:45Z",
+  "git_sha": "abdc345f85986649643f43ee7c9a06cd77d8a400"
 }

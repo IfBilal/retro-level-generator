@@ -19,10 +19,10 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.captions.grammar import CONCEPTS, caption_set, parse_phrase  # noqa: E402
-from text2mario.data import provenance  # noqa: E402
-from text2mario.data import tiles as T  # noqa: E402
-from text2mario.data.index import N_SMB1_WINDOWS, level_grid, level_ids  # noqa: E402
+from text2mario.captions.grammar import CONCEPTS, caption_set, parse_phrase
+from text2mario.data import provenance
+from text2mario.data import tiles as T
+from text2mario.data.index import N_SMB1_WINDOWS, level_grid, level_ids
 
 PROC = ROOT / "data" / "processed"
 VGLC = ROOT / "data" / "source" / "vglc"

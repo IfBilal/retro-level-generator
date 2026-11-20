@@ -3,10 +3,10 @@ import json
 
 import numpy as np
 import pytest
-
 from conftest import ROOT, needs_data
+
 from text2mario.captions.detector import caption, detect
-from text2mario.captions.grammar import caption_set, counted_phrase, parse_phrase, quantity_word
+from text2mario.captions.grammar import counted_phrase, parse_phrase, quantity_word
 from text2mario.data.tiles import CHAR_TO_ID
 
 

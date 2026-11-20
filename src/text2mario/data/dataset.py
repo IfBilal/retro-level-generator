@@ -10,16 +10,16 @@ Explain-me:
 """
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Literal, Sequence
+from typing import Literal
 
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn.functional as F
 
-from text2mario.captions.grammar import caption_set
 from text2mario.data import lexicon as lexicon_mod
 from text2mario.data import provenance, splits
 from text2mario.data.augment import AugConfig, augment_caption, split_phrases

@@ -12,8 +12,6 @@ from __future__ import annotations
 
 import torch
 
-from text2mario.diffusion.losses import loss_simple
-
 
 class Validator:
     def __init__(self, dev_windows, schedule, n_buckets: int = 10, per_bucket: int = 2, seed: int = 12345,

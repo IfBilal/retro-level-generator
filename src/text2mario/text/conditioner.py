@@ -16,8 +16,8 @@ from collections import OrderedDict
 from pathlib import Path
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 ROOT = Path(__file__).resolve().parents[3]
 PROBE = "full floor. two pipes. a few enemies."

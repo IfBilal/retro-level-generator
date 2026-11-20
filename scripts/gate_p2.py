@@ -8,16 +8,15 @@ Explain-me:
 import sys
 from pathlib import Path
 
-import numpy as np
 import torch
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.data.dataset import MarioWindows  # noqa: E402
-from text2mario.diffusion.scheduler import DiffusionSchedule  # noqa: E402
-from text2mario.render.renderer import grid_to_image, tensor_to_grid  # noqa: E402
-from text2mario.utils.gates import gate_dir, require, write_result  # noqa: E402
+from text2mario.data.dataset import MarioWindows
+from text2mario.diffusion.scheduler import DiffusionSchedule
+from text2mario.render.renderer import grid_to_image, tensor_to_grid
+from text2mario.utils.gates import gate_dir, require, write_result
 
 checks, metrics = [], {}
 

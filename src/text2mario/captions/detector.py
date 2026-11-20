@@ -139,7 +139,7 @@ def _step_ok(grid: np.ndarray, r: int, c: int) -> bool:
 def _staircases(grid: np.ndarray, v: int):
     """Rule 11: count staircases going up (v=-1) or down (v=+1); returns (count, cells)."""
     h, w = grid.shape
-    rows = range(3, 16) if v == -1 else range(0, 14)
+    rows = range(3, 16) if v == -1 else range(14)
     count, cells, col = 0, set(), 0
     while col <= w - 3:
         hit = None

@@ -3,7 +3,8 @@ import math
 
 import pytest
 import torch
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from text2mario.diffusion import losses
 from text2mario.diffusion.scheduler import DiffusionSchedule, make_betas
@@ -46,7 +47,7 @@ def test_cosine_clips_exactly_one_beta():
 
 
 def test_snr_crossings():
-    first_below = lambda s, thr: int((s.buf["snr"] < thr).nonzero()[0])  # noqa: E731
+    first_below = lambda s, thr: int((s.buf["snr"] < thr).nonzero()[0])
     assert first_below(LIN, 1) == 259 and first_below(COS, 1) == 496
     assert first_below(LIN, 1 / 8) == 464 and first_below(COS, 1 / 8) == 781
 

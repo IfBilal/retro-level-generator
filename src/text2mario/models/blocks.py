@@ -13,8 +13,8 @@ from __future__ import annotations
 import math
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def sinusoidal_embedding(t: torch.Tensor, dim: int = 128) -> torch.Tensor:

@@ -3,8 +3,8 @@ import importlib.util
 
 import pytest
 import torch
-
 from conftest import ROOT
+
 from text2mario.diffusion.losses import loss_simple
 from text2mario.models.factory import build_unet, count_params
 
