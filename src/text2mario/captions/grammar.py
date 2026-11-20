@@ -60,3 +60,34 @@ def caption_set(text: str) -> frozenset[str]:
 def join_phrases(phrases: list[str]) -> str:
     """'p1. p2. p3.' (the exact format of stored captions); '' for no phrases."""
     return "".join(f"{p}. " for p in phrases).strip()
+
+
+# ---------------------------------------------------------------- phrase parsing (doc 12 §2.3 codes)
+_Q = "|".join(BUCKETS)
+_NOUN_FORMS = {}
+for _n in COUNTED_NOUNS + ("broken pipe", "broken cannon"):
+    _NOUN_FORMS[_n] = _n
+    _NOUN_FORMS[plural(_n)] = _n
+_COUNTED_RE = re.compile(rf"^({_Q}) ({'|'.join(sorted(_NOUN_FORMS, key=len, reverse=True))})$")
+_FLOOR_GAP_RE = re.compile(rf"^floor with ({_Q}) gaps?$")
+_FLOOR_CHUNK_RE = re.compile(rf"^giant gap with ({_Q}) chunks? of floor$")
+_CEIL_GAP_RE = re.compile(rf"^ceiling with ({_Q}) gaps?$")
+
+
+def parse_phrase(phrase: str) -> tuple[str, int]:
+    """Phrase -> (concept, code).  Counted topics: bucket 1..5.  Floor: 1 full, 2-6 gaps, 7-11 chunks.
+    Ceiling: 1 full, 2-6 gaps (doc 12 §2.3).  Raises ValueError for text outside the grammar."""
+    p = phrase.strip().lower()
+    if p == "full floor":
+        return "floor", 1
+    if p == "full ceiling":
+        return "ceiling", 1
+    if m := _FLOOR_GAP_RE.match(p):
+        return "floor", 1 + BUCKETS.index(m.group(1)) + 1
+    if m := _FLOOR_CHUNK_RE.match(p):
+        return "floor", 6 + BUCKETS.index(m.group(1)) + 1
+    if m := _CEIL_GAP_RE.match(p):
+        return "ceiling", 1 + BUCKETS.index(m.group(1)) + 1
+    if m := _COUNTED_RE.match(p):
+        return _NOUN_FORMS[m.group(2)], BUCKETS.index(m.group(1)) + 1
+    raise ValueError(f"not a canonical phrase: {phrase!r}")

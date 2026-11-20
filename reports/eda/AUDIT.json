@@ -1,0 +1,498 @@
+{
+  "passed": true,
+  "python": "3.12.16",
+  "numpy": "2.5.4",
+  "torch": "2.15.0+cpu",
+  "checks": [
+    {
+      "id": "F1",
+      "description": "corpus content hash",
+      "expected": "6a15264a4beb67247a0488dba0439f257f7a94955c0df60b709b7e85024ade2c",
+      "observed": "6a15264a4beb67247a0488dba0439f257f7a94955c0df60b709b7e85024ade2c",
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F2",
+      "description": "record schema",
+      "expected": true,
+      "observed": true,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F3",
+      "description": "number of records",
+      "expected": 7687,
+      "observed": 7687,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F5",
+      "description": "tile ids in 0..12",
+      "expected": [
+        0,
+        12
+      ],
+      "observed": [
+        0,
+        12
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F4",
+      "description": "unique scenes",
+      "expected": 7620,
+      "observed": 7620,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F4b",
+      "description": "duplicate groups / extra copies",
+      "expected": [
+        41,
+        67
+      ],
+      "observed": [
+        41,
+        67
+      ],
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "F6",
+      "description": "tile chars match smb.json (sorted) and tiles.CHARS",
+      "expected": [
+        "-",
+        "<",
+        ">",
+        "?",
+        "B",
+        "E",
+        "Q",
+        "S",
+        "X",
+        "[",
+        "]",
+        "b",
+        "o"
+      ],
+      "observed": [
+        "-",
+        "<",
+        ">",
+        "?",
+        "B",
+        "E",
+        "Q",
+        "S",
+        "X",
+        "[",
+        "]",
+        "b",
+        "o"
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F6b",
+      "description": "solid set matches descriptors",
+      "expected": "{1, 2, 3, 4, 6, 7, 8, 9, 10, 11}",
+      "observed": "{1, 2, 3, 4, 6, 7, 8, 9, 10, 11}",
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F6c",
+      "description": "pipe / cannon / enemy sets match descriptors",
+      "expected": [
+        [
+          1,
+          2,
+          9,
+          10
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          5
+        ]
+      ],
+      "observed": [
+        [
+          1,
+          2,
+          9,
+          10
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          5
+        ]
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F7",
+      "description": "chain count",
+      "expected": 42,
+      "observed": 42,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F7b",
+      "description": "SMB1 / SMB2 boundary",
+      "expected": 3606,
+      "observed": 3606,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F8",
+      "description": "within-chain stride-1 pairs",
+      "expected": 7645,
+      "observed": 7645,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F9",
+      "description": "records[:3606]==SMB1_Levels, rest==SMB2_Levels",
+      "expected": true,
+      "observed": true,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F10",
+      "description": "no level-id field",
+      "expected": true,
+      "observed": true,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F11a",
+      "description": "chain length min/max",
+      "expected": [
+        130,
+        358
+      ],
+      "observed": [
+        130,
+        358
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F11b",
+      "description": "level width min/median/max",
+      "expected": [
+        145,
+        193,
+        373
+      ],
+      "observed": [
+        145,
+        193,
+        373
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F11c",
+      "description": "sum of widths / distinct column patterns",
+      "expected": [
+        8317,
+        653
+      ],
+      "observed": [
+        8317,
+        653
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F11d",
+      "description": "full levels re-slice to the stored windows",
+      "expected": true,
+      "observed": true,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F12",
+      "description": "rows 0-1 non-sky cells / tile ids / windows",
+      "expected": [
+        64,
+        [
+          9,
+          10
+        ],
+        17
+      ],
+      "observed": [
+        64,
+        [
+          9,
+          10
+        ],
+        17
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F12b",
+      "description": "row 2 non-sky cells",
+      "expected": 32,
+      "observed": 32,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F13",
+      "description": "tile frequencies (%) within 0.01",
+      "expected": {},
+      "observed": {},
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F14a",
+      "description": "caption words min/max/mean",
+      "expected": [
+        2,
+        28,
+        11.39
+      ],
+      "observed": [
+        2,
+        28,
+        11.39
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F14b",
+      "description": "phrases min/max/mean",
+      "expected": [
+        1,
+        10,
+        4.03
+      ],
+      "observed": [
+        1,
+        10,
+        4.03
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F14c",
+      "description": "distinct phrases / vocabulary",
+      "expected": [
+        62,
+        44
+      ],
+      "observed": [
+        62,
+        44
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F15",
+      "description": "'many' only for coins and question blocks",
+      "expected": [
+        "many coins",
+        "many question blocks"
+      ],
+      "observed": [
+        "many coins",
+        "many question blocks"
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "A10",
+      "description": "every caption with 'coin line' has a coin phrase",
+      "expected": true,
+      "observed": true,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "A11",
+      "description": "no 'broken' in captions",
+      "expected": 0,
+      "observed": 0,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "A9",
+      "description": "unique captions / unique phrase sets",
+      "expected": [
+        2668,
+        2665
+      ],
+      "observed": [
+        2668,
+        2665
+      ],
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "F19",
+      "description": "detector returns contributing cells",
+      "expected": true,
+      "observed": true,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "F16",
+      "description": "upstream split sizes",
+      "expected": [
+        6918,
+        384,
+        385
+      ],
+      "observed": [
+        6918,
+        384,
+        385
+      ],
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "F17a",
+      "description": "upstream test->train NN Hamming median",
+      "expected": 8,
+      "observed": 8,
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "F17b",
+      "description": "upstream test within 16 tiles of train",
+      "expected": 83.9,
+      "observed": 83.9,
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "F17c",
+      "description": "upstream test spans all 42 levels",
+      "expected": 42,
+      "observed": 42,
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "A3",
+      "description": "bottom row fully solid / >=50% / none (%)",
+      "expected": [
+        35.01,
+        71.0,
+        16.64
+      ],
+      "observed": [
+        35.01,
+        71.0,
+        16.64
+      ],
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "A6",
+      "description": "windows with a broken pipe lip in the raw data",
+      "expected": 0,
+      "observed": 0,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "A12",
+      "description": "share within Hamming 0/2/4/8/16 of another level (%)",
+      "expected": [
+        0.99,
+        7.49,
+        16.09,
+        40.17,
+        75.4
+      ],
+      "observed": [
+        0.99,
+        7.49,
+        16.09,
+        40.17,
+        75.4
+      ],
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "A13",
+      "description": "adjacent-window Hamming median/mean",
+      "expected": [
+        14,
+        16.19
+      ],
+      "observed": [
+        14,
+        16.19
+      ],
+      "pass": true,
+      "severity": "W"
+    },
+    {
+      "id": "A1",
+      "description": "VGLC level names attached (42/42 chains reproduced)",
+      "expected": 42,
+      "observed": 42,
+      "pass": true,
+      "severity": "H"
+    },
+    {
+      "id": "A2",
+      "description": "VGLC heights 14/15/16",
+      "expected": {
+        "14": 20,
+        "15": 21,
+        "16": 1
+      },
+      "observed": {
+        "15": 21,
+        "14": 20,
+        "16": 1
+      },
+      "pass": true,
+      "severity": "H"
+    }
+  ]
+}

@@ -175,7 +175,9 @@
     }
   },
   "audit": {
-    "passed": null
+    "script": "scripts/audit_dataset.py",
+    "passed": true,
+    "report": "reports/eda/AUDIT.json"
   },
   "level_names_available": true
 }
