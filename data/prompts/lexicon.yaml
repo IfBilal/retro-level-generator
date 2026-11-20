@@ -1,0 +1,64 @@
+# Casual-language lexicon (doc 12 §6). The train / heldout labels are FIXED here and never regenerated (§6.3).
+# Entry syntax: "goomba" (plural = +s, or y -> ies) | "spiny|spinies" (explicit plural) | "gold|=" (mass noun, plural = same).
+# train variants feed caption augmentation (D8c); heldout variants exist only for inference-time normalisation.
+topics:
+  enemy:
+    train: [goomba, koopa, turtle, bad guy, monster, creature, walker]
+    heldout: [koopa troopa, baddie, foe, mob, critter, villain, opponent, mushroom guy, piranha plant, hammer bro, "spiny|spinies", buzzy beetle]
+  question block:
+    train: [mystery block, item block, bonus block, question mark block]
+    heldout: [power up block, lucky block, surprise block, prize block, coin block]
+  cannon:
+    train: [bullet bill, blaster, turret, bullet cannon]
+    heldout: [bill blaster, launcher, gun, "artillery|="]
+  coin:
+    train: [gold coin, "gold|=", collectible]
+    heldout: ["money|=", "cash|=", "treasure|=", "loot|="]
+  coin line:
+    train: [line of coins|lines of coins, row of coins|rows of coins, coin row]
+    heldout: [coin trail, string of coins|strings of coins, coin arc]
+  platform:
+    train: [ledge, floating platform, bridge, brick platform]
+    heldout: ["shelf|shelves", walkway, overhang, floating ledge]
+  tower:
+    train: [pillar, column, tall block, block tower]
+    heldout: [post, stack of blocks|stacks of blocks, obelisk]
+  ascending staircase:
+    train: [staircase, stairs going up|=, steps|=, rising stairs|=, upward stairs|=, pyramid]
+    heldout: [stairway, ramp, climbing steps|=, uphill steps|=]
+  descending staircase:
+    train: [stairs going down|=, downward stairs|=, descending steps|=]
+    heldout: [falling stairs|=, downstairs|=, downhill steps|=, declining staircase]
+  pipe:
+    train: [tube, warp pipe, green pipe]
+    heldout: [chimney|chimneys, drain pipe, sewer pipe]
+  upside down pipe:
+    train: [hanging pipe, ceiling pipe]
+    heldout: [inverted pipe, dangling pipe]
+  rectangular block cluster:
+    train: [block cluster, rectangle of blocks|rectangles of blocks, brick wall, big block]
+    heldout: [wall, block rectangle, "box of bricks|boxes of bricks"]
+  irregular block cluster:
+    train: [irregular cluster, jagged block cluster, block pile, pile of blocks|piles of blocks]
+    heldout: ["messy blocks|=", "rubble|=", "odd shaped blocks|=", "lumpy blocks|="]
+  loose block:
+    train: [brick, single block, breakable block]
+    heldout: [floating block, lone block, stray block, brick block]
+floor:
+  full:
+    train: [solid ground, flat ground, solid floor, flat floor, continuous floor, no gaps, no pits, no holes, flat level]
+    heldout: [unbroken ground, safe ground, ground all the way]
+  floor_nouns: {train: [floor, ground], heldout: [terrain, land]}
+  gap_nouns: {train: [gap, pit, hole], heldout: [chasm, drop, pitfall, abyss]}
+  giant: {train: [giant gap, big gap, huge gap, massive pit, mostly gaps, mostly pits], heldout: [sky level, bottomless level]}
+  chunk_nouns: {train: [island|islands, chunk of ground|chunks of ground, island of ground|islands of ground], heldout: [piece of ground|pieces of ground, bit of floor|bits of floor, floor segment|floor segments]}
+ceiling:
+  full: {train: [underground, cave, roof, ceiling], heldout: [cavern, tunnel, indoors, covered, sewer]}
+  ceiling_nouns: {train: [ceiling, roof], heldout: []}
+# Casual quantity expressions that the normalizer maps back to the SAME bucket (doc 11 §5.2 step 2).
+quantity_casual:
+  one: ["1", a, a single]
+  two: ["2", a couple of, a pair of]
+  a few: ["3", "4", some, a handful of]
+  several: ["5", "6", "7", "8", "9", a bunch of]
+  many: ["10", "12", lots of, tons of]
