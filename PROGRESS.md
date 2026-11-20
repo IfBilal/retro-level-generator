@@ -83,7 +83,7 @@ Per run: `metrics.csv`, `events.jsonl`, `hw_report.json`, all `*.val.json`, the 
 this file under "Handover log" below and push only that (and nothing else) to GitHub.
 
 ### Handover log (friend fills in; newest first)
-| Date | Who | Machine / GPU / driver / torch | What happened (steps reached, problems, numbers) |
+| Date | Who (Taimoor) | Machine / GPU / driver / torch | What happened (steps reached, problems, numbers) |
 |---|---|---|---|
 | | | | |
 

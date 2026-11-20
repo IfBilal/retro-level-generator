@@ -5,7 +5,7 @@ Run ownership (edit only when you start or stop a GPU run; doc 07, simplified in
 
 | Field | Value |
 |---|---|
-| Current owner of the GPU run | friend (Phase 3 monitoring), name: ________ |
+| Current owner of the GPU run | Taimoor (Phase 3 training and monitoring) |
 | Run in flight | none yet (to be filled in when U-lin / U-cos start) |
 | Latest checkpoint | none (no model has been trained yet) |
 | Last updated | 2026-11-20 |
