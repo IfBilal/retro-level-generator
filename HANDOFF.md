@@ -1,13 +1,15 @@
 # HANDOFF
 
 Run ownership (edit only when you start or stop a GPU run; doc 07, simplified in the 18-day plan).
+**Full instructions for the current handover: top of `PROGRESS.md`.**
 
 | Field | Value |
 |---|---|
-| Current owner of the GPU run | nobody |
-| Run in flight | none |
+| Current owner of the GPU run | friend (Phase 3 monitoring), name: ________ |
+| Run in flight | none yet (to be filled in when U-lin / U-cos start) |
 | Latest checkpoint | none (no model has been trained yet) |
 | Last updated | 2026-11-20 |
 
-Training has deliberately NOT been started. To start Phase 3 on a GPU machine: `python scripts/verify_env.py`, then
-`python -m text2mario.train.train --config configs/uncond_linear.yaml` (and `uncond_cosine.yaml` on the other machine).
+Runs: `runs/U-lin` (`configs/uncond_linear.yaml`) and `runs/U-cos` (`configs/uncond_cosine.yaml`), 15,000 steps each.
+When you start or stop one, edit this table (owner, run, last checkpoint step, date) and push only this file.
+Checkpoints live in `runs/` (git-ignored); share them through a drive/USB, never through git.
