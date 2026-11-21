@@ -1,0 +1,7 @@
+name: x01_aux_ce_cos
+# Ablation X1 (doc 23): C-main + aux CE (lambda 0.001, ledger M9), same cosine schedule, 40k steps; dev evaluation only.
+diffusion: {schedule: cosine}
+text: {enabled: true}
+train: {uncond: false, max_steps: 40000}
+loss: {aux_ce_lambda: 0.001}
+checkpoint: {milestone_every_steps: 8000}

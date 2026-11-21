@@ -1,4 +1,8 @@
 name: cond_main
+# C-main (doc 18 Phase 4): text-conditioned model, 60k steps.  Schedule = cosine: at equal steps the cosine unconditional baseline
+# had both fewer broken structures and a lower copy rate than linear (reports/gates/P3_cos_dense vs P3_lin_dense), and ties go to
+# cosine (ledger M2).  Milestones every 6000 steps are kept for offline dev selection (S_noplay, G-P5b did not pass).
+diffusion: {schedule: cosine}
 text: {enabled: true}
 train: {uncond: false, max_steps: 60000}
-checkpoint: {milestone_every_steps: 10000}
+checkpoint: {milestone_every_steps: 6000}

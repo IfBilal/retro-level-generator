@@ -1,0 +1,7 @@
+name: uncond_cosine_dense
+# Same model/optimiser as uncond_cosine; only the checkpoint cadence differs (every 2000 steps, all kept) so the
+# G-P3 trade-off between broken structures (falls with training) and copy rate (rises) can be read per step.
+diffusion: {schedule: cosine}
+text: {enabled: false}
+train: {uncond: true, max_steps: 15000}
+checkpoint: {milestone_every_steps: 2000}   # every checkpoint (2000-step cadence) is kept: 8 x ~294 MB

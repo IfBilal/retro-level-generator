@@ -1,0 +1,7 @@
+name: uncond_linear_auxce
+# R-3.4 rollback action (doc 25): G-P3 failed on broken_rate with the plain-MSE baseline; add aux CE (ledger M9, lambda 0.001).
+diffusion: {schedule: linear}
+text: {enabled: false}
+train: {uncond: true, max_steps: 15000}
+loss: {aux_ce_lambda: 0.001}
+checkpoint: {milestone_every_steps: 5000}

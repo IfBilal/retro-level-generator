@@ -69,6 +69,7 @@ def main():
     ap.add_argument("--steps", type=int, default=50)
     ap.add_argument("--out-dir", default=None, help="write results here instead of reports/gates/P3 (plumbing tests)")
     ap.add_argument("--ckpt-glob", default="step_*.pt")
+    ap.add_argument("--min-step", type=int, default=0, help="skip checkpoints before this step (dense runs)")
     a = ap.parse_args()
     out_dir = Path(a.out_dir) if a.out_dir else ROOT / "reports" / "gates" / "P3"
     if not a.out_dir:
@@ -88,12 +89,16 @@ def main():
         if not ckpts:
             sys.exit(f"no checkpoints in {run}")
         best = None
+        ckpts = [c for c in ckpts if int(c.stem.split("_")[1]) >= a.min_step]
         for c in ckpts:
             m, grids, nn, state = evaluate_checkpoint(c, train, refs, g, a.steps, n, device)
             m["checkpoint"], m["checkpoint_sha256"] = c.name, (c.with_suffix(".pt.sha256").read_text().strip() if c.with_suffix(".pt.sha256").exists() else None)
             all_rows.append(m)
             print(f"{run.name} {c.name}: " + "  ".join(f"{k}={m[k]:.3f}" for k in ("floor_valid", "broken_rate", "tile_js", "copy_rate", "novelty_med", "S_noplay")))
-            if best is None or m["S_noplay"] > best[0]["S_noplay"]:
+            m["passes"] = all(ck["pass"] for ck in checks_for(m, refs, g))
+            # choose among checkpoints that pass every check (best S_noplay); if none passes, the best S overall is
+            # reported (and fails).  A passing checkpoint must never be hidden behind a higher-S failing one.
+            if best is None or (m["passes"], m["S_noplay"]) > (best[0]["passes"], best[0]["S_noplay"]):
                 best = (m, grids, nn)
         m, grids, nn = best
         kind = m["schedule"]
