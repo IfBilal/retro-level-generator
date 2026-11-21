@@ -115,7 +115,7 @@ control-character prompts and out-of-range settings with a readable message inst
 Full quality (50 steps, resampling) takes 35.5 s and 167.3 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is **not met**;
 the long p95 comes from levels the checker cannot verify, which use the whole retry budget.
 
-**Engineering.** 257 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
+**Engineering.** 269 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.
 Bugs found by this process and fixed (each with a regression test): an LRU-cache eviction that crashed long training runs, a CPU/CUDA generator mismatch that crashed resampling,
 a pluralisation bug that corrupted caption augmentation ("bad guies"), and a detector crash on generated rows without floor.
@@ -221,10 +221,13 @@ The model's contribution is *novelty at a small structural cost*: median nearest
 | C-main (MSE) | 30000 | 0.823 | 0.041 | 8.0 | 0.238 |
 | C-main (MSE) | 36000 | 0.811 | 0.046 | 8.0 | 0.267 |
 | X1 (aux CE 0.001) | 17640 | 0.824 | 0.072 | 12.0 | 0.104 |
+| X1 (aux CE 0.001) | 24000 | 0.823 | 0.043 | 10.0 | 0.191 |
+| X1 (aux CE 0.001) | 32000 | 0.832 | 0.017 | 8.0 | 0.287 |
+| X1 (aux CE 0.001) | 40000 | 0.843 | 0.032 | 7.0 | 0.351 |
 
-*Process note, stated plainly:* the X1 run was evaluated **after** C-main had been frozen and tested. At the matched step (17,640 against 18,000) X1 has a higher dev C-score and a lower broken rate with similar novelty and copy rate; under the plan's rule
-"config v1 = the best dev composite" it would probably have been chosen. Because the one-shot test had already been run on C-main, the test cannot be repeated without breaking its protocol, so **C-main remains the reported model** and X1 is reported as a dev-only ablation
-(single checkpoint, 3 seeds, 5 dev levels: the difference is suggestive, not established). Selecting X1 would be the first follow-up.
+*Process note, stated plainly:* the X1 run was evaluated **after** C-main had been frozen and tested (and X1 was paused once for memory pressure and resumed after fixing a resume bug). Early on it looked better: at 17,640 against 18,000 steps it had a higher dev C-score (0.824 against 0.796) and fewer broken structures. At the one step both runs share, **24,000**,
+the picture is a **trade, not a win**: X1 has C-score 0.823 against 0.805 and broken rate 0.043 against 0.072, but a higher copy rate (0.191 against 0.157), so the dev composite is essentially tied (0.843 against 0.846).
+Auxiliary cross-entropy therefore reproduces, in the conditional model, the Phase-3 finding: fewer broken structures bought with more memorisation. Because the one-shot test had already been run on C-main (and the composite does not separate the two), **C-main remains the reported model**; this is a dev-only ablation (3 seeds, 5 dev levels), suggestive, not established.
 
 ### 5.3 Phase 5: full levels
 
@@ -319,7 +322,7 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 
 | Evidence | Where |
 |---|---|
-| 257 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
+| 269 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
 | representative inputs: normalizer dev set, 12 C-score golden vectors, checker micro-levels, 4 example prompts end to end | `tests/`, `reports/gates/*` |
 | invalid and boundary inputs: empty / whitespace / None / over-long / control-character prompts, out-of-range seed / w / width, malformed levels (9 schema violations) | `tests/test_level_schema.py` |
 | consistency: same prompt + seed + settings gives the same level (identical: True); a different seed changes 0.083 of the cells; one window sampled alone or inside a batch is identical (1.000 of cells); checker and normalizer deterministic | `scripts/check_determinism.py`, `reports/gates/determinism.json`, `tests/test_full_level.py`, `tests/test_checker.py` |

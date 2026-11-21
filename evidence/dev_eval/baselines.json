@@ -1,0 +1,35 @@
+{
+ "n_prompts": 115,
+ "baselines": {
+  "always_empty": {
+   "c_score": 0.4888888888888889,
+   "exact_match": 0.0
+  },
+  "always_full_floor": {
+   "c_score": 0.5425603864734299,
+   "exact_match": 0.0
+  },
+  "always_modal": {
+   "c_score": 0.5955797101449275,
+   "exact_match": 0.0
+  },
+  "retrieval_from_train": {
+   "c_score": 0.9491304347826086,
+   "exact_match": 0.2782608695652174,
+   "broken_rate": 0.0,
+   "floor_valid": 1.0,
+   "copy_rate": 1.0,
+   "novelty_med": 0.0,
+   "note": "returns a real training window: perfect structure, zero novelty"
+  }
+ },
+ "model_at_w_star": {
+  "c_score": 0.7944524959742351,
+  "exact_match": 0.043478260869565216,
+  "broken_rate": 0.08695652173913043,
+  "floor_valid": 1.0,
+  "copy_rate": 0.08405797101449275,
+  "novelty_med": 13.0,
+  "w": 7.5
+ }
+}

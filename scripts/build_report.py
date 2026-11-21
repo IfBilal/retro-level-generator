@@ -176,6 +176,12 @@ def values() -> dict:
     v["tests_total"], v["tests_pass"] = fmt(pytest.get("total")), fmt(pytest.get("passed"))
     v["p3_table"], v["cfg_table"], v["x1_table"] = p3_table(), cfg_table(), x1_table()
     v["per_level_table"], v["concept_table"], v["baseline_table"] = per_level_table(), concept_table(), baseline_table()
+    ref_nov = (J("reports/references/REFERENCES.json") or {}).get("novelty_ref_median_stride8", 13.0)
+    for tag, key in (("C-main", "main"), ("C-x01", "x01")):
+        r = J(f"reports/dev_eval/{tag}_0024000_p_dev_w5.json")
+        if r:
+            v[f"x1_c24_{key}"], v[f"x1_b24_{key}"], v[f"x1_cp24_{key}"] = fmt(r["c_score"]), fmt(r["broken_rate"]), fmt(r["copy_rate"])
+            v[f"x1_S24_{key}"] = fmt(0.5 * r["c_score"] + 0.25 * (1 - r["broken_rate"]) + 0.25 * min(1.0, r["novelty_med"] / ref_nov))
     d = J("reports/gates/determinism.json") or {}
     v["det_same"], v["det_diff"], v["det_batch"] = fmt(d.get("same_seed_same_level")), fmt(d.get("different_seed_share_of_cells_changed")), fmt(d.get("window_alone_vs_in_batch_cells_equal"))
     return v

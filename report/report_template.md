@@ -184,9 +184,9 @@ The model's contribution is *novelty at a small structural cost*: median nearest
 
 **Ablation X1** (auxiliary cross-entropy, lambda 0.001, on the conditional model; planned for 40k steps, **stopped at 17,640** to relieve memory pressure; dev set, same seeds): {{x1_table}}
 
-*Process note, stated plainly:* the X1 run was evaluated **after** C-main had been frozen and tested. At the matched step (17,640 against 18,000) X1 has a higher dev C-score and a lower broken rate with similar novelty and copy rate; under the plan's rule
-"config v1 = the best dev composite" it would probably have been chosen. Because the one-shot test had already been run on C-main, the test cannot be repeated without breaking its protocol, so **C-main remains the reported model** and X1 is reported as a dev-only ablation
-(single checkpoint, 3 seeds, 5 dev levels: the difference is suggestive, not established). Selecting X1 would be the first follow-up.
+*Process note, stated plainly:* the X1 run was evaluated **after** C-main had been frozen and tested (and X1 was paused once for memory pressure and resumed after fixing a resume bug). Early on it looked better: at 17,640 against 18,000 steps it had a higher dev C-score (0.824 against 0.796) and fewer broken structures. At the one step both runs share, **24,000**,
+the picture is a **trade, not a win**: X1 has C-score {{x1_c24_x01}} against {{x1_c24_main}} and broken rate {{x1_b24_x01}} against {{x1_b24_main}}, but a higher copy rate ({{x1_cp24_x01}} against {{x1_cp24_main}}), so the dev composite is essentially tied ({{x1_S24_x01}} against {{x1_S24_main}}).
+Auxiliary cross-entropy therefore reproduces, in the conditional model, the Phase-3 finding: fewer broken structures bought with more memorisation. Because the one-shot test had already been run on C-main (and the composite does not separate the two), **C-main remains the reported model**; this is a dev-only ablation (3 seeds, 5 dev levels), suggestive, not established.
 
 ### 5.3 Phase 5: full levels
 

@@ -1,6 +1,7 @@
 {
  "files": {
   "app/latency.json": "5c8850a69c96314196432ab79c5cc9a033cbeddfa1317d074824a431256d4509",
+  "dev_eval/baselines.json": "34ef7e9122595318e1b547ffe7e0eb42aba2c381a893c71a9d861a336dba3df8",
   "dev_eval/C-main_0006000_p_dev_w1.json": "53f9469e154e607b374612efa546eda4cb9ad010130fca918990aa2411f4dede",
   "dev_eval/C-main_0006000_p_dev_w5.json": "de878990a4dda65d4174044ac0aa8228d3efd4d9b2be2d0a8517b6986bd55c0e",
   "dev_eval/C-main_0012000_p_dev_w5.json": "945570d4867b26b1d84ff378ba4cb374d5ac1d188738f874019cab45f7317417",
@@ -11,8 +12,14 @@
   "dev_eval/C-smoke_0003000_p_dev_w1.json": "c0a6a965257dfebc341f7dfe58e6fdbac992edd455165a04cda5175eaa67b5f7",
   "dev_eval/C-smoke_0003000_p_dev_w5.json": "97cf3baf72f9fc711d5fe835ef91508755c1f713f4fa6b737e889fb6adfdce35",
   "dev_eval/C-x01_0017640_p_dev_w5.json": "c421d7d51cd36a14f8fea75cf71cbd37b5c36b4b43cf84edda8600aad6e450d1",
+  "dev_eval/C-x01_0024000_p_dev_w5.json": "54b2d19c2278261e44cc887dc4de70c446c5ad87b8ec6c6910b87ef30d010f6a",
+  "dev_eval/C-x01_0032000_p_dev_w5.json": "b95d777fcad3b8488a25c55e58e57e33bb0dbd9c8ae37e041058655d0e09a895",
+  "dev_eval/C-x01_0040000_p_dev_w5.json": "187ae0ca71571591205b94a42d1d219ac7445042b1c3b692edeb23d36417b6f3",
   "dev_eval/selection_C-main.json": "ab71e9d0887c98c01637ac8b9e497e148a35c301ddedcf5e34850cf5cf894b11",
   "eda/AUDIT.json": "0671c1b529b41c856ceedbc9b4baecdae102e7dd0ebe4df6aca17b208d3d212a",
+  "figures/eda_captions.png": "1ab834e96fb7276a8389bae41250b1404fb1eeed5b500fff0c117a567c8497ab",
+  "figures/eda_concepts.png": "54933bb709b9587a001031132de067b28bc08d2a68346a2cd1482138bc8ed224",
+  "figures/eda_tiles.png": "e083a4603771ba43759cb863150aef44884cd7c69a8b9bc67bb389cc7988bb0f",
   "figures/failure_gallery.png": "8097d7c309cdf968a3465ebc923b53147cb2e0d54cb418283239e1dfdd451c9f",
   "figures/fig01_pipeline.png": "ff7d0436bc54552a91301e5b6861ac4362ef499afc17a3929ce8e0cfc47bdfc2",
   "figures/fig02_training_loss.png": "e2d503c7d1b7a81fe76f13a27142356aff40e80b2a5c84a7d93dc58d0689e4e2",
@@ -29,6 +36,9 @@
   "figures/fig12_render_best_039.png": "fa2c2f1647699a3268c8bb86c8e15ef911a59505be3cf25c76461897f180b197",
   "figures/fig12_render_best_086.png": "ec3ac14fff11eec9e3e71fdcb98f87595709fd1b78f042f19938bba3f84ada14",
   "figures/fig12_render_worst_032.png": "1e05fa26cf74f1678aaa6d644d9849e7522e36154ce2a63e7b66b3a247f4b4dc",
+  "figures/fig13_showcase_stairs.png": "0addb33647a0a8d72f788da6ce949856bf7b572ea014c62b324cecb68430622c",
+  "figures/fig14_showcase_platforms.png": "cd0e0a12b4725be208aa655ccc51b6452d05b268166fc0ed76fe68d3cf222aa6",
+  "figures/fig15_showcase_coins.png": "4e52df8de4d35fdc47b6f49f55eff88e5f604c4fd5f5ddaf8353b56b6f030832",
   "gates/_p5_smoke/RESULT.json": "ae0e845b88acdd63ca32a7f90b5b5ebea0a5dead5a1c4eb835e8a7d84352b01d",
   "gates/P1/RESULT.json": "5ce2698ca8cf6c55d5997038084b522440b216443541159db145f92e0d008686",
   "gates/P2/RESULT.json": "84553a099aa1097d22c1fc8b758dd7ac0bcc6a5308faa630c7ef12f6757c8a46",
@@ -60,6 +70,8 @@
   "gates/P5b_details/replay_levels_showcase.json": "1fe7f4bc629c6fb49f17f259d4f52d51675809e34c4330aeb17fc544c39777b2",
   "gates/P5b_details/replay_real_windows.json": "3ad32672185634f8cf0852e0ef5961e49f4da7900320a47db14f14bb8953274d",
   "gates/P5b_details/RESULT.json": "fd67b01f6e7d2fd8f9cefa9742affd54b6cfb3faf4f9e14a75ffda4837630a43",
+  "gates/P6/RESULT.json": "1be10e6724196f1dd9a90735d4231646380aafa51de9946b5ebcda7a03029de6",
+  "gates/P7/RESULT.json": "23857099fb8fa979aa0cd7e7341b884d23c29250e2acce4779c396205c3dfa41",
   "metrics/metrics.json": "3f02f4e405d55ffffc42b106ebb863470c37e8eddc87b2afaacc0c43a23ef6dd",
   "metrics/per_concept_P-test.csv": "3c932a62db3ef84e0d214632cf1296dbe79175e56fd31d7c19a0b234ba7ea653",
   "metrics/per_level_P-rand.csv": "c1a5668f49ea414b2b025f96f1073b73ada9f44d3bd52708d331dcee087c5e6c",
@@ -69,15 +81,15 @@
   "test_run/eval_plan.json": "714d3f55a997e98d2b832e990be072494009fa140b2cce8436aa9e67ed05f938",
   "test_run/FROZEN.json": "b0d76a30c983440b52e28c21e87049d01b0332bfa0f9eb6faee597ace66bc889",
   "test_run/test_invocations.jsonl": "e05e214c1bf1563ccd0b9bc2070f785f00599a57f4bb37edc3b426feecabab7b",
-  "testing/pytest_fast.log": "ad8d28605e99a4f29f7e49fbb97a01b1f9eaaec42ed2c7eee507a7d31b66872d",
-  "testing/pytest_slow.log": "2475af6facd4318c5daa1c0e36d711b7c360cb93bc540a27c526e7f3c1af4c09",
-  "testing/pytest_summary.json": "826e2430e274170ab87c671554f2a73ca3d7ffba40faa7d73ce83126ee286dca"
+  "testing/pytest_fast.log": "c755304e6641242f952ca56a9f1c628cc011d1f7dc4130ff79b60dcf963c90e1",
+  "testing/pytest_slow.log": "9e96af72c209de69fad2e83ff02d9855a813fc46556984343f5f46f69d421ba9",
+  "testing/pytest_summary.json": "3274976a0301ce0ee14ee37c3b1a8f95154e141d11f96a14f503b77d639ce815"
  },
  "pytest": {
-  "passed": 257,
+  "passed": 269,
   "failed": 0,
-  "total": 257,
-  "summary_line": "257 passed, 1 skipped, 9 deselected in 32.05s",
-  "slow_suite": "9 passed, 258 deselected in 141.57s (0:02:21)"
+  "total": 269,
+  "summary_line": "269 passed, 1 skipped, 9 deselected in 34.09s",
+  "slow_suite": "9 passed, 270 deselected in 140.78s (0:02:20)"
  }
 }
