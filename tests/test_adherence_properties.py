@@ -552,3 +552,53 @@ def test_shortfall_is_redrawn_where_the_plan_put_the_object():
     plans = [{"tower": 0}, {"tower": 1}, {"tower": 0}, {"tower": 1}, {"tower": 0}]
     assert A.window_to_resample(row, [0] * 5, 5, plans) == 3                                 # window 1 holds its tower (anchor 17); window 3 does not
     assert A.window_to_resample(row, [0] * 5, 5) == 0                                        # without the plan the old guess is the first empty window
+
+
+# ----------------------------------------------------------------------------------------------- route budget spent -> counts are still fixed
+class _FakeCheck:
+    def __init__(self, status="unsolved", fail_col=10):
+        self.status, self.fail_col, self.seconds, self.path = status, fail_col, 0.0, []
+
+
+def test_counts_keep_being_fixed_after_the_route_budget_is_spent(monkeypatch):
+    """Audit: every failing 'underground' level had stopped at 'attempt budget exhausted' (route) with a count still unmet.
+    The route budget now ends only the ROUTE search; the counts go on until their own budget."""
+    checks = {"n": 0}
+
+    def no_route(*a, **k):
+        checks["n"] += 1
+        return _FakeCheck("unsolved", 10)                                                       # a level with no route, ever
+
+    monkeypatch.setattr(FL, "check_level", no_route)
+
+    def late_pipe(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        g = flat()
+        if known_cols is not None:
+            g[:, :known_cols.shape[1]] = known_cols
+        if "one pipe" in caption and checks["n"] >= 9:                                           # the pipe only appears once the route budget is spent
+            add_pipe(g, 9 if known_cols is not None else 2)
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", late_pipe)
+    lvl = FL.generate(None, "one pipe", seed=1, width=48, device="cpu")
+    v = lvl["verification"]
+    log = v["attempt_log"]
+    route = [i for i, a in enumerate(log) if a["status"] != "adherence"]
+    adh = [i for i, a in enumerate(log) if a["status"] == "adherence"]
+    assert route and adh and min(adh) > max(route[:6])                                           # counts were worked on AFTER the route attempts
+    assert v["status"] == "not_verified" and v["reason"] == "attempt budget exhausted" and v["attempts_total"] <= 20
+    assert v["adherence"]["status"] == "met"                                                     # and they got fixed although the level has no route
+
+
+def test_attempts_total_never_exceeds_the_ledger_cap_when_failures_spread_over_windows(monkeypatch):
+    """attempts_total counted the attempt that hit the cap (21) and validate_level would reject the level."""
+    state = {"n": 0}
+
+    def spread(*a, **k):
+        state["n"] += 1
+        return _FakeCheck("unsolved", 3 + 8 * (state["n"] % 12))                                  # a different window every time
+
+    monkeypatch.setattr(FL, "check_level", spread)
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())
+    lvl = FL.generate(None, "full floor", seed=1, width=112, device="cpu")                      # validate_level runs inside generate()
+    assert lvl["verification"]["attempts_total"] <= 20 and lvl["verification"]["reason"] == "attempt budget exhausted"

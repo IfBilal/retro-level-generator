@@ -198,6 +198,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
 
     regen_from(0)
     status, reason, checker_info = "not_verified", None, None
+    play_done = False                                              # route budget (ledger G5) spent: only counts are still being fixed
     framed, framing = None, None
     while True:
         content = _assemble(windows, width)
@@ -215,18 +216,24 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         adh_pending = bool(adh_verify and adh_now["unmet"] and adh_total < adh_max and adh_draws < adh_draw_cap and not out_of_time)
         if res.status == "solved" and forb_k is None and not adh_pending:
             status = "verified"
+            reason = None
             if adh_now and adh_now["unmet"]:                       # budget ended with a count still unmet: say so (verification.adherence)
                 reason = "adherence budget exhausted" if not out_of_time else "time budget"
             break
-        # which window to re-sample: the one containing the obstacle after the furthest column reached (or a forbidden hit)
-        if res.status != "solved":
+        # what to re-sample next.  Route problems first (the window holding the obstacle after the furthest column reached), then forbidden words
+        # (legacy path), then unmet counts.  Once the ROUTE budget is spent (play_done) the loop keeps fixing counts: the level cannot get a
+        # route badge any more, but the sentence can still be honoured (audit: every failing 'underground' level had stopped here).
+        if res.status != "solved" and not play_done:
             cc = max(0, min(width - 1, (res.fail_col or 0) - 3 + 2))
             k = min(n - 1, cc // STRIDE)
             kind = res.status
-        elif forb_k is not None:
+        elif forb_k is not None and not play_done:
             k, kind = forb_k, "forbidden"
-        else:
+        elif adh_pending:
             k, kind = adherence.window_to_resample(adh_now["unmet"][0], scene_of, n, win_plans), "adherence"
+        else:                                                      # route budget spent and nothing left to fix for the counts
+            reason = reason or ("time budget" if out_of_time else "attempt budget exhausted")
+            break
         attempts[k] += 1
         if kind == "adherence":
             adh_total += 1
@@ -237,10 +244,17 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
             total += 1
             play_att[k] += 1
             attempt_log.append({"window": int(k), "attempt": int(attempts[k]), "status": kind, "fail_col": int(res.fail_col or 0)})
-        if out_of_time or (kind != "adherence" and (play_att[k] > max_window_attempts or total > max_total_attempts)):
-            reason = "attempt budget exhausted" if not out_of_time else "time budget"
+        if out_of_time:
+            reason = "time budget"
             attempt_log[-1]["attempt"] = int(min(attempts[k], max_window_attempts))
             break
+        if kind != "adherence" and (play_att[k] > max_window_attempts or total > max_total_attempts):
+            reason = "attempt budget exhausted"
+            attempt_log[-1]["attempt"] = int(min(attempts[k], max_window_attempts))
+            if not adh_pending:
+                break
+            play_done = True                                       # keep the level as it is for the route, go on fixing counts
+            continue
         regen_from(k)
     content = _assemble(windows, width)
     framed, framing = frame(content)
@@ -256,8 +270,9 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
                   "fast_mode": bool(steps < 50), "profile": profile, "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   "checkpoint_step": int(state.get("step", -1)), "seconds": round(time.time() - t0, 2), **(meta or {})}
     adh_final = adherence.evaluate(content, norm, scene_of, width) if use_adh else {"status": "not_applicable", "constraints": [], "unmet": []}
-    # the counts are judged on the RAW content (measure-before-repair); the display repair below never feeds this
-    verification = {"status": status, "reason": reason, "attempts_total": int(total), "attempt_log": attempt_log, "checker": checker_info,
+    # the counts are judged on the RAW content (measure-before-repair); the display repair below never feeds this.
+    # attempts_total is capped at the ledger limit: the attempt that hits the cap is logged but never executed.
+    verification = {"status": status, "reason": reason, "attempts_total": int(min(total, max_total_attempts)), "attempt_log": attempt_log, "checker": checker_info,
                     "adherence": {"status": adh_final["status"], "attempts": int(adh_total), "window_redraws": int(local_resamples), "extra_draws": int(adh_draws), "draw_cap": adh_draw_cap, "planned": bool(use_adh and adherence._A["plan"]),
                                   "verified_by_resampling": bool(adh_verify), "judged_on": "raw", "constraints": adh_final["constraints"]}}
     lvl = make_level(framed, display_grid=display, prompt=prompt, generation=generation, framing=framing, sanitizer=san,
