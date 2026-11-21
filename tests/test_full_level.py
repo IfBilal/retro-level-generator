@@ -24,7 +24,7 @@ def stub(monkeypatch):
         calls.append((caption, gen_seed, None if known_cols is None else known_cols.copy()))
         g = flat_window()
         if known_cols is not None:
-            g[:, :8] = known_cols
+            g[:, :known_cols.shape[1]] = known_cols
         return g
 
     monkeypatch.setattr(FL, "sample_window", fake)
@@ -76,7 +76,7 @@ def test_verify_loop_respects_budgets(monkeypatch):
     def pit_window(bundle, caption, w, steps, r, gen_seed, known_cols, device):
         g = np.zeros((16, 16), np.uint8)            # never any floor -> never solvable
         if known_cols is not None:
-            g[:, :8] = known_cols
+            g[:, :known_cols.shape[1]] = known_cols
         return g
     monkeypatch.setattr(FL, "sample_window", pit_window)
     lvl = FL.generate(None, "x", seed=1, width=48, device="cpu")
@@ -109,3 +109,23 @@ def test_repair_keeps_valid_pipes():
     g[14, 4:6] = (T.PIPE_BL, T.PIPE_BR)
     fixed, n = repair(g)
     assert n == 0 and np.array_equal(fixed, g)
+
+
+def test_stride_comes_from_the_config_and_changes_the_windowing(stub, monkeypatch):
+    """Drill 5: stride 4 gives (48-16)/4+1 = 9 windows and a 12-column known region; the level is still valid."""
+    monkeypatch.setattr(FL, "STRIDE", 4)
+    assert FL.n_windows(48) == 9 and FL.overlap() == 12
+    lvl = FL.generate(None, "full floor", seed=2, width=48, device="cpu", verify=False)
+    assert len(stub) == 9 and all(c[2] is not None and c[2].shape == (16, 12) for c in stub[1:])
+    validate_level(lvl)
+
+
+def test_app_config_is_consistent():
+    from text2mario.text.normalizer import normalize
+    from text2mario.utils import appcfg
+    c = appcfg.load(refresh=True)
+    assert c["window"] == 16 and 0 < c["stride"] <= c["window"] and c["default_width"] in c["widths"]
+    assert c["cfg"]["min_w"] <= c["cfg"]["default_w"] <= c["cfg"]["max_w"]
+    assert all((w - c["window"]) % c["stride"] == 0 for w in c["widths"]), "every width must tile into windows"
+    for ex in c["examples"]:
+        assert normalize(ex).scenes, f"example chip {ex!r} is not understood by the normalizer"

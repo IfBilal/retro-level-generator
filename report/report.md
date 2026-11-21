@@ -112,7 +112,7 @@ control-character prompts and out-of-range settings with a readable message inst
 Full quality (50 steps, resampling) takes 35.5 s and 167.3 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is **not met**;
 the long p95 comes from levels the checker cannot verify, which use the whole retry budget.
 
-**Engineering.** 255 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
+**Engineering.** 257 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.
 Bugs found by this process and fixed (each with a regression test): an LRU-cache eviction that crashed long training runs, a CPU/CUDA generator mismatch that crashed resampling,
 a pluralisation bug that corrupted caption augmentation ("bad guies"), and a detector crash on generated rows without floor.
@@ -279,7 +279,7 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 
 | Evidence | Where |
 |---|---|
-| 255 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
+| 257 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
 | representative inputs: normalizer dev set, 12 C-score golden vectors, checker micro-levels, 4 example prompts end to end | `tests/`, `reports/gates/*` |
 | invalid and boundary inputs: empty / whitespace / None / over-long / control-character prompts, out-of-range seed / w / width, malformed levels (9 schema violations) | `tests/test_level_schema.py` |
 | consistency: same prompt + seed + settings gives the same level; checker and normalizer deterministic | `tests/test_full_level.py`, `tests/test_checker.py` |

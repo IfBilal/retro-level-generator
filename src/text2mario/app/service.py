@@ -24,10 +24,12 @@ from text2mario.render.game_html import build_game_html
 from text2mario.render.renderer import grid_to_csv, grid_to_vglc_text
 from text2mario.render.schema import level_grid, to_png_bytes
 from text2mario.text.normalizer import Normalized, normalize
+from text2mario.utils import appcfg
 
 ROOT = Path(__file__).resolve().parents[3]
-FAST = {"steps": 25, "resample_r": 0, "checker_budget": 1000}      # app default: seconds, not minutes (measured, reports/app/latency.json)
-FULL = {"steps": 50, "resample_r": 2, "checker_budget": 20000}
+_C = appcfg.load()                                              # configs/generate/app.yaml
+FAST = dict(_C["modes"]["fast"])        # app default: seconds, not minutes (measured, reports/app/latency.json)
+FULL = dict(_C["modes"]["full"])
 
 
 @dataclass
@@ -52,8 +54,8 @@ def default_ckpt() -> Path | None:
     return None
 
 
-MAX_PROMPT_CHARS = 400
-VALID_WIDTHS = (16, 48, 80, 112)
+MAX_PROMPT_CHARS = int(_C["validation"]["max_prompt_chars"])
+VALID_WIDTHS = tuple(_C["widths"])
 
 
 def validate_prompt(text) -> tuple[bool, str]:
@@ -73,8 +75,8 @@ def validate_prompt(text) -> tuple[bool, str]:
 def validate_settings(seed, w, width) -> tuple[bool, str]:
     if not isinstance(seed, int) or isinstance(seed, bool) or not 0 <= seed <= 2**53 - 1:
         return False, "The seed must be an integer between 0 and 2^53-1."
-    if not isinstance(w, (int, float)) or isinstance(w, bool) or not 1.0 <= float(w) <= 10.0:
-        return False, "The prompt strength (CFG w) must be between 1 and 10."
+    if not isinstance(w, (int, float)) or isinstance(w, bool) or not float(_C["cfg"]["min_w"]) <= float(w) <= float(_C["cfg"]["max_w"]):
+        return False, "The prompt strength (CFG w) must be between {} and {}.".format(_C["cfg"]["min_w"], _C["cfg"]["max_w"]) + ""
     if width not in VALID_WIDTHS:
         return False, f"The width must be one of {VALID_WIDTHS}."
     return True, ""
@@ -106,7 +108,7 @@ class LevelService:
             if not ok:
                 raise ValueError(msg)
         s = FAST if (fast or self.fast_forced) else FULL
-        budget = time_budget_s if time_budget_s is not None else (45.0 if self.profile == "cloud" else None)
+        budget = time_budget_s if time_budget_s is not None else (float(_C["cloud"]["time_budget_s"]) if self.profile == "cloud" else None)
         t0 = time.time()
         lvl = generate(self.bundle, text, seed=seed, w=w, width=width, steps=s["steps"], resample_r=s["resample_r"],
                        device=self.device, verify=verify, profile=self.profile, time_budget_s=budget, checker_budget=s["checker_budget"])

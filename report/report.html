@@ -88,7 +88,7 @@ control-character prompts and out-of-range settings with a readable message inst
 48 columns 4.8 s median (p95 15.3 s), 112 columns 12.9 s (p95 58.4 s) on the RTX 3060 Ti; CPU fast mode 3.9 s and 25.9 s; cold start 3.6 s.
 Full quality (50 steps, resampling) takes 35.5 s and 167.3 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is <strong>not met</strong>;
 the long p95 comes from levels the checker cannot verify, which use the whole retry budget.</p>
-<p><strong>Engineering.</strong> 255 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
+<p><strong>Engineering.</strong> 257 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.
 Bugs found by this process and fixed (each with a regression test): an LRU-cache eviction that crashed long training runs, a CPU/CUDA generator mismatch that crashed resampling,
 a pluralisation bug that corrupted caption augmentation ("bad guies"), and a detector crash on generated rows without floor.</p>
@@ -713,7 +713,7 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 </thead>
 <tbody>
 <tr>
-<td>255 fast automated tests passing</td>
+<td>257 fast automated tests passing</td>
 <td><code>tests/</code>, <code>reports/testing/pytest_summary.json</code></td>
 </tr>
 <tr>

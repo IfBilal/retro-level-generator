@@ -21,12 +21,10 @@ import streamlit as st  # noqa: E402
 
 st.set_page_config(page_title="text2mario", page_icon=":video_game:", layout="wide")
 
-EXAMPLES = [
-    "full floor with two pipes and a few enemies",
-    "flat ground, one pipe, then several coins and a staircase",
-    "an underground level: three platforms, then a cannon and two enemies",
-    "mostly pits with two islands of ground, then a coin line",
-]
+from text2mario.utils import appcfg  # noqa: E402
+
+CFG = appcfg.load()                    # configs/generate/app.yaml
+EXAMPLES = CFG["examples"]
 
 
 @st.cache_resource(show_spinner="Loading the model...")
@@ -73,8 +71,8 @@ def studio() -> None:
             if st.button(ex, key=f"ex{i}", width="stretch"):
                 st.session_state.prompt = ex
         st.text_area("Your sentence", key="prompt", height=110)
-        w = st.slider("Prompt strength (CFG w)", 1.0, 10.0, float(st.session_state.get("default_w", 5.0)), 0.5)
-        width = st.select_slider("Width (tiles of generated content)", options=[16, 48, 80, 112], value=48)
+        w = st.slider("Prompt strength (CFG w)", float(CFG["cfg"]["min_w"]), float(CFG["cfg"]["max_w"]), float(CFG["cfg"]["default_w"]), 0.5)
+        width = st.select_slider("Width (tiles of generated content)", options=list(CFG["widths"]), value=CFG["default_width"])
         if "seed" not in st.session_state:
             st.session_state.seed = 1234
         c1, c2 = st.columns([3, 1])

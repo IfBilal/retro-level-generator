@@ -29,8 +29,15 @@ from text2mario.playability.physics import Physics
 from text2mario.render.renderer import grid_to_tensor, tensor_to_grid
 from text2mario.render.schema import make_level, validate_level
 from text2mario.text.normalizer import normalize
+from text2mario.utils import appcfg
 
-WINDOW, STRIDE = 16, 8
+_C = appcfg.load()
+WINDOW, STRIDE = int(_C["window"]), int(_C["stride"])     # configs/generate/app.yaml (drill 5)
+
+
+def overlap() -> int:
+    """Columns a window shares with the previous one (the known region)."""
+    return WINDOW - STRIDE
 FORBID_WORDS = {"enemy": "enem", "pipe": "pipe", "cannon": "cannon", "coin": "coin", "platform": "platform",
                 "question block": "question block", "loose block": "loose block", "tower": "tower"}
 
@@ -61,10 +68,10 @@ def sample_window(bundle, caption: str, w: float, steps: int, r: int, gen_seed: 
     known = None
     if known_cols is not None:
         full = np.zeros((WINDOW, WINDOW), np.uint8)
-        full[:, :STRIDE] = known_cols
+        full[:, :overlap()] = known_cols
         x0 = grid_to_tensor(full)[None]                           # (1, 13, 16, 16) in {-1, +1}
         m = torch.zeros(1, 1, WINDOW, WINDOW)
-        m[..., :STRIDE] = 1.0
+        m[..., :overlap()] = 1.0
         known = (x0, m)
     x, _ = ddim_sample(unet, sched, (1, 13, WINDOW, WINDOW), ctx_c=ctx_c, mask_c=mask_c, ctx_u=ctx_u, mask_u=mask_u, w=w,
                        steps=steps, generator=g, known=known, resample_r=r if known is not None else 0, device=device,
@@ -85,12 +92,12 @@ def _forbidden_hit(grid: np.ndarray, forbid: list[str]) -> bool:
 
 
 def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, steps: int = 50, resample_r: int = 2,
-             device: str = "cuda", verify: bool = True, physics: Physics | None = None, max_window_attempts: int = 5,
-             max_total_attempts: int = 20, time_budget_s: float | None = None, profile: str = "local",
+             device: str = "cuda", verify: bool = True, physics: Physics | None = None, max_window_attempts: int = int(_C["verify"]["max_window_attempts"]),
+             max_total_attempts: int = int(_C["verify"]["max_total_attempts"]), time_budget_s: float | None = None, profile: str = "local",
              meta: dict | None = None, enemies: str = "ignore", checker_budget: int = 20000) -> dict:
     """Prompt -> level dict.  `bundle` = eval.generate.load_ema_conditional(...) result (unet, schedule, cond, cfg, state)."""
     t0 = time.time()
-    assert width in (16, 48, 80, 112), "widths offered: 16, 48, 80, 112 (G2)"
+    assert width in _C["widths"], f"widths offered: {_C['widths']} (G2, configs/generate/app.yaml)"
     norm = normalize(text)
     scenes = [s.caption for s in norm.scenes] or [""]            # an empty prompt generates an unconditioned level
     forbid = sorted({f for s in norm.scenes for f in s.forbid})
@@ -103,7 +110,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
 
     def regen_from(k0: int):
         for k in range(k0, n):
-            known = windows[k - 1][:, STRIDE:] if k > 0 else None
+            known = windows[k - 1][:, STRIDE:] if k > 0 else None      # the previous window's last (window - stride) columns
             windows[k] = sample_window(bundle, scenes[scene_of[k]], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device)
 
     regen_from(0)

@@ -69,9 +69,15 @@
   "test_run/eval_plan.json": "714d3f55a997e98d2b832e990be072494009fa140b2cce8436aa9e67ed05f938",
   "test_run/FROZEN.json": "b0d76a30c983440b52e28c21e87049d01b0332bfa0f9eb6faee597ace66bc889",
   "test_run/test_invocations.jsonl": "e05e214c1bf1563ccd0b9bc2070f785f00599a57f4bb37edc3b426feecabab7b",
-  "testing/pytest_fast.log": "951d49349ec540a6fb78215d711361fe141332714780ee9f26cc7f1b10280ec7",
-  "testing/pytest_slow.log": "eee4e8cdd3a7a4a604973af46bc5070be49b69a251a4ea4f78db359ef13ebf70",
-  "testing/pytest_summary.json": "443798323e6362676e0738831ec70e2bf864e4c8c6893015144e6a5b285a5d4b"
+  "testing/pytest_fast.log": "ad8d28605e99a4f29f7e49fbb97a01b1f9eaaec42ed2c7eee507a7d31b66872d",
+  "testing/pytest_slow.log": "2475af6facd4318c5daa1c0e36d711b7c360cb93bc540a27c526e7f3c1af4c09",
+  "testing/pytest_summary.json": "826e2430e274170ab87c671554f2a73ca3d7ffba40faa7d73ce83126ee286dca"
  },
- "pytest": null
+ "pytest": {
+  "passed": 257,
+  "failed": 0,
+  "total": 257,
+  "summary_line": "257 passed, 1 skipped, 9 deselected in 32.05s",
+  "slow_suite": "9 passed, 258 deselected in 141.57s (0:02:21)"
+ }
 }

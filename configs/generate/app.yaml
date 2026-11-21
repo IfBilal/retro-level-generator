@@ -1,0 +1,20 @@
+# Generation and app settings (CLAUDE.md rule 4: numbers live in configs).  Live-modification drills 1, 5, 7, 8, 9, 14, 18 edit this file.
+window: 16            # model window width (fixed by the trained U-Net; do not change)
+stride: 8             # columns the window advances; overlap = window - stride (drill 5: try 4, then check the seam ratio and the time)
+cfg:
+  default_w: 7.5      # frozen guidance scale (FROZEN.json)
+  min_w: 1.0
+  max_w: 10.0
+widths: [16, 48, 80, 112]   # generated content columns offered in the app (drill 9: add 64 -> (64-16)/8+1 = 7 windows)
+default_width: 48
+modes:
+  fast: {steps: 25, resample_r: 0, checker_budget: 1000}     # app default; forced without CUDA
+  full: {steps: 50, resample_r: 2, checker_budget: 20000}    # drills 7 and 8: change steps / resample_r
+verify: {max_window_attempts: 5, max_total_attempts: 20}      # ledger G5
+validation: {max_prompt_chars: 400}
+cloud: {time_budget_s: 45}                                    # drill 18: lower it to trigger the 'time budget' fallback
+examples:                                                     # drill 14: add a chip
+  - "full floor with two pipes and a few enemies"
+  - "flat ground, one pipe, then several coins and a staircase"
+  - "an underground level: three platforms, then a cannon and two enemies"
+  - "mostly pits with two islands of ground, then a coin line"

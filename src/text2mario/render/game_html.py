@@ -42,7 +42,7 @@ def build_game_html(level: dict) -> str:
 <title>text2mario - {lvl['level_id']}</title>
 <style>html,body{{margin:0;background:#1b2330;color:#fff;font-family:system-ui,sans-serif}}
 #wrap{{position:relative;width:800px;max-width:100%;margin:0 auto}}canvas{{display:block;width:100%!important;height:auto!important;image-rendering:pixelated;outline:none}}
-#focus{{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000a;cursor:pointer;font-size:20px;text-align:center}}
+#focus{{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000a;cursor:pointer;font-size:20px;text-align:center}}
 #help{{font-size:13px;text-align:center;padding:6px;opacity:.85}}</style></head>
 <body><div id="wrap"><div id="game"></div><div id="focus">Click to play<br><small>arrows / WASD move, Space jump, Shift run, R restart</small></div></div>
 <div id="help">Arrows or A/D to move, Space or Up to jump, Shift to run. Stomp enemies from above; reach the flag.</div>

@@ -15,7 +15,10 @@ from collections import Counter
 
 import numpy as np
 
-SEAM_START, SEAM_STEP = 16, 8
+from text2mario.utils import appcfg  # noqa: E402
+
+_C = appcfg.load()
+SEAM_START, SEAM_STEP = int(_C["window"]), int(_C["stride"])     # a new window's right part joins at column window, window+stride, ...
 
 
 class ColumnBigram:
