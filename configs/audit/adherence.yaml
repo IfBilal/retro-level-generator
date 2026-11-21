@@ -64,3 +64,15 @@ adversarial:
   - {id: adv_gibberish, text: "asdf qwerty zxcv lkjh", must: warn}
   - {id: adv_foreign, text: "dos tuberias y tres monedas", must: warn}
   - {id: adv_unknown_words, text: "flibber the glorp and snazzle", must: warn}
+# held-out prompts: written before any tuning round, NEVER used to choose settings; run with --fresh-prompts and the fresh seeds
+prompts_fresh:
+  - {id: fr_mix1, cat: fresh, text: "one pipe, then three coins, then one enemy", expect: [{pipe: [1, 1]}, {coin: [3, 3]}, {enemy: [1, 1]}], order: [pipe, coin, enemy]}
+  - {id: fr_mix2, cat: fresh, text: "two platforms and one question block", expect: [{platform: [2, 2], question block: [1, 1]}]}
+  - {id: fr_mix3, cat: fresh, text: "a staircase and two pipes", expect: [{staircase: [1, 1], pipe: [2, 2]}]}
+  - {id: fr_mix4, cat: fresh, text: "three enemies and no pipes", expect: [{enemy: [3, 3], pipe: [0, 0]}]}
+  - {id: fr_mix5, cat: fresh, text: "one tower, then one cannon", expect: [{tower: [1, 1]}, {cannon: [1, 1]}], order: [tower, cannon]}
+  - {id: fr_mix6, cat: fresh, text: "two question blocks, then a coin line", expect: [{question block: [2, 2]}, {coin line: [1, 1]}], order: [question block, coin line]}
+  - {id: fr_mix7, cat: fresh, text: "several coins and one platform", expect: [{coin: [5, 9], platform: [1, 1]}]}
+  - {id: fr_mix8, cat: fresh, text: "a warp pipe, then two goombas", expect: [{pipe: [1, 1]}, {enemy: [2, 2]}], order: [pipe, enemy]}
+  - {id: fr_mix9, cat: fresh, text: "make me a level with exactly three pipes", expect: [{pipe: [3, 3]}]}
+  - {id: fr_mix10, cat: fresh, text: "no enemies, just two platforms", expect: [{enemy: [0, 0], platform: [2, 2]}]}

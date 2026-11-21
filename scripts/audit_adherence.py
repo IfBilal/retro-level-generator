@@ -31,7 +31,7 @@ from text2mario.text.normalizer import normalize  # noqa: E402
 CFG = yaml.safe_load((ROOT / "configs/audit/adherence.yaml").read_text(encoding="utf-8"))
 TOPICS = CFG["topics"]
 LEAD = 3                                                   # spawn columns before the generated content (generate/framing.py)
-TARGET = {"count": 0.9, "example": 1.0, "phrasing": 0.9, "negation": 1.0, "ordering": 1.0, "two_scene_counts": 0.9, "synonym": 0.9}
+TARGET = {"fresh": 0.9, "count": 0.9, "example": 1.0, "phrasing": 0.9, "negation": 1.0, "ordering": 1.0, "two_scene_counts": 0.9, "synonym": 0.9}
 
 
 def build_prompts():
@@ -86,10 +86,20 @@ def run_adversarial(svc, p, seeds, width, clean_html_closers):
     text = p["text"] * p.get("repeat", 1)
     must = p["must"]
     if must == "warn":
+        # pass = the service refuses with a clear message, OR a level comes back AND the UI-visible signals say the sentence was not (fully)
+        # understood (top-level warnings, ignored words, or no recognised scene).  A silent reinterpretation ("-3 pipes" -> "two pipes") fails.
         n = normalize(text)
         flagged = bool(n.warnings) or bool(n.ignored_tokens) or not n.scenes
-        rows.append({"id": p["id"], "cat": "adversarial", "text": text[:60], "seed": None, "status": "ok", "ok": flagged,
-                     "details": {"must": "warn", "scenes": [s.caption for s in n.scenes], "warnings": n.warnings, "ignored": n.ignored_tokens[:5]}})
+        row = {"id": p["id"], "cat": "adversarial", "text": text[:60], "seed": seeds[0], "status": "ok",
+               "details": {"must": "warn", "scenes": [s.caption for s in n.scenes], "warnings": n.warnings, "ignored": n.ignored_tokens[:5]}}
+        try:
+            svc.run(text, seed=seeds[0], w=CFG["defaults"]["w"], width=width, fast=True)
+            row["ok"] = flagged
+        except ValueError as e:
+            row.update(status="rejected", ok=True, message=str(e)[:160])
+        except Exception as e:  # noqa: BLE001
+            row.update(status="error", ok=False, message=f"{type(e).__name__}: {e}")
+        rows.append(row)
         return rows
     for seed in (seeds[:1] if must in ("reject", "inject") else seeds[:2]):
         row = {"id": p["id"], "cat": "adversarial", "text": text[:60], "seed": seed, "details": {"must": must}}
@@ -166,6 +176,7 @@ def main():
     ap.add_argument("--width", type=int, default=CFG["defaults"]["width"])
     ap.add_argument("--n-seeds", type=int, default=None)
     ap.add_argument("--no-adversarial", action="store_true")
+    ap.add_argument("--fresh-prompts", action="store_true", help="run the held-out prompt set (configs/audit/adherence.yaml prompts_fresh) instead")
     ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
     seeds = CFG["seeds_baseline"] if a.seeds == "baseline" else CFG["seeds_fresh"] if a.seeds == "fresh" else [int(x) for x in a.seeds.split(",")]
@@ -173,7 +184,9 @@ def main():
     out = ROOT / "reports/audit" / a.label
     out.mkdir(parents=True, exist_ok=True)
     svc = LevelService()
-    prompts = build_prompts()
+    prompts = CFG["prompts_fresh"] if a.fresh_prompts else build_prompts()
+    if a.fresh_prompts:
+        a.no_adversarial = True
     if a.only:
         prompts = [p for p in prompts if p["cat"] in a.only.split(",")]
     if a.ids:

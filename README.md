@@ -1,5 +1,7 @@
 # text2mario: type a sentence, play a verified level
 
+**Live app (Streamlit Community Cloud): https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/**
+
 Text-to-Mario-level diffusion project (Path A, Streamlit): a typed sentence becomes a full, framed, **checked** and **playable** level.
 Specs and the day-by-day plan are in [docs/](docs/) (start at [docs/README.md](docs/README.md)); the grading rubric is
 [docs/Rubrics_SoftwareCategory.pdf](docs/Rubrics_SoftwareCategory.pdf); the running log is [PROGRESS.md](PROGRESS.md).
