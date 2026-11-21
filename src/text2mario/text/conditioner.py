@@ -68,6 +68,9 @@ class TextConditioner(nn.Module):
     @torch.no_grad()
     def encode_frozen(self, captions: list[str]) -> list[torch.Tensor]:
         """List of (L_i, 384) token states (CPU, encoder dtype), via the string-keyed LRU cache."""
+        for c in dict.fromkeys(captions):      # hits of THIS request become most-recent first, so evicting the oldest
+            if c in self._cache:               # entries below can never remove a caption we are about to return
+                self._cache.move_to_end(c)
         misses = [c for c in dict.fromkeys(captions) if c not in self._cache]
         self.cache_stats["hits"] += len(captions) - sum(c in set(misses) for c in captions)
         self.cache_stats["misses"] += sum(c in set(misses) for c in captions)
@@ -80,7 +83,7 @@ class TextConditioner(nn.Module):
                 v = hs[i, :n].detach().cpu()
                 self._cache[c] = v
                 self._cache_bytes += v.numel() * v.element_size()
-            while self._cache_bytes > self._cache_cap and len(self._cache) > 1:
+            while self._cache_bytes > self._cache_cap and len(self._cache) > len(set(captions)):
                 _, old = self._cache.popitem(last=False)
                 self._cache_bytes -= old.numel() * old.element_size()
                 self.cache_stats["evictions"] += 1

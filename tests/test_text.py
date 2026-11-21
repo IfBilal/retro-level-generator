@@ -112,3 +112,14 @@ def test_t8_surface_form_of_stored_captions():
     pat = re.compile(r"^([a-z ]+\. )*[a-z ]+\.$")
     caps = pd.read_parquet(ROOT / "data/processed/index.parquet").caption.unique()
     assert all(pat.match(c) for c in caps)
+
+
+def test_cache_eviction_never_drops_a_caption_of_the_current_batch():
+    """Regression (found in the first conditional run): a full cache evicted batch hits -> KeyError in encode_frozen."""
+    c = TextConditioner(cache_max_mb=1)
+    c._cache_cap = 30_000                                      # room for only a few captions
+    batch = [f"{i + 1} pipes. one enemy." for i in range(6)]
+    c.encode_frozen(batch)
+    for _ in range(20):                                        # same hits + new misses each call, cache always full
+        out = c.encode_frozen(batch[:4] + [f"new {_} caption. one coin."])
+        assert len(out) == 5

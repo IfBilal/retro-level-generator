@@ -29,6 +29,14 @@ def make_betas(kind: str, T: int = 1000, beta_min: float = 1e-4, beta_max: float
     raise ValueError(f"unknown schedule {kind!r}")
 
 
+def _randn_like(x: torch.Tensor, generator: torch.Generator | None) -> torch.Tensor:
+    """Gaussian noise shaped like x.  A CPU generator draws on the CPU and is moved to x's device (portable seeds, NFR-REP-04);
+    drawing straight on CUDA with a CPU generator is an error in torch."""
+    if generator is None or generator.device.type == x.device.type:
+        return torch.randn(x.shape, generator=generator, dtype=x.dtype, device=x.device)
+    return torch.randn(x.shape, generator=generator, dtype=x.dtype).to(x.device)
+
+
 class DiffusionSchedule:
     def __init__(self, kind: str = "linear", T: int = 1000, device: str | torch.device = "cpu"):
         self.kind, self.T = kind, T
@@ -90,7 +98,7 @@ class DiffusionSchedule:
         """Ancestral step x_t -> x_{t-1}; at t = 0 no noise is added (variance is 0) and the result is x0-hat."""
         mean = (x_t - self._g("betas", t, x_t) / self._g("sqrt_1m_ab", t, x_t) * eps_hat) / self._g("alphas", t, x_t).sqrt()
         var = self._g("posterior_variance", t, x_t)
-        z = torch.randn(x_t.shape, generator=generator, dtype=x_t.dtype, device=x_t.device)
+        z = _randn_like(x_t, generator)
         return mean + var.sqrt() * z
 
     # ------------------------------------------------------------ DDIM (doc 13 §7.2-7.3)
@@ -110,7 +118,7 @@ class DiffusionSchedule:
         coef = (1 - ab_s - sigma ** 2).clamp(min=0).sqrt()
         out = ab_s.sqrt() * x0 + coef * eps_hat
         if eta > 0:
-            out = out + sigma * torch.randn(x_t.shape, generator=generator, dtype=x_t.dtype, device=x_t.device)
+            out = out + sigma * _randn_like(x_t, generator)
         return out
 
     # ------------------------------------------------------------ RePaint jump back (doc 13 §9)
@@ -118,5 +126,5 @@ class DiffusionSchedule:
         """Jump from the level of s back up to the (noisier) level of t, s < t:
         x_t = sqrt(ab_t/ab_s) x_s + sqrt(1 - ab_t/ab_s) z."""
         ratio = self.ab(t, x_s) / self.ab(s, x_s)
-        z = torch.randn(x_s.shape, generator=generator, dtype=x_s.dtype, device=x_s.device)
+        z = _randn_like(x_s, generator)
         return ratio.sqrt() * x_s + (1 - ratio).sqrt() * z

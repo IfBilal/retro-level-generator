@@ -45,6 +45,11 @@ def test_no_floor_phrase_when_all_passable():
     assert caption(grid([])) == ""
 
 
+def test_bottom_row_of_enemies_only_has_no_floor_phrase():
+    """Regression: a generated bottom row with no solid cell and not all passable must not crash (was quantity_word(0))."""
+    assert "floor" not in caption(grid(["E" * 16])), "no floor phrase expected"
+
+
 def test_floor_gaps_are_counted_as_runs():
     assert caption(grid(["XXXX--XXXXXXXXXX"])) == "floor with one gap."
     assert caption(grid(["XXX--XXX--XXXXXX"])) == "floor with two gaps."

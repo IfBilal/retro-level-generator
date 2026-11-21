@@ -22,7 +22,7 @@ def parse_entry(entry: str) -> tuple[str, str]:
     if "|" in entry:
         sg, pl = entry.split("|", 1)
         return sg, sg if pl == "=" else pl
-    return entry, (entry[:-1] + "ies" if entry.endswith("y") and not entry.endswith(("ay", "ey", "oy")) else entry + "s")
+    return entry, (entry[:-1] + "ies" if entry.endswith("y") and not entry.endswith(("ay", "ey", "oy", "uy")) else entry + "s")
 
 
 @dataclass(frozen=True)

@@ -93,6 +93,8 @@ def _floor_phrase(row: np.ndarray):
         n = len(_runs(~solid))
         return "floor", f"floor with {quantity_word(n)} {gap_word(n)}", n
     n = len(_runs(solid))  # mostly holes: count the floor chunks
+    if n == 0:  # no solid cell at all (only in generated samples, e.g. enemies only): no floor phrase
+        return None
     return "floor", f"giant gap with {quantity_word(n)} chunk{'' if n == 1 else 's'} of floor", n
 
 

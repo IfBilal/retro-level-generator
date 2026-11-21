@@ -60,3 +60,16 @@ def test_unconditional_model_samples_without_context():
     m = build_unet({"base_channels": 16, "zero_init": False}, conditional=False).eval()
     out, _ = ddim_sample(m, DiffusionSchedule("linear"), (2, 13, 16, 16), steps=3, generator=torch.Generator().manual_seed(0))
     assert out.shape == (2, 13, 16, 16) and torch.isfinite(out).all()
+
+
+def test_renoise_and_ddim_noise_with_cpu_generator_on_any_device():
+    """Regression: a CPU generator must work for resampling noise when the tensors live on CUDA (found in the app run)."""
+    import torch
+    from text2mario.diffusion.scheduler import DiffusionSchedule
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    sch = DiffusionSchedule("linear", 1000, dev)
+    x = torch.randn(2, 13, 16, 16, device=dev)
+    g1, g2 = torch.Generator().manual_seed(5), torch.Generator().manual_seed(5)
+    a = sch.renoise(x, torch.tensor([100, 100], device=dev), torch.tensor([300, 300], device=dev), g1)
+    b = sch.renoise(x, torch.tensor([100, 100], device=dev), torch.tensor([300, 300], device=dev), g2)
+    assert torch.equal(a, b) and a.device.type == dev
