@@ -27,6 +27,7 @@ adherence:
   verify: true           # resample windows until the raw level satisfies the parsed counts (or the budget ends)
   max_attempts: 16       # adherence resamples per level (the playability loop keeps its own max_total_attempts)
   max_extra_draws: 40    # hard cap on EXTRA window draws spent on counts per level (a seed that cannot be satisfied costs at most ~this many draws)
+  batch_tries: 16        # CUDA only: candidate windows drawn in ONE forward pass, the first exact (or closest) is kept; 1 = off (CPU/cloud uses max_window_tries)
   max_window_tries: 8    # a window is redrawn up to this many times until its NEW columns hold exactly what the plan asked for
   neutral_caption: "full floor."
   default_floor: "full floor"   # added to a window caption that has no floor phrase (measured to raise exact-count rates); "" = off

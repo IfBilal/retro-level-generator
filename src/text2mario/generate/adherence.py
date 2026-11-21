@@ -127,6 +127,11 @@ def plan_caption(scene, scene_caption: str, k: int, first_k: int, last_k: int, c
     return "".join(p + ". " for p in phrases).strip() or str(_A["neutral_caption"]), plan
 
 
+def has_constraints(scene) -> bool:
+    """Does this scene ask for (or rule out) any counted topic?  Scenes with only floor/ceiling phrases need no count check."""
+    return bool(scene.forbid and any(t in COUNTED for t in scene.forbid)) or bool(scene.want)
+
+
 def window_miss(win: np.ndarray, k: int, scene, plan: dict) -> int:
     """How far window k is from its plan in its NEW columns: sum over requested topics of |added - planned|, plus every object of a
     forbidden topic.  0 = exactly what was asked.  Cheap local check used to redraw just this window (evaluate() stays the final judge)."""

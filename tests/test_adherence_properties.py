@@ -405,3 +405,64 @@ def test_unsatisfiable_request_has_a_hard_bounded_cost(monkeypatch, width):
     assert len(calls) <= n + cap + n + int(A._A["max_window_tries"])          # first draw per window + capped extras + one last regeneration
     adh = lvl["verification"]["adherence"]
     assert adh["status"] == "unmet" and adh["draw_cap"] == cap and lvl["verification"]["reason"] == "adherence budget exhausted"
+
+
+# ----------------------------------------------------------------------------------------------- batched candidates (CUDA path, stubbed)
+def _batch_stub(monkeypatch, pipes_per_candidate):
+    """sample_window_batch stub: candidate i gets pipes_per_candidate[i] pipes in the new columns; sample_window must NOT be used."""
+    seen = []
+
+    def fake_batch(bundle, caption, w, steps, r, gen_seed, known_cols, device, n):
+        seen.append(n)
+        out = []
+        for i in range(n):
+            g = flat()
+            if known_cols is not None:
+                g[:, :known_cols.shape[1]] = known_cols
+            for p in range(pipes_per_candidate[i % len(pipes_per_candidate)]):
+                add_pipe(g, 2 + 5 * p if known_cols is None else 9 + 4 * p)
+            out.append(g)
+        return np.stack(out)
+
+    def no_single(*a, **k):
+        raise AssertionError("the sequential sampler must not run on the batch path")
+
+    monkeypatch.setattr(FL, "sample_window_batch", fake_batch)
+    monkeypatch.setattr(FL, "sample_window", no_single)
+    return seen
+
+
+def test_batch_path_keeps_the_exact_candidate(monkeypatch):
+    seen = _batch_stub(monkeypatch, [0, 2, 3, 0, 0, 1, 2, 0])                       # only candidate 5 (and 13) has exactly one pipe
+    lvl = FL.generate(None, "one pipe", seed=1, width=16, device="cuda")
+    assert lvl["verification"]["adherence"]["status"] == "met" and _count_pipes(lvl) == 1
+    assert seen == [int(A._A["batch_tries"])]                                       # ONE forward pass for the whole window
+
+
+def test_batch_path_keeps_the_closest_when_none_is_exact(monkeypatch):
+    seen = _batch_stub(monkeypatch, [3, 0, 3, 3])                                   # want 1: the 0-pipe candidate misses by 1, the 3-pipe ones by 2
+    lvl = FL.generate(None, "one pipe", seed=1, width=16, device="cuda", verify=True)
+    assert lvl["verification"]["adherence"]["constraints"][0]["got"] in (0, 3) and seen
+    assert lvl["verification"]["adherence"]["window_redraws"] >= 1
+
+
+def test_batch_path_is_skipped_for_scenes_without_counts_and_when_out_of_time(monkeypatch):
+    seen = _batch_stub(monkeypatch, [1])
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())
+    FL.generate(None, "full floor", seed=1, width=16, device="cuda")
+    assert seen == []                                                               # a floor-only scene has nothing to count
+    FL.generate(None, "one pipe", seed=1, width=16, device="cuda", time_budget_s=-1.0)      # already expired (a 1e-9 budget can tie with the clock tick)
+    assert seen == []                                                               # time guard: no batch is started after the budget
+
+
+def test_cpu_never_uses_the_batch_path(monkeypatch):
+    seen = _batch_stub(monkeypatch, [1])
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())
+    FL.generate(None, "one pipe", seed=1, width=16, device="cpu")
+    assert seen == []
+
+
+def _count_pipes(lvl):
+    from text2mario.eval.count_audit import objects_by_topic
+    raw = np.array(lvl["raw_grid"], dtype=np.uint8)[:, 3:3 + lvl["generation"]["width"]]
+    return len(objects_by_topic(raw, {"pipe": {"det": ["pipe", "upside down pipe", "broken pipe"]}})["pipe"])

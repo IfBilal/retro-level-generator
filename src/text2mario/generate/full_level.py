@@ -79,6 +79,29 @@ def sample_window(bundle, caption: str, w: float, steps: int, r: int, gen_seed: 
     return tensor_to_grid(x)[0]
 
 
+@torch.no_grad()
+def sample_window_batch(bundle, caption: str, w: float, steps: int, r: int, gen_seed: int, known_cols: np.ndarray | None,
+                        device: str, n: int) -> np.ndarray:
+    """n candidate windows for the SAME caption and known columns in ONE forward pass -> uint8 (n, 16, 16).  On a GPU this costs little more than one
+    window, so the adherence loop can pick an exact one from many instead of redrawing one at a time.  Deterministic for (seed, n)."""
+    unet, sched, cond = bundle[0], bundle[1], bundle[2]
+    g = torch.Generator().manual_seed(gen_seed)
+    ctx_c, mask_c = cond([caption] * n)
+    ctx_u, mask_u = cond.null(n)
+    known = None
+    if known_cols is not None:
+        full = np.zeros((WINDOW, WINDOW), np.uint8)
+        full[:, :overlap()] = known_cols
+        x0 = grid_to_tensor(full)[None]
+        m = torch.zeros(1, 1, WINDOW, WINDOW)
+        m[..., :overlap()] = 1.0
+        known = (x0, m)
+    x, _ = ddim_sample(unet, sched, (n, 13, WINDOW, WINDOW), ctx_c=ctx_c, mask_c=mask_c, ctx_u=ctx_u, mask_u=mask_u, w=w, steps=steps,
+                       generator=g, known=known, resample_r=r if known is not None else 0, device=device,
+                       autocast_dtype=torch.bfloat16 if device == "cuda" else None)
+    return tensor_to_grid(x)
+
+
 def _assemble(windows: list[np.ndarray], width: int) -> np.ndarray:
     out = np.zeros((16, width), np.uint8)
     for k, wg in enumerate(windows):
@@ -109,6 +132,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     adh_verify = use_adh and verify and bool(adherence._A["verify"])      # verify=False skips every check, including this one
     adh_max = int(adherence._A["max_attempts"])
     adh_tries = int(adherence._A["max_window_tries"])
+    adh_batch = int(adherence._A["batch_tries"])                    # candidates per window in one GPU pass (1 = off; CPU always uses sequential redraws)
     adh_draw_cap = int(adherence._A["max_extra_draws"])             # hard, deterministic cap on window draws spent on counts (bounds latency)
     local_resamples = 0
     adh_draws = 0                                                   # extra window draws caused by adherence (local redraws + whole-level resamples)
@@ -134,12 +158,23 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         for k in range(k0, n):
             known = windows[k - 1][:, STRIDE:] if k > 0 else None      # the previous window's last (window - stride) columns
             win_caps[k], plan = caption_for(k)
-            tries = adh_tries if use_adh and adh_verify else 1
+            scene_k = norm.scenes[scene_of[k]] if use_adh else None
+            checked = bool(use_adh and adh_verify and adherence.has_constraints(scene_k))
+            tries = adh_tries if checked else 1
             best, best_miss = None, None
+            if checked and device == "cuda" and adh_batch > 1 and not (time_budget_s and time.time() - t0 > time_budget_s):
+                cands = sample_window_batch(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device, adh_batch)
+                misses = [adherence.window_miss(c, k, scene_k, plan) for c in cands]
+                j = int(np.argmin(misses))                             # the first candidate with the fewest misses (0 = exact)
+                best, best_miss = cands[j], misses[j]
+                if best_miss > 0:
+                    local_resamples += 1
+                    adh_draws += 1
+                tries = 0
             for a in range(tries):                                     # local rejection sampling: only THIS window is redrawn
                 seed_idx = attempts[k] * tries + a if use_adh else attempts[k]
                 win = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, seed_idx), known, device)
-                miss = adherence.window_miss(win, k, norm.scenes[scene_of[k]], plan) if tries > 1 else 0
+                miss = adherence.window_miss(win, k, scene_k, plan) if tries > 1 else 0
                 if best is None or miss < best_miss:
                     best, best_miss = win, miss                        # keep the closest draw if none is exact
                 if miss == 0 or adh_draws >= adh_draw_cap or (time_budget_s and time.time() - t0 > time_budget_s):
