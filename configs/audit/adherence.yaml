@@ -1,0 +1,66 @@
+# Adherence audit settings (scripts/audit_adherence.py).  Quantity ranges follow ledger F15 / caption grammar (one=1, two=2, a few=3-4, several=5-9, many>=10).
+defaults: {width: 48, w: 7.5, fast: true}
+seeds_baseline: [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009]
+seeds_fresh: [5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009]      # never used while tuning
+quantity_ranges: {zero: [0, 0], one: [1, 1], two: [2, 2], three: [3, 3], a few: [3, 4], several: [5, 9], many: [10, 999]}
+# topic -> singular, plural, detector topics summed to get the count
+topics:
+  pipe: {sing: pipe, plur: pipes, det: [pipe, upside down pipe, broken pipe]}
+  enemy: {sing: enemy, plur: enemies, det: [enemy]}
+  coin: {sing: coin, plur: coins, det: [coin]}
+  cannon: {sing: cannon, plur: cannons, det: [cannon]}
+  platform: {sing: platform, plur: platforms, det: [platform]}
+  question block: {sing: question block, plur: question blocks, det: [question block]}
+  staircase: {sing: staircase, plur: staircases, det: [ascending staircase, descending staircase]}
+  tower: {sing: tower, plur: towers, det: [tower]}
+  coin line: {sing: coin line, plur: coin lines, det: [coin line]}
+count_grid: {topics: [pipe, enemy, coin, cannon, platform, question block, staircase, tower], counts: [0, 1, 2, 3]}
+# explicit prompts.  expect = one dict per scene: {topic: [lo, hi]} (counted in that scene's column region); order = topics left-to-right
+prompts:
+  - {id: ex_button_1, cat: example, text: "full floor with two pipes and a few enemies", expect: [{pipe: [2, 2], enemy: [3, 4]}]}
+  - {id: ex_button_2, cat: example, text: "flat ground, one pipe, then several coins and a staircase", expect: [{pipe: [1, 1]}, {coin: [5, 9], staircase: [1, 1]}], order: [pipe, coin]}
+  - {id: ex_button_3, cat: example, text: "an underground level: three platforms, then a cannon and two enemies", expect: [{platform: [3, 3]}, {cannon: [1, 1], enemy: [2, 2]}], order: [platform, cannon]}
+  - {id: ex_button_4, cat: example, text: "mostly pits with two islands of ground, then a coin line", expect: [{}, {coin line: [1, 1]}]}
+  - {id: ph_only_one, cat: phrasing, text: "only one pipe", expect: [{pipe: [1, 1]}]}
+  - {id: ph_single, cat: phrasing, text: "a single pipe", expect: [{pipe: [1, 1]}]}
+  - {id: ph_exactly_two, cat: phrasing, text: "exactly two pipes", expect: [{pipe: [2, 2]}]}
+  - {id: ph_just_2, cat: phrasing, text: "just 2 pipes", expect: [{pipe: [2, 2]}]}
+  - {id: ph_digit, cat: phrasing, text: "1 pipe", expect: [{pipe: [1, 1]}]}
+  - {id: ph_case, cat: phrasing, text: "one PIPE", expect: [{pipe: [1, 1]}]}
+  - {id: ph_spaces, cat: phrasing, text: "  one    pipe  ", expect: [{pipe: [1, 1]}]}
+  - {id: ph_punct, cat: phrasing, text: "One pipe!!!", expect: [{pipe: [1, 1]}]}
+  - {id: neg_no_pipes, cat: negation, text: "no pipes", expect: [{pipe: [0, 0]}]}
+  - {id: neg_without_pipes, cat: negation, text: "a flat level without pipes", expect: [{pipe: [0, 0]}]}
+  - {id: neg_two_pipes_no_enemies, cat: negation, text: "two pipes and no enemies", expect: [{pipe: [2, 2], enemy: [0, 0]}]}
+  - {id: neg_coins_no_enemies, cat: negation, text: "several coins and no enemies", expect: [{coin: [5, 9], enemy: [0, 0]}]}
+  - {id: ord_three, cat: ordering, text: "one pipe, then two enemies, then a cannon", expect: [{pipe: [1, 1]}, {enemy: [2, 2]}, {cannon: [1, 1]}], order: [pipe, enemy, cannon]}
+  - {id: ord_stair_tower, cat: ordering, text: "a staircase, then a tower", expect: [{staircase: [1, 1]}, {tower: [1, 1]}], order: [staircase, tower]}
+  - {id: ord_coin_pipe, cat: ordering, text: "several coins, then one pipe", expect: [{coin: [5, 9]}, {pipe: [1, 1]}], order: [coin, pipe]}
+  - {id: two_scene_same, cat: two_scene_counts, text: "one pipe, then two pipes", expect: [{pipe: [1, 1]}, {pipe: [2, 2]}]}
+  - {id: two_scene_same_enemy, cat: two_scene_counts, text: "one enemy, then three enemies", expect: [{enemy: [1, 1]}, {enemy: [3, 3]}]}
+  - {id: syn_tube, cat: synonym, text: "one tube", expect: [{pipe: [1, 1]}]}
+  - {id: syn_warp, cat: synonym, text: "one warp pipe", expect: [{pipe: [1, 1]}]}
+  - {id: syn_chimney, cat: synonym, text: "a chimney", expect: [{pipe: [1, 1]}]}
+  - {id: syn_tubes2, cat: synonym, text: "two tubes", expect: [{pipe: [2, 2]}]}
+  - {id: syn_goomba, cat: synonym, text: "one goomba", expect: [{enemy: [1, 1]}]}
+  - {id: syn_bullet, cat: synonym, text: "a bullet bill", expect: [{cannon: [1, 1]}]}
+  - {id: syn_ledges, cat: synonym, text: "two ledges", expect: [{platform: [2, 2]}]}
+  - {id: syn_stairway, cat: synonym, text: "a stairway", expect: [{staircase: [1, 1]}]}
+# input-safety prompts.  must: reject (ValueError from the service) | ok (a level or a clear message, no crash) | warn (normalizer warnings visible to the UI)
+# | inject (no raw payload in any export)
+adversarial:
+  - {id: adv_empty, text: "", must: reject}
+  - {id: adv_spaces, text: "     ", must: reject}
+  - {id: adv_long, text: "pipe ", repeat: 400, must: reject}
+  - {id: adv_control, text: "one pipe\u0000\u0007", must: reject}
+  - {id: adv_unicode, text: "one pipe パイプ éè中文", must: ok}
+  - {id: adv_emoji, text: "two pipes \U0001F344\U0001F525", must: ok}
+  - {id: adv_html, text: "<script>alert(1)</script> one pipe", must: inject, payload: "<script>alert(1)"}
+  - {id: adv_img, text: "<img src=x onerror=alert(1)> two pipes", must: inject, payload: "<img src=x onerror"}
+  - {id: adv_sql, text: "one pipe'; DROP TABLE levels;--", must: ok}
+  - {id: adv_contradiction, text: "one pipe and no pipes", must: warn}
+  - {id: adv_absurd, text: "500 pipes", must: warn}
+  - {id: adv_negative, text: "-3 pipes", must: warn}
+  - {id: adv_gibberish, text: "asdf qwerty zxcv lkjh", must: warn}
+  - {id: adv_foreign, text: "dos tuberias y tres monedas", must: warn}
+  - {id: adv_unknown_words, text: "flibber the glorp and snazzle", must: warn}

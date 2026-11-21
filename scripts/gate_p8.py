@@ -43,11 +43,11 @@ def main():
             return pg
 
         deadline = time.time() + a.timeout
-        while time.time() < deadline and app().locator("text=Generate & Play").count() == 0:
+        while time.time() < deadline and app().get_by_role("button", name="Generate & Play").count() == 0:
             pg.wait_for_timeout(1000)
-        app().wait_for_selector("text=Generate & Play", timeout=5000)
+        app().get_by_role("button", name="Generate & Play").wait_for(timeout=5000)
         res["load_seconds"] = round(time.time() - t0, 1)
-        app().click("text=Generate & Play")
+        app().get_by_role("button", name="Generate & Play").click()
         t1 = time.time()
         try:
             app().wait_for_selector("text=/Route found|No route found/", timeout=int(a.timeout * 1000))
@@ -59,7 +59,7 @@ def main():
         res["iframe"] = app().locator("iframe").count() >= 1
         pg.screenshot(path=str(evid / "screenshot.png"))
         app().locator("textarea").first.fill("   ")
-        app().click("text=Generate & Play")
+        app().get_by_role("button", name="Generate & Play").click()
         pg.wait_for_timeout(2500)
         res["validation_message"] = "describing the level" in app().inner_text("body")
         b.close()
