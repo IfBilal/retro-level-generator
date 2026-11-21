@@ -123,3 +123,72 @@ def test_wilson_interval_is_sane():
     lo, hi = CA.wilson(0, 10)
     assert lo == 0.0 and 0.2 < hi < 0.4
     assert CA.wilson(5, 10)[0] < 0.5 < CA.wilson(5, 10)[1]
+
+
+# ---------------------------------------------------------------------------------------------- towers as a person sees them (ledger AD9)
+def column_stack(g, col, height):
+    g[15 - height:15, col] = T.GROUND
+
+
+def test_isolated_pillars_are_towers_one_or_two_wide():
+    g = floor()
+    column_stack(g, 5, 3)
+    for c in (12, 13):
+        column_stack(g, c, 6)
+    assert CA.visible_towers(g) == [5, 12]
+
+
+def test_staircase_top_is_not_a_tower():
+    g = floor()
+    for k, h in enumerate((1, 2, 3, 4, 5)):
+        column_stack(g, 20 + k, h)
+    assert CA.visible_towers(g) == []                              # the detector calls the narrow top a tower; a person sees stairs
+    assert counts(g)["tower"] == 0 and counts(g)["staircase"] == 1
+
+
+def test_pillar_next_to_a_staircase_counts_once_and_pipes_never():
+    g = floor(48)
+    for k, h in enumerate((1, 2, 3)):
+        column_stack(g, 5 + k, h)
+    column_stack(g, 20, 4)
+    put_pipe(g, 30, 11)
+    assert CA.visible_towers(g) == [20]
+
+
+def test_neighbour_only_one_lower_is_not_a_tower_and_wide_blocks_are_not_towers():
+    g = floor()
+    column_stack(g, 8, 3)
+    column_stack(g, 9, 2)                                          # the right neighbour is only ONE lower: a step, not a pillar
+    for c in range(12, 16):
+        column_stack(g, c, 4)                                      # a 4-wide block
+    for c in (20, 21, 22):
+        column_stack(g, c, 5)                                      # a 3-wide block
+    assert CA.visible_towers(g) == []
+    h = floor()
+    column_stack(h, 4, 4)
+    column_stack(h, 5, 3)                                          # uneven 2-wide pair with open sides is one (notched) tower
+    assert CA.visible_towers(h) == [4]
+
+
+def test_two_pillars_separated_by_a_single_gap_are_two_towers():
+    g = floor()
+    column_stack(g, 8, 4)
+    column_stack(g, 10, 4)
+    assert CA.visible_towers(g) == [8, 10]
+
+
+def test_tower_on_a_platform_or_without_floor_is_not_counted():
+    g = floor()
+    g[15, 6] = T.SKY                                               # a pit: the column has no floor
+    column_stack(g, 6, 4)
+    assert CA.visible_towers(g) == []
+    assert CA.visible_towers(np.zeros((16, 8), np.uint8)) == []
+
+
+def test_detector_tower_count_is_kept_as_a_cross_check():
+    g = floor()
+    for k, h in enumerate((1, 2, 3, 4, 5)):
+        column_stack(g, 20 + k, h)
+    obj = CA.detector_objects(g)
+    assert "tower (detector)" in obj and obj["tower"] == []
+    assert "tower (detector)" not in CA.detector_objects(g, visible_tower_rule=False)            # the old definition is still available

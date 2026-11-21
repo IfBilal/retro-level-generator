@@ -151,7 +151,7 @@ def fig_cfg():
 
 
 def fig_adherence():
-    b = ROOT / "reports/audit/baseline/results.json"
+    b = ROOT / "reports/audit/baseline_full/results.json"
     f = ROOT / "reports/audit/final/results.json"
     if not (b.exists() and f.exists()):
         note("fig16_adherence", False)

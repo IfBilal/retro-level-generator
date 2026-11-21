@@ -95,7 +95,7 @@ def baseline_table() -> str:
 
 def adherence_table() -> str:
     """Prompt adherence at the app level, baseline (unmodified pipeline) vs final audit round, per category (reports/audit/*/results.json)."""
-    b, f = J("reports/audit/baseline/results.json"), J("reports/audit/final/results.json")
+    b, f = J("reports/audit/baseline_full/results.json"), J("reports/audit/final/results.json")
     if not b or not f:
         return "n/a (not run)"
     rows = []
@@ -198,7 +198,7 @@ def values() -> dict:
             v[f"x1_c24_{key}"], v[f"x1_b24_{key}"], v[f"x1_cp24_{key}"] = fmt(r["c_score"]), fmt(r["broken_rate"]), fmt(r["copy_rate"])
             v[f"x1_S24_{key}"] = fmt(0.5 * r["c_score"] + 0.25 * (1 - r["broken_rate"]) + 0.25 * min(1.0, r["novelty_med"] / ref_nov))
     d = J("reports/gates/determinism.json") or {}
-    b, f = J("reports/audit/baseline/results.json"), J("reports/audit/final/results.json")
+    b, f = J("reports/audit/baseline_full/results.json"), J("reports/audit/final/results.json")
     if b and f:
         v["adh_base_overall"] = f"{b['overall'][0]}/{b['overall'][1]}"
         v["adh_final_overall"] = f"{f['overall'][0]}/{f['overall'][1]}"

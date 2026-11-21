@@ -160,9 +160,12 @@ def write_md(path, label, a, per, cat, tot, rows, meta):
         tgt = TARGET.get(v["cat"], 1.0)
         L.append(f"| {pid} | `{v['text'][:55]}` | {v['pass']}/{v['n']} | {v['ci95'][0]:.2f}-{v['ci95'][1]:.2f} | {v['median_s']} | {'yes' if v['rate'] >= tgt else 'NO'} |")
     dis = [r for r in rows if r.get("counter_disagreement")]
+    tw = [r for r in rows if r.get("counts") and r["counts"].get("tower", 0) != r["counts"].get("tower_detector", 0)]
     L += ["", f"## Counter cross-check: {len(dis)} of {sum(1 for r in rows if r['status'] == 'ok' and 'counter_disagreement' in r)} levels where detector and independent counter disagree", ""]
     for r in dis[:15]:
         L.append(f"- {r['id']} seed {r['seed']}: {r['counter_disagreement']} (detector, independent)")
+    L += ["", (f"Tower cross-check (ledger AD9): the visible-tower count differs from the caption detector's tower count in {len(tw)} of "
+               f"{sum(1 for r in rows if r.get('counts'))} levels (the detector also calls a staircase's narrow top a tower and merges neighbouring pillars).")]
     ver = defaultdict(int)
     for r in rows:
         if r.get("verification"):

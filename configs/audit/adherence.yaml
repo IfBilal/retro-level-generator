@@ -14,6 +14,7 @@ topics:
   staircase: {sing: staircase, plur: staircases, det: [ascending staircase, descending staircase]}
   tower: {sing: tower, plur: towers, det: [tower]}
   coin line: {sing: coin line, plur: coin lines, det: [coin line]}
+  tower_detector: {sing: tower (detector), plur: towers (detector), det: ['tower (detector)']}      # cross-check only: the caption detector's own tower count
 count_grid: {topics: [pipe, enemy, coin, cannon, platform, question block, staircase, tower], counts: [0, 1, 2, 3]}
 # explicit prompts.  expect = one dict per scene: {topic: [lo, hi]} (counted in that scene's column region); order = topics left-to-right
 prompts:

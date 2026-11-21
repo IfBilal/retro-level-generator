@@ -17,8 +17,40 @@ import numpy as np
 from text2mario.captions.detector import detect
 from text2mario.data import tiles as T
 
+BLOCKS = frozenset(T.SOLID) - frozenset(T.PIPE) - frozenset(T.CANNON)
 
-def detector_objects(grid: np.ndarray) -> dict[str, list[int]]:
+
+def visible_towers(grid: np.ndarray) -> list[int]:
+    """Leftmost column of every tower a PERSON would call a tower: a group of 1-2 adjacent solid columns, each at least 3 blocks above the floor row
+    and standing on it, whose left and right neighbour columns are at least 2 blocks lower.  The caption detector (the training-caption definition)
+    also calls the narrow top of a staircase a tower and merges neighbouring pillars; on 30 'N towers' levels it disagreed with what is visible in 10
+    (reports/audit/NOTES_towers.md), so towers are counted with this rule (ledger AD9) and the detector's count is kept only as a cross-check."""
+    g = np.asarray(grid)
+    h, w = g.shape
+    height = []
+    for c in range(w):
+        k = h - 1
+        while k >= 0 and int(g[k, c]) in BLOCKS:                 # plain blocks only: pipes and cannons are not towers
+            k -= 1
+        height.append((h - 1) - k - 1)                           # solid blocks above the floor row in this column (-1 when there is no floor)
+    out, c = [], 0
+    while c < w:
+        if height[c] < 3:
+            c += 1
+            continue
+        c2 = c
+        while c2 + 1 < w and height[c2 + 1] >= 3:
+            c2 += 1
+        low = min(height[c:c2 + 1])
+        left = height[c - 1] if c > 0 else 0
+        right = height[c2 + 1] if c2 + 1 < w else 0
+        if c2 - c + 1 <= 2 and left <= low - 2 and right <= low - 2:
+            out.append(c)
+        c = c2 + 1
+    return out
+
+
+def detector_objects(grid: np.ndarray, visible_tower_rule: bool = True) -> dict[str, list[int]]:
     """Detector topic -> anchor column (leftmost column) of each counted object.
 
     enemies / coins / cannons / question blocks are one object per cell (that is how the detector counts them).  Every other
@@ -47,6 +79,9 @@ def detector_objects(grid: np.ndarray) -> dict[str, list[int]]:
             step = max(1, len(cols) // d.count)
             anchors = [cols[min(i * step, len(cols) - 1)] for i in range(d.count)]
         out.setdefault(d.topic, []).extend(anchors)
+    if visible_tower_rule:
+        out["tower (detector)"] = out.pop("tower", [])             # kept for the cross-check
+        out["tower"] = visible_towers(grid)
     return out
 
 
