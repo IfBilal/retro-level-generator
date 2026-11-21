@@ -79,6 +79,20 @@ def x1_table() -> str:
     return NL + NL + md_table(["run", "step", "C-score (w=5)", "broken rate", "median novelty", "copy rate"], sorted(rows, key=lambda r: (r[0], r[1]))) if rows else "n/a (not run)"
 
 
+def baseline_table() -> str:
+    b = J("reports/dev_eval/baselines.json")
+    if not b:
+        return "n/a (not run)"
+    rows = []
+    for k, v in b["baselines"].items():
+        rows.append((k.replace("_", " "), f"{v['c_score']:.3f}", f"{v['exact_match']:.3f}", f"{v.get('broken_rate', float('nan')):.3f}" if "broken_rate" in v else "-",
+                     f"{v['copy_rate']:.3f}" if "copy_rate" in v else "-", f"{v['novelty_med']:.1f}" if "novelty_med" in v else "-"))
+    m = b.get("model_at_w_star") or {}
+    if m:
+        rows.append((f"**model (w* = {m['w']})**", f"{m['c_score']:.3f}", f"{m['exact_match']:.3f}", f"{m['broken_rate']:.3f}", f"{m['copy_rate']:.3f}", f"{m['novelty_med']:.1f}"))
+    return md_table(["dev comparator", "C-score", "exact match", "broken rate", "copy rate", "median novelty"], rows)
+
+
 def per_level_table() -> str:
     p = ROOT / "reports/final/per_level_P-test.csv"
     if not p.exists():
@@ -161,7 +175,9 @@ def values() -> dict:
     pytest = J("reports/testing/pytest_summary.json") or {}
     v["tests_total"], v["tests_pass"] = fmt(pytest.get("total")), fmt(pytest.get("passed"))
     v["p3_table"], v["cfg_table"], v["x1_table"] = p3_table(), cfg_table(), x1_table()
-    v["per_level_table"], v["concept_table"] = per_level_table(), concept_table()
+    v["per_level_table"], v["concept_table"], v["baseline_table"] = per_level_table(), concept_table(), baseline_table()
+    d = J("reports/gates/determinism.json") or {}
+    v["det_same"], v["det_diff"], v["det_batch"] = fmt(d.get("same_seed_same_level")), fmt(d.get("different_seed_share_of_cells_changed")), fmt(d.get("window_alone_vs_in_batch_cells_equal"))
     return v
 
 

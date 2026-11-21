@@ -1,0 +1,9 @@
+{
+ "device": "cuda",
+ "same_seed_same_level": true,
+ "different_seed_share_of_cells_changed": 0.083,
+ "window_alone_vs_in_batch_cells_equal": 1.0,
+ "normalizer_repeatable": true,
+ "checker_repeatable": true,
+ "note": "same machine and settings; bf16 batching can change a few cells, cross-machine equality is not claimed"
+}

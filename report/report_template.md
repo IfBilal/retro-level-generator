@@ -46,6 +46,9 @@ support, enemy, coin). It is represented as a {-1, +1} one-hot tensor of shape 1
 text; the target of the denoiser is the added noise. Preprocessing is done once and identically for training and inference: the same one-hot encoder, the same
 MiniLM encoder and adapter, and the same normalizer (the app calls the same code as training).
 
+![EDA](figures/eda_concepts.png)
+*Figure EDA. Concept prevalence (left) and the very different profile of each of the 42 levels (right); tiles and captions: `reports/eda/EDA.md`. Sky is 87 % of all cells and the rarest concepts are below 5 % of windows.*
+
 **Splitting and leakage prevention.** The 42 levels are split **by level** (31 train, 5 dev, 6 test; 5,709 / 905 / 1,073 windows), never by window, because windows
 overlap by 15 of 16 columns. Near-duplicate level families (the two games share many levels) are kept in one split. The split is chosen by an exhaustive
 deterministic search (seed 20261117), hashed into `data/splits/LOCK`, and any edit raises an error. Tests assert that no level is in two splits, that the test windows can
@@ -130,6 +133,15 @@ Samples look like levels (Fig. 7). **The gate G-P3 FAILED**: no checkpoint of an
 ![Trade-off](figures/fig03_p3_tradeoff.png)
 *Figure 3. Broken structures fall with training while copying rises; auxiliary cross-entropy (lambda 0.001) removes broken structures faster but memorises much more.*
 
+![Training loss](figures/fig02_training_loss.png)
+*Figure 2. Training loss of the runs (smoothed, log scale).*
+
+![Unconditional samples](figures/fig07_uncond_samples.png)
+*Figure 7. 64 unconditional samples from the cosine baseline (EMA weights, DDIM-50).*
+
+![Nearest training windows](figures/fig10_nearest_train.png)
+*Figure 10. Memorisation check: the samples closest to the training set, each beside its nearest training window.*
+
 The rollback matrix (R-3.4, R-3.6) prescribes auxiliary cross-entropy for broken structures and an earlier stop for copying. We tried both with dense checkpoints: the closest
 points are linear 14k (broken 0.066 / copy 0.148) and cosine 14k (0.070 / 0.137); at equal steps cosine is better on both axes, so **cosine was chosen** (ties go to cosine in the
 design). The gate is therefore recorded as **failed, with a documented waiver** (`reports/gates/P3/WAIVER.md`): the conditional model, which is the product, is judged by
@@ -154,8 +166,21 @@ median nearest-train Hamming {{dev_novelty_med}} (real dev windows: 13), copy ra
 
 {{cfg_table}}
 
+**What does generation add over lookup?** The dev prompts are captions of real windows, so a non-learning *retrieval* baseline (return the training window whose caption best matches) is a fair competitor:
+
+{{baseline_table}}
+
+Retrieval **beats the model on prompt adherence** (it returns a real window with exactly the right caption) and has no broken structures, but it can only repeat what it has seen: copy rate 1.0, novelty 0, and no levels longer than a stored window.
+The model's contribution is *novelty at a small structural cost*: median nearest-training distance equal to that of real held-out windows (13), a copy rate below 0.10, and arbitrarily long levels by outpainting. We therefore claim no adherence advantage over lookup.
+
 ![CFG sweep](figures/fig06_cfg.png)
 *Figure 6. Guidance strength: adherence rises with w, structure quality and copying move the other way.*
+
+![Conditional samples](figures/fig08_cond_samples.png)
+*Figure 8. Dev samples of the frozen model at the selected guidance (first 64 of 345; prompts are P-dev captions).*
+
+![Contrast test](figures/fig09_contrast.png)
+*Figure 9. The PDF contrast test (G-P4): top row, "full floor with a few pipes" (8 seeds); bottom row, "floor with one gap, several enemies, one staircase". Pipes and gap/stairs contrast clearly; the enemies do not.*
 
 **Ablation X1** (auxiliary cross-entropy, lambda 0.001, on the conditional model; planned for 40k steps, **stopped at 17,640** to relieve memory pressure; dev set, same seeds): {{x1_table}}
 
@@ -168,6 +193,10 @@ median nearest-train Hamming {{dev_novelty_med}} (real dev windows: 13), copy ra
 100 dev levels (50 prompts x 2 seeds, 112 columns, 50 steps, r = 2): seam ratio {{p5_01}} (limit 1.3; real dev levels with pseudo-seams: {{p5_real_dev_pseudo_seam_ratio_mean}}),
 broken structures after the display repair {{p5_02}}, verify-loop limits {{p5_03}}. Pre-repair broken rate {{p5_pre_repair_broken_rate}}, verified rate {{p5_verified_rate}},
 {{p5_seconds_per_level_mean}} s per level on average (p95 {{p5_seconds_per_level_p95}} s). Gate G-P5: **{{p5_pass}}**: the verify-loop limits hold and, after the display repair (which deletes every component the detector classifies as broken), no broken structure remains; the seam check fails. The first escalation step of the plan (more RePaint resampling jumps, r = 5) lowered the seam ratio only from 1.47 to 1.38 on 12 paired levels (still above 1.3, within noise, 1.8x the cost; `reports/gates/P5/seam_ladder_r.json`); stride 4 and direct wide sampling were not tried. The real dev levels with pseudo-seams scatter between 0.75 and 1.6 under the same estimator, so the metric itself is noisy with 31 training levels.
+
+![Generated level, best seam](figures/fig12_render_best_035.png)
+![Generated level, worst seam](figures/fig12_render_worst_032.png)
+*Figure 12. Two generated 112-column levels from the G-P5 set (best and worst seam ratio; sprite render of the display grid).*
 
 ### 5.4 The playability checker: how far can "verified" be trusted?
 
@@ -222,7 +251,9 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 | {{tests_pass}} fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
 | representative inputs: normalizer dev set, 12 C-score golden vectors, checker micro-levels, 4 example prompts end to end | `tests/`, `reports/gates/*` |
 | invalid and boundary inputs: empty / whitespace / None / over-long / control-character prompts, out-of-range seed / w / width, malformed levels (9 schema violations) | `tests/test_level_schema.py` |
-| consistency: same prompt + seed + settings gives the same level; checker and normalizer deterministic | `tests/test_full_level.py`, `tests/test_checker.py` |
+| consistency: same prompt + seed + settings gives the same level (identical: {{det_same}}); a different seed changes {{det_diff}} of the cells; one window sampled alone or inside a batch is identical ({{det_batch}} of cells); checker and normalizer deterministic | `scripts/check_determinism.py`, `reports/gates/determinism.json`, `tests/test_full_level.py`, `tests/test_checker.py` |
+| fuzzing: arbitrary text and random tile grids never crash the normalizer, validators, detector, sanitizer or checker | `tests/test_app_fuzz.py` |
+| the real Streamlit app driven by Streamlit's AppTest (valid, empty, over-long, unrecognised prompts, example chip) | `tests/test_app_ui.py` |
 | end-to-end: the real game in headless Chromium (canvas, key presses, ghost-bot wins a level) | `tests/e2e/` |
 | leakage and one-shot guards | `tests/test_one_shot_guards.py`, `tests/test_splits.py` |
 | gates | `reports/gates/*/RESULT.json` (pass/fail recorded honestly) |
