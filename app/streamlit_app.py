@@ -45,6 +45,20 @@ def embed_game(html: str, height: int = 620) -> None:
         components.html(html, height=height, scrolling=False)
 
 
+def adherence_notice(level: dict) -> None:
+    """Say plainly whether the counts the sentence asked for are in the generated tiles (judged on the RAW grid; nothing is edited)."""
+    a = level["verification"].get("adherence")
+    if not a or a["status"] == "not_applicable":
+        return
+    rows = a["constraints"]
+    text = "; ".join(f"{r['topic']}: asked {r['lo'] if r['lo'] == r['hi'] else str(r['lo']) + '-' + str(r['hi'])}, got {r['got']}" for r in rows)
+    if a["status"] == "met":
+        st.success(f"Counts match your sentence ({text}). Checked on the generated tiles; {a['attempts']} re-sample(s).")
+    else:
+        bad = "; ".join(f"{r['topic']}: asked {r['lo'] if r['lo'] == r['hi'] else str(r['lo']) + '-' + str(r['hi'])}, got {r['got']}" for r in rows if not r["met"])
+        st.warning(f"Could not match every count after {a['attempts']} re-sample(s): {bad}. The level is shown as generated (not edited).")
+
+
 def badge(level: dict) -> None:
     v = level["verification"]
     if v["status"] == "verified":
@@ -114,6 +128,7 @@ def studio() -> None:
             try:
                 res = svc.run(st.session_state.prompt, seed=int(st.session_state.seed), w=w, width=width, fast=fast)
                 st.session_state.result = res
+                st.session_state.result_prompt = st.session_state.prompt
             except ValueError as e:                 # validation problems are shown, never a stack trace
                 st.error(str(e))
             except Exception as e:                  # unexpected failure: say so, keep the app alive
@@ -123,6 +138,10 @@ def studio() -> None:
         st.info("Pick an example or type a sentence, then press Generate & Play.")
         return
     lvl = res.level
+    shown = st.session_state.get("result_prompt")
+    if shown is not None and shown != st.session_state.prompt:
+        st.info(f"The level below was generated for an earlier sentence: “{shown}”. Press Generate & Play to make one for the current sentence.")
+    adherence_notice(lvl)
     badge(lvl)
     t = res.seconds
     st.caption(f"{lvl['size']['cols']} columns | {t['generate_and_verify']} s to generate and verify | seed {lvl['generation']['seed']} "
@@ -132,6 +151,9 @@ def studio() -> None:
     with tab_a:
         st.image(res.files["png"], width="stretch")
     with tab_b:
+        st.markdown("**Caption each 16-column window was actually given** (the model describes windows, not whole levels):")
+        for k, sw in enumerate(lvl["prompt"]["scenes"]):
+            st.markdown(f"- window {k + 1} (columns {sw['col_from']}-{sw['col_to']}, scene {sw.get('scene', 0) + 1}): `{sw['caption']}`")
         st.json({k: lvl[k] for k in ("prompt", "sanitizer", "verification", "generation")}, expanded=False)
     with tab_c:
         lid = lvl["level_id"]

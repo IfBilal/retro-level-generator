@@ -21,6 +21,7 @@ import torch
 from text2mario.captions.detector import caption as detect_caption
 from text2mario.data import tiles as T
 from text2mario.diffusion.sampler import ddim_sample
+from text2mario.generate import adherence
 from text2mario.generate.framing import frame
 from text2mario.generate.sanitizer import detect as detect_broken
 from text2mario.generate.sanitizer import repair
@@ -103,15 +104,34 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     forbid = sorted({f for s in norm.scenes for f in s.forbid})
     n = n_windows(width)
     scene_of = scene_for_windows(scenes, n)
+    use_adh = adherence.enabled() and bool(norm.scenes)
+    if use_adh:
+        adherence.check_feasible(norm, width)                       # contradiction / impossible count -> ValueError with a clear message
+    adh_verify = use_adh and bool(adherence._A["verify"])
+    adh_max = int(adherence._A["max_attempts"])
+    bounds = adherence.region_bounds(scene_of, width) if use_adh else []
     ph = physics or Physics.load()
-    attempts = [0] * n
+    attempts = [0] * n                                             # seed index per window (any reason to resample bumps it)
+    play_att = [0] * n                                             # playability / forbidden resamples per window (ledger G5 limit)
     windows: list[np.ndarray] = [None] * n
-    attempt_log, total = [], 0
+    win_caps: list[str] = [None] * n
+    attempt_log, total, adh_total = [], 0, 0
+
+    def caption_for(k: int) -> str:
+        """Caption of window k: the scene caption, or (adherence on) the part of the scene's requested counts still missing at window k."""
+        si = scene_of[k]
+        if not use_adh:
+            return scenes[si]
+        ks = [j for j, sj in enumerate(scene_of) if sj == si]
+        before = _assemble(windows[:k], STRIDE * (k - 1) + WINDOW) if k > 0 else None
+        known_half = windows[k - 1][:, STRIDE:] if k > 0 else None
+        return adherence.plan_caption(norm.scenes[si], scenes[si], k, ks[0], ks[-1], before, known_half, bounds[si][0])
 
     def regen_from(k0: int):
         for k in range(k0, n):
             known = windows[k - 1][:, STRIDE:] if k > 0 else None      # the previous window's last (window - stride) columns
-            windows[k] = sample_window(bundle, scenes[scene_of[k]], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device)
+            win_caps[k] = caption_for(k)
+            windows[k] = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device)
 
     regen_from(0)
     status, reason, checker_info = "not_verified", None, None
@@ -121,27 +141,40 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         framed, framing = frame(content)
         fr = Framing((framing["spawn"]["col"], framing["spawn"]["row"]), framing["flag"]["col"])
         res = check_level(framed, mode="level", framing=fr, physics=ph, enemies=enemies, budget_nodes=checker_budget) if verify else None
-        forb_k = next((k for k in range(n) if forbid and _forbidden_hit(windows[k], forbid)), None)
+        forb_k = next((k for k in range(n) if forbid and not use_adh and _forbidden_hit(windows[k], forbid)), None)
         if not verify:
             reason = "verification skipped"
             break
         checker_info = {"tier": 1, "physics_sha256": ph.sha256, "seconds": round(res.seconds, 3), "path_len": len(res.path),
                         "enemy_mode": enemies}
-        if res.status == "solved" and forb_k is None:
+        out_of_time = bool(time_budget_s and time.time() - t0 > time_budget_s)
+        adh_now = adherence.evaluate(content, norm, scene_of, width) if use_adh else None
+        adh_pending = bool(adh_verify and adh_now["unmet"] and adh_total < adh_max and not out_of_time)
+        if res.status == "solved" and forb_k is None and not adh_pending:
             status = "verified"
+            if adh_now and adh_now["unmet"]:                       # budget ended with a count still unmet: say so (verification.adherence)
+                reason = "adherence budget exhausted" if not out_of_time else "time budget"
             break
         # which window to re-sample: the one containing the obstacle after the furthest column reached (or a forbidden hit)
         if res.status != "solved":
             cc = max(0, min(width - 1, (res.fail_col or 0) - 3 + 2))
             k = min(n - 1, cc // STRIDE)
             kind = res.status
-        else:
+        elif forb_k is not None:
             k, kind = forb_k, "forbidden"
+        else:
+            k, kind = adherence.window_to_resample(adh_now["unmet"][0], scene_of, n), "adherence"
         attempts[k] += 1
-        total += 1
-        attempt_log.append({"window": int(k), "attempt": int(attempts[k]), "status": kind, "fail_col": int(res.fail_col or 0)})
-        if attempts[k] > max_window_attempts or total > max_total_attempts or (time_budget_s and time.time() - t0 > time_budget_s):
-            reason = "attempt budget exhausted" if not (time_budget_s and time.time() - t0 > time_budget_s) else "time budget"
+        if kind == "adherence":
+            adh_total += 1
+            attempt_log.append({"window": int(k), "attempt": int(attempts[k]), "status": kind, "fail_col": 0,
+                                "unmet": [f"{r['topic']} want {r['lo']}-{r['hi']} got {r['got']}" for r in adh_now["unmet"]]})
+        else:
+            total += 1
+            play_att[k] += 1
+            attempt_log.append({"window": int(k), "attempt": int(attempts[k]), "status": kind, "fail_col": int(res.fail_col or 0)})
+        if out_of_time or (kind != "adherence" and (play_att[k] > max_window_attempts or total > max_total_attempts)):
+            reason = "attempt budget exhausted" if not out_of_time else "time budget"
             attempt_log[-1]["attempt"] = int(min(attempts[k], max_window_attempts))
             break
         regen_from(k)
@@ -152,13 +185,17 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     san.update({"repaired": bool(removed), "removed_cells": int(removed)})
     prompt = {"text": text, "canonical": [[p.strip() for p in s.split(".") if p.strip()] for s in scenes],
               "ignored_tokens": norm.ignored_tokens, "warnings": norm.warnings, "forbid": forbid,
-              "scenes": [{"caption": scenes[scene_of[k]], "col_from": 3 + k * STRIDE, "col_to": 3 + k * STRIDE + WINDOW - 1}
+              "scenes": [{"caption": win_caps[k], "scene": int(scene_of[k]), "col_from": 3 + k * STRIDE, "col_to": 3 + k * STRIDE + WINDOW - 1}
                          for k in range(n)]}
     cfg, state = (bundle[3], bundle[4]) if bundle is not None and len(bundle) >= 5 else ({}, {})
     generation = {"seed": int(seed), "w": float(w), "width": int(width), "ddim_steps": int(steps), "resample_r": int(resample_r),
                   "fast_mode": bool(steps < 50), "profile": profile, "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   "checkpoint_step": int(state.get("step", -1)), "seconds": round(time.time() - t0, 2), **(meta or {})}
-    verification = {"status": status, "reason": reason, "attempts_total": int(total), "attempt_log": attempt_log, "checker": checker_info}
+    adh_final = adherence.evaluate(content, norm, scene_of, width) if use_adh else {"status": "not_applicable", "constraints": [], "unmet": []}
+    # the counts are judged on the RAW content (measure-before-repair); the display repair below never feeds this
+    verification = {"status": status, "reason": reason, "attempts_total": int(total + adh_total), "attempt_log": attempt_log, "checker": checker_info,
+                    "adherence": {"status": adh_final["status"], "attempts": int(adh_total), "planned": bool(use_adh and adherence._A["plan"]),
+                                  "verified_by_resampling": bool(adh_verify), "judged_on": "raw", "constraints": adh_final["constraints"]}}
     lvl = make_level(framed, display_grid=display, prompt=prompt, generation=generation, framing=framing, sanitizer=san,
                      verification=verification, provenance={"source": "app", "dataset_level_id": None, "dataset_level_name": None})
     return validate_level(lvl)

@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -69,6 +70,8 @@ def validate_prompt(text) -> tuple[bool, str]:
         return False, f"That is {len(t)} characters; please keep the prompt under {MAX_PROMPT_CHARS}."
     if any(ord(c) < 32 and c not in "\n\t" for c in t):
         return False, "The prompt contains control characters; please type plain text."
+    if re.search(r"(?<![\w])-\s?\d", t):
+        return False, "Negative numbers do not make sense for a level (for example '-3 pipes'). Use 'no pipes' to rule something out."
     return True, ""
 
 

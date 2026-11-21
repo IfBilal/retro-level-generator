@@ -72,14 +72,23 @@ def objects_by_topic(grid: np.ndarray, topics_cfg: dict) -> dict[str, list[int]]
     return {name: sorted(a for t in spec["det"] for a in det.get(t, [])) for name, spec in topics_cfg.items()}
 
 
-def scene_starts(prompt_scenes: list[dict], stride: int) -> list[int]:
-    """First content column of each scene, from the level's recorded per-window captions (window k starts at k*stride)."""
-    starts, last = [], None
+def scene_starts(prompt_scenes: list[dict], stride: int, window: int = 16) -> list[int]:
+    """First content column each scene OWNS.  Window k adds the 8 columns after the previous window (window 0 owns columns 0-15), so a
+    scene whose first window is k > 0 owns columns from k*stride + (window - stride).  The scene of a window is the "scene" index the
+    generator records; older levels without it use "the caption changed since the previous window"."""
+    firsts: list[int] = []
+    sid, prev_cap = -1, None
     for k, s in enumerate(prompt_scenes):
-        if s["caption"] != last:
-            starts.append(k * stride)
-            last = s["caption"]
-    return starts
+        if "scene" in s:
+            new_scene = s["scene"] != sid
+            sid = s["scene"]
+        else:
+            new_scene = s["caption"] != prev_cap
+            sid += 1 if new_scene else 0
+        prev_cap = s["caption"]
+        if new_scene:
+            firsts.append(k)
+    return [0 if k == 0 else k * stride + (window - stride) for k in firsts]
 
 
 def check_expectation(anchors: dict[str, list[int]], expect: list[dict], starts: list[int], width: int, order: list[str] | None = None):

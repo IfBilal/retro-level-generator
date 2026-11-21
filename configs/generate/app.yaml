@@ -18,3 +18,44 @@ examples:                                                     # drill 14: add a 
   - "flat ground, one pipe, then several coins and a staircase"
   - "an underground level: three platforms, then a cannon and two enemies"
   - "mostly pits with two islands of ground, then a coin line"
+# Prompt adherence (audit P2).  The model describes ONE 16-column window; a prompt describes the whole level.  So the level-level counts are
+# planned across windows and the RAW result is verified with a deterministic counter (generate/adherence.py).  Nothing is edited: a miss is
+# resampled, and if the budget runs out the UI says which counts were not met.
+adherence:
+  enabled: true          # false = old behaviour (every window of a scene gets the scene caption)
+  plan: true             # per-window quantity planning
+  verify: true           # resample windows until the raw level satisfies the parsed counts (or the budget ends)
+  max_attempts: 16       # adherence resamples per level (the playability loop keeps its own max_total_attempts)
+  neutral_caption: "full floor."
+  range_target: mid      # a vague quantity ("several" = 5-9) is planned at its middle; the check still accepts the whole range
+  max_new_per_window:    # most objects of a topic planned into the 8 NEW columns of one window
+    pipe: 1
+    upside down pipe: 1
+    enemy: 3
+    coin: 6
+    coin line: 1
+    cannon: 1
+    platform: 1
+    question block: 2
+    ascending staircase: 1
+    descending staircase: 1
+    tower: 1
+    rectangular block cluster: 1
+    irregular block cluster: 1
+    loose block: 3
+  capacity_per_16_cols:  # a request above (this x width/16) cannot fit; it is rejected with a message instead of silently clamped
+    pipe: 2
+    enemy: 4
+    coin: 12
+    coin line: 2
+    cannon: 2
+    platform: 3
+    question block: 3
+    ascending staircase: 1
+    descending staircase: 1
+    tower: 2
+    rectangular block cluster: 2
+    irregular block cluster: 2
+    loose block: 6
+  count_as:              # which detector topics count towards a requested topic
+    pipe: [pipe, upside down pipe, broken pipe]

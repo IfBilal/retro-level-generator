@@ -71,7 +71,9 @@ def run_one(svc, p, seed, a, width):
         return row
     lvl = res.level
     ok, details, det, ind, disagree, cap = count_level(lvl, p["expect"], p.get("order"), width)
-    row.update(status="ok", ok=ok, details=details, counts=det, independent=ind, counter_disagreement=disagree, raw_caption=cap,
+    from text2mario.data import tiles as T
+    content = np.array(lvl["raw_grid"], dtype=np.uint8)[:, LEAD:LEAD + width]
+    row.update(status="ok", ok=ok, details=details, grid=["".join(T.CHARS[int(v)] for v in r) for r in content], counts=det, independent=ind, counter_disagreement=disagree, raw_caption=cap,
                scenes=sorted({s["caption"] for s in lvl["prompt"]["scenes"]}, key=lambda c: [s["caption"] for s in lvl["prompt"]["scenes"]].index(c)),
                warnings=lvl["prompt"]["warnings"], forbid=lvl["prompt"]["forbid"], verification=lvl["verification"]["status"],
                reason=lvl["verification"]["reason"], attempts=lvl["verification"]["attempts_total"], broken=lvl["sanitizer"],
