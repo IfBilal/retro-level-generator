@@ -81,6 +81,10 @@ def check_feasible(norm, width: int) -> None:
     if bad:
         topics = ", ".join(sorted({w.split(":", 1)[1] for w in bad}))
         raise ValueError(f"The sentence asks for and rules out the same thing ({topics}). Please say one or the other.")
+    windows = (width - WINDOW) // STRIDE + 1
+    if len(norm.scenes) > windows:                                    # scene_for_windows would silently drop the last scenes
+        raise ValueError(f"The sentence has {len(norm.scenes)} scenes but a {width}-column level has room for {windows}. "
+                         "Choose a wider level or fewer scenes.")
     need: dict[str, int] = {}
     for c in constraints(norm):
         need[c["topic"]] = need.get(c["topic"], 0) + c["lo"]

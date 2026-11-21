@@ -177,6 +177,7 @@ def gallery() -> None:
     pick = st.selectbox("Level", [f"{i['prompt']}  (seed {i['seed']})" for i in items])
     it = items[[f"{i['prompt']}  (seed {i['seed']})" for i in items].index(pick)]
     lvl = json.loads((ROOT / "app/showcase" / it["file"]).read_text())
+    adherence_notice(lvl)
     badge(lvl)
     embed_game(build_game_html(lvl))
 

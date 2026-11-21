@@ -492,3 +492,16 @@ def _count_pipes(lvl):
     from text2mario.eval.count_audit import objects_by_topic
     raw = np.array(lvl["raw_grid"], dtype=np.uint8)[:, 3:3 + lvl["generation"]["width"]]
     return len(objects_by_topic(raw, {"pipe": {"det": ["pipe", "upside down pipe", "broken pipe"]}})["pipe"])
+
+
+@given(st.sampled_from([16, 48, 80, 112]))
+@FAST
+def test_more_scenes_than_windows_is_refused_not_silently_dropped(width):
+    """Audit self-review: scene_for_windows([a, b, c], 1) maps every window to scene 0, so scenes 1 and 2 were never generated but still judged."""
+    windows = FL.n_windows(width)
+    text = ", then ".join(["one pipe"] * (windows + 1)) if windows + 1 <= 8 else None
+    if text is None:
+        return
+    with pytest.raises(ValueError, match="has room for"):
+        A.check_feasible(normalize(text), width)
+    A.check_feasible(normalize(", then ".join(["one pipe"] * windows)), width)               # exactly as many scenes as windows is fine

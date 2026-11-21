@@ -67,9 +67,11 @@ def main():
                     break
                 page.wait_for_timeout(200)
             bot = bool(st.get("won"))
+        adh = lvl["verification"].get("adherence", {})
         items.append({"prompt": p, "seed": 100 + i, "w": w, "file": name, "verified": lvl["verification"]["status"] == "verified",
+                      "counts": adh.get("status"), "counts_detail": [{k: c[k] for k in ("topic", "lo", "hi", "got", "met")} for c in adh.get("constraints", [])],
                       "bot_reached_flag": bot, "human_played": False, "seconds": res.seconds["total"]})
-        print(i, lvl["verification"]["status"], "bot", bot, flush=True)
+        print(i, lvl["verification"]["status"], "counts", adh.get("status"), "bot", bot, flush=True)
     if pw:
         browser.close(); pw.stop()
     (out / "manifest.json").write_text(json.dumps({"checkpoint_step": fz.get("step"), "checkpoint_sha256": fz.get("checkpoint_sha256"), "levels": items}, indent=1))
