@@ -23,9 +23,9 @@ Report: `report/report.pdf` · slides: `slides/slides.pdf` · evidence of evalua
 uv venv --python 3.12 .venv && source .venv/bin/activate        # Windows: .venv\Scripts\activate
 uv pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu    # or the CUDA wheel of the same minor
 uv pip install -r requirements-dev.txt streamlit
-streamlit run app/streamlit_app.py           # uses the exported bundle in app/model/ (or set T2M_CKPT=path/to/step_XXXX.pt)
+streamlit run app/streamlit_app.py --server.address 127.0.0.1   # (or scripts/run_app.sh) uses the exported bundle in app/model/ (or set T2M_CKPT=path/to/step_XXXX.pt)
 ```
-Without a GPU the app switches to CPU fast mode automatically. Everything runs offline after the one-time MiniLM fetch.
+Without a GPU the app switches to CPU fast mode automatically. The exported bundle in `app/model/` already contains the (fp16) MiniLM encoder, so the app needs no download and runs offline.
 
 ## Rebuild everything
 ```bash
