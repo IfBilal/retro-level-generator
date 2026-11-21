@@ -1,0 +1,202 @@
+{
+ "n": 20,
+ "success_rate": 0.4,
+ "mean_replans_when_won": 2.0,
+ "enemies_removed": true,
+ "failures": [
+  {
+   "level": "007.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "015.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "027.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "030.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  },
+  {
+   "level": "046.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "059.json",
+   "won": false,
+   "replans": 1,
+   "why": "died too often"
+  },
+  {
+   "level": "060.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "062.json",
+   "won": false,
+   "replans": 6,
+   "why": "died too often"
+  },
+  {
+   "level": "064.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "082.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "085.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  },
+  {
+   "level": "089.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  }
+ ],
+ "rows": [
+  {
+   "level": "001.json",
+   "won": true,
+   "replans": 7,
+   "seconds": 51.3
+  },
+  {
+   "level": "007.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "013.json",
+   "won": true,
+   "replans": 3,
+   "seconds": 55.1
+  },
+  {
+   "level": "014.json",
+   "won": true,
+   "replans": 4,
+   "seconds": 44.2
+  },
+  {
+   "level": "015.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "027.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "030.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  },
+  {
+   "level": "046.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "052.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 31.1
+  },
+  {
+   "level": "053.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 32.6
+  },
+  {
+   "level": "056.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 33.3
+  },
+  {
+   "level": "059.json",
+   "won": false,
+   "replans": 1,
+   "why": "died too often"
+  },
+  {
+   "level": "060.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "061.json",
+   "won": true,
+   "replans": 2,
+   "seconds": 32.3
+  },
+  {
+   "level": "062.json",
+   "won": false,
+   "replans": 6,
+   "why": "died too often"
+  },
+  {
+   "level": "064.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "065.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 41.3
+  },
+  {
+   "level": "082.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "085.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  },
+  {
+   "level": "089.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  }
+ ]
+}

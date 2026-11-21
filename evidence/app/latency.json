@@ -1,0 +1,22 @@
+{
+ "cold_start_s": 3.58,
+ "device": "cuda",
+ "cuda_48_p50": 35.54,
+ "cuda_48_p95": 80.39599999999999,
+ "cuda_48_n": 5,
+ "cuda_112_p50": 167.33,
+ "cuda_112_p95": 252.12999999999997,
+ "cuda_112_n": 5,
+ "cpu_48_p50": 3.85,
+ "cpu_48_p95": 15.609999999999998,
+ "cpu_112_p50": 25.91,
+ "cpu_112_p95": 50.874,
+ "note": "measured on this machine; cloud CPU numbers are measured separately after deployment",
+ "fast_mode_default": true,
+ "cuda_48_fast_p50": 4.82,
+ "cuda_48_fast_p95": 15.340999999999992,
+ "cuda_48_fast_n": 8,
+ "cuda_112_fast_p50": 12.899999999999999,
+ "cuda_112_fast_p95": 58.399499999999996,
+ "cuda_112_fast_n": 8
+}

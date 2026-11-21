@@ -1,0 +1,299 @@
+{
+ "n": 40,
+ "replay_success_rate": 0.75,
+ "note": "lower bound on soundness: failures may be the closed-loop bot",
+ "failures": [
+  "L3:SMB1 2-1:w112",
+  "L5:SMB1 3-2:w64",
+  "L13:SMB1 6-1:w160",
+  "L14:SMB1 6-2:w176",
+  "L16:SMB1 7-1:w96",
+  "L19:SMB1 8-3:w0",
+  "L21:SMB2 1-2:w96",
+  "L26:SMB2 3-1:w64",
+  "L26:SMB2 3-1:w128",
+  "L36:SMB2 A-1:w64"
+ ],
+ "rows": [
+  {
+   "window": "L3:SMB1 2-1:w32",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.9,
+   "path_len": 6
+  },
+  {
+   "window": "L3:SMB1 2-1:w112",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 39.9,
+   "path_len": 5
+  },
+  {
+   "window": "L5:SMB1 3-2:w16",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.0,
+   "path_len": 5
+  },
+  {
+   "window": "L5:SMB1 3-2:w64",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 39.9,
+   "path_len": 6
+  },
+  {
+   "window": "L5:SMB1 3-2:w160",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 3.5,
+   "path_len": 5
+  },
+  {
+   "window": "L7:SMB1 4-1:w16",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.2,
+   "path_len": 5
+  },
+  {
+   "window": "L7:SMB1 4-1:w128",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.1,
+   "path_len": 6
+  },
+  {
+   "window": "L7:SMB1 4-1:w144",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 7.1,
+   "path_len": 5
+  },
+  {
+   "window": "L10:SMB1 5-1:w48",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.0,
+   "path_len": 5
+  },
+  {
+   "window": "L10:SMB1 5-1:w112",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.0,
+   "path_len": 5
+  },
+  {
+   "window": "L10:SMB1 5-1:w160",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.3,
+   "path_len": 5
+  },
+  {
+   "window": "L13:SMB1 6-1:w48",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.2,
+   "path_len": 5
+  },
+  {
+   "window": "L13:SMB1 6-1:w160",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 39.8,
+   "path_len": 8
+  },
+  {
+   "window": "L14:SMB1 6-2:w176",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 40.0,
+   "path_len": 6
+  },
+  {
+   "window": "L16:SMB1 7-1:w96",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 39.9,
+   "path_len": 7
+  },
+  {
+   "window": "L16:SMB1 7-1:w112",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 4.7,
+   "path_len": 5
+  },
+  {
+   "window": "L17:SMB1 8-1:w48",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.6,
+   "path_len": 5
+  },
+  {
+   "window": "L17:SMB1 8-1:w144",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.7,
+   "path_len": 7
+  },
+  {
+   "window": "L18:SMB1 8-2:w80",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.1,
+   "path_len": 6
+  },
+  {
+   "window": "L19:SMB1 8-3:w0",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 40.0,
+   "path_len": 6
+  },
+  {
+   "window": "L21:SMB2 1-2:w96",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 39.8,
+   "path_len": 7
+  },
+  {
+   "window": "L23:SMB2 2-1:w16",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 7.6,
+   "path_len": 5
+  },
+  {
+   "window": "L26:SMB2 3-1:w48",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.0,
+   "path_len": 7
+  },
+  {
+   "window": "L26:SMB2 3-1:w64",
+   "won": false,
+   "deaths": 3,
+   "game_seconds": 7.9,
+   "path_len": 6
+  },
+  {
+   "window": "L26:SMB2 3-1:w128",
+   "won": false,
+   "deaths": 3,
+   "game_seconds": 6.9,
+   "path_len": 5
+  },
+  {
+   "window": "L26:SMB2 3-1:w144",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.0,
+   "path_len": 5
+  },
+  {
+   "window": "L28:SMB2 4-1:w144",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.4,
+   "path_len": 5
+  },
+  {
+   "window": "L29:SMB2 4-2:w0",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.1,
+   "path_len": 6
+  },
+  {
+   "window": "L29:SMB2 4-2:w48",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.3,
+   "path_len": 6
+  },
+  {
+   "window": "L29:SMB2 4-2:w96",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.9,
+   "path_len": 5
+  },
+  {
+   "window": "L29:SMB2 4-2:w128",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.5,
+   "path_len": 5
+  },
+  {
+   "window": "L29:SMB2 4-2:w160",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.7,
+   "path_len": 5
+  },
+  {
+   "window": "L31:SMB2 5-1:w240",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.8,
+   "path_len": 5
+  },
+  {
+   "window": "L33:SMB2 6-1:w96",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.1,
+   "path_len": 8
+  },
+  {
+   "window": "L33:SMB2 6-1:w208",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 4.5,
+   "path_len": 5
+  },
+  {
+   "window": "L34:SMB2 6-3:w48",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 6.4,
+   "path_len": 5
+  },
+  {
+   "window": "L35:SMB2 8-1:w128",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.9,
+   "path_len": 5
+  },
+  {
+   "window": "L36:SMB2 A-1:w0",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.3,
+   "path_len": 11
+  },
+  {
+   "window": "L36:SMB2 A-1:w64",
+   "won": false,
+   "deaths": 0,
+   "game_seconds": 39.8,
+   "path_len": 6
+  },
+  {
+   "window": "L40:SMB2 C-2:w32",
+   "won": true,
+   "deaths": 0,
+   "game_seconds": 5.1,
+   "path_len": 6
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+[
+ {
+  "i": 0,
+  "pid": "pdev-0000",
+  "level": "SMB1 2-1",
+  "seam_ratio": 0.8503153336509512,
+  "broken_pre": 0,
+  "broken_post": 0,
+  "verified": true,
+  "attempts_total": 0,
+  "max_window_attempts": 0,
+  "seconds": 28.78
+ },
+ {
+  "i": 1,
+  "pid": "pdev-0000",
+  "level": "SMB1 2-1",
+  "seam_ratio": 1.1818483104841686,
+  "broken_pre": 0,
+  "broken_post": 0,
+  "verified": true,
+  "attempts_total": 0,
+  "max_window_attempts": 0,
+  "seconds": 28.48
+ },
+ {
+  "i": 2,
+  "pid": "pdev-0001",
+  "level": "SMB1 2-1",
+  "seam_ratio": 2.019692094807289,
+  "broken_pre": 0,
+  "broken_post": 0,
+  "verified": true,
+  "attempts_total": 0,
+  "max_window_attempts": 0,
+  "seconds": 28.48
+ },
+ {
+  "i": 3,
+  "pid": "pdev-0001",
+  "level": "SMB1 2-1",
+  "seam_ratio": 1.4313571233114633,
+  "broken_pre": 0,
+  "broken_post": 0,
+  "verified": true,
+  "attempts_total": 0,
+  "max_window_attempts": 0,
+  "seconds": 28.12
+ }
+]

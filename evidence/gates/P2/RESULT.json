@@ -1,0 +1,50 @@
+{
+  "phase": "P2",
+  "pass": true,
+  "metrics": {
+    "linear": {
+      "alpha_bar_T": 4.0358297653756754e-05,
+      "oracle_mse": 0.0,
+      "oracle_argmax": 1.0
+    },
+    "cosine": {
+      "alpha_bar_T": 2.4287669070348542e-09,
+      "oracle_mse": 0.0,
+      "oracle_argmax": 1.0
+    }
+  },
+  "checks": [
+    {
+      "name": "linear: alpha_bar_T < 0.0001",
+      "pass": true,
+      "detail": "= 4.036e-05"
+    },
+    {
+      "name": "linear: x_999 mean within 0.02 and std within 1 +- 0.02",
+      "pass": true,
+      "detail": "(mean -0.0052, std 0.9996)"
+    },
+    {
+      "name": "linear: oracle-eps DDIM reconstructs x0 (fp64 MSE < 1e-6, argmax 100 %)",
+      "pass": true,
+      "detail": "(mse 0.00e+00, argmax agreement 100%)"
+    },
+    {
+      "name": "cosine: alpha_bar_T < 1e-08",
+      "pass": true,
+      "detail": "= 2.429e-09"
+    },
+    {
+      "name": "cosine: x_999 mean within 0.02 and std within 1 +- 0.02",
+      "pass": true,
+      "detail": "(mean +0.0009, std 1.0006)"
+    },
+    {
+      "name": "cosine: oracle-eps DDIM reconstructs x0 (fp64 MSE < 1e-6, argmax 100 %)",
+      "pass": true,
+      "detail": "(mse 0.00e+00, argmax agreement 100%)"
+    }
+  ],
+  "timestamp": "2026-11-20T18:01:34Z",
+  "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad"
+}

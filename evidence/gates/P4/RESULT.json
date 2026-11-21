@@ -1,0 +1,279 @@
+{
+  "phase": "P4",
+  "pass": false,
+  "metrics": {
+    "w_star": 7.5,
+    "checkpoint": "runs/C-main/step_0018000.pt",
+    "step": 18000
+  },
+  "checks": [
+    {
+      "id": "P4.01",
+      "name": "dev C-score at w*",
+      "value": 0.7945,
+      "ci95": [
+        0.7144,
+        0.8772
+      ],
+      "op": ">=",
+      "threshold": 0.75,
+      "pass": true,
+      "n_prompts": 115,
+      "n_clusters": 5
+    },
+    {
+      "id": "P4.02",
+      "name": "CFG helps (paired dC, w* - w=1)",
+      "value": 0.0574,
+      "ci95": [
+        0.0342,
+        0.0823
+      ],
+      "op": "ci_lo >",
+      "threshold": 0,
+      "pass": true
+    },
+    {
+      "id": "P4.03",
+      "name": "optimiser membership (U-Net + adapter, no MiniLM)",
+      "value": 18378061,
+      "expected": 18378061,
+      "op": "==",
+      "pass": true
+    },
+    {
+      "id": "P4.04",
+      "name": "PDF contrast test",
+      "value": {
+        "pipes": 8,
+        "enemy_presence": 5,
+        "gaps_stairs": 8
+      },
+      "op": "all >= 6/8",
+      "pass": false
+    }
+  ],
+  "timestamp": "2026-11-20T23:32:20Z",
+  "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad",
+  "diagnostics": {
+    "best_w": 7.5,
+    "cscore_null_dev": 0.4271987894836391,
+    "delta_vs_null": 0.3672537064905962,
+    "warning": null,
+    "per_concept_at_w_star": {
+      "floor": {
+        "support": 297,
+        "na": false,
+        "precision": 0.9933110367892977,
+        "recall": 1.0,
+        "f1": 0.9966442953020134,
+        "exact_match": 0.8181818181818182,
+        "absence_respect": 0.9583333333333334,
+        "bucket_mae": 0.25,
+        "bucket_bias": 0.11363636363636363
+      },
+      "ceiling": {
+        "support": 60,
+        "na": false,
+        "precision": 0.8428571428571429,
+        "recall": 0.9833333333333333,
+        "f1": 0.9076923076923077,
+        "exact_match": 0.7166666666666667,
+        "absence_respect": 0.9614035087719298,
+        "bucket_mae": 0.0,
+        "bucket_bias": 0.0
+      },
+      "upside down pipe": {
+        "support": 36,
+        "na": false,
+        "precision": 0.9583333333333334,
+        "recall": 0.6388888888888888,
+        "f1": 0.7666666666666666,
+        "exact_match": 0.5277777777777778,
+        "absence_respect": 0.9967637540453075,
+        "bucket_mae": 0.17391304347826086,
+        "bucket_bias": 0.17391304347826086
+      },
+      "pipe": {
+        "support": 123,
+        "na": false,
+        "precision": 0.8085106382978723,
+        "recall": 0.926829268292683,
+        "f1": 0.8636363636363636,
+        "exact_match": 0.5528455284552846,
+        "absence_respect": 0.8783783783783784,
+        "bucket_mae": 0.4473684210526316,
+        "bucket_bias": 0.34210526315789475
+      },
+      "coin line": {
+        "support": 72,
+        "na": false,
+        "precision": 0.9411764705882353,
+        "recall": 0.8888888888888888,
+        "f1": 0.9142857142857143,
+        "exact_match": 0.5694444444444444,
+        "absence_respect": 0.9853479853479854,
+        "bucket_mae": 0.375,
+        "bucket_bias": 0.125
+      },
+      "coin": {
+        "support": 81,
+        "na": false,
+        "precision": 0.9629629629629629,
+        "recall": 0.9629629629629629,
+        "f1": 0.9629629629629629,
+        "exact_match": 0.32098765432098764,
+        "absence_respect": 0.9886363636363636,
+        "bucket_mae": 0.8076923076923077,
+        "bucket_bias": 0.5
+      },
+      "platform": {
+        "support": 228,
+        "na": false,
+        "precision": 0.8968609865470852,
+        "recall": 0.8771929824561403,
+        "f1": 0.8869179600886918,
+        "exact_match": 0.4692982456140351,
+        "absence_respect": 0.8034188034188035,
+        "bucket_mae": 0.56,
+        "bucket_bias": 0.19
+      },
+      "tower": {
+        "support": 66,
+        "na": false,
+        "precision": 0.7818181818181819,
+        "recall": 0.6515151515151515,
+        "f1": 0.7107438016528926,
+        "exact_match": 0.3939393939393939,
+        "absence_respect": 0.956989247311828,
+        "bucket_mae": 0.3953488372093023,
+        "bucket_bias": 0.16279069767441862
+      },
+      "cannon": {
+        "support": 27,
+        "na": false,
+        "precision": 0.8181818181818182,
+        "recall": 0.6666666666666666,
+        "f1": 0.7346938775510203,
+        "exact_match": 0.3333333333333333,
+        "absence_respect": 0.9874213836477987,
+        "bucket_mae": 0.6111111111111112,
+        "bucket_bias": 0.2777777777777778
+      },
+      "ascending staircase": {
+        "support": 51,
+        "na": false,
+        "precision": 0.7692307692307693,
+        "recall": 0.7843137254901961,
+        "f1": 0.7766990291262137,
+        "exact_match": 0.6470588235294118,
+        "absence_respect": 0.9591836734693877,
+        "bucket_mae": 0.175,
+        "bucket_bias": 0.175
+      },
+      "descending staircase": {
+        "support": 6,
+        "na": false,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": NaN,
+        "exact_match": 0.0,
+        "absence_respect": 0.9941002949852508,
+        "bucket_mae": NaN,
+        "bucket_bias": NaN
+      },
+      "rectangular": {
+        "support": 36,
+        "na": false,
+        "precision": 0.2876712328767123,
+        "recall": 0.5833333333333334,
+        "f1": 0.3853211009174312,
+        "exact_match": 0.2777777777777778,
+        "absence_respect": 0.8317152103559871,
+        "bucket_mae": 0.7142857142857143,
+        "bucket_bias": -0.5238095238095238
+      },
+      "irregular": {
+        "support": 21,
+        "na": false,
+        "precision": 0.1927710843373494,
+        "recall": 0.7619047619047619,
+        "f1": 0.3076923076923077,
+        "exact_match": 0.42857142857142855,
+        "absence_respect": 0.7932098765432098,
+        "bucket_mae": 0.4375,
+        "bucket_bias": 0.4375
+      },
+      "question block": {
+        "support": 75,
+        "na": false,
+        "precision": 0.9305555555555556,
+        "recall": 0.8933333333333333,
+        "f1": 0.9115646258503401,
+        "exact_match": 0.41333333333333333,
+        "absence_respect": 0.9814814814814815,
+        "bucket_mae": 0.7313432835820896,
+        "bucket_bias": 0.34328358208955223
+      },
+      "loose block": {
+        "support": 138,
+        "na": false,
+        "precision": 0.6595744680851063,
+        "recall": 0.6739130434782609,
+        "f1": 0.6666666666666667,
+        "exact_match": 0.2463768115942029,
+        "absence_respect": 0.7681159420289855,
+        "bucket_mae": 0.7741935483870968,
+        "bucket_bias": 0.3870967741935484
+      },
+      "enem": {
+        "support": 270,
+        "na": false,
+        "precision": 0.927710843373494,
+        "recall": 0.8555555555555555,
+        "f1": 0.8901734104046242,
+        "exact_match": 0.337037037037037,
+        "absence_respect": 0.76,
+        "bucket_mae": 0.696969696969697,
+        "bucket_bias": 0.3939393939393939
+      }
+    },
+    "S_vs_w": {
+      "1": 0.7890750030967422,
+      "2": 0.8261318592840331,
+      "3": 0.8461962715223585,
+      "5": 0.8565220488046574,
+      "7.5": 0.8754871175523349,
+      "10": 0.8610265700483092
+    },
+    "at_w_star": {
+      "c_score": 0.7944524959742351,
+      "exact_match": 0.043478260869565216,
+      "broken_rate": 0.08695652173913043,
+      "floor_valid": 1.0,
+      "novelty_med": 13.0,
+      "copy_rate": 0.08405797101449275,
+      "tile_js": 0.014932963196993696,
+      "rare_exact_match": 0.4838709677419355
+    },
+    "contrast": {
+      "prompt_A": "full floor. a few pipes.",
+      "prompt_B": "floor with one gap. several enemies. one ascending staircase.",
+      "paired_wins_of_8": {
+        "pipes": 8,
+        "enemy_presence": 5,
+        "gaps_stairs": 8
+      },
+      "means": {
+        "pipes_A": 5.125,
+        "pipes_B": 0.25,
+        "enemy_tiles_A": 3.875,
+        "enemy_tiles_B": 5.5,
+        "gaps_plus_stairs_A": 0.25,
+        "gaps_plus_stairs_B": 2.0
+      },
+      "pass": false
+    },
+    "note": "5 dev levels -> wide intervals (doc 22 \u00a77.3); selection uses S_noplay because G-P5b has not passed"
+  }
+}

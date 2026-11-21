@@ -1,5 +1,16 @@
 # PROGRESS
 
+## >>> FINAL STATE (2026-11-21): the whole pipeline is built, run, evaluated and packaged; read this first <<<
+
+- **Model:** C-main (cosine, conditional) early-stopped at 36,295 steps; **frozen step 18,000, CFG w = 7.5** (`FROZEN.json`); inference bundle in `app/model/` (99.5 % cell agreement with the checkpoint).
+- **Gates (honest):** G-P1, G-P2 pass. **G-P3 FAIL (waiver in `reports/gates/P3/WAIVER.md`)**, **G-P4 FAIL on P4.04 only** (C-score 0.7945, CFG helps, optimiser membership exact; omitted-enemies prompt still gets enemies), **G-P5 FAIL on P5.01** (seam 1.54 > 1.3; r=5 gave 1.38 on 12 levels), P5.02/P5.03 pass, **G-P5b FAIL** (jar agreement 0.663). Fallback: `S_noplay` for all selection.
+- **One-shot test (once, after freeze):** P-test C-score 0.819 [0.767, 0.861] vs null 0.463 and best constant 0.626; broken 0.102; novelty 13 (= real reference); P-rand (random 7-topic prompts) C-score 0.348 is BELOW an always-empty generator: a real weakness. `reports/final/NOTES.md` documents the crashed-then-repeated run (token limit), which changed no number.
+- **Process lapse recorded:** X1 (aux CE, conditional) was evaluated AFTER the freeze; at the matched step it has a higher dev C-score (0.824 vs 0.796) and fewer broken structures; C-main stays the reported model (test already used).
+- **Checker:** 69 % of real full levels solved (target 90 % not reached). End-to-end, a re-planning bot finishes 6-7 of 10 verified showcase levels and 8 of 20 verified 112-wide G-P5 levels (enemies removed; bot weaker than a human). UI wording therefore says 'route found (not a guarantee)'.
+- **Latency (measured, fast mode default):** 48 cols 4.8 s, 112 cols 12.9 s median on the RTX 3060 Ti (p95 15 s / 58 s); full quality 35 s / 167 s; the 10 s target is NOT met at 112 columns.
+- **Tests:** 255 fast + 4 slow end-to-end pass. Deliverables: `report/report.pdf`, `slides/slides.pdf`, `evidence/`, `MODEL_CARD.md`, `DATA_CARD.md`, `LICENSES/`, `DEPLOY.md`, submission zip via `scripts/build_submission_zip.py`.
+- **Not done (needs people or logins):** Streamlit Community Cloud deployment (team login; `DEPLOY.md`), GitHub push, viva/live-modification drills, laptops, GCR upload, human playthrough of showcase levels (manifest says `human_played: false`), hand-labelled checker set. Nothing was committed or pushed.
+
 ## >>> HANDOVER (2026-11-20): Phase 3 model training, for the friend who has the GPU <<<
 
 **Who does what.** The pre-training code is finished and pushed. From here the friend with the GPU **runs and monitors the
@@ -92,6 +103,21 @@ The sampling evaluation (`eval/generate.py`), `gate_p3.py` (checks P3.01-P3.04, 
 `configs/gates.yaml` are now written and tested on tiny throwaway runs (they correctly FAIL an untrained model); they have never
 run on a real checkpoint. After your 15k-step checkpoints arrive, the group picks the winning schedule and starts Phase 4 (text conditioning). Not built
 yet at all: playable-term checker validation, asset fetch, game, playability checker, prompt normalizer, Streamlit app, report.
+
+## 2026-11-20/21 — Phase 3 run by Claude Code on the desktop RTX 3060 Ti (owner now continues the whole project here)
+
+- Machine: desktop_3060ti, RTX 3060 Ti 8 GiB, driver 610.60, torch 2.15.0+cu132 (cu126/128/130 indexes have no 2.15.0 wheel; cu132 does). Python 3.12.16 via uv; package run with `PYTHONPATH=src`.
+- Step 1 all green (gates P1/P2, audit 39/39, verify_env incl. VRAM cap, 148 tests). Step 2 probe: peak VRAM 0.772 GiB allocated, median step_s 0.111 (steps 50-200) = about 9 steps/s; 15k steps about 28 min.
+- U-lin and U-cos finished 15,000 steps, 0 `skipped_nonfinite`. Final mean dev loss: linear 0.00624 (floor 0.0076), cosine 0.01010 (floor 0.0116).
+- Doc 13 §5 rule: linear at 4k 0.0132 and at 6k 0.00924 were NOT below the floor (strict 5k criterion missed); 10k 0.00674 was. Samples at 6k showed floors, stairs and upright pipes (no wiring bug), so training was continued and this is logged here.
+- **G-P3 FAIL (baseline MSE)**: broken_rate 0.082 (lin 15k) / 0.066 (cos 15k) vs <= 0.05; copy_rate at 15k 0.184 / 0.211 vs <= 0.154; at 10k copy ok (0.109/0.066) but broken 0.137/0.176. Saved in `reports/gates/P3_baseline_mse/`. Metric calibration checked: real train/dev windows give broken_rate 0.0.
+- Action (doc 25 R-3.4, first step): aux CE lambda 0.001 on both schedules (`configs/uncond_*_auxce.yaml`, runs U-lin-aux / U-cos-aux).
+- Bug fixed: `detector._floor_phrase` raised on a bottom row with no solid cell that is not all passable (`quantity_word(0)`), crashing `broken_rate` on generated samples. Now returns no floor phrase; regression test added; the 7,687/7,687 caption reproduction is unchanged.
+- **Dense Phase-3 evidence** (`reports/gates/P3_lin_dense`, `P3_lin_auxdense`): broken structures fall with training, copy rate rises. Baseline MSE linear: step 8k broken 0.207 / copy 0.039; 10k 0.133/0.098; 12k 0.113/0.121; 14k 0.066/0.148 (needs <= 0.05 and <= 0.154). Aux CE linear: 6k 0.082/0.234; 8k 0.055/0.305; 10k 0.023/0.359. No checkpoint of any run meets both bounds at 256 samples: G-P3 FAILS for linear (baseline and aux-CE) and for cosine aux-CE.
+- Bugs found and fixed while building later phases (each has a regression test): text LRU cache evicting batch hits (KeyError mid-training), `renoise` with a CPU generator on CUDA tensors (crashed resampling), `lexicon.parse_entry` pluralising 'bad guy' as 'bad guies', detector crash on floorless generated rows.
+- **Phase 5b (checker)**: `playability/checker.py` (A* + simulated arcs), physics frozen at jump_velocity 23.0 / run_speed 7.0 (top of the doc 27 s4.5 range; derived envelopes in `app/static/game/physics.json`). Real train+dev full levels solved: 25/36 = 69.4 %, framed 16-wide windows 79.9 % (target 90 % NOT reached; failures are SMB2 sky-bridge sections needing rise-4/gap-4 jumps beyond the 0.5/0.25-tile human margins). Enemies are modelled as killable (`enemies='ignore'`), because treating every enemy as an impassable static hazard solved only 22 % (doc 21 rule 1 deviation, decided by measurement).
+- **G-P5b FAIL, documented fallback**: agreement with MarioEval.jar on 300 items = 0.663 (kappa 0.144; the jar fails even a 1-high wall in synthetic levels, so it is not a usable oracle here). `S_noplay` is used for every selection. Independent evidence instead: physics-contract check in the real Phaser engine (`reports/gates/P5b/game_replay.json`): clean run-jumps clear gaps up to 6 and fail at 7, walls/steps up to 4 pass and 5 fail; and checker-path replay with a closed-loop ghost bot (`replay_real_windows.json`).
+- **Built since**: assets (Phaser 3.90.0 + Kenney CC0 via `fetch_assets.py`, `make_atlas.py`), sprite renderer, Phaser game (`app/static/game/game.js`, one-file offline HTML via `render/game_html.py`), level schema + exports, rule-based normalizer (dev 30/30 N4, 100 % passthrough of 2,668 stored captions), C-score (12/12 golden vectors), dev evaluation + CFG sweep (`eval_dev.py`, `gate_p4.py`), full-level generator with framing/sanitizer/verify loop (`gate_p5.py`), seam metric, Streamlit app with input validation (`app/streamlit_app.py`), tests for all of it.
 
 ---
 

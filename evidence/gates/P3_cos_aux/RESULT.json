@@ -1,0 +1,149 @@
+{
+  "phase": "P3",
+  "pass": false,
+  "metrics": {
+    "copy_rate_ref": 0.10434782608695652,
+    "novelty_ref": 13.0
+  },
+  "checks": [
+    {
+      "schedule": "cosine",
+      "id": "P3.01",
+      "name": "floor_valid",
+      "value": 0.9961,
+      "op": ">=",
+      "threshold": 0.85,
+      "n": 256,
+      "pass": true,
+      "waivable": false
+    },
+    {
+      "schedule": "cosine",
+      "id": "P3.02",
+      "name": "broken_rate",
+      "value": 0.0508,
+      "op": "<=",
+      "threshold": 0.05,
+      "n": 256,
+      "pass": false,
+      "waivable": false
+    },
+    {
+      "schedule": "cosine",
+      "id": "P3.03",
+      "name": "tile_js",
+      "value": 0.0007,
+      "op": "<=",
+      "threshold": 0.05,
+      "n": 256,
+      "pass": true,
+      "waivable": false
+    },
+    {
+      "schedule": "cosine",
+      "id": "P3.04",
+      "name": "copy_rate",
+      "value": 0.3242,
+      "op": "<=",
+      "threshold": 0.1543,
+      "n": 256,
+      "pass": false,
+      "waivable": false
+    }
+  ],
+  "timestamp": "2026-11-20T20:39:12Z",
+  "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad",
+  "diagnostics": {
+    "S_noplay": {
+      "cosine": 0.87
+    },
+    "schedule_choice": null,
+    "composite": "S_noplay (playable term dropped: checker not validated yet, ledger E4)",
+    "all_checkpoint_rows": [
+      {
+        "step": 10000,
+        "schedule": "cosine",
+        "n": 256,
+        "floor_valid": 0.99609375,
+        "broken_rate": 0.05078125,
+        "tile_js": 0.0007103316643457033,
+        "novelty_med": 7.0,
+        "floorless_share": 0.19140625,
+        "copy_rate": 0.32421875,
+        "copy_rate_strict": 0.140625,
+        "exact_copy_rate": 0.01953125,
+        "S_noplay": 0.8699669471153846,
+        "checkpoint": "step_0010000.pt",
+        "checkpoint_sha256": "e94c49ccb50df78b2ab25eb4b87bee8fada3fc7b45775973381c54e125b74d01",
+        "passes": false,
+        "checks": [
+          {
+            "id": "P3.01",
+            "name": "floor_valid",
+            "value": 0.9961,
+            "op": ">=",
+            "threshold": 0.85,
+            "n": 256,
+            "pass": true,
+            "waivable": false
+          },
+          {
+            "id": "P3.02",
+            "name": "broken_rate",
+            "value": 0.0508,
+            "op": "<=",
+            "threshold": 0.05,
+            "n": 256,
+            "pass": false,
+            "waivable": false
+          },
+          {
+            "id": "P3.03",
+            "name": "tile_js",
+            "value": 0.0007,
+            "op": "<=",
+            "threshold": 0.05,
+            "n": 256,
+            "pass": true,
+            "waivable": false
+          },
+          {
+            "id": "P3.04",
+            "name": "copy_rate",
+            "value": 0.3242,
+            "op": "<=",
+            "threshold": 0.1543,
+            "n": 256,
+            "pass": false,
+            "waivable": false
+          }
+        ]
+      },
+      {
+        "step": 15000,
+        "schedule": "cosine",
+        "n": 256,
+        "floor_valid": 1.0,
+        "broken_rate": 0.02734375,
+        "tile_js": 0.001068742891567879,
+        "novelty_med": 5.5,
+        "floorless_share": 0.21484375,
+        "copy_rate": 0.3984375,
+        "copy_rate_strict": 0.21484375,
+        "exact_copy_rate": 0.03515625,
+        "S_noplay": 0.8489332932692307,
+        "checkpoint": "step_0015000.pt",
+        "checkpoint_sha256": "0a9831bb646e816288286779d215fff6315a31b1877eb4112567d1dd89231ed9",
+        "passes": false
+      }
+    ]
+  },
+  "warnings": [],
+  "artifacts": [
+    "sample_sheet_cosine.png",
+    "nearest_train_cosine.png"
+  ],
+  "device": "cuda",
+  "ddim_steps": 50,
+  "n_samples": 256
+}

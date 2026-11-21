@@ -1,0 +1,88 @@
+{
+ "n": 10,
+ "success_rate": 0.7,
+ "mean_replans_when_won": 0.8571428571428571,
+ "enemies_removed": true,
+ "failures": [
+  {
+   "level": "showcase_04.level.json",
+   "won": false,
+   "replans": 0,
+   "why": "died too often"
+  },
+  {
+   "level": "showcase_08.level.json",
+   "won": false,
+   "replans": 0,
+   "why": "died too often"
+  },
+  {
+   "level": "showcase_10.level.json",
+   "won": false,
+   "replans": 6,
+   "why": "died too often"
+  }
+ ],
+ "rows": [
+  {
+   "level": "showcase_00.level.json",
+   "won": true,
+   "replans": 3,
+   "seconds": 27.6
+  },
+  {
+   "level": "showcase_01.level.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 13.7
+  },
+  {
+   "level": "showcase_02.level.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 20.6
+  },
+  {
+   "level": "showcase_04.level.json",
+   "won": false,
+   "replans": 0,
+   "why": "died too often"
+  },
+  {
+   "level": "showcase_05.level.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 17.6
+  },
+  {
+   "level": "showcase_06.level.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 13.6
+  },
+  {
+   "level": "showcase_07.level.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 16.0
+  },
+  {
+   "level": "showcase_08.level.json",
+   "won": false,
+   "replans": 0,
+   "why": "died too often"
+  },
+  {
+   "level": "showcase_10.level.json",
+   "won": false,
+   "replans": 6,
+   "why": "died too often"
+  },
+  {
+   "level": "showcase_11.level.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 17.6
+  }
+ ]
+}

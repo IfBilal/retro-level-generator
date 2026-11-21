@@ -1,0 +1,212 @@
+[
+ {
+  "pid": "cas-dev-01",
+  "category": "A",
+  "prompt": "a flat level with 3 goombas and 2 pipes",
+  "expected_raw": "floor full, enemy a few, pipe two",
+  "expected_caption_fullcorpus": "full floor. a few enemies. two pipes."
+ },
+ {
+  "pid": "cas-dev-02",
+  "category": "A",
+  "prompt": "one tube, four koopas and a mystery block",
+  "expected_raw": "pipe one, enemy a few, question block one",
+  "expected_caption_fullcorpus": "a few enemies. one question block. one pipe."
+ },
+ {
+  "pid": "cas-dev-03",
+  "category": "A",
+  "prompt": "two bullet bills and 6 bricks",
+  "expected_raw": "cannon two, loose block several",
+  "expected_caption_fullcorpus": "two cannons. several loose blocks."
+ },
+ {
+  "pid": "cas-dev-04",
+  "category": "A",
+  "prompt": "5 coins in a row",
+  "expected_raw": "coin several, coin line one",
+  "expected_caption_fullcorpus": "several coins. one coin line."
+ },
+ {
+  "pid": "cas-dev-05",
+  "category": "A",
+  "prompt": "a ledge with a ? block above it",
+  "expected_raw": "platform one, question block one; POSITIONAL",
+  "expected_caption_fullcorpus": "one question block. one platform."
+ },
+ {
+  "pid": "cas-dev-06",
+  "category": "A",
+  "prompt": "three pillars and a staircase",
+  "expected_raw": "tower a few, ascending staircase one",
+  "expected_caption_fullcorpus": "one ascending staircase. a few towers."
+ },
+ {
+  "pid": "cas-dev-07",
+  "category": "B",
+  "prompt": "lots of coins and a couple of goombas",
+  "expected_raw": "coin many, enemy two",
+  "expected_caption_fullcorpus": "two enemies. many coins."
+ },
+ {
+  "pid": "cas-dev-08",
+  "category": "B",
+  "prompt": "some pipes and a bunch of bad guys",
+  "expected_raw": "pipe a few, enemy several",
+  "expected_caption_fullcorpus": "several enemies. a few pipes."
+ },
+ {
+  "pid": "cas-dev-09",
+  "category": "B",
+  "prompt": "a handful of platforms",
+  "expected_raw": "platform a few",
+  "expected_caption_fullcorpus": "a few platforms."
+ },
+ {
+  "pid": "cas-dev-10",
+  "category": "B",
+  "prompt": "plenty of question blocks",
+  "expected_raw": "question block many",
+  "expected_caption_fullcorpus": "many question blocks."
+ },
+ {
+  "pid": "cas-dev-11",
+  "category": "B",
+  "prompt": "goombas and tubes",
+  "expected_raw": "enemy default, pipe default",
+  "expected_caption_fullcorpus": "a few enemies. two pipes."
+ },
+ {
+  "pid": "cas-dev-12",
+  "category": "C",
+  "prompt": "solid ground, no pits, with one pipe",
+  "expected_raw": "floor full, pipe one",
+  "expected_caption_fullcorpus": "full floor. one pipe."
+ },
+ {
+  "pid": "cas-dev-13",
+  "category": "C",
+  "prompt": "ground with 2 holes and an enemy",
+  "expected_raw": "floor gaps:two, enemy one",
+  "expected_caption_fullcorpus": "floor with two gaps. one enemy."
+ },
+ {
+  "pid": "cas-dev-14",
+  "category": "C",
+  "prompt": "an underground stretch with a few bricks",
+  "expected_raw": "ceiling full, loose block a few",
+  "expected_caption_fullcorpus": "full ceiling. a few loose blocks."
+ },
+ {
+  "pid": "cas-dev-15",
+  "category": "C",
+  "prompt": "mostly pits with two islands of ground",
+  "expected_raw": "floor chunks:two",
+  "expected_caption_fullcorpus": "giant gap with two chunks of floor."
+ },
+ {
+  "pid": "cas-dev-16",
+  "category": "D",
+  "prompt": "full floor with three pipes and no enemies",
+  "expected_raw": "floor full, pipe a few (forbid enemy)",
+  "expected_caption_fullcorpus": "full floor. a few pipes."
+ },
+ {
+  "pid": "cas-dev-17",
+  "category": "D",
+  "prompt": "a level without coins, just platforms",
+  "expected_raw": "platform default (forbid coin)",
+  "expected_caption_fullcorpus": "two platforms."
+ },
+ {
+  "pid": "cas-dev-18",
+  "category": "D",
+  "prompt": "no gaps and zero cannons, two towers",
+  "expected_raw": "floor full, tower two (forbid cannon)",
+  "expected_caption_fullcorpus": "full floor. two towers."
+ },
+ {
+  "pid": "cas-dev-19",
+  "category": "E",
+  "prompt": "start with flat ground and a pipe, then lots of goombas, then end with a staircase",
+  "expected_raw": "S1 floor full, pipe one \u00b7 S2 enemy many \u00b7 S3 ascending staircase one",
+  "expected_caption_fullcorpus": "full floor. one pipe. / several enemies. (CLAMPED) / one ascending staircase."
+ },
+ {
+  "pid": "cas-dev-20",
+  "category": "E",
+  "prompt": "two pipes followed by a coin line",
+  "expected_raw": "S1 pipe two \u00b7 S2 coin line one (+ IMPLIED coin a few)",
+  "expected_caption_fullcorpus": "two pipes. / a few coins. one coin line."
+ },
+ {
+  "pid": "cas-dev-21",
+  "category": "E",
+  "prompt": "first some platforms; second, a cannon; finally a big gap",
+  "expected_raw": "S1 platform a few \u00b7 S2 cannon one \u00b7 S3 floor chunks:one",
+  "expected_caption_fullcorpus": "a few platforms. / one cannon. / giant gap with one chunk of floor."
+ },
+ {
+  "pid": "cas-dev-22",
+  "category": "E",
+  "prompt": "begin with a mystery block and end with stairs going down",
+  "expected_raw": "S1 question block one \u00b7 S2 descending staircase one",
+  "expected_caption_fullcorpus": "one question block. / one descending staircase."
+ },
+ {
+  "pid": "cas-dev-23",
+  "category": "E",
+  "prompt": "an underground level: two pipes, then 4 goombas",
+  "expected_raw": "global ceiling full \u00b7 S1 pipe two \u00b7 S2 enemy a few",
+  "expected_caption_fullcorpus": "full ceiling. two pipes. / full ceiling. a few enemies."
+ },
+ {
+  "pid": "cas-dev-24",
+  "category": "F",
+  "prompt": "7 pipes",
+  "expected_raw": "pipe several",
+  "expected_caption_fullcorpus": "a few pipes. (CLAMPED)"
+ },
+ {
+  "pid": "cas-dev-25",
+  "category": "F",
+  "prompt": "two staircases going down",
+  "expected_raw": "descending staircase two",
+  "expected_caption_fullcorpus": "one descending staircase. (CLAMPED)"
+ },
+ {
+  "pid": "cas-dev-26",
+  "category": "G",
+  "prompt": "a fun green pipe on the left with a scary goomba",
+  "expected_raw": "pipe one, enemy one; POSITIONAL",
+  "expected_caption_fullcorpus": "one enemy. one pipe."
+ },
+ {
+  "pid": "cas-dev-27",
+  "category": "G",
+  "prompt": "make it hard: lots of enemies and 2 cannons",
+  "expected_raw": "enemy many, cannon two; style hard",
+  "expected_caption_fullcorpus": "several enemies. two cannons. (CLAMPED)"
+ },
+ {
+  "pid": "cas-dev-28",
+  "category": "G",
+  "prompt": "castle level with lava and three coins",
+  "expected_raw": "coin a few; THEME \u00d72",
+  "expected_caption_fullcorpus": "a few coins."
+ },
+ {
+  "pid": "cas-dev-29",
+  "category": "H",
+  "prompt": "full floor. two enemies. one pipe.",
+  "expected_raw": "floor full, enemy two, pipe one; PASSTHROUGH",
+  "expected_caption_fullcorpus": "full floor. two enemies. one pipe."
+ },
+ {
+  "pid": "cas-dev-30",
+  "category": "H",
+  "prompt": "floor with one gap. a few coins. one coin line. two platforms.",
+  "expected_raw": "as given; PASSTHROUGH",
+  "expected_caption_fullcorpus": "floor with one gap. a few coins. one coin line. two platforms."
+ }
+]

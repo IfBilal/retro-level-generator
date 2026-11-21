@@ -1,0 +1,46 @@
+{
+ "checkpoint": "runs/C-main/step_0018000.pt",
+ "checkpoint_sha256": "f471e2a56c2c4432139139ef697afcaf2009ca24d125fa9360e006d9d28065c1",
+ "step": 18000,
+ "w": 7.5,
+ "reason": "best dev S_noplay (selection_C-main.json); early stop, see events.jsonl",
+ "config_hash": "cc38969447288515a4e8e09a906607c852c57f4c8685d4fbc718091128e836d6",
+ "schedule": "cosine",
+ "physics_sha256": "bbc726c01fca27c30f3f14bd9663c36fd33f850a22faa27ce8222d85e11fbd04",
+ "split_lock_sha256": "9b9d8ebf2735c5088bccd377fd2b6e4a4a0e4f504426f53efb3085785d431bb7",
+ "eval_plan_sha256": "714d3f55a997e98d2b832e990be072494009fa140b2cce8436aa9e67ed05f938",
+ "gates": {
+  "P1": {
+   "pass": true,
+   "sha256": "5ce2698ca8cf6c55d5997038084b522440b216443541159db145f92e0d008686",
+   "timestamp": "2026-11-20T18:01:29Z"
+  },
+  "P2": {
+   "pass": true,
+   "sha256": "84553a099aa1097d22c1fc8b758dd7ac0bcc6a5308faa630c7ef12f6757c8a46",
+   "timestamp": "2026-11-20T18:01:34Z"
+  },
+  "P3": {
+   "pass": false,
+   "sha256": "6eeb07dc192580e53aa6340f5bde109430cfded2d323ae9e407f54f46e07e614",
+   "timestamp": "2026-11-20T19:05:04Z"
+  },
+  "P4": {
+   "pass": false,
+   "sha256": "717d37f0c6259200c1ee56b8aae142eb927b878c07aac86747b2744ab097c66b",
+   "timestamp": "2026-11-20T23:32:20Z"
+  },
+  "P5": {
+   "pass": false,
+   "sha256": "677791db6fac4b95ced5a5372b89bb5d1b7a59d9b49587b3617ad7908188fc8b",
+   "timestamp": "2026-11-21T02:17:42Z"
+  },
+  "P5b": {
+   "pass": false,
+   "sha256": "fd67b01f6e7d2fd8f9cefa9742affd54b6cfb3faf4f9e14a75ffda4837630a43",
+   "timestamp": "2026-11-20T21:30:14Z"
+  }
+ },
+ "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad",
+ "frozen_utc": "2026-11-21T02:45:21Z"
+}

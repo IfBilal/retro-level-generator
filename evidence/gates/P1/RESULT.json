@@ -1,0 +1,78 @@
+{
+  "phase": "P1",
+  "pass": true,
+  "metrics": {
+    "test_le2": 0.0186,
+    "dev_le2": 0.0166,
+    "train_windows": 5709
+  },
+  "checks": [
+    {
+      "name": "audit: all hard facts F1-F17/A-series pass",
+      "pass": true,
+      "detail": "(39 checks)"
+    },
+    {
+      "name": "split matches LOCK",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no level in two splits; union = 42 levels",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "family rule: every family member is in train",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "test windows within Hamming<=2 of train <= 3 %",
+      "pass": true,
+      "detail": "= 1.86%"
+    },
+    {
+      "name": "dev windows within Hamming<=2 of train <= 3 %",
+      "pass": true,
+      "detail": "= 1.66%"
+    },
+    {
+      "name": "pytest: splits, detector, data tests",
+      "pass": true,
+      "detail": "55 passed in 19.53s"
+    },
+    {
+      "name": "orientation: floor at the bottom, sky at the top",
+      "pass": true,
+      "detail": "(bottom solid 0.56 > top 0.00)"
+    },
+    {
+      "name": "pipe tops: '<' is left of '>' (never '>' then '<')",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "round trip grid -> one-hot -> argmax is the identity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "round trip on all train windows",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "x0 values are exactly {-1,+1}; 12 channels at -1 per cell",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "helper grid_to_tensor agrees with dataset.onehot",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "timestamp": "2026-11-20T18:01:29Z",
+  "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad"
+}

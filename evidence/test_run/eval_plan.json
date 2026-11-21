@@ -1,0 +1,43 @@
+{
+ "version": 1,
+ "pre_registered_utc": "2026-11-21T02:45:21Z",
+ "model": {
+  "checkpoint": "runs/C-main/step_0018000.pt",
+  "step": 18000,
+  "w": 7.5,
+  "ddim_steps": 50,
+  "eta": 0.0,
+  "ema": true
+ },
+ "prompt_sets": {
+  "P-test": {
+   "file": "data/prompts/p_test.json",
+   "seeds": 3,
+   "seed_base": 8000000
+  },
+  "P-rand": {
+   "file": "data/prompts/p_rand.json",
+   "seeds": 3,
+   "seed_base": 9000000,
+   "note": "fresh seed base, not used in dev"
+  },
+  "P-casual-test": {
+   "note": "30 held-out casual prompts through the normalizer (product path), 3 seeds per scene"
+  }
+ },
+ "metrics": [
+  "C-score (+ delta vs null)",
+  "exact match",
+  "per-concept table",
+  "broken-structure rate (raw)",
+  "floor validity",
+  "novelty / copy rate vs TRAIN windows",
+  "tile-distribution JS",
+  "checker-verified rate of framed windows (diagnostic)",
+  "per-level table (6 held-out levels)"
+ ],
+ "statistics": "95% percentile bootstrap over held-out LEVELS (clusters), 2000 resamples, seed 0; only 6 test levels -> wide intervals",
+ "selection_rule": "dev composite S_noplay = 0.5 C + 0.25 (1 - broken) + 0.25 min(1, novelty/ref); playable term excluded (G-P5b failed)",
+ "no_tuning_after_freeze": true,
+ "one_shot": "scripts/eval_test.py refuses a second run; a metric-code bug fix must re-run and document BOTH runs"
+}

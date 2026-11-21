@@ -1,0 +1,57 @@
+{
+ "physics_sha256": "bbc726c01fca27c30f3f14bd9663c36fd33f850a22faa27ce8222d85e11fbd04",
+ "n": 8,
+ "unsound_checker_solved_game_failed": [],
+ "conservative_checker_unsolved_game_won": [],
+ "rows": [
+  {
+   "case": "gap3",
+   "checker": "solved",
+   "replay_of_checker_path": true,
+   "single_clean_jump": true
+  },
+  {
+   "case": "gap5",
+   "checker": "solved",
+   "replay_of_checker_path": true,
+   "single_clean_jump": true
+  },
+  {
+   "case": "gap6",
+   "checker": "solved",
+   "replay_of_checker_path": false,
+   "single_clean_jump": true
+  },
+  {
+   "case": "gap7",
+   "checker": "unsolved",
+   "replay_of_checker_path": null,
+   "single_clean_jump": false
+  },
+  {
+   "case": "wall4",
+   "checker": "solved",
+   "replay_of_checker_path": true,
+   "single_clean_jump": false
+  },
+  {
+   "case": "wall5",
+   "checker": "unsolved",
+   "replay_of_checker_path": null,
+   "single_clean_jump": false
+  },
+  {
+   "case": "step_up4",
+   "checker": "solved",
+   "replay_of_checker_path": true,
+   "single_clean_jump": false
+  },
+  {
+   "case": "step_up5",
+   "checker": "unsolved",
+   "replay_of_checker_path": null,
+   "single_clean_jump": false
+  }
+ ],
+ "soundness_pass": true
+}

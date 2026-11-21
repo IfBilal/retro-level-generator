@@ -1,0 +1,234 @@
+{
+  "phase": "P3",
+  "pass": false,
+  "metrics": {
+    "copy_rate_ref": 0.10434782608695652,
+    "novelty_ref": 13.0
+  },
+  "checks": [
+    {
+      "schedule": "linear",
+      "id": "P3.01",
+      "name": "floor_valid",
+      "value": 0.9844,
+      "op": ">=",
+      "threshold": 0.85,
+      "n": 256,
+      "pass": true,
+      "waivable": false
+    },
+    {
+      "schedule": "linear",
+      "id": "P3.02",
+      "name": "broken_rate",
+      "value": 0.082,
+      "op": "<=",
+      "threshold": 0.05,
+      "n": 256,
+      "pass": false,
+      "waivable": false
+    },
+    {
+      "schedule": "linear",
+      "id": "P3.03",
+      "name": "tile_js",
+      "value": 0.0018,
+      "op": "<=",
+      "threshold": 0.05,
+      "n": 256,
+      "pass": true,
+      "waivable": false
+    },
+    {
+      "schedule": "linear",
+      "id": "P3.04",
+      "name": "copy_rate",
+      "value": 0.2344,
+      "op": "<=",
+      "threshold": 0.1543,
+      "n": 256,
+      "pass": false,
+      "waivable": false
+    }
+  ],
+  "timestamp": "2026-11-20T21:20:19Z",
+  "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad",
+  "diagnostics": {
+    "S_noplay": {
+      "linear": 0.8948
+    },
+    "schedule_choice": null,
+    "composite": "S_noplay (playable term dropped: checker not validated yet, ledger E4)",
+    "all_checkpoint_rows": [
+      {
+        "step": 2000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.41015625,
+        "broken_rate": 0.8671875,
+        "tile_js": 0.01135640709556698,
+        "novelty_med": 32.5,
+        "floorless_share": 0.046875,
+        "copy_rate": 0.0,
+        "copy_rate_strict": 0.0,
+        "exact_copy_rate": 0.0,
+        "S_noplay": 0.48828125,
+        "checkpoint": "step_0002000.pt",
+        "checkpoint_sha256": "784009b9d2ce6f610ccb0da32db1c0d29611e576b7994d71a7c2f9b6303e8ed7",
+        "passes": false
+      },
+      {
+        "step": 4000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.94921875,
+        "broken_rate": 0.1796875,
+        "tile_js": 0.0012712367722661079,
+        "novelty_med": 11.0,
+        "floorless_share": 0.2109375,
+        "copy_rate": 0.1015625,
+        "copy_rate_strict": 0.0390625,
+        "exact_copy_rate": 0.00390625,
+        "S_noplay": 0.8912259615384616,
+        "checkpoint": "step_0004000.pt",
+        "checkpoint_sha256": "9f3ac860b00b3dbc504b851da6dbf6f36f7d672d4bed7b9cb6e5d3a81743bdb7",
+        "passes": false
+      },
+      {
+        "step": 6000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.984375,
+        "broken_rate": 0.08203125,
+        "tile_js": 0.0017832380680425045,
+        "novelty_med": 9.0,
+        "floorless_share": 0.21875,
+        "copy_rate": 0.234375,
+        "copy_rate_strict": 0.11328125,
+        "exact_copy_rate": 0.01171875,
+        "S_noplay": 0.8947566105769231,
+        "checkpoint": "step_0006000.pt",
+        "checkpoint_sha256": "7a910651325ced92bb26ee12ebd6b1e8fe19b9bef95590a89a0cabf634d00a35",
+        "passes": false,
+        "checks": [
+          {
+            "id": "P3.01",
+            "name": "floor_valid",
+            "value": 0.9844,
+            "op": ">=",
+            "threshold": 0.85,
+            "n": 256,
+            "pass": true,
+            "waivable": false
+          },
+          {
+            "id": "P3.02",
+            "name": "broken_rate",
+            "value": 0.082,
+            "op": "<=",
+            "threshold": 0.05,
+            "n": 256,
+            "pass": false,
+            "waivable": false
+          },
+          {
+            "id": "P3.03",
+            "name": "tile_js",
+            "value": 0.0018,
+            "op": "<=",
+            "threshold": 0.05,
+            "n": 256,
+            "pass": true,
+            "waivable": false
+          },
+          {
+            "id": "P3.04",
+            "name": "copy_rate",
+            "value": 0.2344,
+            "op": "<=",
+            "threshold": 0.1543,
+            "n": 256,
+            "pass": false,
+            "waivable": false
+          }
+        ]
+      },
+      {
+        "step": 8000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.9921875,
+        "broken_rate": 0.0546875,
+        "tile_js": 0.0016719622486146655,
+        "novelty_med": 7.0,
+        "floorless_share": 0.21875,
+        "copy_rate": 0.3046875,
+        "copy_rate_strict": 0.1796875,
+        "exact_copy_rate": 0.03125,
+        "S_noplay": 0.8670372596153846,
+        "checkpoint": "step_0008000.pt",
+        "checkpoint_sha256": "16a68aebefabc12930b2b238081d692b25519ae8385d9322fd4cdbc6730cd63b",
+        "passes": false
+      },
+      {
+        "step": 10000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.99609375,
+        "broken_rate": 0.0234375,
+        "tile_js": 0.0020066373706063506,
+        "novelty_med": 6.5,
+        "floorless_share": 0.21875,
+        "copy_rate": 0.359375,
+        "copy_rate_strict": 0.20703125,
+        "exact_copy_rate": 0.03125,
+        "S_noplay": 0.8671875,
+        "checkpoint": "step_0010000.pt",
+        "checkpoint_sha256": "4824cbead7b9a4a257601df6cd077a168ee7b7a358a9a41365714e033fdfd216",
+        "passes": false
+      },
+      {
+        "step": 12000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.99609375,
+        "broken_rate": 0.0234375,
+        "tile_js": 0.0018034255172429347,
+        "novelty_med": 6.0,
+        "floorless_share": 0.203125,
+        "copy_rate": 0.39453125,
+        "copy_rate_strict": 0.21484375,
+        "exact_copy_rate": 0.0390625,
+        "S_noplay": 0.8575721153846154,
+        "checkpoint": "step_0012000.pt",
+        "checkpoint_sha256": "3ce3b7cdccbc87f7eeeba03c5276e71eaac954285e6066a4120a7e1d70994f47",
+        "passes": false
+      },
+      {
+        "step": 14000,
+        "schedule": "linear",
+        "n": 256,
+        "floor_valid": 0.9921875,
+        "broken_rate": 0.02734375,
+        "tile_js": 0.0019190820588341753,
+        "novelty_med": 5.0,
+        "floorless_share": 0.21484375,
+        "copy_rate": 0.4140625,
+        "copy_rate_strict": 0.23046875,
+        "exact_copy_rate": 0.04296875,
+        "S_noplay": 0.8354116586538461,
+        "checkpoint": "step_0014000.pt",
+        "checkpoint_sha256": "7fb0548a80a4dce15ba7e0343229718b073f58ae0b5fbae65f79a216b2624916",
+        "passes": false
+      }
+    ]
+  },
+  "warnings": [],
+  "artifacts": [
+    "sample_sheet_linear.png",
+    "nearest_train_linear.png"
+  ],
+  "device": "cuda",
+  "ddim_steps": 50,
+  "n_samples": 256
+}

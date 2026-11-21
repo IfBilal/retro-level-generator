@@ -1,0 +1,57 @@
+{
+  "phase": "P5b",
+  "pass": false,
+  "metrics": {
+    "n_items": 300,
+    "jar_timeouts": 0,
+    "agreement": 0.6633333333333333,
+    "kappa": 0.14406779661016944,
+    "confusion": {
+      "both_solved": 169,
+      "both_failed": 30,
+      "fast_solved_jar_failed": 56,
+      "fast_failed_jar_solved": 45
+    },
+    "false_verified_rate": 0.24888888888888888,
+    "agreement_by_source": {
+      "real_window": 0.68,
+      "real_seg48": 0.62,
+      "p3_sample": 0.69
+    },
+    "jar_solved_rate": 0.7133333333333334,
+    "fast_solved_rate": 0.75,
+    "enemy_mode_fast": "ignore",
+    "jar_enemies_stripped": false,
+    "physics_sha256": "bbc726c01fca27c30f3f14bd9663c36fd33f850a22faa27ce8222d85e11fbd04"
+  },
+  "checks": [
+    {
+      "id": "P5b.01",
+      "name": "agreement (fast vs jar)",
+      "value": 0.6633,
+      "op": ">=",
+      "threshold": 0.85,
+      "pass": false
+    },
+    {
+      "id": "P5b.02a",
+      "name": "false-verified rate (warning > 0.10)",
+      "value": 0.2489,
+      "op": "<=",
+      "threshold": 0.1,
+      "pass": false,
+      "waivable": true
+    }
+  ],
+  "timestamp": "2026-11-20T21:30:14Z",
+  "git_sha": "9f085664215cec566e1765f8ad503511bc6edaad",
+  "supplementary": {
+    "game_engine_contract": {
+      "n_cases": 8,
+      "unsound": 0,
+      "conservative": 0,
+      "soundness_pass": true
+    }
+  },
+  "decision": "KEEP S_noplay in every selection (CLAUDE.md rule 15, ledger E4); the checker's verified badge is backed by the game-engine contract check, not by jar agreement"
+}

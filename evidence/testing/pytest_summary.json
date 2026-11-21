@@ -1,0 +1,7 @@
+{
+ "passed": 255,
+ "failed": 0,
+ "total": 255,
+ "summary_line": "255 passed, 1 skipped, 4 deselected in 35.06s",
+ "slow_suite": "4 passed, 256 deselected in 144.73s (0:02:24)"
+}

@@ -1,0 +1,13 @@
+{
+ "enemies": "ignore",
+ "physics_sha256": "bbc726c01fca27c30f3f14bd9663c36fd33f850a22faa27ce8222d85e11fbd04",
+ "n": 432,
+ "jar_timeouts": 0,
+ "jar_solved_rate": 0.7662037037037037,
+ "fast_solved_rate": 0.7986111111111112,
+ "agreement": 0.6805555555555556,
+ "kappa": 0.06326011124728952,
+ "false_verified_rate_of_fast_solved": 0.22028985507246376,
+ "fast_solved_jar_failed": 76,
+ "fast_failed_jar_solved": 62
+}

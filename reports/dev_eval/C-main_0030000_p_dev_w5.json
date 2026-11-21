@@ -1,0 +1,3996 @@
+{
+ "step": 30000,
+ "prompt_set": "p_dev",
+ "w": 5.0,
+ "n_prompts": 115,
+ "n_seeds": 3,
+ "n_samples": 345,
+ "c_score": 0.8230434782608697,
+ "exact_match": 0.09855072463768116,
+ "broken_rate": 0.04057971014492753,
+ "floor_valid": 1.0,
+ "floorless_share": 0.13043478260869565,
+ "rare_exact_match": 0.5806451612903226,
+ "concepts": {
+  "floor": {
+   "support": 297,
+   "na": false,
+   "precision": 0.9866666666666667,
+   "recall": 0.9966329966329966,
+   "f1": 0.9916247906197655,
+   "exact_match": 0.8383838383838383,
+   "absence_respect": 0.9166666666666666,
+   "bucket_mae": 0.1839080459770115,
+   "bucket_bias": 0.04597701149425287
+  },
+  "ceiling": {
+   "support": 60,
+   "na": false,
+   "precision": 0.921875,
+   "recall": 0.9833333333333333,
+   "f1": 0.9516129032258064,
+   "exact_match": 0.6833333333333333,
+   "absence_respect": 0.9824561403508771,
+   "bucket_mae": 0.25,
+   "bucket_bias": 0.25
+  },
+  "upside down pipe": {
+   "support": 36,
+   "na": false,
+   "precision": 0.8648648648648649,
+   "recall": 0.8888888888888888,
+   "f1": 0.8767123287671232,
+   "exact_match": 0.7777777777777778,
+   "absence_respect": 0.9838187702265372,
+   "bucket_mae": 0.125,
+   "bucket_bias": 0.125
+  },
+  "pipe": {
+   "support": 123,
+   "na": false,
+   "precision": 0.8088235294117647,
+   "recall": 0.8943089430894309,
+   "f1": 0.8494208494208495,
+   "exact_match": 0.6016260162601627,
+   "absence_respect": 0.8828828828828829,
+   "bucket_mae": 0.32727272727272727,
+   "bucket_bias": 0.07272727272727272
+  },
+  "coin line": {
+   "support": 72,
+   "na": false,
+   "precision": 0.9444444444444444,
+   "recall": 0.9444444444444444,
+   "f1": 0.9444444444444444,
+   "exact_match": 0.7083333333333334,
+   "absence_respect": 0.9853479853479854,
+   "bucket_mae": 0.25,
+   "bucket_bias": 0.014705882352941176
+  },
+  "coin": {
+   "support": 81,
+   "na": false,
+   "precision": 0.987012987012987,
+   "recall": 0.9382716049382716,
+   "f1": 0.9620253164556961,
+   "exact_match": 0.35802469135802467,
+   "absence_respect": 0.9962121212121212,
+   "bucket_mae": 0.7105263157894737,
+   "bucket_bias": 0.39473684210526316
+  },
+  "platform": {
+   "support": 228,
+   "na": false,
+   "precision": 0.8995633187772926,
+   "recall": 0.9035087719298246,
+   "f1": 0.9015317286652078,
+   "exact_match": 0.5394736842105263,
+   "absence_respect": 0.8034188034188035,
+   "bucket_mae": 0.46601941747572817,
+   "bucket_bias": 0.04854368932038835
+  },
+  "tower": {
+   "support": 66,
+   "na": false,
+   "precision": 0.75,
+   "recall": 0.6818181818181818,
+   "f1": 0.7142857142857143,
+   "exact_match": 0.5151515151515151,
+   "absence_respect": 0.946236559139785,
+   "bucket_mae": 0.24444444444444444,
+   "bucket_bias": 0.15555555555555556
+  },
+  "cannon": {
+   "support": 27,
+   "na": false,
+   "precision": 0.8333333333333334,
+   "recall": 0.7407407407407407,
+   "f1": 0.7843137254901961,
+   "exact_match": 0.4444444444444444,
+   "absence_respect": 0.9874213836477987,
+   "bucket_mae": 0.45,
+   "bucket_bias": -0.05
+  },
+  "ascending staircase": {
+   "support": 51,
+   "na": false,
+   "precision": 0.8235294117647058,
+   "recall": 0.8235294117647058,
+   "f1": 0.8235294117647058,
+   "exact_match": 0.803921568627451,
+   "absence_respect": 0.9693877551020408,
+   "bucket_mae": 0.023809523809523808,
+   "bucket_bias": 0.023809523809523808
+  },
+  "descending staircase": {
+   "support": 6,
+   "na": false,
+   "precision": 0.16666666666666666,
+   "recall": 0.16666666666666666,
+   "f1": 0.16666666666666666,
+   "exact_match": 0.16666666666666666,
+   "absence_respect": 0.9852507374631269,
+   "bucket_mae": 0.0,
+   "bucket_bias": 0.0
+  },
+  "rectangular": {
+   "support": 36,
+   "na": false,
+   "precision": 0.4117647058823529,
+   "recall": 0.7777777777777778,
+   "f1": 0.5384615384615384,
+   "exact_match": 0.3888888888888889,
+   "absence_respect": 0.8705501618122977,
+   "bucket_mae": 0.6428571428571429,
+   "bucket_bias": -0.5714285714285714
+  },
+  "irregular": {
+   "support": 21,
+   "na": false,
+   "precision": 0.22033898305084745,
+   "recall": 0.6190476190476191,
+   "f1": 0.325,
+   "exact_match": 0.5714285714285714,
+   "absence_respect": 0.8580246913580247,
+   "bucket_mae": 0.07692307692307693,
+   "bucket_bias": 0.07692307692307693
+  },
+  "question block": {
+   "support": 75,
+   "na": false,
+   "precision": 0.85,
+   "recall": 0.9066666666666666,
+   "f1": 0.8774193548387097,
+   "exact_match": 0.49333333333333335,
+   "absence_respect": 0.9555555555555556,
+   "bucket_mae": 0.5441176470588235,
+   "bucket_bias": 0.04411764705882353
+  },
+  "loose block": {
+   "support": 138,
+   "na": false,
+   "precision": 0.6641221374045801,
+   "recall": 0.6304347826086957,
+   "f1": 0.6468401486988848,
+   "exact_match": 0.2608695652173913,
+   "absence_respect": 0.7874396135265701,
+   "bucket_mae": 0.7011494252873564,
+   "bucket_bias": 0.1724137931034483
+  },
+  "enem": {
+   "support": 270,
+   "na": false,
+   "precision": 0.9299610894941635,
+   "recall": 0.8851851851851852,
+   "f1": 0.9070208728652752,
+   "exact_match": 0.4444444444444444,
+   "absence_respect": 0.76,
+   "bucket_mae": 0.5397489539748954,
+   "bucket_bias": 0.0041841004184100415
+  }
+ },
+ "novelty_med": 8.0,
+ "copy_rate": 0.23768115942028986,
+ "copy_rate_strict": 0.09855072463768116,
+ "exact_copy_rate": 0.011594202898550725,
+ "tile_js": 0.010560889095901603,
+ "per_sample": [
+  {
+   "pid": "pdev-0000",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0000",
+   "level": "SMB1 2-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0000",
+   "level": "SMB1 2-1",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0001",
+   "level": "SMB1 2-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0001",
+   "level": "SMB1 2-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0001",
+   "level": "SMB1 2-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0002",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 17.0
+  },
+  {
+   "pid": "pdev-0002",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0002",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0003",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 0.0
+  },
+  {
+   "pid": "pdev-0003",
+   "level": "SMB1 2-1",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 23.0
+  },
+  {
+   "pid": "pdev-0003",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 0.0
+  },
+  {
+   "pid": "pdev-0004",
+   "level": "SMB1 2-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0004",
+   "level": "SMB1 2-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0004",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0005",
+   "level": "SMB1 2-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0005",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0005",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0006",
+   "level": "SMB1 2-1",
+   "c_score": 0.8333333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0006",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0006",
+   "level": "SMB1 2-1",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0007",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0007",
+   "level": "SMB1 2-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0007",
+   "level": "SMB1 2-1",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0008",
+   "level": "SMB1 2-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0008",
+   "level": "SMB1 2-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0008",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0009",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0009",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0009",
+   "level": "SMB1 2-1",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0010",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0010",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0010",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0011",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0011",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0011",
+   "level": "SMB1 2-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0012",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0012",
+   "level": "SMB1 2-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0012",
+   "level": "SMB1 2-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0013",
+   "level": "SMB1 2-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0013",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0013",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 17.0
+  },
+  {
+   "pid": "pdev-0014",
+   "level": "SMB1 2-1",
+   "c_score": 0.5416666666666666,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0014",
+   "level": "SMB1 2-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0014",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 19.0
+  },
+  {
+   "pid": "pdev-0015",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0015",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0015",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0016",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0016",
+   "level": "SMB1 2-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0016",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0017",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0017",
+   "level": "SMB1 2-1",
+   "c_score": 0.5555555555555556,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0017",
+   "level": "SMB1 2-1",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0018",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0018",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0018",
+   "level": "SMB1 2-1",
+   "c_score": 0.9444444444444444,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0019",
+   "level": "SMB1 2-1",
+   "c_score": 0.9305555555555556,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0019",
+   "level": "SMB1 2-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0019",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0020",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0020",
+   "level": "SMB1 2-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0020",
+   "level": "SMB1 2-1",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0021",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0021",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0021",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0022",
+   "level": "SMB1 2-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0022",
+   "level": "SMB1 2-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0022",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0023",
+   "level": "SMB1 4-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 23.0
+  },
+  {
+   "pid": "pdev-0023",
+   "level": "SMB1 4-2",
+   "c_score": 0.5277777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0023",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0024",
+   "level": "SMB1 4-2",
+   "c_score": 0.5416666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 23.0
+  },
+  {
+   "pid": "pdev-0024",
+   "level": "SMB1 4-2",
+   "c_score": 0.5416666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 36.0
+  },
+  {
+   "pid": "pdev-0024",
+   "level": "SMB1 4-2",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 23.0
+  },
+  {
+   "pid": "pdev-0025",
+   "level": "SMB1 4-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0025",
+   "level": "SMB1 4-2",
+   "c_score": 0.625,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0025",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0026",
+   "level": "SMB1 4-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0026",
+   "level": "SMB1 4-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0026",
+   "level": "SMB1 4-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0027",
+   "level": "SMB1 4-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0027",
+   "level": "SMB1 4-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 25.0
+  },
+  {
+   "pid": "pdev-0027",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0028",
+   "level": "SMB1 4-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0028",
+   "level": "SMB1 4-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0028",
+   "level": "SMB1 4-2",
+   "c_score": 0.6111111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 23.0
+  },
+  {
+   "pid": "pdev-0029",
+   "level": "SMB1 4-2",
+   "c_score": 0.5888888888888889,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0029",
+   "level": "SMB1 4-2",
+   "c_score": 0.7,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0029",
+   "level": "SMB1 4-2",
+   "c_score": 0.6861111111111111,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0030",
+   "level": "SMB1 4-2",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0030",
+   "level": "SMB1 4-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0030",
+   "level": "SMB1 4-2",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0031",
+   "level": "SMB1 4-2",
+   "c_score": 0.20555555555555557,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0031",
+   "level": "SMB1 4-2",
+   "c_score": 0.20555555555555557,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0031",
+   "level": "SMB1 4-2",
+   "c_score": -0.016666666666666666,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 23.0
+  },
+  {
+   "pid": "pdev-0032",
+   "level": "SMB1 4-2",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 19.0
+  },
+  {
+   "pid": "pdev-0032",
+   "level": "SMB1 4-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 26.0
+  },
+  {
+   "pid": "pdev-0032",
+   "level": "SMB1 4-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0033",
+   "level": "SMB1 4-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0033",
+   "level": "SMB1 4-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0033",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0034",
+   "level": "SMB1 4-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 38.0
+  },
+  {
+   "pid": "pdev-0034",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0034",
+   "level": "SMB1 4-2",
+   "c_score": 0.8111111111111111,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0035",
+   "level": "SMB1 4-2",
+   "c_score": 0.6027777777777777,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 40.0
+  },
+  {
+   "pid": "pdev-0035",
+   "level": "SMB1 4-2",
+   "c_score": 0.5888888888888889,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 17.0
+  },
+  {
+   "pid": "pdev-0035",
+   "level": "SMB1 4-2",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 33.0
+  },
+  {
+   "pid": "pdev-0036",
+   "level": "SMB1 4-2",
+   "c_score": 0.6861111111111111,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 30.0
+  },
+  {
+   "pid": "pdev-0036",
+   "level": "SMB1 4-2",
+   "c_score": 0.9361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 19.0
+  },
+  {
+   "pid": "pdev-0036",
+   "level": "SMB1 4-2",
+   "c_score": 0.6861111111111111,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0037",
+   "level": "SMB1 4-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0037",
+   "level": "SMB1 4-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 17.0
+  },
+  {
+   "pid": "pdev-0037",
+   "level": "SMB1 4-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0038",
+   "level": "SMB1 4-2",
+   "c_score": 0.4305555555555556,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0038",
+   "level": "SMB1 4-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 30.0
+  },
+  {
+   "pid": "pdev-0038",
+   "level": "SMB1 4-2",
+   "c_score": 0.8111111111111111,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 37.0
+  },
+  {
+   "pid": "pdev-0039",
+   "level": "SMB1 4-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 41.0
+  },
+  {
+   "pid": "pdev-0039",
+   "level": "SMB1 4-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 41.0
+  },
+  {
+   "pid": "pdev-0039",
+   "level": "SMB1 4-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 28.0
+  },
+  {
+   "pid": "pdev-0040",
+   "level": "SMB1 4-2",
+   "c_score": 0.6638888888888889,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0040",
+   "level": "SMB1 4-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0040",
+   "level": "SMB1 4-2",
+   "c_score": 0.825,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 36.0
+  },
+  {
+   "pid": "pdev-0041",
+   "level": "SMB1 4-2",
+   "c_score": 0.49166666666666664,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0041",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0041",
+   "level": "SMB1 4-2",
+   "c_score": 0.5277777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0042",
+   "level": "SMB1 4-2",
+   "c_score": 0.2222222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0042",
+   "level": "SMB1 4-2",
+   "c_score": 0.6861111111111111,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 27.0
+  },
+  {
+   "pid": "pdev-0042",
+   "level": "SMB1 4-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 30.0
+  },
+  {
+   "pid": "pdev-0043",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0043",
+   "level": "SMB1 4-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 25.0
+  },
+  {
+   "pid": "pdev-0043",
+   "level": "SMB1 4-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 17.0
+  },
+  {
+   "pid": "pdev-0044",
+   "level": "SMB1 4-2",
+   "c_score": 0.4305555555555556,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 30.0
+  },
+  {
+   "pid": "pdev-0044",
+   "level": "SMB1 4-2",
+   "c_score": 0.6722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 30.0
+  },
+  {
+   "pid": "pdev-0044",
+   "level": "SMB1 4-2",
+   "c_score": 0.6166666666666667,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 51.0
+  },
+  {
+   "pid": "pdev-0045",
+   "level": "SMB1 5-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0045",
+   "level": "SMB1 5-2",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0045",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0046",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0046",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0046",
+   "level": "SMB1 5-2",
+   "c_score": 0.6111111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0047",
+   "level": "SMB1 5-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0047",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0047",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0048",
+   "level": "SMB1 5-2",
+   "c_score": 0.7972222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0048",
+   "level": "SMB1 5-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0048",
+   "level": "SMB1 5-2",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0049",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0049",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0049",
+   "level": "SMB1 5-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0050",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0050",
+   "level": "SMB1 5-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0050",
+   "level": "SMB1 5-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0051",
+   "level": "SMB1 5-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0051",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0051",
+   "level": "SMB1 5-2",
+   "c_score": 0.5555555555555556,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0052",
+   "level": "SMB1 5-2",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0052",
+   "level": "SMB1 5-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0052",
+   "level": "SMB1 5-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 25.0
+  },
+  {
+   "pid": "pdev-0053",
+   "level": "SMB1 5-2",
+   "c_score": 0.6111111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0053",
+   "level": "SMB1 5-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0053",
+   "level": "SMB1 5-2",
+   "c_score": 0.5277777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0054",
+   "level": "SMB1 5-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0054",
+   "level": "SMB1 5-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0054",
+   "level": "SMB1 5-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0055",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0055",
+   "level": "SMB1 5-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0055",
+   "level": "SMB1 5-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0056",
+   "level": "SMB1 5-2",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0056",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0056",
+   "level": "SMB1 5-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0057",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0057",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0057",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 0.0
+  },
+  {
+   "pid": "pdev-0058",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0058",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0058",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0059",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0059",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0059",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0060",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0060",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0060",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0061",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0061",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0061",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0062",
+   "level": "SMB1 5-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0062",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0062",
+   "level": "SMB1 5-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0063",
+   "level": "SMB1 5-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 19.0
+  },
+  {
+   "pid": "pdev-0063",
+   "level": "SMB1 5-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 18.0
+  },
+  {
+   "pid": "pdev-0063",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0064",
+   "level": "SMB1 5-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0064",
+   "level": "SMB1 5-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0064",
+   "level": "SMB1 5-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0065",
+   "level": "SMB1 5-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0065",
+   "level": "SMB1 5-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 22.0
+  },
+  {
+   "pid": "pdev-0065",
+   "level": "SMB1 5-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0066",
+   "level": "SMB1 5-2",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0066",
+   "level": "SMB1 5-2",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 25.0
+  },
+  {
+   "pid": "pdev-0066",
+   "level": "SMB1 5-2",
+   "c_score": 0.5416666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0067",
+   "level": "SMB1 5-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0067",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0067",
+   "level": "SMB1 5-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0068",
+   "level": "SMB2 8-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0068",
+   "level": "SMB2 8-1",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0068",
+   "level": "SMB2 8-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0069",
+   "level": "SMB2 8-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0069",
+   "level": "SMB2 8-1",
+   "c_score": 0.9444444444444444,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0069",
+   "level": "SMB2 8-1",
+   "c_score": 0.7361111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0070",
+   "level": "SMB2 8-1",
+   "c_score": 0.36666666666666664,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0070",
+   "level": "SMB2 8-1",
+   "c_score": 0.6027777777777777,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0070",
+   "level": "SMB2 8-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0071",
+   "level": "SMB2 8-1",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0071",
+   "level": "SMB2 8-1",
+   "c_score": 0.6666666666666666,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 25.0
+  },
+  {
+   "pid": "pdev-0071",
+   "level": "SMB2 8-1",
+   "c_score": 0.6027777777777777,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0072",
+   "level": "SMB2 8-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0072",
+   "level": "SMB2 8-1",
+   "c_score": 0.4166666666666667,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 28.0
+  },
+  {
+   "pid": "pdev-0072",
+   "level": "SMB2 8-1",
+   "c_score": 0.625,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0073",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0073",
+   "level": "SMB2 8-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0073",
+   "level": "SMB2 8-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0074",
+   "level": "SMB2 8-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0074",
+   "level": "SMB2 8-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0074",
+   "level": "SMB2 8-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0075",
+   "level": "SMB2 8-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0075",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0075",
+   "level": "SMB2 8-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0076",
+   "level": "SMB2 8-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0076",
+   "level": "SMB2 8-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0076",
+   "level": "SMB2 8-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0077",
+   "level": "SMB2 8-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0077",
+   "level": "SMB2 8-1",
+   "c_score": 0.5138888888888888,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0077",
+   "level": "SMB2 8-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0078",
+   "level": "SMB2 8-1",
+   "c_score": 0.4166666666666667,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0078",
+   "level": "SMB2 8-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0078",
+   "level": "SMB2 8-1",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0079",
+   "level": "SMB2 8-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0079",
+   "level": "SMB2 8-1",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0079",
+   "level": "SMB2 8-1",
+   "c_score": 0.8333333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0080",
+   "level": "SMB2 8-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0080",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0080",
+   "level": "SMB2 8-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0081",
+   "level": "SMB2 8-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0081",
+   "level": "SMB2 8-1",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0081",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0082",
+   "level": "SMB2 8-1",
+   "c_score": 0.8333333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0082",
+   "level": "SMB2 8-1",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0082",
+   "level": "SMB2 8-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0083",
+   "level": "SMB2 8-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0083",
+   "level": "SMB2 8-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 0.0
+  },
+  {
+   "pid": "pdev-0083",
+   "level": "SMB2 8-1",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0084",
+   "level": "SMB2 8-1",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0084",
+   "level": "SMB2 8-1",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0084",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0085",
+   "level": "SMB2 8-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0085",
+   "level": "SMB2 8-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0085",
+   "level": "SMB2 8-1",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0086",
+   "level": "SMB2 8-1",
+   "c_score": 0.08333333333333333,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 20.0
+  },
+  {
+   "pid": "pdev-0086",
+   "level": "SMB2 8-1",
+   "c_score": 0.4166666666666667,
+   "exact_match": false,
+   "broken": true,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0086",
+   "level": "SMB2 8-1",
+   "c_score": 0.5138888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 24.0
+  },
+  {
+   "pid": "pdev-0087",
+   "level": "SMB2 8-1",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0087",
+   "level": "SMB2 8-1",
+   "c_score": 0.5972222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0087",
+   "level": "SMB2 8-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0088",
+   "level": "SMB2 8-1",
+   "c_score": 0.625,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 53.0
+  },
+  {
+   "pid": "pdev-0088",
+   "level": "SMB2 8-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 29.0
+  },
+  {
+   "pid": "pdev-0088",
+   "level": "SMB2 8-1",
+   "c_score": 0.6388888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0089",
+   "level": "SMB2 8-1",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 17.0
+  },
+  {
+   "pid": "pdev-0089",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0089",
+   "level": "SMB2 8-1",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0090",
+   "level": "SMB2 8-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0090",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0090",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 19.0
+  },
+  {
+   "pid": "pdev-0091",
+   "level": "SMB2 8-1",
+   "c_score": 0.9222222222222223,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0091",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 11.0
+  },
+  {
+   "pid": "pdev-0091",
+   "level": "SMB2 8-1",
+   "c_score": 0.9222222222222223,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0092",
+   "level": "SMB2 8-1",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0092",
+   "level": "SMB2 8-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0092",
+   "level": "SMB2 8-1",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 16.0
+  },
+  {
+   "pid": "pdev-0093",
+   "level": "SMB2 C-2",
+   "c_score": 0.5416666666666666,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0093",
+   "level": "SMB2 C-2",
+   "c_score": 0.825,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0093",
+   "level": "SMB2 C-2",
+   "c_score": 0.8388888888888889,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0094",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0094",
+   "level": "SMB2 C-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 14.0
+  },
+  {
+   "pid": "pdev-0094",
+   "level": "SMB2 C-2",
+   "c_score": 0.6527777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 35.0
+  },
+  {
+   "pid": "pdev-0095",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0095",
+   "level": "SMB2 C-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0095",
+   "level": "SMB2 C-2",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0096",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 13.0
+  },
+  {
+   "pid": "pdev-0096",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0096",
+   "level": "SMB2 C-2",
+   "c_score": 0.8194444444444444,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0097",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0097",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0097",
+   "level": "SMB2 C-2",
+   "c_score": 0.9444444444444444,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0098",
+   "level": "SMB2 C-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0098",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0098",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0099",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0099",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0099",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0100",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0100",
+   "level": "SMB2 C-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0100",
+   "level": "SMB2 C-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 5.0
+  },
+  {
+   "pid": "pdev-0101",
+   "level": "SMB2 C-2",
+   "c_score": 0.8472222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0101",
+   "level": "SMB2 C-2",
+   "c_score": 0.8333333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0101",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0102",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0102",
+   "level": "SMB2 C-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0102",
+   "level": "SMB2 C-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0103",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0103",
+   "level": "SMB2 C-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0103",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0104",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0104",
+   "level": "SMB2 C-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0104",
+   "level": "SMB2 C-2",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0105",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0105",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0105",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0106",
+   "level": "SMB2 C-2",
+   "c_score": 0.9583333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0106",
+   "level": "SMB2 C-2",
+   "c_score": 0.75,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 10.0
+  },
+  {
+   "pid": "pdev-0106",
+   "level": "SMB2 C-2",
+   "c_score": 0.8333333333333334,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 8.0
+  },
+  {
+   "pid": "pdev-0107",
+   "level": "SMB2 C-2",
+   "c_score": 0.9722222222222222,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0107",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 15.0
+  },
+  {
+   "pid": "pdev-0107",
+   "level": "SMB2 C-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0108",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0108",
+   "level": "SMB2 C-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0108",
+   "level": "SMB2 C-2",
+   "c_score": 0.9444444444444444,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0109",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0109",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0109",
+   "level": "SMB2 C-2",
+   "c_score": 0.7777777777777778,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0110",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0110",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 7.0
+  },
+  {
+   "pid": "pdev-0110",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0111",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0111",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 4.0
+  },
+  {
+   "pid": "pdev-0111",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0112",
+   "level": "SMB2 C-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0112",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 3.0
+  },
+  {
+   "pid": "pdev-0112",
+   "level": "SMB2 C-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0113",
+   "level": "SMB2 C-2",
+   "c_score": 0.8611111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  },
+  {
+   "pid": "pdev-0113",
+   "level": "SMB2 C-2",
+   "c_score": 0.8888888888888888,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 6.0
+  },
+  {
+   "pid": "pdev-0113",
+   "level": "SMB2 C-2",
+   "c_score": 0.875,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 9.0
+  },
+  {
+   "pid": "pdev-0114",
+   "level": "SMB2 C-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": false,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 12.0
+  },
+  {
+   "pid": "pdev-0114",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 1.0
+  },
+  {
+   "pid": "pdev-0114",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": true,
+   "broken": false,
+   "floor_valid": true,
+   "nn_hamming": 2.0
+  }
+ ],
+ "per_prompt": [
+  {
+   "pid": "pdev-0000",
+   "level": "SMB1 2-1",
+   "c_score": 0.7777777777777777,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0001",
+   "level": "SMB1 2-1",
+   "c_score": 0.8194444444444445,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0002",
+   "level": "SMB1 2-1",
+   "c_score": 0.9120370370370371,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0003",
+   "level": "SMB1 2-1",
+   "c_score": 0.8333333333333334,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0004",
+   "level": "SMB1 2-1",
+   "c_score": 0.9907407407407408,
+   "exact_match": 0.6666666666666666
+  },
+  {
+   "pid": "pdev-0005",
+   "level": "SMB1 2-1",
+   "c_score": 0.9166666666666666,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0006",
+   "level": "SMB1 2-1",
+   "c_score": 0.8842592592592594,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0007",
+   "level": "SMB1 2-1",
+   "c_score": 0.8981481481481483,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0008",
+   "level": "SMB1 2-1",
+   "c_score": 0.8611111111111112,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0009",
+   "level": "SMB1 2-1",
+   "c_score": 0.8240740740740741,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0010",
+   "level": "SMB1 2-1",
+   "c_score": 0.9074074074074074,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0011",
+   "level": "SMB1 2-1",
+   "c_score": 0.9074074074074074,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0012",
+   "level": "SMB1 2-1",
+   "c_score": 0.9166666666666666,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0013",
+   "level": "SMB1 2-1",
+   "c_score": 0.875,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0014",
+   "level": "SMB1 2-1",
+   "c_score": 0.8101851851851851,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0015",
+   "level": "SMB1 2-1",
+   "c_score": 0.9444444444444445,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0016",
+   "level": "SMB1 2-1",
+   "c_score": 0.9537037037037037,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0017",
+   "level": "SMB1 2-1",
+   "c_score": 0.7037037037037037,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0018",
+   "level": "SMB1 2-1",
+   "c_score": 0.8935185185185185,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0019",
+   "level": "SMB1 2-1",
+   "c_score": 0.9675925925925926,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0020",
+   "level": "SMB1 2-1",
+   "c_score": 0.9675925925925926,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0021",
+   "level": "SMB1 2-1",
+   "c_score": 0.8657407407407408,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0022",
+   "level": "SMB1 2-1",
+   "c_score": 0.8425925925925926,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0023",
+   "level": "SMB1 4-2",
+   "c_score": 0.6898148148148148,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0024",
+   "level": "SMB1 4-2",
+   "c_score": 0.5833333333333334,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0025",
+   "level": "SMB1 4-2",
+   "c_score": 0.6759259259259259,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0026",
+   "level": "SMB1 4-2",
+   "c_score": 0.9351851851851852,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0027",
+   "level": "SMB1 4-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0028",
+   "level": "SMB1 4-2",
+   "c_score": 0.7314814814814815,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0029",
+   "level": "SMB1 4-2",
+   "c_score": 0.6583333333333333,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0030",
+   "level": "SMB1 4-2",
+   "c_score": 0.6805555555555555,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0031",
+   "level": "SMB1 4-2",
+   "c_score": 0.1314814814814815,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0032",
+   "level": "SMB1 4-2",
+   "c_score": 0.75,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0033",
+   "level": "SMB1 4-2",
+   "c_score": 0.7222222222222222,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0034",
+   "level": "SMB1 4-2",
+   "c_score": 0.7472222222222222,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0035",
+   "level": "SMB1 4-2",
+   "c_score": 0.6101851851851852,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0036",
+   "level": "SMB1 4-2",
+   "c_score": 0.7694444444444445,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0037",
+   "level": "SMB1 4-2",
+   "c_score": 0.7870370370370371,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0038",
+   "level": "SMB1 4-2",
+   "c_score": 0.6638888888888889,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0039",
+   "level": "SMB1 4-2",
+   "c_score": 0.9074074074074074,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0040",
+   "level": "SMB1 4-2",
+   "c_score": 0.7416666666666666,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0041",
+   "level": "SMB1 4-2",
+   "c_score": 0.5574074074074074,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0042",
+   "level": "SMB1 4-2",
+   "c_score": 0.5481481481481482,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0043",
+   "level": "SMB1 4-2",
+   "c_score": 0.7222222222222223,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0044",
+   "level": "SMB1 4-2",
+   "c_score": 0.5731481481481482,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0045",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0046",
+   "level": "SMB1 5-2",
+   "c_score": 0.7129629629629629,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0047",
+   "level": "SMB1 5-2",
+   "c_score": 0.9490740740740741,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0048",
+   "level": "SMB1 5-2",
+   "c_score": 0.8351851851851851,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0049",
+   "level": "SMB1 5-2",
+   "c_score": 0.8703703703703703,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0050",
+   "level": "SMB1 5-2",
+   "c_score": 0.8333333333333334,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0051",
+   "level": "SMB1 5-2",
+   "c_score": 0.7268518518518517,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0052",
+   "level": "SMB1 5-2",
+   "c_score": 0.7777777777777777,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0053",
+   "level": "SMB1 5-2",
+   "c_score": 0.625,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0054",
+   "level": "SMB1 5-2",
+   "c_score": 0.8148148148148149,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0055",
+   "level": "SMB1 5-2",
+   "c_score": 0.8657407407407408,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0056",
+   "level": "SMB1 5-2",
+   "c_score": 0.8425925925925926,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0057",
+   "level": "SMB1 5-2",
+   "c_score": 0.9814814814814815,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0058",
+   "level": "SMB1 5-2",
+   "c_score": 0.9953703703703703,
+   "exact_match": 0.6666666666666666
+  },
+  {
+   "pid": "pdev-0059",
+   "level": "SMB1 5-2",
+   "c_score": 0.9861111111111112,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0060",
+   "level": "SMB1 5-2",
+   "c_score": 0.9814814814814815,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0061",
+   "level": "SMB1 5-2",
+   "c_score": 0.9907407407407408,
+   "exact_match": 0.6666666666666666
+  },
+  {
+   "pid": "pdev-0062",
+   "level": "SMB1 5-2",
+   "c_score": 0.9166666666666666,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0063",
+   "level": "SMB1 5-2",
+   "c_score": 0.7638888888888888,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0064",
+   "level": "SMB1 5-2",
+   "c_score": 0.8148148148148149,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0065",
+   "level": "SMB1 5-2",
+   "c_score": 0.8935185185185186,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0066",
+   "level": "SMB1 5-2",
+   "c_score": 0.6388888888888888,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0067",
+   "level": "SMB1 5-2",
+   "c_score": 0.8379629629629629,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0068",
+   "level": "SMB2 8-1",
+   "c_score": 0.7870370370370371,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0069",
+   "level": "SMB2 8-1",
+   "c_score": 0.8472222222222223,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0070",
+   "level": "SMB2 8-1",
+   "c_score": 0.6148148148148148,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0071",
+   "level": "SMB2 8-1",
+   "c_score": 0.6407407407407407,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0072",
+   "level": "SMB2 8-1",
+   "c_score": 0.6712962962962963,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0073",
+   "level": "SMB2 8-1",
+   "c_score": 0.9861111111111112,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0074",
+   "level": "SMB2 8-1",
+   "c_score": 0.9583333333333334,
+   "exact_match": 0.6666666666666666
+  },
+  {
+   "pid": "pdev-0075",
+   "level": "SMB2 8-1",
+   "c_score": 0.9490740740740741,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0076",
+   "level": "SMB2 8-1",
+   "c_score": 0.8055555555555555,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0077",
+   "level": "SMB2 8-1",
+   "c_score": 0.7129629629629629,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0078",
+   "level": "SMB2 8-1",
+   "c_score": 0.6111111111111112,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0079",
+   "level": "SMB2 8-1",
+   "c_score": 0.8148148148148149,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0080",
+   "level": "SMB2 8-1",
+   "c_score": 0.8425925925925926,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0081",
+   "level": "SMB2 8-1",
+   "c_score": 0.9351851851851852,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0082",
+   "level": "SMB2 8-1",
+   "c_score": 0.8287037037037037,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0083",
+   "level": "SMB2 8-1",
+   "c_score": 0.8333333333333334,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0084",
+   "level": "SMB2 8-1",
+   "c_score": 0.9444444444444445,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0085",
+   "level": "SMB2 8-1",
+   "c_score": 0.8240740740740741,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0086",
+   "level": "SMB2 8-1",
+   "c_score": 0.33796296296296297,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0087",
+   "level": "SMB2 8-1",
+   "c_score": 0.6990740740740741,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0088",
+   "level": "SMB2 8-1",
+   "c_score": 0.7083333333333334,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0089",
+   "level": "SMB2 8-1",
+   "c_score": 0.9444444444444445,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0090",
+   "level": "SMB2 8-1",
+   "c_score": 0.9537037037037037,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0091",
+   "level": "SMB2 8-1",
+   "c_score": 0.9435185185185185,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0092",
+   "level": "SMB2 8-1",
+   "c_score": 0.8518518518518517,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0093",
+   "level": "SMB2 C-2",
+   "c_score": 0.7351851851851853,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0094",
+   "level": "SMB2 C-2",
+   "c_score": 0.8101851851851851,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0095",
+   "level": "SMB2 C-2",
+   "c_score": 0.9351851851851852,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0096",
+   "level": "SMB2 C-2",
+   "c_score": 0.9351851851851851,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0097",
+   "level": "SMB2 C-2",
+   "c_score": 0.9259259259259259,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0098",
+   "level": "SMB2 C-2",
+   "c_score": 0.9120370370370371,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0099",
+   "level": "SMB2 C-2",
+   "c_score": 0.9351851851851852,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0100",
+   "level": "SMB2 C-2",
+   "c_score": 0.9120370370370371,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0101",
+   "level": "SMB2 C-2",
+   "c_score": 0.8842592592592592,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0102",
+   "level": "SMB2 C-2",
+   "c_score": 0.9259259259259259,
+   "exact_match": 0.3333333333333333
+  },
+  {
+   "pid": "pdev-0103",
+   "level": "SMB2 C-2",
+   "c_score": 0.8240740740740741,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0104",
+   "level": "SMB2 C-2",
+   "c_score": 0.8981481481481483,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0105",
+   "level": "SMB2 C-2",
+   "c_score": 0.9953703703703703,
+   "exact_match": 0.6666666666666666
+  },
+  {
+   "pid": "pdev-0106",
+   "level": "SMB2 C-2",
+   "c_score": 0.8472222222222223,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0107",
+   "level": "SMB2 C-2",
+   "c_score": 0.9074074074074074,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0108",
+   "level": "SMB2 C-2",
+   "c_score": 0.861111111111111,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0109",
+   "level": "SMB2 C-2",
+   "c_score": 0.9259259259259259,
+   "exact_match": 0.6666666666666666
+  },
+  {
+   "pid": "pdev-0110",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": 1.0
+  },
+  {
+   "pid": "pdev-0111",
+   "level": "SMB2 C-2",
+   "c_score": 1.0,
+   "exact_match": 1.0
+  },
+  {
+   "pid": "pdev-0112",
+   "level": "SMB2 C-2",
+   "c_score": 0.9212962962962963,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0113",
+   "level": "SMB2 C-2",
+   "c_score": 0.875,
+   "exact_match": 0.0
+  },
+  {
+   "pid": "pdev-0114",
+   "level": "SMB2 C-2",
+   "c_score": 0.9953703703703703,
+   "exact_match": 0.6666666666666666
+  }
+ ]
+}

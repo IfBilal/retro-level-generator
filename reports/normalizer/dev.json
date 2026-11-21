@@ -1,0 +1,12 @@
+{
+ "n": 30,
+ "N1_scene_count_acc": 1.0,
+ "N2_topic_f1": 1.0,
+ "N3_bucket_acc": 1.0,
+ "N4_exact_match": 1.0,
+ "misses": [],
+ "target": {
+  "N4": 0.9,
+  "N2": 0.97
+ }
+}
