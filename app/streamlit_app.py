@@ -67,7 +67,8 @@ def adherence_notice(level: dict) -> None:
                    f"Checked on the generated tiles, never edited; {a['attempts']} whole-level re-sample(s).")
     else:
         bad = "; ".join(describe_count(r, parts) for r in rows if not r["met"])
-        st.warning(f"Could not match every count after {a['attempts']} whole-level re-sample(s): {bad}. The level is shown as generated (not edited).")
+        why = " This server's time limit was reached first." if level["verification"].get("reason") == "time budget" else ""
+        st.warning(f"Could not match every count after {a['attempts']} whole-level re-sample(s): {bad}.{why} The level is shown as generated (not edited).")
 
 
 def badge(level: dict) -> None:

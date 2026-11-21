@@ -184,6 +184,7 @@ def main():
     ap.add_argument("--width", type=int, default=CFG["defaults"]["width"])
     ap.add_argument("--n-seeds", type=int, default=None)
     ap.add_argument("--no-adversarial", action="store_true")
+    ap.add_argument("--device", default=None, help="cpu to measure the Streamlit-Cloud situation (use with T2M_PROFILE=cloud); default: cuda if present")
     ap.add_argument("--adversarial-only", action="store_true", help="skip the prompt set, run only the input-safety prompts")
     ap.add_argument("--fresh-prompts", action="store_true", help="run the held-out prompt set (configs/audit/adherence.yaml prompts_fresh) instead")
     ap.add_argument("--resume", action="store_true")
@@ -192,7 +193,7 @@ def main():
     seeds = seeds[:a.n_seeds] if a.n_seeds else seeds
     out = ROOT / "reports/audit" / a.label
     out.mkdir(parents=True, exist_ok=True)
-    svc = LevelService()
+    svc = LevelService(device=a.device)
     prompts = CFG["prompts_fresh"] if a.fresh_prompts else build_prompts()
     if a.adversarial_only:
         prompts = []

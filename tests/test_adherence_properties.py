@@ -602,3 +602,44 @@ def test_attempts_total_never_exceeds_the_ledger_cap_when_failures_spread_over_w
     monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())
     lvl = FL.generate(None, "full floor", seed=1, width=112, device="cpu")                      # validate_level runs inside generate()
     assert lvl["verification"]["attempts_total"] <= 20 and lvl["verification"]["reason"] == "attempt budget exhausted"
+
+
+# ----------------------------------------------------------------------------------------------- hypothesis (f) of the audit brief: the sanitizer cannot ADD objects
+@given(st.integers(0, 2**32 - 1), st.sampled_from([16, 32, 48]))
+@settings(max_examples=60, deadline=None)
+def test_display_repair_only_removes_cells_never_adds_them(seed, width):
+    """Rule 8: repair is for display only.  Property: every cell that differs between raw and repaired is SKY in the repaired grid, so the repair can
+    never create or duplicate an object, and it never touches the raw grid it is given."""
+    from text2mario.generate.sanitizer import repair
+    rng = np.random.default_rng(seed)
+    g = rng.integers(0, 13, size=(16, width)).astype(np.uint8)
+    g[rng.random((16, width)) < 0.6] = T.SKY                                       # mostly sky, some of every tile (broken pipes / cannons included)
+    before = g.copy()
+    out, removed = repair(g)
+    assert np.array_equal(g, before), "repair must not modify its input"
+    changed = out != g
+    assert (out[changed] == T.SKY).all() and int(changed.sum()) == removed
+    for t in range(13):
+        if t != T.SKY:
+            assert int((out == t).sum()) <= int((g == t).sum())                    # no tile type ever increases
+
+
+# ----------------------------------------------------------------------------------------------- last branches
+def test_constraints_ignore_a_want_key_that_is_not_a_counted_topic():
+    from types import SimpleNamespace
+    scene = SimpleNamespace(want={"floor": [1, 1], "pipe": [1, 1]}, forbid=[], caption="x")
+    norm = SimpleNamespace(scenes=[scene], warnings=[])
+    assert [c["topic"] for c in A.constraints(norm)] == ["pipe"]
+
+
+def test_shortfall_falls_back_to_the_first_empty_window_when_the_plan_is_already_satisfied():
+    row = {"scene": 0, "topic": "pipe", "lo": 1, "hi": 1, "got": 0, "anchors": []}
+    assert A.window_to_resample(row, [0] * 5, 5, [{"pipe": 0}] * 5) == 0                   # nothing was planned anywhere: the first empty window
+
+
+def test_route_search_stops_at_the_time_budget(monkeypatch):
+    monkeypatch.setattr(FL, "check_level", lambda *a, **k: _FakeCheck("unsolved", 10))
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())
+    lvl = FL.generate(None, "full floor", seed=1, width=48, device="cpu", time_budget_s=-1.0)          # already expired
+    v = lvl["verification"]
+    assert v["reason"] == "time budget" and v["status"] == "not_verified" and len(v["attempt_log"]) == 1
