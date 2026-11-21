@@ -8,8 +8,7 @@ The build prepared everything that does not need a login. What is left is clicki
    (CPU torch). Do *not* commit `runs/`, `data/raw/`, checkpoints (`step_*.pt`).
 3. On https://share.streamlit.io: *New app* -> repository `T361/retro-level-generator` (or the public deployment mirror), branch `main`, main file `app/streamlit_app.py`,
    *Advanced settings* -> Python 3.12, secrets none. Environment variable `T2M_PROFILE=cloud` (adds the 45 s time guard).
-4. After the first build: open the URL, generate a 48-column level, then run `scripts/gate_p8.py <url>` is not implemented here; record the build log, cold-start time and one generation time
-   in `evidence/deployment/` by hand (the rubric asks for the deployed URL).
+4. After the first build, run the deployment gate from any machine with Playwright: `python scripts/gate_p8.py https://YOUR-APP.streamlit.app` -> `reports/gates/P8/RESULT.json` and `evidence/deployment/screenshot.png` (load time, generation time, game iframe present, empty prompt shows the validation message, no page errors). A local dry run of this script passed all five checks; the deployed result is yours to record. Also note the Streamlit build log and the first cold-start time in `evidence/deployment/`.
 5. Offline fallback for the demo: `streamlit run app/streamlit_app.py` on every laptop (the zip contains the exported bundle), and the Gallery page works without generation.
 
 Measured before deployment (CPU, fast mode, a clean venv from `app/requirements.txt`): 16 columns in about 1 s and 48 columns in about 5 s on this machine; the cloud CPU will be slower, which is why the cloud profile has a time budget.

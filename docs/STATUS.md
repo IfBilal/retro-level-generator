@@ -15,7 +15,7 @@ sanitizer, playability checker, Phaser game, level schema/exports, Streamlit app
 Trained: unconditional baselines (15k steps, linear and cosine, plus dense and aux-CE variants), conditional C-main (early-stopped at 36,295; **frozen step 18,000, CFG w = 7.5**), X1 ablation (stopped at 17,640).
 
 ## Gate outcomes (honest)
-G-P1, G-P2 pass. **G-P3 fail** (waiver), **G-P4 fail on P4.04**, **G-P5 fail on P5.01** (seam ratio), **G-P5b fail** (jar agreement 0.663; `S_noplay` fallback). G-P7 latency measured (target not met at 112 columns in fast mode:
+G-P1, G-P2 pass. **G-P3 fail** (waiver), **G-P4 fail on P4.04**, **G-P5 fail on P5.01** (seam ratio), **G-P5b fail** (jar agreement 0.663; `S_noplay` fallback). **G-P6 (one-shot protocol) pass.** G-P7 FAIL on its provisional target (`scripts/gate_p7.py`; latency measured, 112 columns in fast mode:
 12.9 s median). G-P8 (Streamlit Cloud) not done: needs the team's login (`DEPLOY.md`).
 
 ## Still open (honest list)

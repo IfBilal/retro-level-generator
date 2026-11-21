@@ -1,0 +1,74 @@
+{
+  "phase": "P7",
+  "pass": false,
+  "metrics": {
+    "latency": {
+      "cold_start_s": 3.58,
+      "device": "cuda",
+      "cuda_48_p50": 35.54,
+      "cuda_48_p95": 80.39599999999999,
+      "cuda_48_n": 5,
+      "cuda_112_p50": 167.33,
+      "cuda_112_p95": 252.12999999999997,
+      "cuda_112_n": 5,
+      "cpu_48_p50": 3.85,
+      "cpu_48_p95": 15.609999999999998,
+      "cpu_112_p50": 25.91,
+      "cpu_112_p95": 50.874,
+      "note": "measured on this machine; cloud CPU numbers are measured separately after deployment",
+      "fast_mode_default": true,
+      "cuda_48_fast_p50": 4.82,
+      "cuda_48_fast_p95": 15.340999999999992,
+      "cuda_48_fast_n": 8,
+      "cuda_112_fast_p50": 12.899999999999999,
+      "cuda_112_fast_p95": 58.399499999999996,
+      "cuda_112_fast_n": 8
+    }
+  },
+  "checks": [
+    {
+      "id": "P7.01",
+      "name": "GPU fast mode, 112 columns, median s (provisional target)",
+      "value": 12.899999999999999,
+      "op": "<=",
+      "threshold": 10.0,
+      "pass": false
+    },
+    {
+      "id": "P7.02",
+      "name": "cold start s",
+      "value": 3.58,
+      "op": "<",
+      "threshold": 20.0,
+      "pass": true
+    },
+    {
+      "id": "P7.03",
+      "name": "CPU fast mode, 112 columns, median s",
+      "value": 25.91,
+      "op": "<",
+      "threshold": 45.0,
+      "pass": true
+    },
+    {
+      "id": "P7.04",
+      "name": "game page references no external resource (offline)",
+      "value": 0,
+      "op": "==",
+      "threshold": 0,
+      "pass": true
+    }
+  ],
+  "timestamp": "2026-11-21T09:01:23Z",
+  "git_sha": "3303ded65b335e6fa5dd57dfa1c677f17d4a017b",
+  "pinned_regression_thresholds_median_x1_25": {
+    "cold_start_s": 4.5,
+    "cuda_48_p50": 44.4,
+    "cuda_112_p50": 209.2,
+    "cpu_48_p50": 4.8,
+    "cpu_112_p50": 32.4,
+    "cuda_48_fast_p50": 6.0,
+    "cuda_112_fast_p50": 16.1
+  },
+  "note": "provisional targets are reported as measured; pinned values are for future regression checks only"
+}

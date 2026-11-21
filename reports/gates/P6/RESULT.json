@@ -1,0 +1,50 @@
+{
+  "phase": "P6",
+  "pass": true,
+  "metrics": {
+    "invocations": 3,
+    "completed": 1
+  },
+  "checks": [
+    {
+      "id": "P6.01",
+      "name": "FROZEN.json written before the test results",
+      "pass": true
+    },
+    {
+      "id": "P6.02",
+      "name": "eval_plan.json hash matches the freeze",
+      "pass": true
+    },
+    {
+      "id": "P6.03",
+      "name": "frozen checkpoint hash matches (skipped if the checkpoint is not on this machine)",
+      "pass": true
+    },
+    {
+      "id": "P6.04",
+      "name": "exactly one completed test run in the log",
+      "pass": true
+    },
+    {
+      "id": "P6.05",
+      "name": "split LOCK verifies",
+      "pass": true
+    },
+    {
+      "id": "P6.06",
+      "name": "RESULTS.md, per-level and per-concept tables and the failure gallery exist",
+      "pass": true
+    },
+    {
+      "id": "P6.07",
+      "name": "P-test reported with a level-clustered interval over all 6 held-out levels",
+      "pass": true
+    }
+  ],
+  "timestamp": "2026-11-21T09:01:24Z",
+  "git_sha": "3303ded65b335e6fa5dd57dfa1c677f17d4a017b",
+  "log_notes": [
+    "first invocation crashed in P-rand (a 49-token prompt exceeded the training max_len 48) after P-test finished; nothing was saved. Fix: evaluation encoder max_len=64 (token lengths recorded). Model, seeds and prompts unchanged; sampling is deterministic."
+  ]
+}
