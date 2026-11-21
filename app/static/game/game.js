@@ -18,6 +18,7 @@
 
   function config() {
     return { type: Phaser.CANVAS, width: 800, height: ROWS * TP * ZOOM, parent: "game", backgroundColor: "#9ccfff",
+      autoFocus: false,   // Phaser's boot-time window.focus() is refused inside a sandboxed iframe (console error); the click-to-play overlay focuses the canvas instead
       pixelArt: true, physics: { default: "arcade", arcade: { gravity: { y: P.gravity * TP }, fps: P.fps, fixedStep: true } },
       scene: { create: create, update: update } };
   }

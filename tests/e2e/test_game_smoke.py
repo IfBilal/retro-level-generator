@@ -56,3 +56,26 @@ def test_canvas_player_moves_and_bot_wins_a_flat_level():
         assert pg.evaluate("window.__t2m.state().won"), "ghost bot should reach the flag of a flat level"
         b.close()
     assert not errors, errors
+
+
+def test_game_embedded_in_a_sandboxed_iframe_logs_no_console_error():
+    """Audit: inside Streamlit's iframe (sandbox allow-scripts allow-same-origin) Phaser's boot-time window.focus() was refused with the console error
+    'Permissions policy violation: focus-without-user-activation'.  Embed the game the way the app does and require a clean console."""
+    import html as htmllib
+
+    from playwright.sync_api import sync_playwright
+    _, _, lvl = flat_level()
+    outer = (f'<!doctype html><body><iframe id="g" sandbox="allow-scripts allow-same-origin" width="900" height="700" '
+             f'srcdoc="{htmllib.escape(build_game_html(lvl), quote=True)}"></iframe></body>')
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page(viewport={"width": 1000, "height": 800})
+        errors = []
+        pg.on("pageerror", lambda e: errors.append(str(e)))
+        pg.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+        pg.set_content(outer)
+        frame_ = next(f for f in pg.frames if f != pg.main_frame)
+        frame_.wait_for_selector("canvas", timeout=20000)
+        pg.wait_for_timeout(1500)
+        assert frame_.evaluate("() => typeof window.__t2m !== 'undefined'")
+        assert errors == [], errors
