@@ -7,6 +7,7 @@ cfg:
   max_w: 10.0
 widths: [16, 48, 80, 112]   # generated content columns offered in the app (drill 9: add 64 -> (64-16)/8+1 = 7 windows)
 default_width: 48
+cuda_graph: true       # CUDA only: replay a captured graph of the U-Net forward (same maths, skips launch overhead); false = plain forward
 modes:
   fast: {steps: 25, resample_r: 0, checker_budget: 1000}     # app default; forced without CUDA
   full: {steps: 50, resample_r: 2, checker_budget: 20000}    # drills 7 and 8: change steps / resample_r

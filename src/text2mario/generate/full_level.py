@@ -19,6 +19,7 @@ import numpy as np
 import torch
 
 from text2mario.captions.detector import caption as detect_caption
+from text2mario.diffusion.graph import graphed
 from text2mario.diffusion.sampler import ddim_sample
 from text2mario.generate import adherence
 from text2mario.generate.framing import frame
@@ -57,11 +58,16 @@ def scene_for_windows(captions: list[str], n: int) -> list[int]:
     return [min(s - 1, k * s // n) for k in range(n)]
 
 
+def _unet(unet, device: str):
+    """The U-Net, or (CUDA + cuda_graph on) a CUDA-graph replay wrapper with identical maths and far less launch overhead (diffusion/graph.py)."""
+    return graphed(unet) if device == "cuda" and bool(_C.get("cuda_graph", False)) else unet
+
+
 @torch.no_grad()
 def sample_window(bundle, caption: str, w: float, steps: int, r: int, gen_seed: int, known_cols: np.ndarray | None,
                   device: str) -> np.ndarray:
     """One 16x16 window.  known_cols: uint8 (16, 8) = the previous window's right half (fixed left half), or None."""
-    unet, sched, cond = bundle[0], bundle[1], bundle[2]
+    unet, sched, cond = _unet(bundle[0], device), bundle[1], bundle[2]
     g = torch.Generator().manual_seed(gen_seed)
     ctx_c, mask_c = cond([caption])
     ctx_u, mask_u = cond.null(1)
@@ -84,7 +90,7 @@ def sample_window_batch(bundle, caption: str, w: float, steps: int, r: int, gen_
                         device: str, n: int) -> np.ndarray:
     """n candidate windows for the SAME caption and known columns in ONE forward pass -> uint8 (n, 16, 16).  On a GPU this costs little more than one
     window, so the adherence loop can pick an exact one from many instead of redrawing one at a time.  Deterministic for (seed, n)."""
-    unet, sched, cond = bundle[0], bundle[1], bundle[2]
+    unet, sched, cond = _unet(bundle[0], device), bundle[1], bundle[2]
     g = torch.Generator().manual_seed(gen_seed)
     ctx_c, mask_c = cond([caption] * n)
     ctx_u, mask_u = cond.null(n)
