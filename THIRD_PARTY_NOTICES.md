@@ -14,4 +14,10 @@ this repository (only hashes and the manifest are).
 The MarioDiffusion source code is **not** imported or transcribed: the caption detector (`src/text2mario/captions/detector.py`)
 is implemented from the grammar description and checked against the stored captions (ledger O3).
 
-Assets (Phaser 3, Kenney sprites) will be listed here when they are fetched (doc 26).
+## Runtime assets (fetched by `scripts/fetch_assets.py`, recorded with hashes in `assets/ASSET_MANIFEST.json`)
+| Item | Licence | Notice |
+|---|---|---|
+| **Phaser 3.90.0** (`app/static/vendor/phaser.min.js`, 1,196,122 bytes, sha256 `e92ddef1...eba7a7`) | MIT | Copyright (c) 2024 Richard Davey, Phaser Studio Inc.; licence text in `LICENSES/PHASER_MIT.md`. |
+| **Kenney Pixel Platformer** (tilemap and character sprites in `assets/kenney/`; `assets/atlas.png` is built from them) | CC0 1.0 | Kenney.nl; the licence file is `LICENSES/KENNEY_CC0.txt`. Pipes and cannons in the atlas are drawn by us with Pillow. No Nintendo sprites are used. |
+| **MarioEval.jar** (Baumgarten A*, used only as an external reference solver for the G-P5b agreement study; never imported, never shipped in the app) | as distributed with MarioDiffusion (MIT repository) | Run via `subprocess`; not part of the submission zip. |
+| Python packages (torch, numpy, transformers, safetensors, Pillow, PyYAML, streamlit, playwright for tests) | BSD / Apache-2.0 / MIT | pinned in `requirements*.txt`, `app/requirements.txt`. |

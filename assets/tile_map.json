@@ -1,0 +1,21 @@
+{
+ "source": "Kenney Pixel Platformer (CC0) + Pillow-drawn pipes/cannon",
+ "kenney_frames": {
+  "ground_top": 22,
+  "ground_inner": 24,
+  "breakable": 6,
+  "question_full": 9,
+  "question_empty": 29,
+  "coin": 151,
+  "flag": 111,
+  "pole": 131
+ },
+ "character_frames": {
+  "player_idle": 0,
+  "player_walk": 1,
+  "player_jump": 1,
+  "enemy_a": 18,
+  "enemy_b": 19
+ },
+ "notes": "ground uses the dirt frame; the PNG renderer draws grass on top rows"
+}

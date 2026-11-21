@@ -13,3 +13,4 @@ runs/
 .cache/
 .claude/settings.local.json
 /models/
+data/cache/

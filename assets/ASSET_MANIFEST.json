@@ -1,0 +1,43 @@
+{
+  "generated_utc": "2026-11-20T20:06:31Z",
+  "phaser": {
+    "file": "app/static/vendor/phaser.min.js",
+    "sha256": "e92ddef111ba42e92d316979c732311757093688ea1810591cb7aa2858eba7a7",
+    "bytes": 1196122,
+    "source_used": "https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js",
+    "licence": "MIT (Copyright (c) 2024 Richard Davey, Phaser Studio Inc.)",
+    "sources_tried": [
+      {
+        "url": "https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js",
+        "result": "ok"
+      }
+    ]
+  },
+  "kenney": {
+    "source_used": "https://opengameart.org/sites/default/files/kenney_pixel-platformer.zip",
+    "zip_sha256": "d01a196dbe3cc964e00d83ba3b987df62f332dc9260c9f941b4fbcc9047130f4",
+    "zip_files": 258,
+    "kept": 214,
+    "licence": "CC0 1.0 (Kenney.nl)",
+    "licence_file": "License.txt",
+    "sample": [
+      "assets/kenney/tilemap-backgrounds.png",
+      "assets/kenney/tilemap-backgrounds_packed.png",
+      "assets/kenney/tilemap-characters.png",
+      "assets/kenney/tilemap-characters_packed.png",
+      "assets/kenney/tilemap.png",
+      "assets/kenney/tilemap_packed.png"
+    ],
+    "sources_tried": [
+      {
+        "url": "https://kenney.nl/assets/pixel-platformer",
+        "result": "no zip link found"
+      },
+      {
+        "url": "https://opengameart.org/content/pixel-platformer-0",
+        "result": "ok",
+        "zip": "https://opengameart.org/sites/default/files/kenney_pixel-platformer.zip"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+[server]
+headless = true
+address = "127.0.0.1"
+maxUploadSize = 5
+enableCORS = false
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "dark"

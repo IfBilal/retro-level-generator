@@ -53,6 +53,49 @@ def grid_to_image(grid: np.ndarray, tile_px: int = 16, glyphs: bool = True) -> I
     return img
 
 
+_ATLAS = {}
+
+
+def _atlas():
+    """Load assets/atlas.png once -> {tile id or frame name: RGBA image} (None if the atlas has not been built)."""
+    if not _ATLAS:
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[3] / "assets"
+        if not (root / "atlas.png").exists():
+            _ATLAS["missing"] = True
+        else:
+            sheet_, lay = Image.open(root / "atlas.png").convert("RGBA"), json.loads((root / "atlas_layout.json").read_text())
+            for v in lay["tiles"].values():
+                _ATLAS[v["id"]] = sheet_.crop((v["x"], v["y"], v["x"] + v["w"], v["y"] + v["h"]))
+            for k, v in lay["frames"].items():
+                _ATLAS[k] = sheet_.crop((v["x"], v["y"], v["x"] + v["w"], v["y"] + v["h"]))
+    return None if "missing" in _ATLAS else _ATLAS
+
+
+def grid_to_sprite_image(grid: np.ndarray, tile_px: int = 18, sky=(156, 207, 255)) -> Image.Image:
+    """Sprite-skin render (Kenney CC0 + drawn pipes): grass on exposed ground, enemy and coin sprites over sky.
+    Falls back to the placeholder skin if the atlas is missing (that is logged by the caller, CLAUDE.md rule 12)."""
+    at = _atlas()
+    if at is None:
+        return grid_to_image(grid, tile_px)
+    grid = np.asarray(grid)
+    h, w = grid.shape
+    img = Image.new("RGBA", (w * 18, h * 18), sky + (255,))
+    for r in range(h):
+        for c in range(w):
+            t = int(grid[r, c])
+            if t == T.ENEMY_ID:
+                img.alpha_composite(at["enemy_a"].crop((3, 3, 21, 21)), (c * 18, r * 18))
+            elif t == T.COIN:
+                img.alpha_composite(at["coin"], (c * 18, r * 18))
+            elif t == T.GROUND and (r == 0 or int(grid[r - 1, c]) not in T.SOLID):
+                img.alpha_composite(at["ground_top"], (c * 18, r * 18))
+            elif t != T.SKY:
+                img.alpha_composite(at[t], (c * 18, r * 18))
+    img = img.convert("RGB")
+    return img if tile_px == 18 else img.resize((w * tile_px, h * tile_px), Image.NEAREST)
+
+
 def sheet(grids, cols: int = 8, tile_px: int = 6, pad: int = 4) -> Image.Image:
     """Contact sheet of several grids (used for sample sheets and gate figures)."""
     ims = [grid_to_image(g, tile_px, glyphs=False) for g in grids]
