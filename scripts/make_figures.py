@@ -150,6 +150,34 @@ def fig_cfg():
     note("fig06_cfg", True)
 
 
+def fig_adherence():
+    b = ROOT / "reports/audit/baseline/results.json"
+    f = ROOT / "reports/audit/final/results.json"
+    if not (b.exists() and f.exists()):
+        note("fig16_adherence", False)
+        return
+    b, f = json.loads(b.read_text()), json.loads(f.read_text())
+    cats = [c for c in sorted(b["by_category"]) if c in f["by_category"] and c != "adversarial"]
+    fig, ax = plt.subplots(figsize=(8.5, 3.6))
+    xs = range(len(cats))
+    ax.bar([x - 0.2 for x in xs], [b["by_category"][c]["rate"] for c in cats], 0.4, label="before the fix (unmodified app)", color="#cc6677")
+    ax.bar([x + 0.2 for x in xs], [f["by_category"][c]["rate"] for c in cats], 0.4, label="after the fix", color="#44aa99")
+    for x, c in zip(xs, cats):
+        lo, hi = f["by_category"][c]["ci95"]
+        ax.plot([x + 0.2, x + 0.2], [lo, hi], c="k", lw=1)
+    ax.axhline(0.9, ls="--", c="k", lw=0.8)
+    ax.set_xticks(list(xs))
+    ax.set_xticklabels([c.replace("_", "\n") for c in cats], fontsize=8)
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("share of levels whose raw tiles match the prompt")
+    ax.legend(fontsize=7, loc="lower right")
+    ax.grid(alpha=.3, axis="y")
+    fig.tight_layout()
+    fig.savefig(FIG / "fig16_adherence.png", dpi=150)
+    plt.close(fig)
+    note("fig16_adherence", True)
+
+
 def copy_sheets():
     for src, dst in (("reports/gates/P3_cos_dense/sample_sheet_cosine.png", "fig07_uncond_samples.png"),
                      ("reports/gates/P4/sample_sheet_best_w.png", "fig08_cond_samples.png"), ("reports/gates/P4/contrast.png", "fig09_contrast.png"),
@@ -169,7 +197,7 @@ def copy_sheets():
 
 
 if __name__ == "__main__":
-    for f in (fig_pipeline, fig_training_curves, fig_p3_tradeoff, fig_val_buckets, fig_checker, fig_cfg, copy_sheets):
+    for f in (fig_pipeline, fig_training_curves, fig_p3_tradeoff, fig_val_buckets, fig_checker, fig_cfg, fig_adherence, copy_sheets):
         try:
             f()
         except Exception as e:

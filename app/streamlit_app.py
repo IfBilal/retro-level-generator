@@ -45,18 +45,29 @@ def embed_game(html: str, height: int = 620) -> None:
         components.html(html, height=height, scrolling=False)
 
 
+def describe_count(r: dict, several_parts: bool) -> str:
+    """'pipe: asked 1, got 1' / 'enemy (part 1): not asked for here, got 1' - plain words for one checked count."""
+    asked = "none" if r["hi"] == 0 else str(r["lo"]) if r["lo"] == r["hi"] else f"{r['lo']}-{r['hi']}"
+    where = f" (part {r['scene'] + 1})" if several_parts else ""
+    if r.get("implicit"):
+        return f"{r['topic']}{where}: not asked for here, got {r['got']}"
+    return f"{r['topic']}{where}: asked {asked}, got {r['got']}"
+
+
 def adherence_notice(level: dict) -> None:
     """Say plainly whether the counts the sentence asked for are in the generated tiles (judged on the RAW grid; nothing is edited)."""
     a = level["verification"].get("adherence")
     if not a or a["status"] == "not_applicable":
         return
     rows = a["constraints"]
-    text = "; ".join(f"{r['topic']}: asked {r['lo'] if r['lo'] == r['hi'] else str(r['lo']) + '-' + str(r['hi'])}, got {r['got']}" for r in rows)
+    parts = len({r["scene"] for r in rows}) > 1
+    asked = [r for r in rows if not r.get("implicit")]
     if a["status"] == "met":
-        st.success(f"Counts match your sentence ({text}). Checked on the generated tiles; {a['attempts']} re-sample(s).")
+        st.success("Counts match your sentence (" + "; ".join(describe_count(r, parts) for r in asked) + "). "
+                   f"Checked on the generated tiles, never edited; {a['attempts']} whole-level re-sample(s).")
     else:
-        bad = "; ".join(f"{r['topic']}: asked {r['lo'] if r['lo'] == r['hi'] else str(r['lo']) + '-' + str(r['hi'])}, got {r['got']}" for r in rows if not r["met"])
-        st.warning(f"Could not match every count after {a['attempts']} re-sample(s): {bad}. The level is shown as generated (not edited).")
+        bad = "; ".join(describe_count(r, parts) for r in rows if not r["met"])
+        st.warning(f"Could not match every count after {a['attempts']} whole-level re-sample(s): {bad}. The level is shown as generated (not edited).")
 
 
 def badge(level: dict) -> None:

@@ -62,16 +62,29 @@ def target_of(lo: int, hi: int) -> int:
     return lo + (hi - lo) // 2
 
 
-def constraints(norm) -> list[dict]:
-    """Flat list of {scene, topic, lo, hi} from the normalized scenes (a prohibition is lo=hi=0)."""
+def scene_forbids(norm) -> list[set]:
+    """Topics each scene must NOT contain: what the sentence rules out ('no enemies') plus, with exclusive_scenes, what it asks for only in OTHER
+    scenes ("one pipe, then two enemies": no enemy before the pipe, no pipe among the enemies) - that is what "then" means (ledger AD8)."""
+    wanted = [set(sc.want) & set(COUNTED) for sc in norm.scenes]
     out = []
+    for i, sc in enumerate(norm.scenes):
+        f = {t for t in sc.forbid if t in COUNTED}
+        if _A["exclusive_scenes"] and len(norm.scenes) > 1:
+            f |= set().union(*(wanted[j] for j in range(len(wanted)) if j != i)) - wanted[i]
+        out.append(f)
+    return out
+
+
+def constraints(norm) -> list[dict]:
+    """Flat list of {scene, topic, lo, hi, implicit} from the normalized scenes (a prohibition is lo=hi=0; implicit = only implied by 'then')."""
+    out = []
+    forb = scene_forbids(norm)
     for i, sc in enumerate(norm.scenes):
         for t, (lo, hi) in sc.want.items():
             if t in COUNTED:
-                out.append({"scene": i, "topic": t, "lo": int(lo), "hi": int(hi)})
-        for t in sc.forbid:
-            if t in COUNTED:
-                out.append({"scene": i, "topic": t, "lo": 0, "hi": 0})
+                out.append({"scene": i, "topic": t, "lo": int(lo), "hi": int(hi), "implicit": False})
+        for t in sorted(forb[i]):
+            out.append({"scene": i, "topic": t, "lo": 0, "hi": 0, "implicit": t not in sc.forbid})
     return out
 
 
@@ -131,28 +144,30 @@ def plan_caption(scene, scene_caption: str, k: int, first_k: int, last_k: int, c
     return "".join(p + ". " for p in phrases).strip() or str(_A["neutral_caption"]), plan
 
 
-def has_constraints(scene) -> bool:
+def has_constraints(scene, forbid=None) -> bool:
     """Does this scene ask for (or rule out) any counted topic?  Scenes with only floor/ceiling phrases need no count check."""
-    return bool(scene.forbid and any(t in COUNTED for t in scene.forbid)) or bool(scene.want)
+    forbid = set(scene.forbid) if forbid is None else forbid
+    return bool(forbid & set(COUNTED)) or bool(scene.want)
 
 
-def window_miss(win: np.ndarray, k: int, scene, plan: dict) -> int:
+def window_miss(win: np.ndarray, k: int, scene, plan: dict, forbid=None) -> int:
     """How far window k is from its plan in its NEW columns: sum over requested topics of |added - planned|, plus every object of a
     forbidden topic.  0 = exactly what was asked.  Cheap local check used to redraw just this window (evaluate() stays the final judge)."""
     c0 = 0 if k == 0 else STRIDE
     a = anchors(win)
+    forbid = set(scene.forbid) if forbid is None else forbid
     miss = 0
     for t in COUNTED:
         n_new = sum(1 for x in a[t] if x >= c0)
-        if t in scene.forbid:
+        if t in forbid:
             miss += n_new
         elif t in scene.want:
             miss += abs(n_new - plan.get(t, 0))
     return miss
 
 
-def window_ok(win: np.ndarray, k: int, scene, plan: dict) -> bool:
-    return window_miss(win, k, scene, plan) == 0
+def window_ok(win: np.ndarray, k: int, scene, plan: dict, forbid=None) -> bool:
+    return window_miss(win, k, scene, plan, forbid) == 0
 
 
 def evaluate(content: np.ndarray, norm, scene_of: list[int], width: int) -> dict:
@@ -171,13 +186,19 @@ def evaluate(content: np.ndarray, norm, scene_of: list[int], width: int) -> dict
     return {"status": "met" if not unmet else "unmet", "constraints": rows, "unmet": unmet}
 
 
-def window_to_resample(row: dict, scene_of: list[int], n_windows: int) -> int:
-    """Which window to resample for one unmet constraint: the window that owns the first surplus object, or for a shortfall the first
-    window of the scene's owned columns that holds none of the topic (else the scene's last window)."""
+def window_to_resample(row: dict, scene_of: list[int], n_windows: int, win_plans: list | None = None) -> int:
+    """Which window to resample for one unmet constraint: the window that owns the first surplus object, or for a shortfall the first window
+    whose PLAN asked for more of the topic than its owned columns hold (else the first window of the scene that holds none)."""
     owner = lambda col: 0 if col < WINDOW else min(n_windows - 1, (col - (WINDOW - STRIDE)) // STRIDE)
     if row["got"] > row["hi"]:
         return owner(row["anchors"][row["hi"]])
     ks = [k for k, s in enumerate(scene_of) if s == row["scene"]]
+    if win_plans:
+        for k in ks:                                                  # a tower drawn at the end of window k is often extended by window k+1 into a block
+            c0 = 0 if k == 0 else k * STRIDE + (WINDOW - STRIDE)
+            c1 = WINDOW if k == 0 else c0 + STRIDE
+            if (win_plans[k] or {}).get(row["topic"], 0) > sum(1 for x in row["anchors"] if c0 <= x < c1):
+                return k
     for k in ks:
         c0 = 0 if k == 0 else k * STRIDE + (WINDOW - STRIDE)
         c1 = WINDOW if k == 0 else c0 + STRIDE

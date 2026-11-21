@@ -93,6 +93,21 @@ def baseline_table() -> str:
     return md_table(["dev comparator", "C-score", "exact match", "broken rate", "copy rate", "median novelty"], rows)
 
 
+def adherence_table() -> str:
+    """Prompt adherence at the app level, baseline (unmodified pipeline) vs final audit round, per category (reports/audit/*/results.json)."""
+    b, f = J("reports/audit/baseline/results.json"), J("reports/audit/final/results.json")
+    if not b or not f:
+        return "n/a (not run)"
+    rows = []
+    for c in sorted(set(b["by_category"]) | set(f["by_category"])):
+        x, y = b["by_category"].get(c), f["by_category"].get(c)
+        cell = lambda d: "-" if not d else f"{d['pass']}/{d['n']} = {d['rate']:.2f} [{d['ci95'][0]:.2f}, {d['ci95'][1]:.2f}]"
+        rows.append((c.replace("_", " "), cell(x), cell(y)))
+    rows.append(("**all levels**", f"{b['overall'][0]}/{b['overall'][1]} = {b['overall'][0] / b['overall'][1]:.2f}",
+                 f"{f['overall'][0]}/{f['overall'][1]} = {f['overall'][0] / f['overall'][1]:.2f}"))
+    return md_table(["category (10 seeds per prompt)", "baseline (before the fix)", "final round (after the fix)"], rows)
+
+
 def per_level_table() -> str:
     p = ROOT / "reports/final/per_level_P-test.csv"
     if not p.exists():
@@ -183,6 +198,15 @@ def values() -> dict:
             v[f"x1_c24_{key}"], v[f"x1_b24_{key}"], v[f"x1_cp24_{key}"] = fmt(r["c_score"]), fmt(r["broken_rate"]), fmt(r["copy_rate"])
             v[f"x1_S24_{key}"] = fmt(0.5 * r["c_score"] + 0.25 * (1 - r["broken_rate"]) + 0.25 * min(1.0, r["novelty_med"] / ref_nov))
     d = J("reports/gates/determinism.json") or {}
+    b, f = J("reports/audit/baseline/results.json"), J("reports/audit/final/results.json")
+    if b and f:
+        v["adh_base_overall"] = f"{b['overall'][0]}/{b['overall'][1]}"
+        v["adh_final_overall"] = f"{f['overall'][0]}/{f['overall'][1]}"
+        v["adh_base_example"] = f"{b['by_category']['example']['pass']}/{b['by_category']['example']['n']}"
+        v["adh_final_example"] = f"{f['by_category']['example']['pass']}/{f['by_category']['example']['n']}"
+        v["adh_final_git"] = f["meta"]["git"]
+        v["adh_final_device"] = f["meta"]["device"]
+    v["adherence_table"] = adherence_table()
     v["det_same"], v["det_diff"], v["det_batch"] = fmt(d.get("same_seed_same_level")), fmt(d.get("different_seed_share_of_cells_changed")), fmt(d.get("window_alone_vs_in_batch_cells_equal"))
     return v
 

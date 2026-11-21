@@ -118,13 +118,14 @@ def test_negation_forms_all_create_a_forbid(noun):
     for form in (f"no {NOUNS[noun]}", f"without {NOUNS[noun]}", f"zero {NOUNS[noun]}", f"a flat level with no {NOUNS[noun]}"):
         n = normalize(form)
         assert n.scenes and n.scenes[0].forbid == [noun], form
-        assert A.constraints(n) == [{"scene": 0, "topic": noun, "lo": 0, "hi": 0}]
+        assert A.constraints(n) == [{"scene": 0, "topic": noun, "lo": 0, "hi": 0, "implicit": False}]
 
 
 def test_scene_counts_follow_the_sentence_order():
     n = normalize("one pipe, then two enemies, then a cannon")
     assert [list(s.want) for s in n.scenes] == [["pipe"], ["enemy"], ["cannon"]]
-    assert [c["scene"] for c in A.constraints(n)] == [0, 1, 2]
+    explicit = [c for c in A.constraints(n) if not c["implicit"]]
+    assert [c["scene"] for c in explicit] == [0, 1, 2]
 
 
 # ----------------------------------------------------------------------------------------------- counters
@@ -365,7 +366,7 @@ def test_any_prompt_text_cannot_break_the_game_page(text):
 def test_forbidding_a_non_counted_topic_creates_no_count_constraint():
     n = normalize("no ceiling and two pipes")
     assert "ceiling" in n.scenes[0].forbid
-    assert A.constraints(n) == [{"scene": 0, "topic": "pipe", "lo": 2, "hi": 2}]               # 'ceiling' is not a counted topic
+    assert A.constraints(n) == [{"scene": 0, "topic": "pipe", "lo": 2, "hi": 2, "implicit": False}]               # 'ceiling' is not a counted topic
 
 
 def test_shortfall_with_every_window_already_holding_one_resamples_the_last_window():
@@ -505,3 +506,49 @@ def test_more_scenes_than_windows_is_refused_not_silently_dropped(width):
     with pytest.raises(ValueError, match="has room for"):
         A.check_feasible(normalize(text), width)
     A.check_feasible(normalize(", then ".join(["one pipe"] * windows)), width)               # exactly as many scenes as windows is fine
+
+
+# ----------------------------------------------------------------------------------------------- exclusive scenes ("then") and plan-guided resampling
+def test_then_means_what_is_asked_elsewhere_is_ruled_out_here():
+    n = normalize("one pipe, then two enemies, then a cannon")
+    f = A.scene_forbids(n)
+    assert f == [{"enemy", "cannon"}, {"pipe", "cannon"}, {"pipe", "enemy"}]
+    rows = A.constraints(n)
+    assert sum(1 for c in rows if c["implicit"]) == 6 and all(c["lo"] == c["hi"] == 0 for c in rows if c["implicit"])
+
+
+def test_exclusivity_does_not_forbid_a_topic_the_scene_asks_for_and_is_off_for_one_scene(monkeypatch):
+    assert A.scene_forbids(normalize("one pipe, then two pipes")) == [set(), set()]            # same topic in both scenes: nothing to exclude
+    assert A.scene_forbids(normalize("two pipes and one enemy")) == [set()]                    # a single scene: nothing to exclude
+    monkeypatch.setitem(A._A, "exclusive_scenes", False)
+    assert A.scene_forbids(normalize("one pipe, then two enemies")) == [set(), set()]
+
+
+def test_explicit_prohibition_is_not_marked_implicit():
+    n = normalize("one pipe, then no enemies")
+    rows = {(c["scene"], c["topic"]): c["implicit"] for c in A.constraints(n)}
+    assert rows[(1, "enemy")] is False and rows[(1, "pipe")] is True and (0, "enemy") not in rows       # ruling something out elsewhere asks for nothing here
+
+
+def test_a_stray_enemy_before_the_pipe_is_reported_unmet():
+    """Audit ordering failure: 'one pipe, then two enemies, then a cannon' with an unrequested enemy in the pipe's scene."""
+    norm = normalize("one pipe, then two enemies, then a cannon")
+    so = FL.scene_for_windows([s.caption for s in norm.scenes], 5)
+    g = np.zeros((16, 48), np.uint8)
+    g[15, :] = T.GROUND
+    add_pipe(g, 10)
+    g[14, 4] = T.ENEMY_ID                                                                    # stray enemy BEFORE the pipe
+    g[14, 24] = g[14, 28] = T.ENEMY_ID
+    g[14, 43] = T.CANNON_TOP
+    r = A.evaluate(g, norm, so, 48)
+    assert r["status"] == "unmet"
+    assert [(u["topic"], u["scene"], u["implicit"]) for u in r["unmet"]] == [("enemy", 0, True)]
+    g[14, 4] = T.SKY
+    assert A.evaluate(g, norm, so, 48)["status"] == "met"
+
+
+def test_shortfall_is_redrawn_where_the_plan_put_the_object():
+    row = {"scene": 0, "topic": "tower", "lo": 2, "hi": 2, "got": 1, "anchors": [17]}
+    plans = [{"tower": 0}, {"tower": 1}, {"tower": 0}, {"tower": 1}, {"tower": 0}]
+    assert A.window_to_resample(row, [0] * 5, 5, plans) == 3                                 # window 1 holds its tower (anchor 17); window 3 does not
+    assert A.window_to_resample(row, [0] * 5, 5) == 0                                        # without the plan the old guess is the first empty window

@@ -25,7 +25,7 @@ def test_bare_negation_survives_as_a_scene_with_a_forbid():
     assert len(n.scenes) == 1 and n.scenes[0].forbid == ["pipe"]
     n = normalize("a flat level without pipes")
     assert n.scenes[0].forbid == ["pipe"]
-    assert A.constraints(n) == [{"scene": 0, "topic": "pipe", "lo": 0, "hi": 0}]
+    assert A.constraints(n) == [{"scene": 0, "topic": "pipe", "lo": 0, "hi": 0, "implicit": False}]
 
 
 def test_contradiction_is_refused_with_a_clear_message():

@@ -143,6 +143,8 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     play_att = [0] * n                                             # playability / forbidden resamples per window (ledger G5 limit)
     windows: list[np.ndarray] = [None] * n
     win_caps: list[str] = [None] * n
+    win_plans: list[dict] = [None] * n
+    forb_sets = adherence.scene_forbids(norm) if use_adh else []
     attempt_log, total, adh_total = [], 0, 0
 
     def caption_for(k: int):
@@ -159,8 +161,10 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         for k in range(k0, n):
             known = windows[k - 1][:, STRIDE:] if k > 0 else None      # the previous window's last (window - stride) columns
             win_caps[k], plan = caption_for(k)
+            win_plans[k] = plan
             scene_k = norm.scenes[scene_of[k]] if use_adh else None
-            checked = bool(use_adh and adh_verify and adherence.has_constraints(scene_k))
+            forb_k = forb_sets[scene_of[k]] if use_adh else None
+            checked = bool(use_adh and adh_verify and adherence.has_constraints(scene_k, forb_k))
             tries = adh_tries if checked else 1
             best, best_miss = None, None
             n_batch = adh_batch if device == "cuda" else adh_batch_cpu
@@ -170,10 +174,10 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
                 else:                                                  # a CPU pays per candidate: one draw first, a small batch only if it missed
                     first = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device)
                     cands = [first]
-                    if adherence.window_miss(first, k, scene_k, plan) > 0:
+                    if adherence.window_miss(first, k, scene_k, plan, forb_k) > 0:
                         cands += list(sample_window_batch(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]) + 1, known,
                                                           device, n_batch))
-                misses = [adherence.window_miss(c, k, scene_k, plan) for c in cands]
+                misses = [adherence.window_miss(c, k, scene_k, plan, forb_k) for c in cands]
                 j = int(np.argmin(misses))                             # the first candidate with the fewest misses (0 = exact)
                 best, best_miss = cands[j], misses[j]
                 if len(cands) > 1 or best_miss > 0:
@@ -183,7 +187,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
             for a in range(tries):                                     # local rejection sampling: only THIS window is redrawn
                 seed_idx = attempts[k] * tries + a if use_adh else attempts[k]
                 win = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, seed_idx), known, device)
-                miss = adherence.window_miss(win, k, scene_k, plan) if tries > 1 else 0
+                miss = adherence.window_miss(win, k, scene_k, plan, forb_k) if tries > 1 else 0
                 if best is None or miss < best_miss:
                     best, best_miss = win, miss                        # keep the closest draw if none is exact
                 if miss == 0 or adh_draws >= adh_draw_cap or (time_budget_s and time.time() - t0 > time_budget_s):
@@ -222,7 +226,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         elif forb_k is not None:
             k, kind = forb_k, "forbidden"
         else:
-            k, kind = adherence.window_to_resample(adh_now["unmet"][0], scene_of, n), "adherence"
+            k, kind = adherence.window_to_resample(adh_now["unmet"][0], scene_of, n, win_plans), "adherence"
         attempts[k] += 1
         if kind == "adherence":
             adh_total += 1
@@ -245,7 +249,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     san.update({"repaired": bool(removed), "removed_cells": int(removed)})
     prompt = {"text": text, "canonical": [[p.strip() for p in s.split(".") if p.strip()] for s in scenes],
               "ignored_tokens": norm.ignored_tokens, "warnings": norm.warnings, "forbid": forbid,
-              "scenes": [{"caption": win_caps[k], "scene": int(scene_of[k]), "col_from": 3 + k * STRIDE, "col_to": 3 + k * STRIDE + WINDOW - 1}
+              "scenes": [{"caption": win_caps[k], "scene": int(scene_of[k]), "plan": win_plans[k], "col_from": 3 + k * STRIDE, "col_to": 3 + k * STRIDE + WINDOW - 1}
                          for k in range(n)]}
     _cfg, state = (bundle[3], bundle[4]) if bundle is not None and len(bundle) >= 5 else ({}, {})
     generation = {"seed": int(seed), "w": float(w), "width": int(width), "ddim_steps": int(steps), "resample_r": int(resample_r),

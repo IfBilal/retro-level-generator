@@ -249,6 +249,23 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 
 **Error analysis.** Held-out levels score well on prompts built from real windows (C-score far above the prompt-ignoring null and above every constant generator) but a second set of *random seven-topic* prompts (P-rand) is a stress test the model fails: its C-score is below an always-empty generator, because unseen topic combinations produce broken structures (each costs 2/18 of the C-score) and over-generated phrases. P-rand has no source levels, so it has no level-clustered interval and no cross-level null. The per-concept table shows rare and countable concepts are weakest; the failure gallery shows the 20 worst samples; `reports/final/NOTES.md` records the one crashed-then-repeated run of the test script.
 
+### 6b. Prompt adherence of a whole level (app level; added by the end-to-end audit)
+
+The metrics above score single windows. The app, however, builds whole levels, and a user checks counts: "one pipe" must be one pipe. An audit of the real pipeline
+(`reports/audit/`, harness `scripts/audit_adherence.py`, counter `src/text2mario/eval/count_audit.py`, targets written before measuring in `reports/audit/TARGETS.md`) found
+that the unmodified app matched the prompt in only **{{adh_base_overall}}** generated levels (the example prompt "flat ground, one pipe, then several coins and a staircase": {{adh_base_example}}).
+The root cause was not the model alone: the scene caption was sent to **every** 16-column window (one pipe per window), the caption can only say five quantity buckets, and the
+model's own count inside one window is loose (exactly one pipe in about half of the windows, `reports/audit/window_exactness.json`). The fix keeps the frozen model and plans the counts across windows
+(each window is told only what it must add), redraws a window until its new columns match, counts the raw level with the caption detector and resamples the owning window when a count is unmet,
+within hard budgets. Nothing is edited: a count that cannot be met is reported to the user. Final round ({{adh_final_device}}, git {{adh_final_git}}): **{{adh_final_overall}}** levels match
+(example prompt: {{adh_final_example}}).
+
+{{adherence_table}}
+
+![Prompt adherence before and after the fix](figures/fig16_adherence.png)
+
+Counting definition, ownership of columns by scene and quantity ranges are in ledger section 7b (AD1-AD7). Remaining misses are listed in `reports/audit/AUDIT_REPORT.md`.
+
 ## 7. Testing and reliability
 
 | Evidence | Where |
@@ -267,13 +284,13 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 
 - **Small data:** 31 training levels. The unconditional baseline cannot satisfy both gate bounds (broken <= 0.05 and copy <= 0.154); the conditional model's copy rate and novelty are reported against the real reference (13).
 - **Random combinations fail:** on P-rand (random seven-topic prompts) the C-score is below an always-empty generator; the model follows prompts that look like real level segments, not arbitrary specifications.
-- **Absence cannot be expressed:** captions never say "no X"; the forbid list is a soft re-sampling filter (contrast test P4.04 failed).
+- **Absence is not a caption:** captions never say "no X" (contrast test P4.04 failed); the app now enforces "no X" by omitting the topic from window captions and by counting the raw level and resampling (section 6b), not by conditioning.
 - **Seams:** the seam ratio gate (1.3) was not met (G-P5.01); the first remedy (r = 5) was not enough.
 - **Conditioning is coarse:** captions have no positions, so "a pipe near the end" cannot be expressed; quantities are 5 buckets; rare concepts (descending stairs, ceilings with gaps) have few training examples and are clamped.
 - **Checker:** solves {{cal_levels}} of real full levels (target 0.90) and disagrees with the reference jar (agreement {{p5b_agree}}); "verified" is a conservative physics claim, with killable enemies assumed.
 - **Statistics:** only 5 dev and 6 test levels, so confidence intervals are wide; no human study of playability or enjoyment was run.
 - **Platform:** one game family (SMB1/SMB2 tiles), 16-row levels, no moving platforms, springs or bullets (cannons are static).
-- **Deployment:** the Streamlit Community Cloud deployment needs the team's GitHub/Streamlit login and could not be performed by the automated build; the repository is prepared for it (`DEPLOY.md`).
+- **Deployment:** the app is deployed on Streamlit Community Cloud (URL in `README.md` / `DEPLOY.md`; `scripts/gate_p8.py` and `scripts/audit_browser.py` drive the deployed page). The cloud runs on CPU, where candidate windows are cheaper to draw one at a time, so count matching is weaker there than on the GPU (measured in `reports/audit/AUDIT_REPORT.md`).
 
 ## 9. Conclusion
 
