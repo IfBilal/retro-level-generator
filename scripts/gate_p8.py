@@ -35,23 +35,33 @@ def main():
         pg.on("pageerror", lambda e: errs.append(str(e)))
         t0 = time.time()
         pg.goto(a.url, wait_until="domcontentloaded", timeout=120000)
-        pg.wait_for_selector("text=Generate & Play", timeout=int(a.timeout * 1000))
+        # Streamlit Community Cloud serves the app inside an iframe whose URL contains "/~/+/"; locally there is no such frame.
+        def app():
+            for f in pg.frames:
+                if "/~/+/" in f.url:
+                    return f
+            return pg
+
+        deadline = time.time() + a.timeout
+        while time.time() < deadline and app().locator("text=Generate & Play").count() == 0:
+            pg.wait_for_timeout(1000)
+        app().wait_for_selector("text=Generate & Play", timeout=5000)
         res["load_seconds"] = round(time.time() - t0, 1)
-        pg.click("text=Generate & Play")
+        app().click("text=Generate & Play")
         t1 = time.time()
         try:
-            pg.wait_for_selector("text=/Route found|No route found/", timeout=int(a.timeout * 1000))
+            app().wait_for_selector("text=/Route found|No route found/", timeout=int(a.timeout * 1000))
             res["generate_seconds"] = round(time.time() - t1, 1)
             res["badge"] = True
         except Exception:
             res["badge"] = False
         pg.wait_for_timeout(2500)
-        res["iframe"] = pg.locator("iframe").count() >= 1
+        res["iframe"] = app().locator("iframe").count() >= 1
         pg.screenshot(path=str(evid / "screenshot.png"))
-        pg.locator("textarea").first.fill("   ")
-        pg.click("text=Generate & Play")
+        app().locator("textarea").first.fill("   ")
+        app().click("text=Generate & Play")
         pg.wait_for_timeout(2500)
-        res["validation_message"] = "describing the level" in pg.inner_text("body")
+        res["validation_message"] = "describing the level" in app().inner_text("body")
         b.close()
     checks = [{"id": "P8.01", "name": "app loads", "value": res.get("load_seconds"), "pass": "load_seconds" in res},
               {"id": "P8.02", "name": "generation produces a result badge", "value": res.get("generate_seconds"), "pass": bool(res.get("badge"))},
