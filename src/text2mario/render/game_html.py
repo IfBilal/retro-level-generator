@@ -24,9 +24,10 @@ ATLAS = ROOT / "assets" / "atlas.png"
 
 
 def _js_json(obj) -> str:
-    """JSON that is safe inside a <script> tag ('</' and U+2028/9 escaped)."""
+    """JSON that is safe inside a <script> tag ('</', '<!--' and U+2028/9 escaped).  '<!--' matters: '<!--' followed by '<script' makes the HTML
+    parser treat the next '</script>' as data, which would swallow the game's own scripts (a prompt could break the page)."""
     out = json.dumps(obj, separators=(",", ":"))
-    return out.replace("</", "<\\/").replace(chr(0x2028), "\\u2028").replace(chr(0x2029), "\\u2029")
+    return out.replace("</", "<\\/").replace("<!--", "<\\!--").replace(chr(0x2028), "\\u2028").replace(chr(0x2029), "\\u2029")
 
 
 def build_game_html(level: dict) -> str:

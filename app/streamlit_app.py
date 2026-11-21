@@ -140,7 +140,8 @@ def studio() -> None:
     lvl = res.level
     shown = st.session_state.get("result_prompt")
     if shown is not None and shown != st.session_state.prompt:
-        st.info(f"The level below was generated for an earlier sentence: “{shown}”. Press Generate & Play to make one for the current sentence.")
+        st.info("The level below was generated for an earlier sentence (shown here as plain text). Press Generate & Play to make one for the current sentence.")
+        st.code(shown, language=None)           # plain text: the user's words are never interpreted as markdown
     adherence_notice(lvl)
     badge(lvl)
     t = res.seconds

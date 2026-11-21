@@ -116,3 +116,20 @@ def test_adherence_must_be_judged_on_the_raw_grid_and_stay_in_budget():
     lvl["verification"]["adherence"] = {"status": "met", "attempts": 10_000, "judged_on": "raw", "constraints": []}
     with pytest.raises(Exception):
         validate_level(lvl)
+
+
+@pytest.mark.skipif(not (ROOT / "app/static/vendor/phaser.min.js").exists(), reason="run scripts/fetch_assets.py first")
+@pytest.mark.parametrize("payload", ["</script><script>alert(1)</script>", "<!--<script>", "<!-- </script> -->", "<img src=x onerror=alert(1)>",
+                                     "\u2028\u2029'\"\\"])
+def test_a_prompt_cannot_break_out_of_the_game_page(payload):
+    """Audit input-safety: the prompt text is stored in the level JSON that is inlined in a <script> tag of an iframe that has
+    allow-scripts + allow-same-origin.  Breakout sequences must be neutralised ('</' and '<!--' escaped)."""
+    from text2mario.render.game_html import build_game_html
+    clean = build_game_html(good_level())
+    lvl = good_level()
+    lvl["prompt"]["text"] = payload + " one pipe"
+    html = build_game_html(lvl)
+    assert html.count("</script>") == clean.count("</script>")          # no extra closing tag -> no breakout
+    json_part = html.split("window.__LEVEL__=")[1].split(";window.__PHYSICS__")[0]
+    assert "</" not in json_part and "<!--" not in json_part
+    assert "\u2028" not in json_part and "\u2029" not in json_part
