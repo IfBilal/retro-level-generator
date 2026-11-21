@@ -387,3 +387,21 @@ def test_legacy_forbidden_word_path_when_adherence_is_off(monkeypatch):
     log = lvl["verification"]["attempt_log"]
     assert log and all(a["status"] == "forbidden" for a in log) and lvl["verification"]["status"] == "not_verified"
     assert lvl["verification"]["adherence"]["status"] == "not_applicable"
+
+
+@pytest.mark.parametrize("width", [16, 48, 112])
+def test_unsatisfiable_request_has_a_hard_bounded_cost(monkeypatch, width):
+    """Audit latency defect: a seed that cannot hit 3 enemies took 177 s (16 whole-level resamples x 8 redraws per window).
+    Extra window draws are now capped by adherence.max_extra_draws, so the worst case is deterministic and small."""
+    calls = []
+
+    def never_right(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        calls.append(1)
+        return flat()
+
+    monkeypatch.setattr(FL, "sample_window", never_right)
+    lvl = FL.generate(None, "three enemies", seed=1, width=width, device="cpu")
+    n, cap = FL.n_windows(width), int(A._A["max_extra_draws"])
+    assert len(calls) <= n + cap + n + int(A._A["max_window_tries"])          # first draw per window + capped extras + one last regeneration
+    adh = lvl["verification"]["adherence"]
+    assert adh["status"] == "unmet" and adh["draw_cap"] == cap and lvl["verification"]["reason"] == "adherence budget exhausted"

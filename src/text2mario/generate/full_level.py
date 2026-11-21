@@ -110,7 +110,9 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     adh_verify = use_adh and verify and bool(adherence._A["verify"])      # verify=False skips every check, including this one
     adh_max = int(adherence._A["max_attempts"])
     adh_tries = int(adherence._A["max_window_tries"])
+    adh_draw_cap = int(adherence._A["max_extra_draws"])             # hard, deterministic cap on window draws spent on counts (bounds latency)
     local_resamples = 0
+    adh_draws = 0                                                   # extra window draws caused by adherence (local redraws + whole-level resamples)
     bounds = adherence.region_bounds(scene_of, width) if use_adh else []
     ph = physics or Physics.load()
     attempts = [0] * n                                             # seed index per window (any reason to resample bumps it)
@@ -129,7 +131,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         return adherence.plan_caption(norm.scenes[si], scenes[si], k, ks[0], ks[-1], before, bounds[si][0])
 
     def regen_from(k0: int):
-        nonlocal local_resamples
+        nonlocal local_resamples, adh_draws
         for k in range(k0, n):
             known = windows[k - 1][:, STRIDE:] if k > 0 else None      # the previous window's last (window - stride) columns
             win_caps[k], plan = caption_for(k)
@@ -141,9 +143,10 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
                 miss = adherence.window_miss(win, k, norm.scenes[scene_of[k]], plan) if tries > 1 else 0
                 if best is None or miss < best_miss:
                     best, best_miss = win, miss                        # keep the closest draw if none is exact
-                if miss == 0 or (time_budget_s and time.time() - t0 > time_budget_s):
+                if miss == 0 or adh_draws >= adh_draw_cap or (time_budget_s and time.time() - t0 > time_budget_s):
                     break
                 local_resamples += 1
+                adh_draws += 1
             windows[k] = best
 
     regen_from(0)
@@ -162,7 +165,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
                         "enemy_mode": enemies}
         out_of_time = bool(time_budget_s and time.time() - t0 > time_budget_s)
         adh_now = adherence.evaluate(content, norm, scene_of, width) if use_adh else None
-        adh_pending = bool(adh_verify and adh_now["unmet"] and adh_total < adh_max and not out_of_time)
+        adh_pending = bool(adh_verify and adh_now["unmet"] and adh_total < adh_max and adh_draws < adh_draw_cap and not out_of_time)
         if res.status == "solved" and forb_k is None and not adh_pending:
             status = "verified"
             if adh_now and adh_now["unmet"]:                       # budget ended with a count still unmet: say so (verification.adherence)
@@ -180,6 +183,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         attempts[k] += 1
         if kind == "adherence":
             adh_total += 1
+            adh_draws += n - k                                      # every window from k on is drawn again
             attempt_log.append({"window": int(k), "attempt": int(attempts[k]), "status": kind, "fail_col": 0,
                                 "unmet": [f"{r['topic']} want {r['lo']}-{r['hi']} got {r['got']}" for r in adh_now["unmet"]]})
         else:
@@ -207,7 +211,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     adh_final = adherence.evaluate(content, norm, scene_of, width) if use_adh else {"status": "not_applicable", "constraints": [], "unmet": []}
     # the counts are judged on the RAW content (measure-before-repair); the display repair below never feeds this
     verification = {"status": status, "reason": reason, "attempts_total": int(total), "attempt_log": attempt_log, "checker": checker_info,
-                    "adherence": {"status": adh_final["status"], "attempts": int(adh_total), "window_redraws": int(local_resamples), "planned": bool(use_adh and adherence._A["plan"]),
+                    "adherence": {"status": adh_final["status"], "attempts": int(adh_total), "window_redraws": int(local_resamples), "extra_draws": int(adh_draws), "draw_cap": adh_draw_cap, "planned": bool(use_adh and adherence._A["plan"]),
                                   "verified_by_resampling": bool(adh_verify), "judged_on": "raw", "constraints": adh_final["constraints"]}}
     lvl = make_level(framed, display_grid=display, prompt=prompt, generation=generation, framing=framing, sanitizer=san,
                      verification=verification, provenance={"source": "app", "dataset_level_id": None, "dataset_level_name": None})
