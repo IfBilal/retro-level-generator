@@ -82,11 +82,11 @@ envelopes from it. Enemies are treated as killable (stomp). "Verified" means <em
 <p><strong>Game.</strong> Phaser 3.90.0 (MIT) with Kenney Pixel Platformer sprites (CC0): tile collisions, run/jump with the shared physics, walking enemies with stomp, question blocks, coins, pits and
 respawn, a flag and a HUD. A level becomes <strong>one self-contained HTML file</strong> (the engine, level and sprites are inlined), so it works offline and as a download.</p>
 <p><strong>Application.</strong> Streamlit: prompt box with examples, a preview of what the model will understand (canonical scenes, clamps, ignored words), guidance and width controls, seed,
-fast mode (25 steps; automatic without a GPU), generation with a verification badge, the embedded game, and downloads. Input validation rejects empty, over-long or
+a high-quality toggle (50 steps with resampling; fast mode, 25 steps, is the default and is forced without a GPU), generation with a "route found by the checker (not a guarantee)" badge, the embedded game, and downloads. Input validation rejects empty, over-long or
 control-character prompts and out-of-range settings with a readable message instead of a stack trace.</p>
 <p><strong>Measured latency</strong> (this machine; <code>reports/app/latency.json</code>; thresholds were pinned <em>after</em> measuring, not before). Fast mode (25 steps, no resampling, checker budget 1,000 nodes) is the app default:
-48 columns 4.820 s median (p95 15.341 s), 112 columns 12.900 s (p95 58.399 s) on the RTX 3060 Ti; CPU fast mode 3.850 s and 25.910 s; cold start 3.580 s.
-Full quality (50 steps, resampling) takes 35.540 s and 167.330 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is <strong>not met</strong>;
+48 columns 4.8 s median (p95 15.3 s), 112 columns 12.9 s (p95 58.4 s) on the RTX 3060 Ti; CPU fast mode 3.9 s and 25.9 s; cold start 3.6 s.
+Full quality (50 steps, resampling) takes 35.5 s and 167.3 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is <strong>not met</strong>;
 the long p95 comes from levels the checker cannot verify, which use the whole retry budget.</p>
 <p><strong>Engineering.</strong> 255 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.

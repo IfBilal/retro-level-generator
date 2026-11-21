@@ -104,7 +104,7 @@ envelopes from it. Enemies are treated as killable (stomp). "Verified" means *th
 respawn, a flag and a HUD. A level becomes **one self-contained HTML file** (the engine, level and sprites are inlined), so it works offline and as a download.
 
 **Application.** Streamlit: prompt box with examples, a preview of what the model will understand (canonical scenes, clamps, ignored words), guidance and width controls, seed,
-fast mode (25 steps; automatic without a GPU), generation with a verification badge, the embedded game, and downloads. Input validation rejects empty, over-long or
+a high-quality toggle (50 steps with resampling; fast mode, 25 steps, is the default and is forced without a GPU), generation with a "route found by the checker (not a guarantee)" badge, the embedded game, and downloads. Input validation rejects empty, over-long or
 control-character prompts and out-of-range settings with a readable message instead of a stack trace.
 
 **Measured latency** (this machine; `reports/app/latency.json`; thresholds were pinned *after* measuring, not before). Fast mode (25 steps, no resampling, checker budget 1,000 nodes) is the app default:

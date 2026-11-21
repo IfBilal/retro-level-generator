@@ -226,3 +226,12 @@ Name: **`text2mario`**. Layout in `05_REPO_STRUCTURE.md`. Root `CLAUDE.md` = `34
 | 2026-11-20 | F1-F19 and A-series re-measured on the pinned data: 39 / 39 checks pass; split regenerated and equals the doc 10 prototype exactly (test J 0.00296, dev J 0.00805, leakage 1.86 % / 1.66 %); 42 / 42 levels match VGLC | `scripts/audit_dataset.py`, `scripts/make_splits.py` | 09, 10 |
 | 2026-11-20 | VGLC SMB1 8-3 has a stray trailing space on its last two rows; stripping it reproduces the chain (width 214) | build_index.py | 08, 09 |
 | 2026-11-20 | Reference oracle moved `docs/reference/` -> `reference/` to match doc 05 | repo layout | 05 |
+| 2026-11-21 | V2: torch 2.15.0+cu132 (cu126/128/130 indexes have no 2.15.0 wheel); Python 3.12.16 via uv | measured on the desktop RTX 3060 Ti, driver 610.60 | 06 |
+| 2026-11-21 | H11 measured: 0.111 s/step, peak 0.77 GiB (batch 64, bf16); 15k steps = 28 min | hardware probe `runs/hw_probe` | 17, 18 |
+| 2026-11-21 | M2: cosine schedule chosen; G-P3 FAILED for every variant (waiver `reports/gates/P3/WAIVER.md`) | dense checkpoints show broken structures fall and copy rate rises with training; cosine better at equal steps | 18, 19, 24, 25 |
+| 2026-11-21 | Physics frozen at jump_velocity 23.0 / run_speed 7.0 (top of the doc 27 §4.5 range); enemies modelled as killable in the checker (deviation from doc 21 rule 1) | real-level solve rate 18/36 -> 25/36; static-hazard model solved only 22 % | 21, 27 |
+| 2026-11-21 | G-P5b FAILED (jar agreement 0.663, kappa 0.14); S_noplay kept for all selection (E4); end-to-end replay evidence added | the jar fails a 1-high wall in synthetic levels; not a usable oracle here | 21, 22, 24, 25 |
+| 2026-11-21 | E4 composite without playable term used for checkpoint selection; frozen model = C-main step 18,000, CFG w = 7.5 | dev S_noplay peaked at 18k; novelty fell and copy rose afterwards (early stop at 36,295) | 22, 24 |
+| 2026-11-21 | G-P4 FAIL on P4.04 only; G-P5 FAIL on P5.01 (seam 1.54); display repair deletes detector-flagged components (P5.02 passes) | measured; documented as limitations | 20, 24, 25 |
+| 2026-11-21 | App default = fast mode (25 steps, no resampling, checker budget 1000); full quality is opt-in; badge wording 'route found (not a guarantee)' | measured latency (112 columns: 167 s full quality) and replay success 40-70 % | 28, 21 |
+| 2026-11-21 | Process lapse recorded: X1 (aux CE, conditional) evaluated after the freeze; C-main kept as the reported model | one-shot test already used; see report 5.2 | 22, 23 |

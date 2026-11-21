@@ -154,7 +154,7 @@ def values() -> dict:
     v["p3_pass"] = "PASS" if p3.get("pass") else ("FAIL" if p3 else "n/a")
     lat = J("reports/app/latency.json") or {}
     for k, val in lat.items():
-        v[f"lat_{k}"] = fmt(val)
+        v[f"lat_{k}"] = fmt(val, 1)
     x1 = J("reports/dev_eval/x01_summary.json") or {}
     for k, val in x1.items():
         v[f"x1_{k}"] = fmt(val)
