@@ -75,6 +75,31 @@ def validate_prompt(text) -> tuple[bool, str]:
     return True, ""
 
 
+WARNING_TEXT = {      # normalizer warning code -> plain sentence for the person typing (the UI never shows raw codes)
+    "BARE_PLURAL_DEFAULT": "You wrote a plural without a number, so a default amount was used.",
+    "DUPLICATE_TOPIC": "The same thing was mentioned twice with different amounts; the last amount was used.",
+    "EMPTY_SCENE": "Part of the sentence had no level words and was ignored.",
+    "IMPLIED_COINS": "A coin line implies coins, so some coins were added to the request.",
+    "NEGATION_FORBID": "Things you ruled out (no ...) are checked on the generated level.",
+    "NEGATION_ONLY": "Only prohibitions were given, so a plain flat level is used as the starting point.",
+    "POSITIONAL_IGNORED": "Words like left/right/top are not supported; the order of 'then' scenes is used instead.",
+    "STYLE_HINT": "Difficulty words are noted but do not change the level yet.",
+    "THEME_UNSUPPORTED": "Themes (castle, lava, snow...) are not supported and were ignored.",
+    "TOO_MANY_SCENES": "Too many scenes; the last ones were merged.",
+    "CANONICAL_PASSTHROUGH": "",
+}
+
+
+def explain_warning(code: str) -> str:
+    """Plain-English version of a normalizer warning code ('' = nothing worth telling the user)."""
+    if code.startswith("CLAMPED:"):
+        _, topic, change = code.split(":", 2)
+        return f"The model only knows some amounts of {topic}: {change.replace('->', ' became ')}."
+    if code.startswith("CONTRADICTION:"):
+        return f"The sentence asks for and rules out the same thing ({code.split(':', 1)[1]})."
+    return WARNING_TEXT.get(code, code.replace("_", " ").lower())
+
+
 def validate_settings(seed, w, width) -> tuple[bool, str]:
     if not isinstance(seed, int) or isinstance(seed, bool) or not 0 <= seed <= 2**53 - 1:
         return False, "The seed must be an integer between 0 and 2^53-1."

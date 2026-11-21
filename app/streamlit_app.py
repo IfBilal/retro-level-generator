@@ -33,7 +33,7 @@ def get_service():
     return LevelService()
 
 
-from text2mario.app.service import validate_prompt  # noqa: E402
+from text2mario.app.service import explain_warning, validate_prompt  # noqa: E402
 
 
 def embed_game(html: str, height: int = 620) -> None:
@@ -113,10 +113,12 @@ def studio() -> None:
             st.write("No recognised level words. An unconditioned level will be generated.")
         for i, s in enumerate(norm.scenes, 1):
             st.markdown(f"**Scene {i}:** `{s.caption}`" + (f"  - avoid: {', '.join(s.forbid)}" if s.forbid else ""))
-            if s.warnings:
-                st.caption("notes: " + ", ".join(sorted(set(s.warnings))))
-        if norm.warnings:
-            st.caption("overall: " + ", ".join(norm.warnings))
+            notes = sorted({explain_warning(w) for w in s.warnings} - {""})
+            if notes:
+                st.caption("Notes: " + " ".join(notes))
+        notes = sorted({explain_warning(w) for w in norm.warnings} - {""})
+        if notes:
+            st.caption("Overall: " + " ".join(notes))
     ok, msg = validate_prompt(st.session_state.prompt)
     if not ok:
         st.error(msg)

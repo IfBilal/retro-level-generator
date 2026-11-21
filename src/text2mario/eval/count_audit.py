@@ -131,4 +131,4 @@ def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
     d = 1 + z * z / n
     c = (p + z * z / (2 * n)) / d
     h = z * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / d
-    return (max(0.0, c - h), min(1.0, c + h))
+    return (max(0.0, min(p, c - h)), min(1.0, max(p, c + h)))        # float rounding must never push the interval off its own point estimate
