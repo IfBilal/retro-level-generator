@@ -93,3 +93,26 @@ def test_prompt_validation(text, ok):
 ])
 def test_settings_validation(seed, w, width, ok):
     assert validate_settings(seed, w, width)[0] is ok
+
+
+def test_adherence_resamples_have_their_own_budget_not_the_playability_one():
+    """Regression (audit P2): >5 resamples of one window for COUNT reasons made validate_level reject the whole level
+    ('per-window attempts > 5'), so the app returned an error instead of a level."""
+    lvl = good_level()
+    lvl["verification"]["attempt_log"] = [{"window": 1, "attempt": n, "status": "adherence", "fail_col": 0} for n in range(1, 9)]
+    lvl["verification"]["adherence"] = {"status": "unmet", "attempts": 8, "judged_on": "raw", "constraints": []}
+    validate_level(lvl)                                              # accepted
+    lvl["verification"]["attempt_log"][0]["status"] = "unsolvable"
+    lvl["verification"]["attempt_log"][0]["attempt"] = 6
+    with pytest.raises(Exception):                                   # the playability limit (ledger G5) still applies to playability entries
+        validate_level(lvl)
+
+
+def test_adherence_must_be_judged_on_the_raw_grid_and_stay_in_budget():
+    lvl = good_level()
+    lvl["verification"]["adherence"] = {"status": "met", "attempts": 1, "judged_on": "display", "constraints": []}
+    with pytest.raises(Exception):
+        validate_level(lvl)
+    lvl["verification"]["adherence"] = {"status": "met", "attempts": 10_000, "judged_on": "raw", "constraints": []}
+    with pytest.raises(Exception):
+        validate_level(lvl)

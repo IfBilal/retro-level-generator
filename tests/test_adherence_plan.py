@@ -69,8 +69,7 @@ def _plan(text, windows_so_far):
     k = len(windows_so_far)
     ks = [j for j, s in enumerate(so) if s == so[k]]
     before = _assemble(windows_so_far, STRIDE * (k - 1) + WINDOW) if k else None
-    known = windows_so_far[-1][:, STRIDE:] if k else None
-    return A.plan_caption(norm.scenes[so[k]], caps[so[k]], k, ks[0], ks[-1], before, known, bounds[so[k]][0])
+    return A.plan_caption(norm.scenes[so[k]], caps[so[k]], k, ks[0], ks[-1], before, bounds[so[k]][0])[0]
 
 
 def test_one_pipe_is_not_requested_in_every_window():
@@ -81,17 +80,24 @@ def test_one_pipe_is_not_requested_in_every_window():
     assert sum("pipe" in c for c in asked) < 5
     assert asked[0] == "full floor."                               # nothing planned yet, neutral caption
     done = [empty, empty, _pipe_window([10])]                      # a pipe exists in window 2 (content columns 26-27)
-    assert _plan("one pipe", done) == "one pipe."                  # window 3 starts with it in its known half: it is described, not duplicated
-    nxt = empty.copy()
-    nxt[:, :STRIDE] = done[-1][:, STRIDE:]                         # a real next window starts with the previous window's right half (RePaint known region)
-    assert "pipe" not in _plan("one pipe", done + [nxt])           # window 4: the pipe is already placed, nothing more is asked for
+    assert "pipe" not in _plan("one pipe", done)                   # window 3: the pipe is placed; asking for 'one pipe' again would add a SECOND one
 
 
-def test_caption_states_objects_already_inside_the_known_half():
-    """A 16-column caption describes the whole window, including the left half copied from the previous window."""
-    w0 = _pipe_window([10])                                        # pipe in columns 10-11 = inside the right half (the next window's known half)
-    cap = _plan("one pipe", [w0])
-    assert "one pipe" in cap
+def test_objects_already_in_the_known_half_are_not_repeated_in_the_caption():
+    """Measured on the frozen model: caption 'one pipe' with a pipe already in the known half -> another pipe in 19/24 samples;
+    a caption without it -> none (24/24).  So the caption states only what the window must ADD."""
+    w0 = _pipe_window([10])                                        # pipe in window 0's right half = window 1's known half
+    assert "pipe" not in _plan("one pipe", [w0])
+
+
+def test_window_ok_checks_only_the_new_columns():
+    norm = normalize("one pipe")
+    sc = norm.scenes[0]
+    w = _pipe_window([10])                                         # pipe at window column 10 = NEW half of window k >= 1
+    assert A.window_ok(w, 1, sc, {"pipe": 1}) and not A.window_ok(w, 1, sc, {"pipe": 0})
+    known_pipe = _pipe_window([2])                                 # pipe in the KNOWN half (columns 0-7) of window 1: not this window's doing
+    assert A.window_ok(known_pipe, 1, sc, {"pipe": 0}) and not A.window_ok(known_pipe, 0, sc, {"pipe": 0})   # window 0 owns all 16 columns
+    assert not A.window_ok(w, 1, normalize("no pipes").scenes[0], {})                                     # a forbidden topic must not appear
 
 
 def test_evaluate_counts_raw_content_per_scene_region():

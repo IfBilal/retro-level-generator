@@ -21,6 +21,7 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
 from text2mario.data import tiles as T
+from text2mario.utils import appcfg
 from text2mario.render.renderer import grid_to_csv, grid_to_sprite_image, grid_to_vglc_text
 
 SCHEMA_VERSION = 1
@@ -29,6 +30,9 @@ MAX_SEED = 2**53 - 1
 
 def new_level_id() -> str:
     return time.strftime("t2m_%Y%m%d-%H%M%S_", time.gmtime()) + uuid.uuid4().hex[:6]
+
+
+ADHERENCE_MAX_ATTEMPTS = int(appcfg.load()["adherence"]["max_attempts"])      # configs/generate/app.yaml
 
 
 def make_level(raw_grid, *, kind: str = "generated", display_grid=None, prompt: dict | None = None,
@@ -94,11 +98,16 @@ def validate_level(lvl: dict) -> dict:
     v = lvl["verification"]
     if v["status"] == "verified" and not (v.get("checker") or {}).get("physics_sha256"):
         bad("verified without physics_sha256")
-    if v.get("attempts_total", 0) > 20:
+    if v.get("attempts_total", 0) > 20:                     # playability + forbidden resamples (ledger G5); adherence has its own budget below
         bad("attempts_total > 20")
     for a in v.get("attempt_log", []):
-        if a.get("attempt", 1) > 5:
+        if a.get("status") != "adherence" and a.get("attempt", 1) > 5:
             bad("per-window attempts > 5")
+    adh = v.get("adherence") or {}
+    if adh.get("attempts", 0) > ADHERENCE_MAX_ATTEMPTS:
+        bad("adherence attempts over its budget")
+    if adh and adh.get("judged_on") != "raw":
+        bad("adherence must be judged on the raw grid (CLAUDE.md rule 8)")
     g = lvl.get("generation")
     if g and not (0 <= g["seed"] <= MAX_SEED and isinstance(g["seed"], int)):
         bad("seed is not JS-safe")

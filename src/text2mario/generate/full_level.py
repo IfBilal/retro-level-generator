@@ -104,11 +104,13 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     forbid = sorted({f for s in norm.scenes for f in s.forbid})
     n = n_windows(width)
     scene_of = scene_for_windows(scenes, n)
-    use_adh = adherence.enabled() and bool(norm.scenes)
-    if use_adh:
+    if adherence.enabled():
         adherence.check_feasible(norm, width)                       # contradiction / impossible count -> ValueError with a clear message
-    adh_verify = use_adh and bool(adherence._A["verify"])
+    use_adh = adherence.enabled() and bool(norm.scenes)
+    adh_verify = use_adh and verify and bool(adherence._A["verify"])      # verify=False skips every check, including this one
     adh_max = int(adherence._A["max_attempts"])
+    adh_tries = int(adherence._A["max_window_tries"])
+    local_resamples = 0
     bounds = adherence.region_bounds(scene_of, width) if use_adh else []
     ph = physics or Physics.load()
     attempts = [0] * n                                             # seed index per window (any reason to resample bumps it)
@@ -117,21 +119,32 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     win_caps: list[str] = [None] * n
     attempt_log, total, adh_total = [], 0, 0
 
-    def caption_for(k: int) -> str:
-        """Caption of window k: the scene caption, or (adherence on) the part of the scene's requested counts still missing at window k."""
+    def caption_for(k: int):
+        """(caption, plan) of window k: the scene caption, or (adherence on) only what the scene still needs this window to add."""
         si = scene_of[k]
         if not use_adh:
-            return scenes[si]
+            return scenes[si], {}
         ks = [j for j, sj in enumerate(scene_of) if sj == si]
         before = _assemble(windows[:k], STRIDE * (k - 1) + WINDOW) if k > 0 else None
-        known_half = windows[k - 1][:, STRIDE:] if k > 0 else None
-        return adherence.plan_caption(norm.scenes[si], scenes[si], k, ks[0], ks[-1], before, known_half, bounds[si][0])
+        return adherence.plan_caption(norm.scenes[si], scenes[si], k, ks[0], ks[-1], before, bounds[si][0])
 
     def regen_from(k0: int):
+        nonlocal local_resamples
         for k in range(k0, n):
             known = windows[k - 1][:, STRIDE:] if k > 0 else None      # the previous window's last (window - stride) columns
-            win_caps[k] = caption_for(k)
-            windows[k] = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device)
+            win_caps[k], plan = caption_for(k)
+            tries = adh_tries if use_adh and adh_verify else 1
+            best, best_miss = None, None
+            for a in range(tries):                                     # local rejection sampling: only THIS window is redrawn
+                seed_idx = attempts[k] * tries + a if use_adh else attempts[k]
+                win = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, seed_idx), known, device)
+                miss = adherence.window_miss(win, k, norm.scenes[scene_of[k]], plan) if tries > 1 else 0
+                if best is None or miss < best_miss:
+                    best, best_miss = win, miss                        # keep the closest draw if none is exact
+                if miss == 0 or (time_budget_s and time.time() - t0 > time_budget_s):
+                    break
+                local_resamples += 1
+            windows[k] = best
 
     regen_from(0)
     status, reason, checker_info = "not_verified", None, None
@@ -193,8 +206,8 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
                   "checkpoint_step": int(state.get("step", -1)), "seconds": round(time.time() - t0, 2), **(meta or {})}
     adh_final = adherence.evaluate(content, norm, scene_of, width) if use_adh else {"status": "not_applicable", "constraints": [], "unmet": []}
     # the counts are judged on the RAW content (measure-before-repair); the display repair below never feeds this
-    verification = {"status": status, "reason": reason, "attempts_total": int(total + adh_total), "attempt_log": attempt_log, "checker": checker_info,
-                    "adherence": {"status": adh_final["status"], "attempts": int(adh_total), "planned": bool(use_adh and adherence._A["plan"]),
+    verification = {"status": status, "reason": reason, "attempts_total": int(total), "attempt_log": attempt_log, "checker": checker_info,
+                    "adherence": {"status": adh_final["status"], "attempts": int(adh_total), "window_redraws": int(local_resamples), "planned": bool(use_adh and adherence._A["plan"]),
                                   "verified_by_resampling": bool(adh_verify), "judged_on": "raw", "constraints": adh_final["constraints"]}}
     lvl = make_level(framed, display_grid=display, prompt=prompt, generation=generation, framing=framing, sanitizer=san,
                      verification=verification, provenance={"source": "app", "dataset_level_id": None, "dataset_level_name": None})

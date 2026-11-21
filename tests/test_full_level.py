@@ -129,3 +129,81 @@ def test_app_config_is_consistent():
     assert all((w - c["window"]) % c["stride"] == 0 for w in c["widths"]), "every width must tile into windows"
     for ex in c["examples"]:
         assert normalize(ex).scenes, f"example chip {ex!r} is not understood by the normalizer"
+
+
+def _pipe_stub(monkeypatch, per_caption=True):
+    """A sampler that draws exactly the pipes its caption asks for IN THE NEW COLUMNS (one per 'one pipe', two per 'two pipes')."""
+    calls = []
+
+    def fake(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        calls.append(caption)
+        g = flat_window()
+        if known_cols is not None:
+            g[:, :known_cols.shape[1]] = known_cols
+        n = 2 if "two pipes" in caption else 1 if "one pipe" in caption else 0
+        for i in range(n):
+            c = 9 + 4 * i if known_cols is not None else 2 + 6 * i
+            g[11, c], g[11, c + 1] = T.PIPE_TL, T.PIPE_TR
+            for r in range(12, 15):
+                g[r, c], g[r, c + 1] = T.PIPE_BL, T.PIPE_BR
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", fake)
+    return calls
+
+
+def _pipes(lvl):
+    from text2mario.eval.count_audit import objects_by_topic
+    from text2mario.utils import appcfg
+    raw = np.array(lvl["raw_grid"], dtype=np.uint8)[:, 3:3 + lvl["generation"]["width"]]
+    topics = {"pipe": {"det": ["pipe", "upside down pipe", "broken pipe"]}}
+    return len(objects_by_topic(raw, topics)["pipe"])
+
+
+def test_one_pipe_gives_one_pipe_not_one_per_window(monkeypatch):
+    """Audit P2 root cause: the scene caption 'one pipe' was given to all 5 windows of a 48-column level -> 5 pipes."""
+    from text2mario.generate import adherence
+    _pipe_stub(monkeypatch)
+    monkeypatch.setitem(adherence._A, "enabled", False)                  # the old behaviour
+    old = FL.generate(None, "one pipe", seed=1, width=48, device="cpu", verify=False)
+    assert _pipes(old) >= 4, "documents the bug: one pipe per window"
+    monkeypatch.setitem(adherence._A, "enabled", True)
+    lvl = FL.generate(None, "one pipe", seed=1, width=48, device="cpu")
+    assert _pipes(lvl) == 1
+    adh = lvl["verification"]["adherence"]
+    assert adh["status"] == "met" and adh["judged_on"] == "raw"
+    assert sum("pipe" in s["caption"] for s in lvl["prompt"]["scenes"]) < 5
+
+
+def test_two_scenes_get_their_own_counts_in_order(monkeypatch):
+    _pipe_stub(monkeypatch)
+    lvl = FL.generate(None, "one pipe, then two pipes", seed=2, width=80, device="cpu")
+    rows = lvl["verification"]["adherence"]["constraints"]
+    assert [r["got"] for r in rows] == [1, 2] and lvl["verification"]["adherence"]["status"] == "met"
+    assert [s["scene"] for s in lvl["prompt"]["scenes"]] == sorted(s["scene"] for s in lvl["prompt"]["scenes"])
+
+
+def test_forbidden_topic_is_enforced_on_the_raw_level_and_unmet_is_reported_not_hidden(monkeypatch):
+    """A sampler that ignores 'no pipes' (always draws one): the level must be reported as UNMET, never as a success, and never edited."""
+    def stubborn(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        g = flat_window()
+        if known_cols is not None:
+            g[:, :known_cols.shape[1]] = known_cols
+        c = 9 if known_cols is not None else 3
+        g[11, c], g[11, c + 1] = T.PIPE_TL, T.PIPE_TR
+        for r_ in range(12, 15):
+            g[r_, c], g[r_, c + 1] = T.PIPE_BL, T.PIPE_BR
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", stubborn)
+    lvl = FL.generate(None, "no pipes", seed=3, width=16, device="cpu")
+    adh = lvl["verification"]["adherence"]
+    assert adh["status"] == "unmet" and adh["attempts"] >= 1 and adh["constraints"][0]["got"] >= 1
+    assert _pipes(lvl) >= 1, "raw grid is untouched (the display repair never edits for adherence)"
+
+
+def test_impossible_and_contradictory_requests_raise_clear_errors(stub):
+    with pytest.raises(ValueError, match="will not fit"):
+        FL.generate(None, "500 pipes", seed=1, width=48, device="cpu", verify=False)
+    with pytest.raises(ValueError, match="rules out the same thing"):
+        FL.generate(None, "one pipe and no pipes", seed=1, width=48, device="cpu", verify=False)

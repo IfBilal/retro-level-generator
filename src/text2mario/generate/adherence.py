@@ -94,36 +94,56 @@ def _phrases_of(caption: str) -> list[str]:
     return [p.strip() for p in caption.split(".") if p.strip()]
 
 
-def plan_caption(scene, scene_caption: str, k: int, first_k: int, last_k: int, content_before: np.ndarray, known_half: np.ndarray | None,
-                 region_start: int) -> str:
-    """Caption for window k of a scene spanning windows first_k..last_k.
+def plan_caption(scene, scene_caption: str, k: int, first_k: int, last_k: int, content_before: np.ndarray | None, region_start: int):
+    """-> (caption, plan) for window k of a scene spanning windows first_k..last_k.
 
-    For each requested topic: planned_cumulative = round((i+1) * target / m) for the i-th of the scene's m windows, `have` = objects of this
-    scene already in the finished columns, the window adds `planned_cumulative - have` (0..max_new_per_window).  The caption states
-    the objects ALREADY inside the window's known left half plus the new ones, because that is what a 16-column caption means."""
+    plan = {topic: how many objects of that topic window k must ADD in its 8 new columns}.  For each requested topic:
+    cumulative = round((i+1) * target / m) for the i-th of the scene's m windows, `done` = objects of this scene already in the finished
+    columns, the window adds cumulative - done (0..max_new_per_window), so a shortfall is made up later and a surplus is not repeated.
+    The caption names ONLY what must be new.  Measured on the frozen model: with a pipe already inside the known half, the caption
+    'one pipe' gave ANOTHER pipe in the new half in 19/24 samples, while a caption without pipes gave none (24/24), so describing the
+    known half truthfully would double the count (reports/audit/NOTES_planner.md)."""
     if not _A["plan"] or not scene.want:
-        return scene_caption
+        return scene_caption, {}
     m, i = last_k - first_k + 1, k - first_k
     have = anchors(content_before) if content_before is not None and content_before.shape[1] else {t: [] for t in COUNTED}
-    known = anchors(known_half) if known_half is not None else {t: [] for t in COUNTED}
     base = [p for p in _phrases_of(scene_caption) if parse_phrase(p)[0] in ("floor", "ceiling")]
-    phrases = list(base)
+    if _A["default_floor"] and not any(parse_phrase(p)[0] == "floor" for p in base):
+        base.insert(0, str(_A["default_floor"]))         # measured: a complete caption ("full floor. one pipe.") is hit more often than "one pipe."
+    phrases, plan = list(base), {}
     for t in COUNTED:
-        if t in scene.forbid:
+        if t in scene.forbid or t not in scene.want:
             continue
-        n_known = len(known[t])
-        new = 0
-        if t in scene.want:
-            lo, hi = scene.want[t]
-            tgt = target_of(lo, hi)
-            done = sum(1 for a in have[t] if a >= region_start)
-            cum = math.floor((i + 1) * tgt / m + 0.5) if k < last_k else tgt      # +0.5: a single object lands mid-scene, not at its end
-            new = max(0, min(int(_A["max_new_per_window"].get(t, 1)), cum - done))
-        q = n_known + new
-        if q > 0:
-            b = N._clamp(t, N.bucket(q), [])
+        lo, hi = scene.want[t]
+        tgt = target_of(lo, hi)
+        done = sum(1 for a in have[t] if a >= region_start)
+        cum = math.floor((i + 1) * tgt / m + 0.5) if k < last_k else tgt          # +0.5: a single object lands mid-scene, not at its end
+        cap = max(int(_A["max_new_per_window"].get(t, 1)), math.ceil(tgt / m))      # never below what the scene needs per window
+        new = max(0, min(cap, cum - done))
+        plan[t] = new
+        if new > 0:
+            b = N._clamp(t, N.bucket(new), [])
             phrases.append(counted_phrase(t, N.BUCKET_REP[b]))
-    return "".join(p + ". " for p in phrases).strip() or str(_A["neutral_caption"])
+    return "".join(p + ". " for p in phrases).strip() or str(_A["neutral_caption"]), plan
+
+
+def window_miss(win: np.ndarray, k: int, scene, plan: dict) -> int:
+    """How far window k is from its plan in its NEW columns: sum over requested topics of |added - planned|, plus every object of a
+    forbidden topic.  0 = exactly what was asked.  Cheap local check used to redraw just this window (evaluate() stays the final judge)."""
+    c0 = 0 if k == 0 else STRIDE
+    a = anchors(win)
+    miss = 0
+    for t in COUNTED:
+        n_new = sum(1 for x in a[t] if x >= c0)
+        if t in scene.forbid:
+            miss += n_new
+        elif t in scene.want:
+            miss += abs(n_new - plan.get(t, 0))
+    return miss
+
+
+def window_ok(win: np.ndarray, k: int, scene, plan: dict) -> bool:
+    return window_miss(win, k, scene, plan) == 0
 
 
 def evaluate(content: np.ndarray, norm, scene_of: list[int], width: int) -> dict:

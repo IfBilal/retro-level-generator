@@ -26,23 +26,25 @@ adherence:
   plan: true             # per-window quantity planning
   verify: true           # resample windows until the raw level satisfies the parsed counts (or the budget ends)
   max_attempts: 16       # adherence resamples per level (the playability loop keeps its own max_total_attempts)
+  max_window_tries: 8    # a window is redrawn up to this many times until its NEW columns hold exactly what the plan asked for
   neutral_caption: "full floor."
+  default_floor: "full floor"   # added to a window caption that has no floor phrase (measured to raise exact-count rates); "" = off
   range_target: mid      # a vague quantity ("several" = 5-9) is planned at its middle; the check still accepts the whole range
   max_new_per_window:    # most objects of a topic planned into the 8 NEW columns of one window
-    pipe: 1
+    pipe: 1        # measured per-window exact rate: 1 pipe ~55%, 2 pipes ~10-30%
     upside down pipe: 1
-    enemy: 3
-    coin: 6
+    enemy: 1       # measured per-window exact rate: 1 enemy ~30%, 'a few' 0% (it draws 4-10), so spread them one per window
+    coin: 1
     coin line: 1
     cannon: 1
     platform: 1
-    question block: 2
+    question block: 1
     ascending staircase: 1
     descending staircase: 1
     tower: 1
     rectangular block cluster: 1
     irregular block cluster: 1
-    loose block: 3
+    loose block: 1
   capacity_per_16_cols:  # a request above (this x width/16) cannot fit; it is rejected with a message instead of silently clamped
     pipe: 2
     enemy: 4
