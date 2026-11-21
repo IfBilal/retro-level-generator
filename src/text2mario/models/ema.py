@@ -48,4 +48,6 @@ class EMA:
         return {"shadow": self.shadow, "max_decay": self.max_decay}
 
     def load_state_dict(self, sd: dict) -> None:
-        self.shadow = {k: v.clone() for k, v in sd["shadow"].items()}
+        # checkpoints are loaded on the CPU; the shadow must stay on the device the live parameters use (found when resuming on CUDA)
+        dev = next(iter(self.shadow.values())).device if self.shadow else torch.device("cpu")
+        self.shadow = {k: v.clone().to(dev) for k, v in sd["shadow"].items()}

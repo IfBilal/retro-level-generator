@@ -113,3 +113,16 @@ def test_override_parses_scientific_notation_as_number():
     cfg = load_config(None, None, ["optim.lr=1e-3", "train.batch_size=8", "train.uncond=false", "diffusion.schedule=cosine"])
     assert cfg["optim"]["lr"] == 0.001 and isinstance(cfg["optim"]["lr"], float)
     assert cfg["train"]["batch_size"] == 8 and cfg["train"]["uncond"] is False and cfg["diffusion"]["schedule"] == "cosine"
+
+
+def test_ema_load_state_dict_keeps_the_live_device():
+    """Regression: resuming on CUDA crashed because the EMA shadow loaded from a CPU checkpoint stayed on the CPU."""
+    import torch
+    from text2mario.models.ema import EMA
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    m = {"unet": torch.nn.Linear(4, 4).to(dev)}
+    ema = EMA(m, 0.999)
+    saved = {k: v.cpu() for k, v in ema.state_dict()["shadow"].items()}      # what torch.load(map_location="cpu") returns
+    ema.load_state_dict({"shadow": saved, "max_decay": 0.999})
+    assert all(v.device.type == torch.device(dev).type for v in ema.shadow.values())
+    ema.update(m, 5)                                                         # would raise "two devices" before the fix
