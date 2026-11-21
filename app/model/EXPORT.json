@@ -1,0 +1,13 @@
+{
+ "source_checkpoint_sha256": "f471e2a56c2c4432139139ef697afcaf2009ca24d125fa9360e006d9d28065c1",
+ "step": 18000,
+ "files": {
+  "t2m_ema.safetensors": "c525a913fabc3e948097fd4cb1580f0f3d536b5fbe92c4d33e8101c71f9b7273",
+  "config.json": "17465e07992709b8116e34c345f01297843da6c8270c3a3afe547b4941ea8a31",
+  "model.safetensors": "553c9ff2a4d968014fb1c66fdb6f2c9dc19b3ac2360ba58a51c69e177e55d765"
+ },
+ "sizes_mb": {
+  "t2m_ema.safetensors": 73.6,
+  "model.safetensors": 45.4
+ }
+}

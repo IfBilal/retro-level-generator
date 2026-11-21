@@ -1,0 +1,125 @@
+{
+ "aug": {
+  "keep_canonical_quantity_p": 0.25,
+  "null_p": 0.1,
+  "paraphrase_caption_p": 0.3,
+  "paraphrase_phrase_p": 0.5,
+  "phrase_dropout_p": 0.1,
+  "shuffle": true
+ },
+ "checkpoint": {
+  "every_steps": 2000,
+  "keep_last": 2,
+  "milestone_every_steps": 6000
+ },
+ "compile": false,
+ "cudnn_benchmark": true,
+ "data": {
+  "index_path": "data/processed/index.parquet",
+  "max_len": 48,
+  "scenes_path": "data/processed/scenes_u8.npy",
+  "split_path": "data/splits/split_v1.json",
+  "tile_classes": 13,
+  "window": [
+   16,
+   16
+  ]
+ },
+ "diffusion": {
+  "T": 1000,
+  "prediction": "eps",
+  "schedule": "cosine"
+ },
+ "ema": {
+  "decay": 0.999
+ },
+ "eval": {
+  "every_steps": 2000,
+  "patience": 5,
+  "seeds": 3,
+  "train_w": 5.0
+ },
+ "generate": {
+  "resample_fraction": 0.6,
+  "resample_r": 2,
+  "stride": 8
+ },
+ "log_every": 50,
+ "loss": {
+  "aux_ce_lambda": 0.0,
+  "aux_ce_tau": 1.0,
+  "aux_ce_weighting": "alpha_bar",
+  "type": "mse"
+ },
+ "machine": "desktop_3060ti",
+ "model": {
+  "attn_levels": [
+   1,
+   2
+  ],
+  "base_channels": 64,
+  "channel_mult": [
+   1,
+   2,
+   4
+  ],
+  "context_dim": 128,
+  "cross_attention": true,
+  "dropout": 0.1,
+  "groups": 8,
+  "heads": 4,
+  "in_channels": 13,
+  "null_ctx_tokens": 1,
+  "num_res_blocks_down": 2,
+  "pooled_text_to_time": false,
+  "self_attention": true,
+  "zero_init": true
+ },
+ "name": "cond_main",
+ "num_workers": 0,
+ "optim": {
+  "betas": [
+   0.9,
+   0.999
+  ],
+  "grad_clip": 1.0,
+  "lr": 0.0002,
+  "lr_final": 1e-05,
+  "name": "AdamW",
+  "warmup_steps": 1000,
+  "weight_decay": 0.01
+ },
+ "sample": {
+  "clip_x0": true,
+  "ddim_steps": 50,
+  "eta": 0.0,
+  "w_grid": [
+   1,
+   2,
+   3,
+   5,
+   7.5,
+   10
+  ]
+ },
+ "seed": 20261117,
+ "text": {
+  "adapter_hidden": 128,
+  "cache_max_mb": 512,
+  "enabled": true,
+  "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+  "encoder_dir": "models/minilm"
+ },
+ "train": {
+  "batch_size": 64,
+  "max_nonfinite_skips": 5,
+  "max_steps": 60000,
+  "precision": "bf16",
+  "uncond": false,
+  "vram_cap_gib": 4.5
+ },
+ "export": {
+  "step": 18000,
+  "source_checkpoint": "runs/C-main/step_0018000.pt"
+ }
+}

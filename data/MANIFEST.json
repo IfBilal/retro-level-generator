@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "created_utc": "2026-11-20T07:05:46Z",
+  "created_utc": "2026-11-20T17:59:06Z",
   "created_by": "scripts/fetch_data.py",
   "sources": {
     "MarioDiffusion": {
@@ -9,31 +9,31 @@
       "license": "MIT",
       "files": {
         "datasets/Mar1and2_LevelsAndCaptions-regular.json": {
-          "copied_to": "data/source/Mar1and2_LevelsAndCaptions-regular.json",
+          "copied_to": "data\\source\\Mar1and2_LevelsAndCaptions-regular.json",
           "bytes": 42028678,
           "sha256_bytes": "9d3eb4dbd82a90f3c74cfe869239b9cd18e8cc93670a053fcba999236d5e2a25",
           "sha256_content": "6a15264a4beb67247a0488dba0439f257f7a94955c0df60b709b7e85024ade2c"
         },
         "datasets/smb.json": {
-          "copied_to": "data/source/smb.json",
+          "copied_to": "data\\source\\smb.json",
           "bytes": 658,
           "sha256_bytes": "c1a23d7af82c7cdf0364cd1a1d6fcb4ada14092b0f383ffc7edc0e7f10987dcf",
           "sha256_content": "833ba2141418b29852951030f24967df90cd2c318d194b8d8b31b665e00da823"
         },
         "datasets/SMB1_Levels.json": {
-          "copied_to": "data/source/SMB1_Levels.json",
+          "copied_to": "data\\source\\SMB1_Levels.json",
           "bytes": 9036365,
           "sha256_bytes": "18ee2e2e4677ba22c030d7759302c04bcf2592e31e9d9db21cac509429df77d5",
           "sha256_content": "40b4cfe52fa3f181e28b43a964fee578bec38f2eec2c19f1b02d2de252a65526"
         },
         "datasets/SMB2_Levels.json": {
-          "copied_to": "data/source/SMB2_Levels.json",
+          "copied_to": "data\\source\\SMB2_Levels.json",
           "bytes": 10227675,
           "sha256_bytes": "318c0b264d1c5b994c23e28fe4fafa30ac5f6e93ed194755d7600c98259d88d6",
           "sha256_content": "4280849a01af81e7a210315c49e71bdc3641bc0956b316f95fa0fc0c71159f5e"
         },
         "datasets/Mar1and2_RandomTest-regular.json": {
-          "copied_to": "data/source/Mar1and2_RandomTest-regular.json",
+          "copied_to": "data\\source\\Mar1and2_RandomTest-regular.json",
           "bytes": 14231,
           "sha256_bytes": "06ebc0ba420b6a018310d8c6b985abb0477850dc7bfdaafae77b98ee34df87b4",
           "sha256_content": "488d2c22f6444ccd8f22a05488362205eb5ad1df8bf3b56898bbe3d17da0acfa"

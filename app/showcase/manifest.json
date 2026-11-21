@@ -1,0 +1,126 @@
+{
+ "checkpoint_step": 18000,
+ "checkpoint_sha256": "f471e2a56c2c4432139139ef697afcaf2009ca24d125fa9360e006d9d28065c1",
+ "levels": [
+  {
+   "prompt": "full floor with two pipes and a few enemies",
+   "seed": 100,
+   "w": 7.5,
+   "file": "showcase_00.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 17.26
+  },
+  {
+   "prompt": "flat ground, one pipe, then several coins and a staircase",
+   "seed": 101,
+   "w": 7.5,
+   "file": "showcase_01.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 18.5
+  },
+  {
+   "prompt": "an underground level: three platforms, then a cannon and two enemies",
+   "seed": 102,
+   "w": 7.5,
+   "file": "showcase_02.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 17.66
+  },
+  {
+   "prompt": "mostly pits with two islands of ground, then a coin line",
+   "seed": 103,
+   "w": 7.5,
+   "file": "showcase_03.level.json",
+   "verified": false,
+   "bot_reached_flag": null,
+   "human_played": false,
+   "seconds": 106.06
+  },
+  {
+   "prompt": "two pipes followed by a coin line",
+   "seed": 104,
+   "w": 7.5,
+   "file": "showcase_04.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 18.81
+  },
+  {
+   "prompt": "a few question blocks and several enemies",
+   "seed": 105,
+   "w": 7.5,
+   "file": "showcase_05.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 16.98
+  },
+  {
+   "prompt": "full floor. one ascending staircase. two towers.",
+   "seed": 106,
+   "w": 7.5,
+   "file": "showcase_06.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 18.06
+  },
+  {
+   "prompt": "lots of coins and a couple of goombas",
+   "seed": 107,
+   "w": 7.5,
+   "file": "showcase_07.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 75.07
+  },
+  {
+   "prompt": "begin with a platform and end with stairs going down",
+   "seed": 108,
+   "w": 7.5,
+   "file": "showcase_08.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 92.38
+  },
+  {
+   "prompt": "three pipes and no enemies",
+   "seed": 109,
+   "w": 7.5,
+   "file": "showcase_09.level.json",
+   "verified": false,
+   "bot_reached_flag": null,
+   "human_played": false,
+   "seconds": 110.47
+  },
+  {
+   "prompt": "full floor with a few gaps and one cannon",
+   "seed": 110,
+   "w": 7.5,
+   "file": "showcase_10.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 19.02
+  },
+  {
+   "prompt": "several platforms, then two pipes and a tower",
+   "seed": 111,
+   "w": 7.5,
+   "file": "showcase_11.level.json",
+   "verified": true,
+   "bot_reached_flag": false,
+   "human_played": false,
+   "seconds": 52.9
+  }
+ ]
+}
