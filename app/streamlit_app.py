@@ -56,6 +56,16 @@ def badge(level: dict) -> None:
                "'probably beatable', not proven. See the About tab.")
 
 
+def _set_state(key: str, value) -> None:
+    """Button callback: write a widget's value before the rerun instantiates the widget."""
+    st.session_state[key] = value
+
+
+def _roll_seed() -> None:
+    """Dice callback: a fresh random seed (the number_input with key='seed' picks it up on the rerun)."""
+    st.session_state["seed"] = random.randint(0, 10**9)
+
+
 def studio() -> None:
     try:
         svc = get_service()
@@ -68,8 +78,9 @@ def studio() -> None:
         if "prompt" not in st.session_state:
             st.session_state.prompt = EXAMPLES[0]
         for i, ex in enumerate(EXAMPLES):
-            if st.button(ex, key=f"ex{i}", width="stretch"):
-                st.session_state.prompt = ex
+            # on_click callbacks run BEFORE the script reruns, so they may set a widget's key; setting it after the widget exists raises
+            # StreamlitWidgetAlreadyInstantiatedError (the Dice crash).
+            st.button(ex, key=f"ex{i}", width="stretch", on_click=_set_state, args=("prompt", ex))
         st.text_area("Your sentence", key="prompt", height=110)
         w = st.slider("Prompt strength (CFG w)", float(CFG["cfg"]["min_w"]), float(CFG["cfg"]["max_w"]), float(CFG["cfg"]["default_w"]), 0.5)
         width = st.select_slider("Width (tiles of generated content)", options=list(CFG["widths"]), value=CFG["default_width"])
@@ -77,9 +88,7 @@ def studio() -> None:
             st.session_state.seed = 1234
         c1, c2 = st.columns([3, 1])
         c1.number_input("Seed", min_value=0, max_value=2**53 - 1, key="seed", step=1)
-        if c2.button("Dice"):
-            st.session_state.seed = random.randint(0, 10**9)
-            st.rerun()
+        c2.button("Dice", on_click=_roll_seed)
         fast = not st.toggle("High quality (50 steps, resampling: slower)", value=False, disabled=svc.fast_forced,
                              help="Fast mode (25 steps) is the default and is forced without a GPU; high quality takes about a minute or more.")
         go = st.button("Generate & Play", type="primary", width="stretch")

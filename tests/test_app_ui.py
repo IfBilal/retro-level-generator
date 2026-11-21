@@ -61,3 +61,26 @@ def test_example_button_fills_the_prompt():
     ex.click()
     at.run()
     assert at.text_area(key="prompt").value.startswith("mostly pits")
+
+
+def test_dice_never_raises_widget_already_instantiated():
+    """Regression (audit P1): Dice wrote st.session_state['seed'] after the number_input existed -> StreamlitWidgetAlreadyInstantiatedError.
+    Fixed with an on_click callback.  30 consecutive clicks, then examples, then a generation: no exception, seeds stay valid and change."""
+    at = fresh()
+    seen = set()
+    for _ in range(30):
+        next(b for b in at.button if b.label == "Dice").click()
+        at.run()
+        assert not at.exception, at.exception
+        seed = at.number_input(key="seed").value
+        assert 0 <= seed <= 10**9
+        seen.add(seed)
+    assert len(seen) > 20, "Dice must produce different seeds"
+    for b in [b for b in at.button if b.key and b.key.startswith("ex")]:
+        b.click()
+        at.run()
+        assert not at.exception, at.exception
+    next(b for b in at.button if b.label == "Dice").click()
+    at.run()
+    go(at)
+    assert not at.exception, at.exception
