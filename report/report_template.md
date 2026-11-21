@@ -198,6 +198,11 @@ broken structures after the display repair {{p5_02}}, verify-loop limits {{p5_03
 ![Generated level, worst seam](figures/fig12_render_worst_032.png)
 *Figure 12. Two generated 112-column levels from the G-P5 set (best and worst seam ratio; sprite render of the display grid).*
 
+![Showcase: stairs](figures/fig13_showcase_stairs.png)
+![Showcase: platforms](figures/fig14_showcase_platforms.png)
+![Showcase: coins](figures/fig15_showcase_coins.png)
+*Figure 13-15. Generated 57-column levels (sprite render, fast mode) for the prompts "flat ground, one pipe, then several coins and a staircase" (seed 101), "a few question blocks and several enemies" (seed 105) and "lots of coins and a couple of goombas" (seed 107). Selected by index from the showcase set, not by looks; the 12-level showcase manifest lists every prompt and seed.*
+
 ### 5.4 The playability checker: how far can "verified" be trusted?
 
 On the **real** train+dev levels the checker solves {{cal_levels}} of the full-width levels and {{cal_windows}} of framed 16-wide windows (design target 0.90, **not reached**). Physics

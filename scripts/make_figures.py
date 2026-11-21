@@ -158,6 +158,11 @@ def copy_sheets():
         if p.exists():
             shutil.copy(p, FIG / dst)
         note(dst, p.exists())
+    for i, dst in ((1, "fig13_showcase_stairs.png"), (5, "fig14_showcase_platforms.png"), (7, "fig15_showcase_coins.png")):
+        sp = ROOT / "app/showcase" / f"showcase_{i:02d}.png"
+        if sp.exists():
+            shutil.copy(sp, FIG / dst)
+        note(dst, sp.exists())
     for p in sorted((ROOT / "reports/gates/P5").glob("render_*.png"))[:4]:
         shutil.copy(p, FIG / f"fig12_{p.stem}.png")
         note(p.stem, True)

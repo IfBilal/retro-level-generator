@@ -40,7 +40,7 @@ def main():
         pg.click("text=Generate & Play")
         t1 = time.time()
         try:
-            pg.wait_for_selector("text=/Route found|Not verified/", timeout=int(a.timeout * 1000))
+            pg.wait_for_selector("text=/Route found|No route found/", timeout=int(a.timeout * 1000))
             res["generate_seconds"] = round(time.time() - t1, 1)
             res["badge"] = True
         except Exception:

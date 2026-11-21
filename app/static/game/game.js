@@ -77,7 +77,7 @@
     cursors = this.input.keyboard.createCursorKeys();
     keys = this.input.keyboard.addKeys({ a: "A", d: "D", w: "W", space: "SPACE", shift: "SHIFT", r: "R", p: "P" });
     var v = L.verification || {};
-    var badge = v.status === "verified" ? "Route found by checker (not a guarantee)" : (v.status === "different_physics" ? "Checked under different physics" : "Not verified");
+    var badge = v.status === "verified" ? "Route found by checker (not a guarantee)" : (v.status === "different_physics" ? "Checked under different physics" : "No route found");
     hud = this.add.text(4, 4, "", { fontSize: "9px", color: "#ffffff", backgroundColor: "#00000088" }).setScrollFactor(0).setDepth(20);
     hud.setScale(1 / 1);
     msg = this.add.text(COLS ? 100 : 0, 60, "", { fontSize: "14px", color: "#fff", backgroundColor: "#000000aa" }).setScrollFactor(0).setDepth(21);

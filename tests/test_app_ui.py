@@ -27,7 +27,7 @@ def test_valid_prompt_produces_a_level_and_a_badge():
     go(at)
     assert not at.exception, at.exception
     texts = " ".join(s.value for s in at.success) + " ".join(c.value for c in at.caption)
-    assert "Route found" in texts or any("Not verified" in w.value for w in at.warning)
+    assert "Route found" in texts or any("No route found" in w.value for w in at.warning)
     assert any("columns" in c.value and "seed" in c.value for c in at.caption)   # the timing / settings line
 
 

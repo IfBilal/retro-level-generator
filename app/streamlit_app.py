@@ -1,4 +1,4 @@
-"""text2mario - "Type it, play it": a sentence in, a verified playable level out (doc 28).
+"""text2mario - "Type it, play it": a sentence in, a checked, playable level out (doc 28).
 
 Run:  streamlit run app/streamlit_app.py        (set T2M_CKPT=path/to/step_XXXX.pt, or write app/model/ckpt.json)
 Explain-me:
@@ -50,7 +50,7 @@ def badge(level: dict) -> None:
     if v["status"] == "verified":
         st.success("Route found: the playability checker found a path from start to flag (not a guarantee).")
     else:
-        st.warning(f"Not verified ({v.get('reason') or 'checker found no path'}). You can still play it.")
+        st.warning(f"No route found by the checker ({v.get('reason') or 'search exhausted'}). You can still play it.")
     st.caption("'Route found' means our checker found a path under the game's physics (enemies assumed stompable). It matches the game engine on "
                "micro-levels, but an automatic test player finishes only part of generated levels end to end (see the report), so treat it as "
                "'probably beatable', not proven. See the About tab.")

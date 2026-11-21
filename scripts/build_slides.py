@@ -49,8 +49,8 @@ SLIDES = [
       <tr><td>broken rate</td><td>{{t_broken_rate}}</td><td>{{r_broken_rate}}</td></tr><tr><td>floor validity</td><td>{{t_floor_valid}}</td><td>{{r_floor_valid}}</td></tr>
       <tr><td>copy rate</td><td>{{t_copy_rate}}</td><td>{{r_copy_rate}}</td></tr></table>
       <p class=small>Prompt-ignoring reference (null): {{t_ref_null_other_level}}. Intervals resample the {{t_n_levels}} test levels (wide). Dev: a retrieval baseline (look up the best training window) scores C = 0.949 vs the model's 0.794 &mdash; the model's value is novelty (copy rate 0.08 vs 1.0), not adherence.</p>"""),
-    ("9. Qualitative results", """<div style="display:flex;gap:12px"><img src="{FIG}fig08_cond_samples.png" style="width:48%"><img src="{FIG}fig12_render_best_000.png" style="width:48%"></div>
-      <p class=small>Left: dev samples at w*; right: a generated full level. Contrast test (pipes vs enemies/gaps/stairs) and failure gallery are in the report.</p>"""),
+    ("9. Qualitative results", """<div style="display:flex;gap:12px"><img src="{FIG}fig08_cond_samples.png" style="width:48%"><img src="{FIG}fig13_showcase_stairs.png" style="width:48%"></div>
+      <p class=small>Left: dev samples at w* (16x16 windows); right: a generated 57-column level from the showcase (prompt: &ldquo;flat ground, one pipe, then several coins and a staircase&rdquo;). Contrast test (pipes vs enemies/gaps/stairs) and failure gallery are in the report.</p>"""),
     ("10. What did not work (and what we did about it)", """<ul><li><b>G-P3 failed</b>: broken structures fall with training while copying rises; aux-CE trades one for the other. We chose cosine, documented a waiver, and judged the conditional model on its own metrics.</li>
       <li><b>G-P5b failed</b>: the reference solver is not a usable oracle here; fallback S<sub>noplay</sub>.</li>
       <li>Four bugs found by tests/e2e runs and fixed with regression tests.</li></ul><img src="{FIG}fig03_p3_tradeoff.png" style="height:210px">"""),
