@@ -22,6 +22,7 @@ from text2mario.data import lexicon as lex
 
 ROOT = Path(__file__).resolve().parents[3]
 BUCKET_REP = {"one": 1, "two": 2, "a few": 3, "several": 5, "many": 10}
+NEUTRAL_CAPTION = "full floor."          # carries a bare prohibition ("no pipes"); also the caption of a window with nothing to describe
 NUMBERS = {w: i for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen "
                                       "sixteen seventeen eighteen nineteen twenty".split())}
 NUMBERS.update({"thirty": 30, "forty": 40, "fifty": 50, "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90, "hundred": 100})
@@ -54,6 +55,13 @@ class Scene:
     topics: dict = field(default_factory=dict)       # raw (pre-clamp): topic -> bucket word / template
     forbid: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
+    # LEVEL-level quantity the user asked for, topic -> [lo, hi] (numerals are exact, vague words keep their bucket range).
+    # The caption above can only say a bucket ("a few" = 3-4) and describes ONE 16-column window, so counts live here (audit P2).
+    want: dict = field(default_factory=dict)
+
+
+# Bucket word -> the counts it stands for (ledger F15 / caption grammar quantity_word)
+BUCKET_RANGE = {"one": (1, 1), "two": (2, 2), "a few": (3, 4), "several": (5, 9), "many": (10, 99)}
 
 
 @dataclass
@@ -233,6 +241,7 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
     neg_scope = False
     last_end = -1
     counts: dict[str, int] = {}
+    vague: dict[str, bool] = {}                 # topic -> was the quantity a vague word ("several") rather than a numeral?
     floor_gap_q = floor_chunk_q = ceil_gap_q = None
     saw_ceiling_noun = False
     for idx, (a, b, topic, pl, kind) in enumerate(spans):
@@ -309,16 +318,22 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
                 bkt = _CLAMP["bare_plural_default"].get(topic, "two") if _CLAMP else "two"
                 sc.warnings.append("BARE_PLURAL_DEFAULT")
                 val = BUCKET_REP[bkt]
+                is_vague = True
             else:
                 val = 1
+                is_vague = False
         else:
             val = q
+            # vague words ("several", "a few", "some", "lots of") keep their bucket range; numerals and "single/couple/pair" are exact
+            is_vague = any(" ".join(toks[first:first + n]) in VAGUE for n in (4, 3, 2, 1)) and val > 2
         more = any(t in ("more", "another", "extra", "additional") for t in toks[max(0, a - 3):a])
         if topic in counts:
             sc.warnings.append("DUPLICATE_TOPIC")
             counts[topic] = counts[topic] + val if more else val
+            vague[topic] = vague.get(topic, False) and is_vague if more else is_vague
         else:
             counts[topic] = val
+            vague[topic] = is_vague
     # '? block' / 'coins in a row' idioms
     text = " ".join(toks)
     if re.search(r"(?:^|\s)\? block", text) and "question block" not in counts and "question block" not in sc.forbid:
@@ -337,11 +352,16 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
     # implied: coin line => coins (A10)
     if "coin line" in counts and "coin" not in counts and "coin" not in sc.forbid:
         counts["coin"] = {1: 3, 2: 5}.get(counts["coin line"], 5)
+        vague["coin"] = True
         sc.warnings.append("IMPLIED_COINS")
     elif "coin line" in counts and counts.get("coin", 0) == 1:
         counts["coin"] = 2
+        vague["coin"] = False
     for t, v in counts.items():
         sc.topics[t] = bucket(v)
+        sc.want[t] = list(BUCKET_RANGE[bucket(v)]) if vague.get(t) else [v, v]
+        if t in sc.forbid:                                  # "one pipe and no pipes": the prompt contradicts itself
+            sc.warnings.append(f"CONTRADICTION:{t}")
     # ignored vocabulary
     for k, t in enumerate(toks):
         if t in POSITIONAL and not consumed[k]:
@@ -430,6 +450,9 @@ def _canonical_scene(seg: str) -> Scene | None:
             sc.topics[c] = "full" if code == 1 else f"gaps:{BUCKETS[code - 2]}"
         else:
             sc.topics[c] = BUCKETS[code - 1]
+    for c, code in ((c, code) for (c, code), _ in parsed):                 # level-level want = the bucket's own range
+        if c not in ("floor", "ceiling"):
+            sc.want[c] = list(BUCKET_RANGE[BUCKETS[code - 1]])
     sc.warnings.append("CANONICAL_PASSTHROUGH")
     return sc
 
@@ -454,10 +477,17 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
                 style["difficulty_hint"] = STYLE[w]
                 warns.append("STYLE_HINT")
         sc = _scene(s, g_topics)
-        if sc is None or not sc.topics:
+        if sc is not None:
+            warns += [w for w in sc.warnings if w.startswith("CONTRADICTION")]      # surfaced even if the scene ends up empty
+        if sc is None or not (sc.topics or sc.forbid):
             warns.append("EMPTY_SCENE")
             continue
         sc.caption = _caption(sc)
+        if not sc.caption and sc.forbid and not any(w.startswith("CONTRADICTION") for w in sc.warnings):
+            # "no pipes" alone: there is nothing to describe, but the prohibition must survive (it used to vanish -> an unconditioned
+            # level with pipes).  A neutral full floor carries it; the level is verified against the prohibition (generate/adherence.py).
+            sc.caption = NEUTRAL_CAPTION
+            sc.warnings.append("NEGATION_ONLY")
         if sc.caption:
             scenes.append(sc)
         else:
