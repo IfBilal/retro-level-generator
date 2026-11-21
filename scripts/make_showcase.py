@@ -31,7 +31,6 @@ def main():
     a = ap.parse_args()
     from text2mario.app.service import LevelService
     from text2mario.render.game_html import build_game_html
-    from text2mario.render.schema import to_png_bytes
     fz = json.loads((ROOT / "FROZEN.json").read_text()) if (ROOT / "FROZEN.json").exists() else {}
     w = a.w if a.w is not None else fz.get("w", 5.0)
     svc = LevelService()
@@ -52,8 +51,9 @@ def main():
         (out / f"showcase_{i:02d}.png").write_bytes(res.files["png"])
         bot = None
         if pw and lvl["verification"]["status"] == "verified":
-            from text2mario.playability.checker import Framing, check_level
             import numpy as np
+
+            from text2mario.playability.checker import Framing, check_level
             fr = lvl["framing"]
             r = check_level(np.asarray(lvl["raw_grid"], np.uint8), mode="level", framing=Framing((fr["spawn"]["col"], fr["spawn"]["row"]), fr["flag"]["col"]), enemies="ignore")
             f = Path(tempfile.gettempdir()) / "t2m_show.html"

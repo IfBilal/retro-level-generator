@@ -18,7 +18,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.data import tiles as T  # noqa: E402
+from text2mario.data import tiles as T
 
 TP = 18
 SHEET = ROOT / "assets/kenney/tilemap_packed.png"       # 20 x 9 frames of 18 px

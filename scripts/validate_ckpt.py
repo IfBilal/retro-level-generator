@@ -15,14 +15,14 @@ import torch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-from text2mario.data.dataset import DataConfig, MarioWindows  # noqa: E402
-from text2mario.diffusion.scheduler import DiffusionSchedule  # noqa: E402
-from text2mario.models.factory import build_unet  # noqa: E402
-from text2mario.train import checkpoint as ckpt  # noqa: E402
-from text2mario.train.validate import Validator  # noqa: E402
+from text2mario.data.dataset import DataConfig, MarioWindows
+from text2mario.diffusion.scheduler import DiffusionSchedule
+from text2mario.models.factory import build_unet
+from text2mario.train import checkpoint as ckpt
+from text2mario.train.validate import Validator
 
 # Context-free floors per 100-step bucket (doc 13 §5): best eps-MSE of a denoiser that sees each pixel alone.
 FLOOR = {"linear": [0.0000, 0.0091, 0.0299, 0.0218, 0.0101, 0.0037, 0.0011, 0.0003, 0.0001, 0.0000],

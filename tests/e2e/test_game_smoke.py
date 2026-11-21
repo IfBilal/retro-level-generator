@@ -7,13 +7,13 @@ import numpy as np
 import pytest
 
 pytest.importorskip("playwright")
-from conftest import ROOT  # noqa: E402
+from conftest import ROOT
 
-from text2mario.data import tiles as T  # noqa: E402
-from text2mario.generate.framing import frame  # noqa: E402
-from text2mario.playability.checker import Framing, check_level  # noqa: E402
-from text2mario.render.game_html import build_game_html  # noqa: E402
-from text2mario.render.schema import make_level, validate_level  # noqa: E402
+from text2mario.data import tiles as T
+from text2mario.generate.framing import frame
+from text2mario.playability.checker import Framing, check_level
+from text2mario.render.game_html import build_game_html
+from text2mario.render.schema import make_level, validate_level
 
 pytestmark = [pytest.mark.slow, pytest.mark.skipif(not (ROOT / "app/static/vendor/phaser.min.js").exists(), reason="fetch assets first")]
 

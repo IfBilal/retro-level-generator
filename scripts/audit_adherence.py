@@ -22,11 +22,11 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.app.service import LevelService  # noqa: E402
-from text2mario.captions.detector import caption as detect_caption  # noqa: E402
-from text2mario.eval import count_audit as CA  # noqa: E402
-from text2mario.generate.full_level import STRIDE  # noqa: E402
-from text2mario.text.normalizer import normalize  # noqa: E402
+from text2mario.app.service import LevelService
+from text2mario.captions.detector import caption as detect_caption
+from text2mario.eval import count_audit as CA
+from text2mario.generate.full_level import STRIDE
+from text2mario.text.normalizer import normalize
 
 CFG = yaml.safe_load((ROOT / "configs/audit/adherence.yaml").read_text(encoding="utf-8"))
 TOPICS = CFG["topics"]

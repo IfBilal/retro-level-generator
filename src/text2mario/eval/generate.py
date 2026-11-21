@@ -92,6 +92,7 @@ def load_exported(bundle_dir: str | Path, device: str = "cpu"):
          <dir>/config.json, <dir>/t2m_ema.safetensors (unet.* + adapter.* + probe), <dir>/minilm/ (fp16 encoder + tokenizer).
     Returns the same tuple as load_ema_conditional: (unet, schedule, cond, cfg, state)."""
     from safetensors.torch import load_file
+
     from text2mario.text.conditioner import TextConditioner
     d = Path(bundle_dir)
     cfg = json.loads((d / "config.json").read_text())

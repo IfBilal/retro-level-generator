@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from text2mario.data.tiles import CHAR_TO_ID
-from text2mario.playability.checker import Framing, check_level, frame_window
+from text2mario.playability.checker import check_level, frame_window
 from text2mario.playability.physics import PHYSICS_PATH, Physics
 from text2mario.render.renderer import grid_to_vglc_text, parse_vglc
 

@@ -23,10 +23,10 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from text2mario.data import splits  # noqa: E402
-from text2mario.data.index import level_grid  # noqa: E402
-from text2mario.playability.checker import Framing, check_level, frame_window  # noqa: E402
-from text2mario.playability.physics import Physics  # noqa: E402
+from text2mario.data import splits
+from text2mario.data.index import level_grid
+from text2mario.playability.checker import Framing, check_level, frame_window
+from text2mario.playability.physics import Physics
 
 
 def real_levels(which=("train", "dev")):

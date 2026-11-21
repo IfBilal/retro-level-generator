@@ -17,21 +17,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-import numpy as np  # noqa: E402
-import torch  # noqa: E402
-from calibrate_checker import real_levels  # noqa: E402
+import numpy as np
+import torch
+from calibrate_checker import real_levels
 
-from text2mario.eval.devloop import load_prompts  # noqa: E402
-from text2mario.eval.generate import load_ema_conditional  # noqa: E402
-from text2mario.eval.seams import ColumnBigram  # noqa: E402
-from text2mario.eval.stats import cluster_bootstrap  # noqa: E402
-from text2mario.generate.full_level import generate  # noqa: E402
-from text2mario.generate.sanitizer import detect  # noqa: E402
-from text2mario.render.renderer import grid_to_sprite_image  # noqa: E402
-from text2mario.utils.gates import write_result  # noqa: E402
+from text2mario.eval.devloop import load_prompts
+from text2mario.eval.generate import load_ema_conditional
+from text2mario.eval.seams import ColumnBigram
+from text2mario.eval.stats import cluster_bootstrap
+from text2mario.generate.full_level import generate
+from text2mario.generate.sanitizer import detect
+from text2mario.render.renderer import grid_to_sprite_image
+from text2mario.utils.gates import write_result
 
 
 def main():

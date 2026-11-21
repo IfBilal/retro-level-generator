@@ -165,7 +165,7 @@ def evaluate(content: np.ndarray, norm, scene_of: list[int], width: int) -> dict
 def window_to_resample(row: dict, scene_of: list[int], n_windows: int) -> int:
     """Which window to resample for one unmet constraint: the window that owns the first surplus object, or for a shortfall the first
     window of the scene's owned columns that holds none of the topic (else the scene's last window)."""
-    owner = lambda col: 0 if col < WINDOW else min(n_windows - 1, (col - (WINDOW - STRIDE)) // STRIDE)  # noqa: E731
+    owner = lambda col: 0 if col < WINDOW else min(n_windows - 1, (col - (WINDOW - STRIDE)) // STRIDE)
     if row["got"] > row["hi"]:
         return owner(row["anchors"][row["hi"]])
     ks = [k for k, s in enumerate(scene_of) if s == row["scene"]]

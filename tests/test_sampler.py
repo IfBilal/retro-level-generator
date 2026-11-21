@@ -65,6 +65,7 @@ def test_unconditional_model_samples_without_context():
 def test_renoise_and_ddim_noise_with_cpu_generator_on_any_device():
     """Regression: a CPU generator must work for resampling noise when the tensors live on CUDA (found in the app run)."""
     import torch
+
     from text2mario.diffusion.scheduler import DiffusionSchedule
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     sch = DiffusionSchedule("linear", 1000, dev)

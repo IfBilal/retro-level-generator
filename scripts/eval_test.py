@@ -20,14 +20,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-import numpy as np  # noqa: E402
-import torch  # noqa: E402
+import numpy as np
+import torch
 
-from text2mario.data import splits  # noqa: E402
-from text2mario.utils.gates import git_sha  # noqa: E402
+from text2mario.data import splits
+from text2mario.utils.gates import git_sha
 
 FINAL = ROOT / "reports/final"
 LOG = FINAL / "test_invocations.jsonl"
@@ -101,9 +101,9 @@ def references(rows) -> dict:
 def casual_test(bundle, w, device) -> dict:
     import eval_normalizer as EN
 
+    from text2mario.captions.detector import caption
     from text2mario.eval import adherence as A
     from text2mario.eval.generate import sample_conditional
-    from text2mario.captions.detector import caption
     from text2mario.text.normalizer import normalize
     rows = EN.parse_test()
     n_scene = em = 0
@@ -176,6 +176,7 @@ def main():
         f"{k},{v['support']},{v['precision']:.3f},{v['recall']:.3f},{v['f1']:.3f},{v['exact_match']:.3f},{v['absence_respect']:.3f},{v['bucket_mae']:.3f},{v['bucket_bias']:.3f}"
         for k, v in rep.items()))
     from PIL import Image, ImageDraw
+
     from text2mario.render.renderer import grid_to_sprite_image
     t = tables["P-test"]
     ims = [(grid_to_sprite_image(t["grids"][i], 8), t["prompts"][i][:60], t["per_sample"][i]["c_score"]) for i in t["worst"][:20]]

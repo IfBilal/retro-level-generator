@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.text.normalizer import normalize  # noqa: E402
+from text2mario.text.normalizer import normalize
 
 DOC = ROOT / "docs/docs/12_CAPTION_GRAMMAR_AND_PROMPT_NORMALIZER.md"
 OUT = ROOT / "data/prompts/p_casual_dev.json"

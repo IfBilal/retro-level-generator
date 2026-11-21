@@ -16,10 +16,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-import torch  # noqa: E402
-from safetensors.torch import load_file, save_file  # noqa: E402
+from safetensors.torch import load_file, save_file
 
-from text2mario.train import checkpoint as ckpt  # noqa: E402
+from text2mario.train import checkpoint as ckpt
 
 
 def sha(p: Path) -> str:

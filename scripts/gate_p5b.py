@@ -17,18 +17,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-import numpy as np  # noqa: E402
+import numpy as np
+from calibrate_checker import real_levels
+from jar_agreement import CACHE, kappa, key
 
-from calibrate_checker import real_framing, real_levels  # noqa: E402
-from jar_agreement import CACHE, key, kappa  # noqa: E402
-
-from text2mario.playability.checker import check_level, frame_window  # noqa: E402
-from text2mario.playability.jar_bridge import java_available, jar_solve_many  # noqa: E402
-from text2mario.playability.physics import Physics  # noqa: E402
-from text2mario.utils.gates import write_result  # noqa: E402
+from text2mario.playability.checker import check_level, frame_window
+from text2mario.playability.jar_bridge import jar_solve_many, java_available
+from text2mario.playability.physics import Physics
+from text2mario.utils.gates import write_result
 
 OUT = ROOT / "reports/gates/P5b"
 
@@ -49,6 +48,7 @@ def build_set(samples_ckpt: str | None, seed: int = 20261117):
     items = pick(real_w, 100) + pick(real_seg, 100)
     if samples_ckpt:
         import torch
+
         from text2mario.eval.generate import load_ema_model, sample_unconditional
         dev = "cuda" if torch.cuda.is_available() else "cpu"
         unet, sched, cfg, st = load_ema_model(samples_ckpt, dev)

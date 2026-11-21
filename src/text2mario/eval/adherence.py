@@ -11,8 +11,6 @@ Credit: the metric idea is from Lee & Simo-Serra (MarioDiffusion, MIT); see DATA
 """
 from __future__ import annotations
 
-import re
-
 # T: the 18 topics in the spec's order (substring match; 'enem' covers enemy/enemies, 'rectangular'/'irregular' are
 # the first words of the block-cluster phrases).  The order matters: specific topics come before general ones.
 TOPICS = ("floor", "ceiling", "broken pipe", "upside down pipe", "pipe", "coin line", "coin", "platform", "tower",

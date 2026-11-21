@@ -22,17 +22,17 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-from PIL import Image  # noqa: E402
+from PIL import Image
 
-from text2mario.data.dataset import MarioWindows  # noqa: E402
-from text2mario.data.hamming import nn_distance  # noqa: E402
-from text2mario.eval import structure as S  # noqa: E402
-from text2mario.eval.generate import load_ema_model, sample_unconditional  # noqa: E402
-from text2mario.render.renderer import grid_to_image, sheet  # noqa: E402
-from text2mario.utils.gates import require, write_result  # noqa: E402
+from text2mario.data.dataset import MarioWindows
+from text2mario.data.hamming import nn_distance
+from text2mario.eval import structure as S
+from text2mario.eval.generate import load_ema_model, sample_unconditional
+from text2mario.render.renderer import grid_to_image, sheet
+from text2mario.utils.gates import require, write_result
 
 
 def s_noplay(floor_valid: float, broken: float, novelty_med: float, novelty_ref: float) -> float:

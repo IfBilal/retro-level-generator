@@ -13,20 +13,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-import numpy as np  # noqa: E402
-import torch  # noqa: E402
+import torch
 
-from text2mario.app.service import default_ckpt  # noqa: E402
-from text2mario.captions.detector import caption as read_caption  # noqa: E402
-from text2mario.data.tiles import CHARS  # noqa: E402
-from text2mario.diffusion.sampler import ddim_sample  # noqa: E402
-from text2mario.eval import adherence as A  # noqa: E402
-from text2mario.eval.generate import load_exported, load_ema_conditional  # noqa: E402
-from text2mario.generate.framing import frame  # noqa: E402
-from text2mario.playability.checker import Framing, check_level  # noqa: E402
-from text2mario.render.renderer import grid_to_sprite_image, tensor_to_grid  # noqa: E402
-from text2mario.text.normalizer import normalize  # noqa: E402
-from text2mario.utils import appcfg  # noqa: E402
+from text2mario.app.service import default_ckpt
+from text2mario.captions.detector import caption as read_caption
+from text2mario.data.tiles import CHARS
+from text2mario.diffusion.sampler import ddim_sample
+from text2mario.eval import adherence as A
+from text2mario.eval.generate import load_ema_conditional, load_exported
+from text2mario.generate.framing import frame
+from text2mario.playability.checker import Framing, check_level
+from text2mario.render.renderer import grid_to_sprite_image, tensor_to_grid
+from text2mario.text.normalizer import normalize
+from text2mario.utils import appcfg
 
 
 def main():

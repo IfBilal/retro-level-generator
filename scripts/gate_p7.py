@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.utils.gates import write_result  # noqa: E402
+from text2mario.utils.gates import write_result
 
 
 def main():

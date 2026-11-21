@@ -25,7 +25,7 @@ def put_pipe(g, col, top):
 
 def put_hanging_pipe(g, col, length):
     """Upside-down pipe hanging from row 0: body rows 0..length-2, lip on row length-1."""
-    for r in range(0, length - 1):
+    for r in range(length - 1):
         g[r, col], g[r, col + 1] = T.PIPE_BL, T.PIPE_BR
     g[length - 1, col], g[length - 1, col + 1] = T.PIPE_TL, T.PIPE_TR
 

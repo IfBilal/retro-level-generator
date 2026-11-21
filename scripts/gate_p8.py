@@ -14,9 +14,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from playwright.sync_api import sync_playwright  # noqa: E402
+from playwright.sync_api import sync_playwright
 
-from text2mario.utils.gates import git_sha, write_result  # noqa: E402
+from text2mario.utils.gates import git_sha, write_result
 
 
 def main():

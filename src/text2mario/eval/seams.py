@@ -15,7 +15,7 @@ from collections import Counter
 
 import numpy as np
 
-from text2mario.utils import appcfg  # noqa: E402
+from text2mario.utils import appcfg
 
 _C = appcfg.load()
 SEAM_START, SEAM_STEP = int(_C["window"]), int(_C["stride"])     # a new window's right part joins at column window, window+stride, ...

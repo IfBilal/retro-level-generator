@@ -18,10 +18,10 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.app.service import LevelService  # noqa: E402
-from text2mario.data import tiles as T  # noqa: E402
-from text2mario.generate import adherence as A  # noqa: E402
-from text2mario.generate.full_level import sample_window  # noqa: E402
+from text2mario.app.service import LevelService
+from text2mario.data import tiles as T
+from text2mario.generate import adherence as A
+from text2mario.generate.full_level import sample_window
 
 EXACT = [("one pipe.", "pipe", 1), ("full floor. one pipe.", "pipe", 1), ("two pipes.", "pipe", 2), ("full floor. two pipes.", "pipe", 2),
          ("one enemy.", "enemy", 1), ("full floor. one enemy.", "enemy", 1), ("two enemies.", "enemy", 2), ("full floor. a few enemies.", "enemy", 3),

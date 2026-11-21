@@ -15,15 +15,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-import numpy as np  # noqa: E402
-import torch  # noqa: E402
+import torch
 
-from text2mario.eval.devloop import evaluate  # noqa: E402
-from text2mario.eval.generate import load_ema_conditional  # noqa: E402
-from text2mario.render.renderer import sheet  # noqa: E402
+from text2mario.eval.devloop import evaluate
+from text2mario.eval.generate import load_ema_conditional
+from text2mario.render.renderer import sheet
 
 KEYS = ("c_score", "exact_match", "broken_rate", "floor_valid", "novelty_med", "copy_rate", "tile_js", "rare_exact_match")
 

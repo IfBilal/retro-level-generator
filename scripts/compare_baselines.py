@@ -12,12 +12,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-from text2mario.data.dataset import MarioWindows  # noqa: E402
-from text2mario.eval.baselines import evaluate_baselines  # noqa: E402
-from text2mario.eval.devloop import load_prompts  # noqa: E402
+from text2mario.data.dataset import MarioWindows
+from text2mario.eval.baselines import evaluate_baselines
+from text2mario.eval.devloop import load_prompts
 
 
 def main():

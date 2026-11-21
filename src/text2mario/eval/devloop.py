@@ -20,7 +20,7 @@ from text2mario.captions.detector import caption
 from text2mario.data.dataset import MarioWindows
 from text2mario.eval import adherence as A
 from text2mario.eval import structure as S
-from text2mario.eval.generate import load_ema_conditional, sample_conditional
+from text2mario.eval.generate import sample_conditional
 
 ROOT = Path(__file__).resolve().parents[3]
 ALLOWED = {"p_dev": "data/prompts/p_dev.json", "p_rand": "data/prompts/p_rand.json"}

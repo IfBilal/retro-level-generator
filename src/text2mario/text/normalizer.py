@@ -17,14 +17,21 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from text2mario.captions.grammar import BUCKETS, CONCEPTS, COUNTED_NOUNS, counted_phrase, join_phrases, parse_phrase, plural
+from text2mario.captions.grammar import (
+    BUCKETS,
+    CONCEPTS,
+    COUNTED_NOUNS,
+    counted_phrase,
+    join_phrases,
+    parse_phrase,
+    plural,
+)
 from text2mario.data import lexicon as lex
 
 ROOT = Path(__file__).resolve().parents[3]
 BUCKET_REP = {"one": 1, "two": 2, "a few": 3, "several": 5, "many": 10}
 NEUTRAL_CAPTION = "full floor."          # carries a bare prohibition ("no pipes"); also the caption of a window with nothing to describe
-NUMBERS = {w: i for i, w in enumerate("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen "
-                                      "sixteen seventeen eighteen nineteen twenty".split())}
+NUMBERS = {w: i for i, w in enumerate(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"])}
 NUMBERS.update({"thirty": 30, "forty": 40, "fifty": 50, "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90, "hundred": 100})
 # multi-word and vague quantity expressions -> (value); matched longest first on the token string
 VAGUE = {"a couple of": 2, "couple of": 2, "a pair of": 2, "pair of": 2, "a single": 1, "a lone": 1, "single": 1, "lone": 1, "solo": 1,
@@ -35,7 +42,7 @@ VAGUE = {"a couple of": 2, "couple of": 2, "a pair of": 2, "pair of": 2, "a sing
 NEG = ("no", "without", "zero", "none", "never", "not any", "don't add any", "dont add any", "don't add", "dont add", "no more")
 ADJ = {"green", "red", "golden", "gold", "shiny", "big", "small", "tall", "short", "long", "tiny", "huge", "floating", "fun", "cool",
        "awesome", "scary", "classic", "nice", "cute", "epic", "of", "the", "a", "an", "more", "another", "extra", "additional", "little",
-       "few", "some", "more", "bad", "nasty", "evil", "angry", "walking", "just", "plain", "simple"}
+       "few", "some", "bad", "nasty", "evil", "angry", "walking", "just", "plain", "simple"}
 POSITIONAL = {"left", "right", "middle", "center", "centre", "top", "bottom", "above", "below", "under", "near", "next", "far", "corner",
               "high", "low", "over", "beginning", "ends"}
 THEMES = {"castle", "lava", "water", "underwater", "snow", "snowy", "ice", "desert", "night", "forest", "space", "ghost"}

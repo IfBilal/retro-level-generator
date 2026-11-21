@@ -17,9 +17,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.playability.physics import Physics  # noqa: E402
-from text2mario.train import checkpoint as ckpt  # noqa: E402
-from text2mario.utils.gates import git_sha  # noqa: E402
+from text2mario.playability.physics import Physics
+from text2mario.train import checkpoint as ckpt
+from text2mario.utils.gates import git_sha
 
 
 def sha_file(p: Path) -> str:

@@ -154,7 +154,6 @@ def _pipe_stub(monkeypatch, per_caption=True):
 
 def _pipes(lvl):
     from text2mario.eval.count_audit import objects_by_topic
-    from text2mario.utils import appcfg
     raw = np.array(lvl["raw_grid"], dtype=np.uint8)[:, 3:3 + lvl["generation"]["width"]]
     topics = {"pipe": {"det": ["pipe", "upside down pipe", "broken pipe"]}}
     return len(objects_by_topic(raw, topics)["pipe"])

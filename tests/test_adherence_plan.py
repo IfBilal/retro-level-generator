@@ -11,7 +11,7 @@ from text2mario.text.normalizer import normalize
 
 
 def test_numerals_are_exact_and_vague_words_keep_their_range():
-    w = lambda t: normalize(t).scenes[0].want  # noqa: E731
+    w = lambda t: normalize(t).scenes[0].want
     assert w("one pipe") == {"pipe": [1, 1]}
     assert w("three platforms") == {"platform": [3, 3]}            # the caption can only say "a few" (3-4); the request stays exactly 3
     assert w("several coins") == {"coin": [5, 9]}

@@ -16,7 +16,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-from playwright.sync_api import sync_playwright  # noqa: E402
+from playwright.sync_api import sync_playwright
 
 BAD = ("StreamlitWidgetAlreadyInstantiatedError", "Traceback", "StreamlitAPIException", "Generation failed")
 BENIGN_CONSOLE = ("Permissions policy violation", "Unrecognized feature", "sandbox", "Failed to load resource")        # Streamlit platform noise, listed in the report

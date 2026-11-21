@@ -19,7 +19,6 @@ import numpy as np
 import torch
 
 from text2mario.captions.detector import caption as detect_caption
-from text2mario.data import tiles as T
 from text2mario.diffusion.sampler import ddim_sample
 from text2mario.generate import adherence
 from text2mario.generate.framing import frame

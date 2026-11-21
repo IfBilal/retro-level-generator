@@ -71,7 +71,7 @@ def test_wilson_zero_n():
 
 # ----------------------------------------------------------------------------------------------- normalizer
 NOUNS = {"pipe": "pipes", "enemy": "enemies", "coin": "coins", "cannon": "cannons", "platform": "platforms", "tower": "towers"}
-WORDS = "zero one two three four five six seven eight nine".split()
+WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
 
 @given(st.integers(1, 9), st.sampled_from(sorted(NOUNS)), st.booleans())

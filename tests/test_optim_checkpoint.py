@@ -118,6 +118,7 @@ def test_override_parses_scientific_notation_as_number():
 def test_ema_load_state_dict_keeps_the_live_device():
     """Regression: resuming on CUDA crashed because the EMA shadow loaded from a CPU checkpoint stayed on the CPU."""
     import torch
+
     from text2mario.models.ema import EMA
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     m = {"unet": torch.nn.Linear(4, 4).to(dev)}

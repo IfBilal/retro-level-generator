@@ -39,7 +39,7 @@ class Physics:
     gap_higher: dict
 
     @staticmethod
-    def load(path: str | Path = PHYSICS_PATH) -> "Physics":
+    def load(path: str | Path = PHYSICS_PATH) -> Physics:
         p = json.loads(Path(path).read_text(encoding="utf-8"))
         d = p["derived"]
         sha = hashlib.sha256(json.dumps(p, sort_keys=True, separators=(",", ":")).encode()).hexdigest()

@@ -17,11 +17,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
-import streamlit as st  # noqa: E402
+import streamlit as st
 
 st.set_page_config(page_title="text2mario", page_icon=":video_game:", layout="wide")
 
-from text2mario.utils import appcfg  # noqa: E402
+from text2mario.utils import appcfg
 
 CFG = appcfg.load()                    # configs/generate/app.yaml
 EXAMPLES = CFG["examples"]
@@ -33,7 +33,7 @@ def get_service():
     return LevelService()
 
 
-from text2mario.app.service import explain_warning, validate_prompt  # noqa: E402
+from text2mario.app.service import explain_warning, validate_prompt
 
 
 def embed_game(html: str, height: int = 620) -> None:

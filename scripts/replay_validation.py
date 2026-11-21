@@ -19,12 +19,12 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
-from calibrate_checker import real_levels  # noqa: E402
-from playwright.sync_api import sync_playwright  # noqa: E402
+from calibrate_checker import real_levels
+from playwright.sync_api import sync_playwright
 
-from text2mario.playability.checker import Framing, check_level, frame_window  # noqa: E402
-from text2mario.render.game_html import build_game_html  # noqa: E402
-from text2mario.render.schema import make_level, validate_level  # noqa: E402
+from text2mario.playability.checker import check_level, frame_window
+from text2mario.render.game_html import build_game_html
+from text2mario.render.schema import make_level, validate_level
 
 
 def main():

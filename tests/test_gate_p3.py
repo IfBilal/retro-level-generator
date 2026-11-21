@@ -4,8 +4,8 @@ import importlib.util
 import pytest
 import torch
 import yaml
-
 from conftest import ROOT
+
 from text2mario.diffusion.scheduler import DiffusionSchedule
 from text2mario.eval.generate import sample_unconditional
 from text2mario.models.factory import build_unet

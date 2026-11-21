@@ -16,20 +16,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from text2mario.utils.env import bootstrap_env  # noqa: E402
+from text2mario.utils.env import bootstrap_env
 
 bootstrap_env()
-import numpy as np  # noqa: E402
-import torch  # noqa: E402
+import numpy as np
+import torch
 
-from text2mario.captions.detector import detect  # noqa: E402
-from text2mario.eval import adherence as A  # noqa: E402
-from text2mario.eval.devloop import evaluate, load_prompts  # noqa: E402
-from text2mario.eval.generate import load_ema_conditional, sample_conditional  # noqa: E402
-from text2mario.eval.stats import cluster_bootstrap, n_clusters, paired_cluster_bootstrap  # noqa: E402
-from text2mario.render.renderer import sheet  # noqa: E402
-from text2mario.text.normalizer import normalize  # noqa: E402
-from text2mario.utils.gates import write_result  # noqa: E402
+from text2mario.captions.detector import detect
+from text2mario.eval import adherence as A
+from text2mario.eval.devloop import evaluate, load_prompts
+from text2mario.eval.generate import load_ema_conditional, sample_conditional
+from text2mario.eval.stats import cluster_bootstrap, n_clusters, paired_cluster_bootstrap
+from text2mario.render.renderer import sheet
+from text2mario.text.normalizer import normalize
+from text2mario.utils.gates import write_result
 
 REFS = json.loads((ROOT / "reports/references/REFERENCES.json").read_text())
 

@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-from playwright.sync_api import sync_playwright  # noqa: E402
+from playwright.sync_api import sync_playwright
 
 BAD_TEXT = ("StreamlitWidgetAlreadyInstantiatedError", "Traceback", "StreamlitAPIException", "Generation failed")
 

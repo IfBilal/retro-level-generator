@@ -12,13 +12,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-import numpy as np  # noqa: E402
-import torch  # noqa: E402
+import numpy as np
+import torch
 
-from text2mario.app.service import LevelService  # noqa: E402
-from text2mario.eval.generate import sample_conditional  # noqa: E402
-from text2mario.playability.checker import Framing, check_level  # noqa: E402
-from text2mario.text.normalizer import normalize  # noqa: E402
+from text2mario.app.service import LevelService
+from text2mario.eval.generate import sample_conditional
+from text2mario.playability.checker import Framing, check_level
+from text2mario.text.normalizer import normalize
 
 
 def main():

@@ -23,11 +23,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from calibrate_checker import real_framing, real_levels  # noqa: E402
+from calibrate_checker import real_framing, real_levels
 
-from text2mario.playability.checker import check_level, frame_window  # noqa: E402
-from text2mario.playability.jar_bridge import jar_solve_many  # noqa: E402
-from text2mario.playability.physics import Physics  # noqa: E402
+from text2mario.playability.checker import check_level, frame_window
+from text2mario.playability.jar_bridge import jar_solve_many
+from text2mario.playability.physics import Physics
 
 CACHE = ROOT / "reports/gates/P5b/jar_cache.json"
 

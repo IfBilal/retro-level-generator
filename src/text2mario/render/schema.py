@@ -21,8 +21,8 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
 from text2mario.data import tiles as T
-from text2mario.utils import appcfg
 from text2mario.render.renderer import grid_to_csv, grid_to_sprite_image, grid_to_vglc_text
+from text2mario.utils import appcfg
 
 SCHEMA_VERSION = 1
 MAX_SEED = 2**53 - 1
