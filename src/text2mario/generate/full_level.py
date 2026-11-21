@@ -132,7 +132,8 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     adh_verify = use_adh and verify and bool(adherence._A["verify"])      # verify=False skips every check, including this one
     adh_max = int(adherence._A["max_attempts"])
     adh_tries = int(adherence._A["max_window_tries"])
-    adh_batch = int(adherence._A["batch_tries"])                    # candidates per window in one GPU pass (1 = off; CPU always uses sequential redraws)
+    adh_batch = int(adherence._A["batch_tries"])                    # candidates per window in one GPU pass (1 = off)
+    adh_batch_cpu = int(adherence._A["batch_tries_cpu"])            # extra candidates a CPU draws when its first draw missed (1 = off -> sequential redraws)
     adh_draw_cap = int(adherence._A["max_extra_draws"])             # hard, deterministic cap on window draws spent on counts (bounds latency)
     local_resamples = 0
     adh_draws = 0                                                   # extra window draws caused by adherence (local redraws + whole-level resamples)
@@ -162,14 +163,22 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
             checked = bool(use_adh and adh_verify and adherence.has_constraints(scene_k))
             tries = adh_tries if checked else 1
             best, best_miss = None, None
-            if checked and device == "cuda" and adh_batch > 1 and not (time_budget_s and time.time() - t0 > time_budget_s):
-                cands = sample_window_batch(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device, adh_batch)
+            n_batch = adh_batch if device == "cuda" else adh_batch_cpu
+            if checked and n_batch > 1 and not (time_budget_s and time.time() - t0 > time_budget_s):
+                if device == "cuda":                                   # a GPU draws the whole batch for the price of one window
+                    cands = list(sample_window_batch(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device, n_batch))
+                else:                                                  # a CPU pays per candidate: one draw first, a small batch only if it missed
+                    first = sample_window(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]), known, device)
+                    cands = [first]
+                    if adherence.window_miss(first, k, scene_k, plan) > 0:
+                        cands += list(sample_window_batch(bundle, win_caps[k], w, steps, resample_r, window_seed(seed, k, attempts[k]) + 1, known,
+                                                          device, n_batch))
                 misses = [adherence.window_miss(c, k, scene_k, plan) for c in cands]
                 j = int(np.argmin(misses))                             # the first candidate with the fewest misses (0 = exact)
                 best, best_miss = cands[j], misses[j]
-                if best_miss > 0:
+                if len(cands) > 1 or best_miss > 0:
                     local_resamples += 1
-                    adh_draws += 1
+                    adh_draws += 1                                     # one batch = one unit of the extra-draw budget
                 tries = 0
             for a in range(tries):                                     # local rejection sampling: only THIS window is redrawn
                 seed_idx = attempts[k] * tries + a if use_adh else attempts[k]

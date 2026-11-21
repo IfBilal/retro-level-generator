@@ -13,6 +13,8 @@ from text2mario.generate import adherence as A
 from text2mario.generate import full_level as FL
 from text2mario.text.normalizer import BUCKET_RANGE, normalize
 
+pytestmark = pytest.mark.usefixtures("batch_via_single")
+
 FAST = settings(max_examples=60, deadline=None, suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture])
 SLOWER = settings(max_examples=25, deadline=None, suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture])
 
@@ -290,7 +292,7 @@ def test_time_budget_stops_local_redraws(monkeypatch):
         return flat()                                                                   # never has the pipe the plan wants
 
     monkeypatch.setattr(FL, "sample_window", never_right)
-    lvl = FL.generate(None, "one pipe", seed=1, width=16, device="cpu", time_budget_s=1e-9)
+    lvl = FL.generate(None, "one pipe", seed=1, width=16, device="cpu", time_budget_s=-1.0)      # already expired
     assert len(draws) <= 3, "the time guard must cut the redraw loops (cloud profile)"
     assert lvl["verification"]["reason"] in ("time budget", "adherence budget exhausted") or lvl["verification"]["adherence"]["status"] == "unmet"
 
@@ -393,16 +395,21 @@ def test_legacy_forbidden_word_path_when_adherence_is_off(monkeypatch):
 def test_unsatisfiable_request_has_a_hard_bounded_cost(monkeypatch, width):
     """Audit latency defect: a seed that cannot hit 3 enemies took 177 s (16 whole-level resamples x 8 redraws per window).
     Extra window draws are now capped by adherence.max_extra_draws, so the worst case is deterministic and small."""
-    calls = []
+    singles, batches = [], []
 
     def never_right(bundle, caption, w, steps, r, gen_seed, known_cols, device):
-        calls.append(1)
+        singles.append(1)
         return flat()
 
+    def batch_never_right(bundle, caption, w, steps, r, gen_seed, known_cols, device, n):
+        batches.append(n)
+        return np.stack([flat() for _ in range(n)])
+
     monkeypatch.setattr(FL, "sample_window", never_right)
+    monkeypatch.setattr(FL, "sample_window_batch", batch_never_right)
     lvl = FL.generate(None, "three enemies", seed=1, width=width, device="cpu")
     n, cap = FL.n_windows(width), int(A._A["max_extra_draws"])
-    assert len(calls) <= n + cap + n + int(A._A["max_window_tries"])          # first draw per window + capped extras + one last regeneration
+    assert len(singles) + len(batches) <= 2 * (n + cap + n)                   # a draw (+ at most one small batch) per window, capped extras
     adh = lvl["verification"]["adherence"]
     assert adh["status"] == "unmet" and adh["draw_cap"] == cap and lvl["verification"]["reason"] == "adherence budget exhausted"
 
@@ -455,11 +462,30 @@ def test_batch_path_is_skipped_for_scenes_without_counts_and_when_out_of_time(mo
     assert seen == []                                                               # time guard: no batch is started after the budget
 
 
-def test_cpu_never_uses_the_batch_path(monkeypatch):
+def test_cpu_draws_one_first_and_a_batch_only_on_a_miss(monkeypatch):
     seen = _batch_stub(monkeypatch, [1])
-    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())            # the single draw has no pipe -> a miss -> one small batch
+    lvl = FL.generate(None, "one pipe", seed=1, width=16, device="cpu")
+    assert seen == [int(A._A["batch_tries_cpu"])] and lvl["verification"]["adherence"]["status"] == "met"
+    seen.clear()
+
+    def exact(*a, **k):                                                            # the single draw is already right -> no batch at all
+        g = flat()
+        add_pipe(g, 2)
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", exact)
     FL.generate(None, "one pipe", seed=1, width=16, device="cpu")
     assert seen == []
+
+
+def test_cpu_batch_can_be_switched_off_for_sequential_redraws(monkeypatch):
+    monkeypatch.setitem(A._A, "batch_tries_cpu", 1)
+    seen = _batch_stub(monkeypatch, [1])
+    calls = []
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: (calls.append(1), flat())[1])
+    FL.generate(None, "one pipe", seed=1, width=16, device="cpu")
+    assert seen == [] and len(calls) > 1                                           # redraws one by one, no batch
 
 
 def _count_pipes(lvl):

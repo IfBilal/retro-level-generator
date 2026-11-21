@@ -8,6 +8,8 @@ from text2mario.generate.framing import LEAD, STAIRS, TAIL, frame
 from text2mario.generate.sanitizer import detect, repair
 from text2mario.render.schema import validate_level
 
+pytestmark = pytest.mark.usefixtures("batch_via_single")
+
 
 def flat_window(*_a, **_k):
     g = np.zeros((16, 16), np.uint8)
