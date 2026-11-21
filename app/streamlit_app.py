@@ -83,7 +83,7 @@ def _roll_seed() -> None:
 def studio() -> None:
     try:
         svc = get_service()
-    except Exception as e:  # no checkpoint yet: say so plainly instead of crashing
+    except Exception as e:  # noqa: BLE001 - no checkpoint yet: say so plainly instead of crashing
         st.error(f"No model is available yet: {e}")
         st.info("Train or select a checkpoint, then set T2M_CKPT. The Gallery tab still shows pre-made levels.")
         return
@@ -133,7 +133,7 @@ def studio() -> None:
                 st.session_state.result_prompt = st.session_state.prompt
             except ValueError as e:                 # validation problems are shown, never a stack trace
                 st.error(str(e))
-            except Exception as e:                  # unexpected failure: say so, keep the app alive
+            except Exception as e:  # noqa: BLE001 - unexpected failure: say so, keep the app alive
                 st.error(f"Generation failed ({type(e).__name__}). Please try another seed or a shorter prompt.")
     res = st.session_state.get("result")
     if res is None:

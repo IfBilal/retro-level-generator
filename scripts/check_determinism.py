@@ -34,7 +34,6 @@ def main():
     ac = torch.bfloat16 if dev == "cuda" else None
     cap = "full floor. two pipes."
     alone = sample_conditional(unet, sched, cond, [cap], 5.0, [77], 50, device=dev, autocast_dtype=ac)[0]
-    batch = sample_conditional(unet, sched, cond, [cap, "full floor.", "one platform."], 5.0, [5, 77, 9], 50, device=dev, autocast_dtype=ac)
     in_batch = sample_conditional(unet, sched, cond, ["full floor.", cap, "one platform."], 5.0, [5, 77, 9], 50, device=dev, autocast_dtype=ac)[1]
     g = np.asarray(a["raw_grid"], np.uint8)
     fr = a["framing"]

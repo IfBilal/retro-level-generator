@@ -168,7 +168,7 @@ def _staircases(grid: np.ndarray, v: int):
 # ---------------------------------------------------------------- pipes
 def _classify_pipe(grid: np.ndarray, comp: list[Cell]) -> str:
     """Rule 12: 'pipe' | 'upside down pipe' | 'broken pipe' from the component's bounding box."""
-    h, w = grid.shape
+    _, w = grid.shape
     rs = [r for r, _ in comp]
     cs = [c for _, c in comp]
     r0, r1, c0, c1 = min(rs), max(rs), min(cs), max(cs)
@@ -205,9 +205,9 @@ def _classify_pipe(grid: np.ndarray, comp: list[Cell]) -> str:
     if is_lip(r0) and all(is_body(r) for r in rows[1:]):
         return "pipe"
     # upside-down pipe: body above, lip at the bottom, and the body must hang from something (row 0 or a solid)
-    if is_lip(r1) and all(is_body(r) for r in rows[:-1]):
-        if r0 == 0 or all(_is_solid(int(grid[r0 - 1, c])) for c in (left_col, right_col) if c is not None):
-            return "upside down pipe"
+    hangs = r0 == 0 or all(_is_solid(int(grid[r0 - 1, c])) for c in (left_col, right_col) if c is not None)
+    if is_lip(r1) and all(is_body(r) for r in rows[:-1]) and hangs:
+        return "upside down pipe"
     return "broken pipe"
 
 
@@ -217,11 +217,9 @@ def _pipes(grid: np.ndarray):
     cells = {(r, c) for r in range(h) for c in range(w) if int(grid[r, c]) in T.PIPE}
 
     def can_step(a, b):  # never step right from a right half, nor left from a left half (keeps pipes apart)
-        if b[1] == a[1] + 1 and int(grid[a]) in (T.PIPE_TR, T.PIPE_BR):
-            return False
-        if b[1] == a[1] - 1 and int(grid[a]) in (T.PIPE_TL, T.PIPE_BL):
-            return False
-        return True
+        right_blocked = b[1] == a[1] + 1 and int(grid[a]) in (T.PIPE_TR, T.PIPE_BR)
+        left_blocked = b[1] == a[1] - 1 and int(grid[a]) in (T.PIPE_TL, T.PIPE_BL)
+        return not (right_blocked or left_blocked)
 
     return [(_classify_pipe(grid, comp), comp) for comp in _components(cells, can_step)]
 

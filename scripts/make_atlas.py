@@ -39,7 +39,6 @@ def pipe_tile(top: bool, left: bool) -> Image.Image:
     im = Image.new("RGBA", (TP, TP), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     dark, mid, light, out = (16, 96, 40, 255), (32, 160, 64, 255), (120, 220, 130, 255), (10, 50, 24, 255)
-    x0, x1 = (0, TP - 1) if left else (0, TP - 1)
     if top:
         d.rectangle([0, 0, TP - 1, TP - 1], fill=mid, outline=out)
         d.rectangle([1, 1, 3, TP - 2], fill=light) if left else d.rectangle([TP - 4, 1, TP - 2, TP - 2], fill=dark)
@@ -77,7 +76,6 @@ def main() -> int:
     }
     ground_top = k("ground_top")
     # sprite frames after the 13 tiles (each 24 px wide cell for characters; stored at native size)
-    names = [f"tile_{n}" for n in T.NAMES]
     W = TP * 13 + 24 * 6 + TP * 4
     atlas = Image.new("RGBA", (W + (-W) % TP, 2 * TP), (0, 0, 0, 0))  # whole tiles (Phaser warns otherwise)
     layout = {"tile_px": TP, "tiles": {}, "frames": {}}

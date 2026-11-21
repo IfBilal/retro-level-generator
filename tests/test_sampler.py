@@ -36,7 +36,7 @@ def test_t10_guidance_algebra():
 def test_sampler_is_deterministic_and_seed_dependent():
     m, s = setup_model(), DiffusionSchedule("cosine")
     c, mc, u, mu = ctxs(1)
-    kw = dict(ctx_c=c, mask_c=mc, ctx_u=u, mask_u=mu, w=3.0, steps=4)
+    kw = {"ctx_c": c, "mask_c": mc, "ctx_u": u, "mask_u": mu, "w": 3.0, "steps": 4}
     a, _ = ddim_sample(m, s, (1, 13, 16, 16), generator=torch.Generator().manual_seed(1), **kw)
     b, _ = ddim_sample(m, s, (1, 13, 16, 16), generator=torch.Generator().manual_seed(1), **kw)
     d, _ = ddim_sample(m, s, (1, 13, 16, 16), generator=torch.Generator().manual_seed(2), **kw)

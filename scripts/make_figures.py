@@ -55,7 +55,7 @@ def fig_pipeline():
         ax.add_patch(FancyBboxPatch((x, 0.35), 0.1, 0.4, boxstyle="round,pad=0.005", fc="#dbe9ff" if i not in (4, 7) else "#ffe3b3", ec="#335", transform=ax.transAxes))
         ax.text(x + 0.05, 0.55, t, ha="center", va="center", fontsize=7.5, transform=ax.transAxes)
         if i < n - 1:
-            ax.annotate("", xy=(x + 0.108, 0.55), xytext=(x + 0.1, 0.55), xycoords="axes fraction", arrowprops=dict(arrowstyle="->"))
+            ax.annotate("", xy=(x + 0.108, 0.55), xytext=(x + 0.1, 0.55), xycoords="axes fraction", arrowprops={"arrowstyle": "->"})
     ax.text(0.5, 0.12, "failed check -> re-sample the window where the search got stuck (max 5 per window, 20 per level)", ha="center", fontsize=8, transform=ax.transAxes)
     fig.savefig(FIG / "fig01_pipeline.png", dpi=150, bbox_inches="tight")
     plt.close(fig)

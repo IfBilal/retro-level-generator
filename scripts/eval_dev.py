@@ -46,7 +46,7 @@ def main():
         run = c.parent.name
         for w in a.w:
             r = evaluate(bundle, a.set, w, a.seeds, a.steps, a.n_prompts, dev)
-            grids, caps = r.pop("_grids"), r.pop("_captions")
+            grids, _caps = r.pop("_grids"), r.pop("_captions")
             tag = f"{run}_{r['step']:07d}_{a.set}_w{w:g}"
             (out / f"{tag}.json").write_text(json.dumps(r, indent=1, default=float))
             sheet(list(grids[:64]), cols=8, tile_px=8).save(out / f"{tag}.png")

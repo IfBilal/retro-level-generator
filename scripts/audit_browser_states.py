@@ -56,7 +56,7 @@ class Session:
             try:
                 if self.app().get_by_role("button", name="Generate & Play").count():
                     return
-            except Exception:  # noqa: BLE001
+            except Exception:
                 pass
             self.page.wait_for_timeout(500)
         raise TimeoutError("app did not become ready")
@@ -140,11 +140,11 @@ def s_state(p, url, out):
         s.page.wait_for_timeout(300)
         try:
             btn.click(timeout=3000)
-        except Exception:  # noqa: BLE001
+        except Exception:
             pass
         try:                                   # the old level's badge is still on screen, so wait for the "earlier sentence" notice to go instead
             s.app().wait_for_selector("text=earlier sentence", state="detached", timeout=240000)
-        except Exception:  # noqa: BLE001
+        except Exception:
             pass
         s.page.wait_for_timeout(3000)
         rec("state: double click while generating -> no exception", s.clean())
@@ -385,7 +385,7 @@ def main():
         for n in names:
             try:
                 SCEN[n](p, a.url, out)
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 rec(f"scenario {n} completed", False, error=f"{type(e).__name__}: {str(e)[:300]}")
     (out / "browser_states.json").write_text(json.dumps(RESULTS, indent=1), encoding="utf-8")
     bad = [r for r in RESULTS if not r["pass"]]

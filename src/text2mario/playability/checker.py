@@ -205,7 +205,7 @@ def check_level(grid: np.ndarray, *, mode: Literal["scene", "level"] = "scene", 
         cnt += 1
     furthest, nodes = max(s[0] for s in starts), 0
     while heap:
-        f, g, _, cell = heapq.heappop(heap)
+        _f, g, _, cell = heapq.heappop(heap)
         if g > best.get(cell, 1e18) + 1e-12:
             continue
         nodes += 1

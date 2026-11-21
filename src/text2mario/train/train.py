@@ -35,7 +35,7 @@ def make_run_dir(cfg: dict, machine: str) -> Path:
     run = ROOT / "runs" / f"{cfg['name']}_{stamp}"
     run.mkdir(parents=True, exist_ok=True)
     (run / "config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=True))
-    dirty = bool(subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.strip())
+    dirty = bool(subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True, check=False).stdout.strip())
     meta = {"config_hash": config_hash(cfg), "git_sha": git_sha(), "git_dirty": dirty, "machine": machine,
             "torch": torch.__version__, "seed": cfg["seed"], "corpus_hash": provenance.corpus_content_hash(),
             "split_lock": (ROOT / "data/splits/LOCK").read_text().strip(), "created_utc": stamp}

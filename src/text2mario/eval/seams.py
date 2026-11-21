@@ -12,6 +12,7 @@ Explain-me:
 from __future__ import annotations
 
 from collections import Counter
+from itertools import pairwise
 
 import numpy as np
 
@@ -37,7 +38,7 @@ class ColumnBigram:
         for lv in levels:
             cols = self._cols(lv)
             self.uni.update(cols)
-            for a, b in zip(cols[:-1], cols[1:]):
+            for a, b in pairwise(cols):
                 self.bi[(a, b)] += 1
                 self.ctx[a] += 1
         self.total = sum(self.uni.values())
@@ -51,7 +52,7 @@ class ColumnBigram:
         """-log P(col_{t+1} | col_t), interpolated with the smoothed unigram: (count + k * p_uni) / (ctx + k)."""
         cols = self._cols(level)
         out = []
-        for a, b in zip(cols[:-1], cols[1:]):
+        for a, b in pairwise(cols):
             p = (self.bi.get((a, b), 0) + self.k * self._p_uni(b)) / (self.ctx.get(a, 0) + self.k)
             out.append(-np.log(p))
         return np.array(out)

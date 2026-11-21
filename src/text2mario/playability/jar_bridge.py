@@ -56,7 +56,7 @@ def jar_solve(grid: np.ndarray, timeout: float = 90.0) -> bool | None:
         name = Path(f.name).name
     try:
         p = subprocess.run(["java", "-cp", cp, JAR_MAIN, "astar", name, "false"], cwd=work, capture_output=True,
-                           text=True, timeout=timeout)
+                           text=True, timeout=timeout, check=False)      # a non-zero exit is judged from the output below
         out = p.stdout
         if "beaten:true" in out:
             return True

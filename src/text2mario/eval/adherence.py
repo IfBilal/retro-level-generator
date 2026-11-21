@@ -11,6 +11,8 @@ Credit: the metric idea is from Lee & Simo-Serra (MarioDiffusion, MIT); see DATA
 """
 from __future__ import annotations
 
+import math
+
 # T: the 18 topics in the spec's order (substring match; 'enem' covers enemy/enemies, 'rectangular'/'irregular' are
 # the first words of the block-cluster phrases).  The order matters: specific topics come before general ones.
 TOPICS = ("floor", "ceiling", "broken pipe", "upside down pipe", "pipe", "coin line", "coin", "platform", "tower",
@@ -106,7 +108,7 @@ def concept_report(pairs: list[tuple[str, str]], min_support: int = 5) -> dict:
         support = tp + fn
         prec = tp / (tp + fp) if tp + fp else float("nan")
         rec = tp / support if support else float("nan")
-        f1 = 2 * prec * rec / (prec + rec) if prec == prec and rec == rec and prec + rec else float("nan")
+        f1 = 2 * prec * rec / (prec + rec) if not (math.isnan(prec) or math.isnan(rec)) and prec + rec else float("nan")
         rep[t] = {"support": support, "na": support < min_support, "precision": prec, "recall": rec, "f1": f1,
                   "exact_match": em_hit / em_n if em_n else float("nan"),
                   "absence_respect": ar_hit / ar_n if ar_n else float("nan"),

@@ -45,8 +45,8 @@ class UNet(nn.Module):
         self.uncond, self.cross_attention, self.pooled = uncond, cross_attention, pooled_text_to_time
         n_up = num_res_blocks_down + 1
         ch = [base_channels * m for m in channel_mult]
-        kw = dict(self_attention=self_attention, cross_attention=cross_attention, ctx_dim=context_dim, heads=heads,
-                  groups=groups, dropout=dropout)
+        kw = {"self_attention": self_attention, "cross_attention": cross_attention, "ctx_dim": context_dim, "heads": heads,
+              "groups": groups, "dropout": dropout}
         self.time_mlp = TimeMLP(128, 256)
         self.conv_in = nn.Conv2d(in_channels, base_channels, 3, padding=1)
 

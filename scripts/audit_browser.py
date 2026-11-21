@@ -86,7 +86,7 @@ def main():
                 btn.click()
                 pg.wait_for_timeout(900)
                 check(f"example{i}")
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 defects.append(f"example{i}: {e}")
         step("examples")
         # generate
@@ -116,7 +116,7 @@ def main():
                     step("canvas_distinct_colours", n=nonblank)
                     if nonblank < 3:
                         defects.append("game canvas looks blank")
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     defects.append(f"game canvas: {e}")
         # horizontal overflow check
         ov = pg.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")

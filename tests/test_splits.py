@@ -97,7 +97,7 @@ def test_t8b_lock_detects_edit(S):
 
 @pytest.mark.slow
 def test_t9_determinism():
-    out = subprocess.run([sys.executable, str(ROOT / "scripts/make_splits.py"), "--check"], capture_output=True, text=True)
+    out = subprocess.run([sys.executable, str(ROOT / "scripts/make_splits.py"), "--check"], capture_output=True, text=True, check=False)
     assert out.returncode == 0, out.stdout + out.stderr
 
 

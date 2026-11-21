@@ -53,7 +53,7 @@ def evaluate(model_bundle, prompt_set: str, w: float, n_seeds: int = 3, steps: i
 def evaluate_rows(model_bundle, rows: list[dict], w: float, seed_base: int, prompt_set: str, n_seeds: int = 3, steps: int = 50,
                   device: str = "cuda", with_novelty: bool = True) -> dict:
     """The shared metric code.  scripts/eval_test.py calls this directly (the ONLY place test prompts are used)."""
-    unet, sched, cond, cfg, state = model_bundle
+    unet, sched, cond, _cfg, state = model_bundle
     prompts = [r["prompt"] for r in rows for _ in range(n_seeds)]
     seeds = [seed_base + 1000 * i + k for i in range(len(rows)) for k in range(n_seeds)]
     grids = sample_conditional(unet, sched, cond, prompts, w, seeds, steps, device=device,

@@ -66,7 +66,7 @@ def run_one(svc, p, seed, a, width):
     except ValueError as e:
         row.update(status="rejected", message=str(e), seconds=round(time.time() - t0, 2))
         return row
-    except Exception as e:  # noqa: BLE001 - an uncaught exception IS the defect we are looking for
+    except Exception as e:
         row.update(status="error", message=f"{type(e).__name__}: {e}", seconds=round(time.time() - t0, 2))
         return row
     lvl = res.level
@@ -97,7 +97,7 @@ def run_adversarial(svc, p, seeds, width, clean_html_closers):
             row["ok"] = flagged
         except ValueError as e:
             row.update(status="rejected", ok=True, message=str(e)[:160])
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             row.update(status="error", ok=False, message=f"{type(e).__name__}: {e}")
         rows.append(row)
         return rows
@@ -117,7 +117,7 @@ def run_adversarial(svc, p, seeds, width, clean_html_closers):
                 row.update(status="ok", ok=True)
         except ValueError as e:
             row.update(status="rejected", ok=(must == "reject"), message=str(e)[:120])
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             row.update(status="error", ok=False, message=f"{type(e).__name__}: {e}")
         rows.append(row)
     return rows
@@ -144,8 +144,9 @@ def summarise(rows):
 
 
 def write_md(path, label, a, per, cat, tot, rows, meta):
-    L = [f"# Adherence audit `{label}`", "", f"device **{meta['device']}**, mode **{a.mode}**, profile **{meta['profile']}**, width {meta['width']}, "
-         f"seeds {meta['seeds']}, git {meta['git']}, UTC {meta['utc']}", "",
+    L = [f"# Adherence audit `{label}`", "",
+         (f"device **{meta['device']}**, mode **{a.mode}**, profile **{meta['profile']}**, width {meta['width']}, "
+          f"seeds {meta['seeds']}, git {meta['git']}, UTC {meta['utc']}"), "",
          f"**Overall: {tot[0]}/{tot[1]} levels pass ({tot[0]/max(1,tot[1]):.1%})** (adversarial rows included)", "", "## By category", "",
          "| category | pass / n | rate | 95% CI | target |", "|---|---|---|---|---|"]
     for c, v in sorted(cat.items()):
@@ -220,7 +221,7 @@ def main():
             print(f"[adv] {p['id']}", flush=True)
     f.close()
     import subprocess
-    git = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    git = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False).stdout.strip()
     per, cat, tot = summarise(rows)
     meta = {"device": svc.device, "profile": svc.profile, "width": a.width, "seeds": seeds, "git": git, "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     (out / "results.json").write_text(json.dumps({"meta": meta, "mode": a.mode, "overall": tot, "by_category": cat, "per_prompt": per}, indent=1), encoding="utf-8")

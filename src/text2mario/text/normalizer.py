@@ -187,7 +187,6 @@ def _tokens(seg: str) -> list[str]:
 
 def _match_nouns(toks: list[str]):
     """Greedy longest-match: -> list of (start, end, topic, plural, kind) over token indices."""
-    text = " ".join(toks)
     spans, taken = [], [False] * len(toks)
     starts = [0]
     for t in toks[:-1]:
@@ -197,8 +196,6 @@ def _match_nouns(toks: list[str]):
         n = len(words)
         for i in range(len(toks) - n + 1):
             if toks[i:i + n] == words and not any(taken[i:i + n]):
-                if kind == "noun" and topic == "question block" and False:
-                    pass
                 spans.append((i, i + n, topic, pl, kind))
                 for k in range(i, i + n):
                     taken[k] = True
@@ -250,7 +247,6 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
     counts: dict[str, int] = {}
     vague: dict[str, bool] = {}                 # topic -> was the quantity a vague word ("several") rather than a numeral?
     floor_gap_q = floor_chunk_q = ceil_gap_q = None
-    saw_ceiling_noun = False
     for idx, (a, b, topic, pl, kind) in enumerate(spans):
         # negation scope: a negation token directly before (possibly through a coordinated list)
         q, neg, first = _qty_before(toks, a, taken)
@@ -301,7 +297,6 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
             floor_chunk_q = bucket(q) if q is not None else "one"
             continue
         if kind == "ceil":
-            saw_ceiling_noun = True
             if neg:
                 sc.forbid.append("ceiling")
                 sc.warnings.append("NEGATION_FORBID")
@@ -320,8 +315,7 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
             sc.warnings.append("NEGATION_FORBID")
             continue
         if q is None:
-            nxt = toks[b:b + 3]
-            if pl or topic in ("coin",) and False:
+            if pl:
                 bkt = _CLAMP["bare_plural_default"].get(topic, "two") if _CLAMP else "two"
                 sc.warnings.append("BARE_PLURAL_DEFAULT")
                 val = BUCKET_REP[bkt]

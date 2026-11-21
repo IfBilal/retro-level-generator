@@ -21,7 +21,7 @@ class GateNotPassedError(RuntimeError):
 def git_sha() -> str:
     try:
         return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
-    except Exception:
+    except (OSError, subprocess.CalledProcessError):         # no git or not a repository: the provenance field says so
         return "unknown"
 
 

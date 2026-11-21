@@ -58,7 +58,7 @@ def main():
         provenance.verify()
         splits.load(verify=True)
         check("data hashes match MANIFEST and split matches LOCK", True)
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         check("data hashes match MANIFEST and split matches LOCK", False, str(e))
     check("MiniLM local copy present", (ROOT / "models/minilm/model.safetensors").exists(), "(scripts/fetch_models.py)")
     if not args.quick:

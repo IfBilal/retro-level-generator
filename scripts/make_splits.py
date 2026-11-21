@@ -194,8 +194,8 @@ def build(write: bool):
              "leakage": leak, "cv_folds": folds,
              "prompt_sets": {"P-dev": len(p_dev), "P-test": len(p_test), "P-rand": len(p_rand)}}
     table = clamp_table(df[df.split == "train"], cfg["clamp_min_support"])
-    return dict(split=split, reused=reused, p_dev=p_dev, p_test=p_test, p_rand=p_rand, clamp=table, df=df, L=L,
-                stats=stats, levels=levels, scenes=scenes, train_phrases=train_phrases)
+    return {"split": split, "reused": reused, "p_dev": p_dev, "p_test": p_test, "p_rand": p_rand, "clamp": table, "df": df, "L": L,
+            "stats": stats, "levels": levels, "scenes": scenes, "train_phrases": train_phrases}
 
 
 def write_report(r: dict) -> str:

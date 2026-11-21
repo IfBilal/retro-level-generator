@@ -38,7 +38,7 @@ def main():
     w = a.w if a.w is not None else cfg["cfg"]["default_w"]
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     ck = default_ckpt()
-    unet, sched, cond, mcfg, _ = (load_exported(ck, dev) if ck.is_dir() else load_ema_conditional(ck, dev))
+    unet, sched, cond, _mcfg, _ = (load_exported(ck, dev) if ck.is_dir() else load_ema_conditional(ck, dev))
     print(f"1. INPUT      : {a.sentence!r}   (seed {a.seed}, guidance w = {w}, device {dev})")
     n = normalize(a.sentence)
     for i, s in enumerate(n.scenes, 1):

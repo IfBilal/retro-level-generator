@@ -124,7 +124,7 @@ def test_batches_are_identical_on_two_machines_by_construction(tmp_path, data):
 def test_entry_point_enforces_gates_and_dry_runs(tmp_path, monkeypatch):
     from text2mario.train import train as entry
     entry.main(["--config", "configs/uncond_linear.yaml", "--machine", "cpu_dev", "--device", "cpu", "--dry-run",
-                "--run-dir", str(tmp_path / "dry")] + sum([["--set", s] for s in TINY], []))
+                "--run-dir", str(tmp_path / "dry")] + [x for s in TINY for x in ("--set", s)])
     import text2mario.utils.gates as g
     monkeypatch.setattr(g, "ROOT", tmp_path)                                    # no gate results here -> must refuse
     monkeypatch.setattr(entry, "require", g.require)

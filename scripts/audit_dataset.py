@@ -93,7 +93,7 @@ def main() -> None:
     check("F6c", "pipe / cannon / enemy sets match descriptors", [sorted(T.PIPE), sorted(T.CANNON), sorted(T.ENEMY)],
           [sorted(T.CHAR_TO_ID[c] for c, d in desc.items() if tag in d) for tag in ("pipe", "cannon", "enemy")])
 
-    lid, off, chains = level_ids(scenes)
+    lid, _off, chains = level_ids(scenes)
     check("F7", "chain count", 42, len(chains))
     check("F7b", "SMB1 / SMB2 boundary", N_SMB1_WINDOWS, chains[20][0])
     within = int((scenes[:-1, :, 1:] == scenes[1:, :, :-1]).all(axis=(1, 2)).sum())

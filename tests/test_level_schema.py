@@ -104,17 +104,17 @@ def test_adherence_resamples_have_their_own_budget_not_the_playability_one():
     validate_level(lvl)                                              # accepted
     lvl["verification"]["attempt_log"][0]["status"] = "unsolvable"
     lvl["verification"]["attempt_log"][0]["attempt"] = 6
-    with pytest.raises(Exception):                                   # the playability limit (ledger G5) still applies to playability entries
+    with pytest.raises(ValueError, match="invalid level"):                                   # the playability limit (ledger G5) still applies to playability entries
         validate_level(lvl)
 
 
 def test_adherence_must_be_judged_on_the_raw_grid_and_stay_in_budget():
     lvl = good_level()
     lvl["verification"]["adherence"] = {"status": "met", "attempts": 1, "judged_on": "display", "constraints": []}
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError, match="invalid level"):
         validate_level(lvl)
     lvl["verification"]["adherence"] = {"status": "met", "attempts": 10_000, "judged_on": "raw", "constraints": []}
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError, match="invalid level"):
         validate_level(lvl)
 
 

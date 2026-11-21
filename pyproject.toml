@@ -18,3 +18,11 @@ pythonpath = ["src"]
 
 [tool.ruff]
 line-length = 110
+
+[tool.ruff.lint.per-file-ignores]
+# CLI scripts: broad excepts record the failure in RESULT.json / evidence or print it, subprocess exit codes are checked where they matter,
+# and long-lived log handles are closed explicitly.  Style-only exemptions, listed so they are visible (not silent).
+"scripts/*.py" = ["BLE001", "S110", "SIM115", "PLW1510"]
+# Gate scripts and the one-shot test script produced the recorded results; they are not refactored after the fact (provenance, CLAUDE.md rules 1-2).
+"scripts/gate_*.py" = ["PLR0124", "RUF059"]
+"scripts/eval_test.py" = ["SIM102", "ISC004"]

@@ -98,7 +98,7 @@ def test_normalize_is_total_and_wants_are_sane(text):
     n = normalize(text)
     for sc in n.scenes:
         assert sc.caption
-        for t, (lo, hi) in sc.want.items():
+        for lo, hi in sc.want.values():
             assert 0 <= lo <= hi
         assert not (set(sc.want) & set(sc.forbid)) or any(w.startswith("CONTRADICTION") for w in n.warnings + sc.warnings)
 
@@ -278,7 +278,7 @@ def test_capacity_scales_with_width():
 def test_cap_never_below_what_the_scene_needs_per_window(monkeypatch):
     """Eight coins in a 16-column level (one window): the per-window cap of 1 must not make the plan impossible."""
     n = normalize("eight coins")
-    cap, plan = A.plan_caption(n.scenes[0], n.scenes[0].caption, 0, 0, 0, None, 0)
+    _cap, plan = A.plan_caption(n.scenes[0], n.scenes[0].caption, 0, 0, 0, None, 0)
     assert plan["coin"] == 8
 
 
@@ -329,7 +329,7 @@ def test_forbidden_topic_in_a_later_scene_only_applies_to_that_scene(monkeypatch
         g = flat()
         if known_cols is not None:
             g[:, :known_cols.shape[1]] = known_cols
-        elif "pipe" in caption or True:
+        else:
             add_pipe(g, 2)                                                              # a pipe in window 0 only
         return g
 

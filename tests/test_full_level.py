@@ -144,8 +144,8 @@ def _pipe_stub(monkeypatch, per_caption=True):
         for i in range(n):
             c = 9 + 4 * i if known_cols is not None else 2 + 6 * i
             g[11, c], g[11, c + 1] = T.PIPE_TL, T.PIPE_TR
-            for r in range(12, 15):
-                g[r, c], g[r, c + 1] = T.PIPE_BL, T.PIPE_BR
+            for row in range(12, 15):
+                g[row, c], g[row, c + 1] = T.PIPE_BL, T.PIPE_BR
         return g
 
     monkeypatch.setattr(FL, "sample_window", fake)

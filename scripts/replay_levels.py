@@ -61,7 +61,7 @@ def play(page, lvl: dict, strip: bool, max_replans: int = 8, timeout: float = 15
             seen_deaths = st["deaths"]
             if replans >= max_replans:
                 return {"won": False, "replans": replans, "why": "replan budget"}
-            cur = (int(np.floor(st["x"])), int(round(st["y"])) - 1)
+            cur = (int(np.floor(st["x"])), round(st["y"]) - 1)
             r = check_level(grid, mode="level", framing=Framing(cur, goal), enemies="ignore")
             if not r.path:
                 return {"won": False, "replans": replans, "why": f"no path from {cur}"}

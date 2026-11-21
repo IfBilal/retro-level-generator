@@ -16,7 +16,7 @@ import torch
 
 def param_groups(modules: dict[str, torch.nn.Module], weight_decay: float) -> list[dict]:
     decay, no_decay = [], []
-    for mod_name, m in modules.items():
+    for m in modules.values():
         for n, p in m.named_parameters():
             if not p.requires_grad:
                 continue

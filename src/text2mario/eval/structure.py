@@ -25,9 +25,14 @@ def broken_counts(grid: np.ndarray) -> tuple[int, int, int]:
     return d.get("broken pipe", 0), d.get("broken cannon", 0), d.get("pipe", 0) + d.get("upside down pipe", 0) + d.get("broken pipe", 0)
 
 
+def _has_broken(grid: np.ndarray) -> bool:
+    b = broken_counts(grid)
+    return b[0] > 0 or b[1] > 0
+
+
 def broken_rate(grids: np.ndarray) -> float:
     """Share of samples with >= 1 broken pipe component OR >= 1 broken cannon (primary metric, gates use this)."""
-    return float(np.mean([(lambda b: b[0] > 0 or b[1] > 0)(broken_counts(g)) for g in grids]))
+    return float(np.mean([_has_broken(g) for g in grids]))
 
 
 def valid_floor(g: np.ndarray) -> bool:

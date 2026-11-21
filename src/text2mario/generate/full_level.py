@@ -203,7 +203,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
               "ignored_tokens": norm.ignored_tokens, "warnings": norm.warnings, "forbid": forbid,
               "scenes": [{"caption": win_caps[k], "scene": int(scene_of[k]), "col_from": 3 + k * STRIDE, "col_to": 3 + k * STRIDE + WINDOW - 1}
                          for k in range(n)]}
-    cfg, state = (bundle[3], bundle[4]) if bundle is not None and len(bundle) >= 5 else ({}, {})
+    _cfg, state = (bundle[3], bundle[4]) if bundle is not None and len(bundle) >= 5 else ({}, {})
     generation = {"seed": int(seed), "w": float(w), "width": int(width), "ddim_steps": int(steps), "resample_r": int(resample_r),
                   "fast_mode": bool(steps < 50), "profile": profile, "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   "checkpoint_step": int(state.get("step", -1)), "seconds": round(time.time() - t0, 2), **(meta or {})}
