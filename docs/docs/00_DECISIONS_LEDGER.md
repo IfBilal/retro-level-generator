@@ -147,6 +147,20 @@ All numbers marked *(provisional)* are assumptions to be measured on Day 12 (dry
 | G4 | Multi-tile sanitizer (pipes `<>`/`[]`, cannons `B`/`b`): **detect always, repair optionally**. Metrics are reported **before repair**. |
 | G5 | MVP verification: the fast playability checker runs on the framed level. If it fails, the failing window is re-sampled with a new seed (max **5** attempts per window, max **20** in total) → badge shows "verified beatable" or "not verified". This is the seam for the future ghost-bot feature. |
 
+## 7b. Prompt adherence of a whole level (AD*) - added by the 2026-11-21 audit
+
+The model was trained on 16 x 16 windows whose captions describe the whole window, but a prompt describes the whole level. The audit (`reports/audit/`) found that the scene caption was given to EVERY window of a scene ("one pipe" over 5 windows = one pipe per window), that the caption can only say a bucket, and that the frozen model's own per-window counts are loose (`reports/audit/window_exactness.json`). All numbers below live in `configs/generate/app.yaml` (`adherence:`) and `configs/audit/adherence.yaml`.
+
+| ID | Decision |
+|---|---|
+| AD1 | **Counts are level-level.** `Scene.want` keeps the requested count or range per topic (numerals exact; "a few" 3-4, "several" 5-9, "many" >= 10 per F15). The caption bucket is only the model's conditioning. |
+| AD2 | **Plan, then verify.** Each window is told only what it must ADD in its 8 new columns (measured: describing an object already in the known half makes the model add another in 19/24 samples). A window is redrawn (CUDA: 16 candidates in one pass; CPU: up to 8 sequential draws) until its new columns match the plan, then the whole RAW level is counted and the offending window resampled (<= 16 whole-level resamples and <= 40 extra window draws per level, a hard deterministic cap). |
+| AD3 | **No editing.** Adherence is judged on the raw grid (rule 8). If the budget ends with a count unmet the level is returned as generated and the UI says which counts were not met; the display repair never edits for adherence. A schema check enforces `judged_on == "raw"`. |
+| AD4 | **Counting definition** = the caption detector's (pipes = connected components incl. hanging and broken pipes, enemies/coins = cells, platforms = runs, staircases = diagonal runs); an independent counter cross-checks pipes/enemies/coins/cannons/question blocks. A scene owns the columns its windows add (window 0: 0-15; window k: its 8 new columns); an object belongs to the scene owning its leftmost column. |
+| AD5 | **Unsatisfiable input is refused, not clamped:** a prompt that asks for and rules out the same thing in one scene, a negative number, or more objects than `capacity_per_16_cols x width/16` raises a user-facing `ValueError`. |
+| AD6 | **Bare negation survives** ("no pipes"): a neutral "full floor." scene carries the prohibition, which is then verified on the raw level. A window caption without a floor phrase gets `default_floor` ("full floor"; measured to raise exact-count rates). |
+| AD7 | Assumption (log in PROGRESS "Assumptions"): per-window plan spreads objects one per window (`max_new_per_window`), because the measured exact-count rate falls from ~55 % (1 pipe) to 10-30 % (2 pipes) and 0 % ("a few enemies" draws 4-10). |
+
 ## 8. Evaluation decisions
 
 | ID | Decision |
@@ -235,3 +249,4 @@ Name: **`text2mario`**. Layout in `05_REPO_STRUCTURE.md`. Root `CLAUDE.md` = `34
 | 2026-11-21 | G-P4 FAIL on P4.04 only; G-P5 FAIL on P5.01 (seam 1.54); display repair deletes detector-flagged components (P5.02 passes) | measured; documented as limitations | 20, 24, 25 |
 | 2026-11-21 | App default = fast mode (25 steps, no resampling, checker budget 1000); full quality is opt-in; badge wording 'route found (not a guarantee)' | measured latency (112 columns: 167 s full quality) and replay success 40-70 % | 28, 21 |
 | 2026-11-21 | X1 (aux CE, conditional) evaluated after the freeze; early step looked better, matched step 24k is a tie on S_noplay (fewer broken, more copying); C-main kept as the reported model | one-shot test already used; see report 5.2 | 22, 23 |
+| 2026-11-21 | §7b AD1-AD7: level-level counts, per-window planning + raw-level verification, unsatisfiable input refused, bare negation kept; Dice crash fixed (on_click callbacks); `<!--` escaped in the inlined level JSON | audit/prompt-adherence: baseline 113/628 levels matched the prompt (example prompt 3/40); root cause = the scene caption sent to every window | 20, 28, reports/audit |

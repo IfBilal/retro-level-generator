@@ -55,6 +55,18 @@ All generation and app numbers are in **`configs/generate/app.yaml`**; model and
 | 16 | show the seed of window k | `window_seed` in `src/text2mario/generate/full_level.py` | determinism: same prompt + seed gives the same level |
 | 17 | showcase size / filter | `PROMPTS` and the `verified` condition in `scripts/make_showcase.py` | `app/showcase/manifest.json` |
 | 18 | cloud time budget | `cloud.time_budget_s` (with `T2M_PROFILE=cloud`) | "time budget" in the verification reason |
+| 19 | how many objects per window / why one per window | `adherence.max_new_per_window` in `configs/generate/app.yaml` (raise `pipe` to 2) | `python scripts/audit_adherence.py --label try --ids cnt_pipe_2 --n-seeds 5` (pass rate drops: the model hits "two pipes in one window" only ~10-30 %) |
+| 20 | plan "several" at its low end instead of the middle | `adherence.range_target: low` | `tests/test_adherence_properties.py::test_range_target_low_vs_mid`; the per-window captions in the app's Details tab |
+| 21 | turn the count verification off (see the old bug) | `adherence.enabled: false` | `one pipe` gives one pipe per window again: `scripts/audit_adherence.py --ids cnt_pipe_1` |
+| 22 | candidates per window on the GPU | `adherence.batch_tries` (1 = off) | seconds per level in `reports/audit/*/RESULTS.md`; CPU always uses `max_window_tries` |
+| 23 | the largest count a level can hold | `adherence.capacity_per_16_cols` | typing "five pipes" with width 16 gives the message "will not fit" |
+| 24 | what the model is told per window | open the **Details** tab after generating | "Caption each 16-column window was actually given" |
+
+## 5b. Trace of the count path (audit P2) - say this in the viva
+1. `normalize("flat ground, one pipe, then several coins and a staircase")` -> 2 scenes; each scene keeps `want` (pipe [1,1]; coin [5,9], staircase [1,1]) besides the coarse caption.
+2. `generate()` -> `adherence.check_feasible` (contradiction / too many for the width -> a clear message) -> `plan_caption` per window: only what that window must ADD ("full floor. one pipe." for the one window that carries the pipe, "full floor." for the others) -> the window is redrawn until its NEW columns match (CUDA: 16 candidates in one pass).
+3. The RAW level is counted per scene region (`adherence.evaluate`, the caption detector's definition); an unmet count resamples the owning window (<= 16 whole-level resamples, <= 40 extra draws). The result is stored in `verification.adherence` and the app says "Counts match your sentence" or which counts were not met. Nothing is ever edited.
+4. Why it was broken: the scene caption went to EVERY window (one pipe per 16 columns), the caption only has 5 buckets, and the model is loose at exact counts (`reports/audit/window_exactness.json`). Evidence: `reports/audit/baseline` (113/628) vs `reports/audit/<final round>`.
 
 ## 6. Demo checklist (each member's laptop)
 `streamlit run app/streamlit_app.py` (works offline; CPU fast mode is automatic without a GPU) -> click an example -> Generate & Play -> click the game -> arrows/WASD, Space, Shift. Fallback: the **Gallery** page shows pre-made levels.

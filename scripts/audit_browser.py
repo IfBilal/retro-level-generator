@@ -83,9 +83,13 @@ def main():
         for i in range(4):
             btn = app().locator("button[kind=secondary]").nth(i)
             try:
+                label = " ".join(btn.inner_text().split())
                 btn.click()
                 pg.wait_for_timeout(900)
                 check(f"example{i}")
+                filled = app().locator("textarea").first.input_value()
+                if " ".join(filled.split()) != label:               # the chip must put exactly its own sentence into the prompt box
+                    defects.append(f"example{i}: prompt box holds '{filled}' instead of '{label}'")
             except Exception as e:
                 defects.append(f"example{i}: {e}")
         step("examples")

@@ -42,6 +42,7 @@ SLIDES = [
       <li>Reference-solver agreement <b>{{p5b_agree}}</b> (&ge; 0.85 needed): <b>gate failed</b>, so selection uses S<sub>noplay</sub>.</li>
       <li>Evidence instead: game-engine contract test ({{game_unsound}} unsound of {{game_cases}}), ghost-bot replay {{replay_rate}} of {{replay_n}} real windows.</li></ul>"""),
     ("7. The Streamlit app", """<ul><li>Prompt box + examples &rarr; <i>what the model will understand</i> (scenes, clamps, ignored words) &rarr; generate &rarr; badge + embedded offline game + downloads.</li>
+      <li><b>Counts are checked on the raw tiles</b> (one pipe means one pipe); the page says which counts were not met, and nothing is edited.</li>
       <li>Input validation with readable errors; CPU fast mode (25 steps) automatic without a GPU; cloud profile with a time budget.</li>
       <li>Measured (median): {{lat_cuda_48_fast_p50}} s for 48 columns and {{lat_cuda_112_fast_p50}} s for 112 columns in fast mode on the RTX 3060 Ti; full quality takes {{lat_cuda_48_p50}} s / {{lat_cuda_112_p50}} s; CPU fast mode {{lat_cpu_48_p50}} s / {{lat_cpu_112_p50}} s. The 10 s target is not met at 112 columns.</li></ul>"""),
     ("8. Quantitative results (unseen test levels, one shot)", """<table><tr><th></th><th>P-test</th><th>P-rand</th></tr>
@@ -53,10 +54,11 @@ SLIDES = [
       <p class=small>Left: dev samples at w* (16x16 windows); right: a generated 57-column level from the showcase (prompt: &ldquo;flat ground, one pipe, then several coins and a staircase&rdquo;). Contrast test (pipes vs enemies/gaps/stairs) and failure gallery are in the report.</p>"""),
     ("10. What did not work (and what we did about it)", """<ul><li><b>G-P3 failed</b>: broken structures fall with training while copying rises; aux-CE trades one for the other. We chose cosine, documented a waiver, and judged the conditional model on its own metrics.</li>
       <li><b>G-P5b failed</b>: the reference solver is not a usable oracle here; fallback S<sub>noplay</sub>.</li>
-      <li>Four bugs found by tests/e2e runs and fixed with regression tests.</li></ul><img src="{FIG}fig03_p3_tradeoff.png" style="height:210px">"""),
+      <li>Four bugs found by tests/e2e runs and fixed with regression tests.</li>
+      <li><b>The app ignored counts</b> (an end-to-end audit): only {{adh_base_overall}} generated levels matched their prompt (the example prompt: {{adh_base_example}}) because the scene caption went to every window; after count planning + raw-level verification {{adh_final_overall}} match (example: {{adh_final_example}}).</li></ul><img src="{FIG}fig03_p3_tradeoff.png" style="height:210px">"""),
     ("11. Limitations and conclusion", """<ul><li>31 training levels; coarse captions (no positions, 5 buckets); one game family; 5 dev / 6 test levels &rarr; wide intervals; no human playability study.</li>
       <li>"Verified" = a conservative physics claim by our checker, not a proof for every player.</li>
-      <li>Cloud deployment needs the team's Streamlit/GitHub login; the repo is prepared (DEPLOY.md).</li>
+      <li>Deployed on Streamlit Community Cloud (CPU only): candidate windows are costlier there, so count matching is weaker than on a GPU (measured in reports/audit/AUDIT_REPORT.md).</li>
       <li><b>Conclusion:</b> a complete, honestly evaluated text-to-level system; failures are reported with evidence and fallbacks.</li></ul>"""),
 ]
 CSS = """@page{size:1280px 720px;margin:0}body{margin:0;font-family:Arial,sans-serif;color:#1b2a49}
