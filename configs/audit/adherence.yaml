@@ -57,6 +57,8 @@ adversarial:
   - {id: adv_emoji, text: "two pipes \U0001F344\U0001F525", must: ok}
   - {id: adv_html, text: "<script>alert(1)</script> one pipe", must: inject, payload: "<script>alert(1)"}
   - {id: adv_img, text: "<img src=x onerror=alert(1)> two pipes", must: inject, payload: "<img src=x onerror"}
+  - {id: adv_comment, text: "<!--<script> one pipe", must: inject, payload: "<!--<script"}
+  - {id: adv_close_tag, text: "</script><script>alert(1)</script> two pipes", must: inject, payload: "</script><script>"}
   - {id: adv_sql, text: "one pipe'; DROP TABLE levels;--", must: ok}
   - {id: adv_contradiction, text: "one pipe and no pipes", must: warn}
   - {id: adv_absurd, text: "500 pipes", must: warn}

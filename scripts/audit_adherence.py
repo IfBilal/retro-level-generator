@@ -110,9 +110,13 @@ def run_adversarial(svc, p, seeds, width, clean_html_closers):
             elif must == "inject":
                 html = res.files["html"].decode("utf-8", "replace")
                 closers = html.count("</script>")
-                leak = p["payload"] in html or closers != clean_html_closers
+                # a real breakout = an extra </script>, or a raw '</' / '<!--' left in the inlined level JSON (the payload text itself may stay:
+                # inside a JSON string in a script element it is inert)
+                part = html.split("window.__LEVEL__=")[1].split(";window.__PHYSICS__")[0] if "window.__LEVEL__=" in html else ""
+                leak = closers != clean_html_closers or "</" in part or "<!--" in part
                 row.update(status="ok", ok=not leak, details={"must": must, "script_closers": closers, "clean_closers": clean_html_closers,
-                                                              "payload_in_html": p["payload"] in html})
+                                                              "raw_close_or_comment_in_json": ("</" in part) or ("<!--" in part),
+                                                              "payload_text_present_but_inert": p["payload"] in html})
             else:
                 row.update(status="ok", ok=True)
         except ValueError as e:
@@ -177,6 +181,7 @@ def main():
     ap.add_argument("--width", type=int, default=CFG["defaults"]["width"])
     ap.add_argument("--n-seeds", type=int, default=None)
     ap.add_argument("--no-adversarial", action="store_true")
+    ap.add_argument("--adversarial-only", action="store_true", help="skip the prompt set, run only the input-safety prompts")
     ap.add_argument("--fresh-prompts", action="store_true", help="run the held-out prompt set (configs/audit/adherence.yaml prompts_fresh) instead")
     ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
@@ -186,6 +191,8 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     svc = LevelService()
     prompts = CFG["prompts_fresh"] if a.fresh_prompts else build_prompts()
+    if a.adversarial_only:
+        prompts = []
     if a.fresh_prompts:
         a.no_adversarial = True
     if a.only:
@@ -211,7 +218,7 @@ def main():
             f.write(json.dumps(r) + "\n")
             f.flush()
         print(f"[{i + 1}/{len(prompts)}] {p['id']}: {sum(1 for r in rows if r['id'] == p['id'] and r.get('ok'))}/{len(seeds)}  ({time.time() - t_start:.0f}s)", flush=True)
-    if not a.no_adversarial and not a.only and not a.ids:
+    if not a.no_adversarial and not a.only and not a.ids:   # (also runs for --adversarial-only: prompts is empty)
         clean = svc.run("one pipe", seed=seeds[0], w=CFG["defaults"]["w"], width=a.width, fast=True).files["html"].decode().count("</script>")
         for p in CFG["adversarial"]:
             for r in run_adversarial(svc, p, seeds, a.width, clean):
