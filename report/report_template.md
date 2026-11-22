@@ -286,7 +286,7 @@ Counting definition, ownership of columns by scene and quantity ranges are in le
 - **Small data:** 31 training levels. The unconditional baseline cannot satisfy both gate bounds (broken <= 0.05 and copy <= 0.154); the conditional model's copy rate and novelty are reported against the real reference (13).
 - **Random combinations fail:** on P-rand (random seven-topic prompts) the C-score is below an always-empty generator; the model follows prompts that look like real level segments, not arbitrary specifications.
 - **Absence is not a caption:** captions never say "no X" (contrast test P4.04 failed); the app now enforces "no X" by omitting the topic from window captions and by counting the raw level and resampling (section 6b), not by conditioning.
-- **Seams:** the seam ratio gate (1.3) was not met (G-P5.01); the first remedy (r = 5) was not enough.
+- **Seams:** the seam ratio gate (1.3) was not met (G-P5.01); the first remedy (r = 5) was not enough, and the next rung of the ladder (stride 4) also stayed above 1.3 while doubling the time per level (`reports/audit/AUDIT_REPORT.md`, section 7).
 - **Conditioning is coarse:** captions have no positions, so "a pipe near the end" cannot be expressed; quantities are 5 buckets; rare concepts (descending stairs, ceilings with gaps) have few training examples and are clamped.
 - **Checker:** solves {{cal_levels}} of real full levels (target 0.90) and disagrees with the reference jar (agreement {{p5b_agree}}); "verified" is a conservative physics claim, with killable enemies assumed.
 - **Statistics:** only 5 dev and 6 test levels, so confidence intervals are wide; no human study of playability or enjoyment was run.

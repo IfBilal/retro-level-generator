@@ -120,6 +120,7 @@ repeated from scratch on pristine seeds as rounds C and D above, because a code 
 | D15 | low | cryptic warning codes shown to users (`CLAMPED:tower:a few->two`) | raw codes in the UI | plain-English texts | `tests/test_normalizer_want.py` |
 | D16 | tool | `gate_p8.py` could not see the Streamlit Cloud app (it lives in an iframe) and clicked the hint text instead of the button | selector | frame-aware, role-based selector | run against the deployed URL |
 | D18 | low | "three staircases" matched the generator's check but a person saw four (an unrequested staircase going down) | the check counted ascending staircases only | asking for staircases of one direction rules out the other direction in that scene | `test_asking_for_staircases_of_one_direction_rules_out_the_other_direction_in_that_scene`, `test_a_stray_descending_staircase_makes_three_staircases_unmet` |
+| D19 | **critical (production)** | right after the audit's push the DEPLOYED app showed `ImportError: cannot import name 'explain_warning'` on every load | Streamlit Community Cloud keeps ONE Python process across deployments and only reloads the script folder (`app/`), never `src/`: the new script met the old `text2mario` modules in memory | `drop_stale_modules()` in `app/streamlit_app.py`: if `src/` changed under a running process, drop the stale modules and the cached model and re-import | `tests/test_app_ui.py::test_app_survives_a_redeploy_into_a_running_process_with_stale_modules` (fails with the exact production error without the fix), `test_unchanged_sources_do_not_drop_modules_on_every_rerun` |
 | D17 | hygiene | 259 lint findings repo-wide | accumulated | all fixed or exempted with a written reason (`pyproject.toml`) | `ruff check src scripts app tests` clean |
 
 ## 6. Contrarian checks (each run on purpose; outcome)
@@ -137,7 +138,7 @@ repeated from scratch on pristine seeds as rounds C and D above, because a code 
    with 17/20 -> 19/20 levels route-verified and 0 broken structures after the display repair in both. Windows now get different captions (a carrier window next to plain floor), which makes a few seams worse; this is a cost of the fix, reported, not fixed.
 5. **Cloud situation (45 s guard, CPU).** CPU, no profile variable set (the guard now applies to any machine without a GPU, because Streamlit Cloud may not have `T2M_PROFILE` set; found while planning the deployment), 10 prompts x 5 seeds: 48/50 match, median 5.9 s, max 48.3 s; the 45 s guard ended 1 level(s) early
    (all the "underground" example: 3/5 match on CPU). Counts are weaker on CPU because candidates cost real time there. This machine's CPU is not Streamlit Cloud's 2-vCPU box; the deployed app is checked separately.
-6. **Numbers re-measured, not remembered:** latency (below), tests (436 passing), determinism (`reports/gates/determinism.json`), every pass rate (artifacts above).
+6. **Numbers re-measured, not remembered:** latency (below), tests (445 passing), determinism (`reports/gates/determinism.json`), every pass rate (artifacts above).
    Latency on the RTX 3060 Ti in the app's default fast mode: 48 columns 3.32 s median (p95 6.834), 112 columns 8.64 s (p95 46.498);
    CPU: 7.25 s and 17.61 s; cold start 3.53 s.
 7. **Metric corrections** (logged with reasons in `reports/audit/TARGETS.md`): injection check measured inert text instead of a breakout; exclusive scenes; tower definition. Targets themselves were never lowered.
@@ -149,11 +150,27 @@ repeated from scratch on pristine seeds as rounds C and D above, because a code 
   coin lines use the caption detector's definition unchanged.
 * **The model itself is not better at counting.** The planner and the verifier compensate with extra draws; on the CPU/cloud they have fewer draws within 45 s (section 6.5), so the deployed app matches counts less
   often than the GPU numbers in section 4, and the "underground" example may report unmet counts there. The page says so when it happens.
-* **Old gates still fail:** G-P3, G-P4 (P4.04), G-P5 (seam ratio), G-P5b (checker vs the reference solver). They are about model/data/checker quality and were out of scope (no retraining, frozen checkpoint).
+* **Old gates still fail: G-P3, G-P4 (P4.04), G-P5 (seam ratio), G-P5b (checker vs the reference solver).** After the main audit I tried what the project's own rules allow for each, and measured it:
+  * **G-P5.01 seams** (rollback ladder R-5.1: stride 4 had never been tried): re-running the 20-job G-P5 subset with stride 4 (`reports/gates/_p5_stride4`) gives seam ratio 1.8082 (stride 8 with the final pipeline: 1.911; the unmodified pipeline: 1.42; limit 1.3), but 20/20 levels route-verified, 0.0 broken structures before repair and 79 s per level (about twice the time).
+    Better, not a pass, and twice as slow, so it is NOT the default. The next rung (direct wide sampling, X12) needs a different model. A cheaper idea not done: choose among the GPU's 32 candidate windows by a seam score as well as by the count check.
+  * **G-P3** (broken <= 0.05 AND copy <= 0.154 for the unconditional baseline): the matrix's remedy R-3.6 is dropout. A fresh cosine run with dropout 0.3 instead of 0.1 (`reports/gates/P3_cos_dr3`) reaches 0.117 broken / 0.137 copy (step 14000) at its best-balanced step against 0.070 / 0.137 for the original run: **more** broken structures, same copying, so the hypothesis is refuted. A dropout-0.5 run was started and died with the GPU shared; it was not repeated because 0.3 already went the wrong way.
+  * **G-P4.04** (contrast test on the raw model: enemy absence in 5/8 seed pairs, needs 6/8) and **G-P5b** (the reference jar fails a 1-high wall, and the alternative needs 50 human-labelled levels) cannot be changed without retraining the frozen model (the one-shot test is spent) or without people. The app does not rely on them: absence is enforced by verification (negation rows 40/40 in every final round).
   "Route found" still means "found by our checker", not "beatable by every player".
-* **No human played the levels**, and the visual count check covered 12 levels.
+  * **No human played the levels**, and the visual count check covered 12 levels.
 * **Windows clock / Windows asyncio:** the server log shows one benign `ConnectionResetError` when a browser is killed mid-request (Windows); no application traceback appeared in any run.
 * `reports/audit/round1_partial_counts`, `round2_noncount`, `round3`-`round5`, `roundA`, `roundB_*` are development rounds kept as history; the numbers of record are `baseline_full`, `roundC_baseline_seeds`, `roundD_*`, `cloud_cpu`.
+
+## 7b. The tests were tested too
+
+A test suite that cannot fail proves nothing, so the new tests were put on trial (`scripts/audit_tests_mutation.py`, `audit_test_hygiene.py`, `audit_test_robustness.py`):
+
+* **Mutation audit:** 69 deliberate bugs were injected one at a time into the new code (a flipped comparison, a deleted guard, a changed constant, a removed escape...); the tests caught 68 of them
+  (`reports/audit/test_mutation.md`). Survivors: none; proven-equivalent mutants: H11. The first pass caught 55 of 58 and the next batch 7 of 11: **every survivor exposed a real gap** (the
+  height threshold of a tower, the Wilson interval's lower clamp, the draw cap and best-candidate choice of the sequential redraw loop, scene-specific prohibitions, the "earlier sentence" notice, the draw budget of whole-level
+  resamples), each is now pinned by a test that fails when the bug is put back. A mutation that created an infinite loop was caught by the timeout, and the harness restores the source after every mutation and heals itself after a forced kill (it did once).
+* **Hygiene scan:** 339 test functions parsed; flagged: 0. The scan found five weak OLD tests (one `assert ... or True` that could never fail, four fuzz tests whose only check was "does not raise"); they now assert something.
+* **Flakiness and order:** the fast suite under three different hypothesis seeds and the whole suite (fast + slow) in reverse file order: 445 passed, 1 skipped, 19 deselected in 57.10s (3 seeds); 445 passed, 1 skipped, 19 deselected in 57.67s (3 seeds); 445 passed, 1 skipped, 19 deselected in 57.77s (3 seeds); 464 passed, 1 skipped in 204.81s (0:03:24) (reverse order).
+* **Coverage** (branch coverage of the changed modules, fast + slow tests together): count_audit 100 %, adherence 99 %, full_level 98 %, game_html 100 %, schema 94 %, normalizer 94 %, service 86 % (the rest of `service.py` is model loading, covered by the real-model UI tests).
 
 ## 8. Browser audit (real Chromium against the running app)
 
@@ -180,30 +197,4 @@ python scripts/build_audit_report.py
 
 ## 10. Commits on `audit/prompt-adherence`
 
-* `6f388a2` fix(app): Dice and example buttons use on_click callbacks (StreamlitWidgetAlreadyInstantiatedError); regression test fails on old code
-* `ec4d73d` fix(gate): gate_p8 looks inside the Streamlit Cloud app iframe; feat(audit): real-browser audit script
-* `da3a89d` feat(audit): adherence harness, independent counter with hand-built-grid tests, targets written before measuring
-* `b4c0e5f` fix(text): normalizer keeps exact requested counts (want), bare negation, contradiction warning; tests
-* `d0c2505` feat(generate): level-level count planning per window + raw-level verification against the parsed counts; UI shows matched/unmet counts and the per-window capti
-* `0337a8c` fix(generate): plan only the NEW objects per window, redraw a window until its new columns match (best of N), separate adherence budget in the schema, refuse co
-* `3119b47` fix(render): escape '<!--' in the inlined level JSON (a prompt could break the game page); show the previous sentence as plain text; window-exactness script
-* `41b710c` feat(audit): baseline of the unmodified code (113/628 levels pass), data-flow notes, held-out prompts, deployed link in README/DEPLOY
-* `9793739` test(adherence): property-based + decision-coverage tests (partition, planner completeness, counter agreement, totality, injection), plain-English warning texts
-* `fb66b34` feat(audit): browser state/viewport/seed/keyboard/offline/play/equality audit script
-* `da2487f` fix(generate): hard cap on extra window draws spent on counts (a seed that could not be satisfied took 177 s); regression test; partial round-1 counts evidence
-* `91dc28e` style: ruff safe auto-fixes (unused imports/noqa, import order); fast suite unchanged (371 passed)
-* `bac6891` style: repo-wide ruff clean (unused locals, dead conditions, NaN idiom, blind test exceptions); documented per-file exemptions for CLI/gate/one-shot scripts; fa
-* `a1a0dbc` feat(generate): CUDA batched candidate windows for count matching (one forward pass, keep the first exact or closest); CPU keeps sequential redraws; stub tests
-* `7ef2618` feat(generate): CPU/cloud draws one window first and a small batch only on a miss (measured 8 candidates ~2.5x one draw vs ~8x sequential); CUDA batch 32; share
-* `4b60943` fix(generate): refuse more scenes than windows (the last scenes were silently dropped yet judged); gallery shows count status; showcase manifest records counts;
-* `f0e40e4` feat(generate): exclusive scenes (then = what is asked elsewhere is ruled out here), redraw the window the plan gave the object to, plan recorded per window; UI
-* `28ef9ce` feat(audit): corrected injection metric (real breakout, not inert text), adversarial-only mode, <!-- and </script> payloads; baseline vs current adversarial row
-* `05702a6` feat(slides): editable PPTX built from the same slide data as the PDF; audit results on the slides; viva guide + ledger section 7b; example chip content check i
-* `84c394a` fix(generate): keep fixing counts after the route budget is spent (all failing 'underground' levels stopped there); attempts_total capped at the ledger limit; t
-* `a43cea0` fix(count): towers are counted as a person sees them (the detector counted a staircase top as a tower and merged pillars: 10/30 levels disagreed); detector coun
-* `3c1649d` docs(audit): targets change log, ledger AD8/AD9, tower definition check script and notes
-* `6a8846f` test: service path/boundary tests, UI notice tests (counts met / unmet / refused / time limit), sanitizer property, last branches; harness --device; UI says whe
-* `20eb918` fix(game): Phaser autoFocus off (a console error inside the sandboxed iframe on every load); regression test embeds the game as the app does
-* `ddcd869` perf(sampler): CUDA-graph replay of the U-Net forward in the app window sampler (4.6x per window; lock for shared sessions; captured with the autocast weight ca
-* `34a0ed9` fix(count): asking for staircases of one direction rules out the other direction in that scene (a fresh-seed miss: 'three staircases' got 4); round A/B/cloud/la
-* `cb7d3e2` fix(app): the 45 s time guard applies on any machine without a GPU (Streamlit Cloud is CPU-only and the profile variable may be unset); test; evidence index gen
+n/a (no commits ahead of main)

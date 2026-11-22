@@ -116,9 +116,13 @@ repeated from scratch on pristine seeds as rounds C and D above, because a code 
   coin lines use the caption detector's definition unchanged.
 * **The model itself is not better at counting.** The planner and the verifier compensate with extra draws; on the CPU/cloud they have fewer draws within 45 s (section 6.5), so the deployed app matches counts less
   often than the GPU numbers in section 4, and the "underground" example may report unmet counts there. The page says so when it happens.
-* **Old gates still fail:** G-P3, G-P4 (P4.04), G-P5 (seam ratio), G-P5b (checker vs the reference solver). They are about model/data/checker quality and were out of scope (no retraining, frozen checkpoint).
+* **Old gates still fail: G-P3, G-P4 (P4.04), G-P5 (seam ratio), G-P5b (checker vs the reference solver).** After the main audit I tried what the project's own rules allow for each, and measured it:
+  * **G-P5.01 seams** (rollback ladder R-5.1: stride 4 had never been tried): re-running the 20-job G-P5 subset with stride 4 (`reports/gates/_p5_stride4`) gives seam ratio {{s4_seam}} (stride 8 with the final pipeline: {{p5_a_mean}}; the unmodified pipeline: {{p5_b_mean}}; limit 1.3), but {{s4_ver}} levels route-verified, {{s4_broken}} broken structures before repair and {{s4_sec}} s per level (about twice the time).
+    Better, not a pass, and twice as slow, so it is NOT the default. The next rung (direct wide sampling, X12) needs a different model. A cheaper idea not done: choose among the GPU's 32 candidate windows by a seam score as well as by the count check.
+  * **G-P3** (broken <= 0.05 AND copy <= 0.154 for the unconditional baseline): the matrix's remedy R-3.6 is dropout. A fresh cosine run with dropout 0.3 instead of 0.1 (`reports/gates/P3_cos_dr3`) reaches {{dr3_row}} at its best-balanced step against 0.070 / 0.137 for the original run: **more** broken structures, same copying, so the hypothesis is refuted. A dropout-0.5 run was started and died with the GPU shared; it was not repeated because 0.3 already went the wrong way.
+  * **G-P4.04** (contrast test on the raw model: enemy absence in 5/8 seed pairs, needs 6/8) and **G-P5b** (the reference jar fails a 1-high wall, and the alternative needs 50 human-labelled levels) cannot be changed without retraining the frozen model (the one-shot test is spent) or without people. The app does not rely on them: absence is enforced by verification (negation rows 40/40 in every final round).
   "Route found" still means "found by our checker", not "beatable by every player".
-* **No human played the levels**, and the visual count check covered 12 levels.
+  * **No human played the levels**, and the visual count check covered 12 levels.
 * **Windows clock / Windows asyncio:** the server log shows one benign `ConnectionResetError` when a browser is killed mid-request (Windows); no application traceback appeared in any run.
 * `reports/audit/round1_partial_counts`, `round2_noncount`, `round3`-`round5`, `roundA`, `roundB_*` are development rounds kept as history; the numbers of record are `baseline_full`, `roundC_baseline_seeds`, `roundD_*`, `cloud_cpu`.
 

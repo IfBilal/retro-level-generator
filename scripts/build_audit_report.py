@@ -180,6 +180,15 @@ def values():
         v.update(hyg_tests=hy["tests"], hyg_flagged=len(hy["flagged"]))
     if rb:
         v["rob_summary"] = "; ".join(f"{r['summary']} ({'3 seeds' if 'not slow' in r['args'] else 'reverse order'})" for r in rb["runs"])
+    s4 = J("reports/gates/_p5_stride4/RESULT.json")
+    if s4:
+        v.update(s4_seam=next(c["value"] for c in s4["checks"] if c["id"] == "P5.01"), s4_ver=f"{round(s4['diagnostics']['verified_rate'] * s4['diagnostics']['n_levels'])}/{s4['diagnostics']['n_levels']}",
+                 s4_broken=s4["diagnostics"]["pre_repair_broken_rate"], s4_sec=round(s4["diagnostics"]["seconds_per_level_mean"]))
+    d3 = J("reports/gates/P3_cos_dr3/RESULT.json")
+    if d3:
+        rows = sorted(d3["diagnostics"]["all_checkpoint_rows"], key=lambda r: r["step"])
+        best = min((r for r in rows if r["step"] >= 10000), key=lambda r: r["broken_rate"] + max(0.0, r["copy_rate"] - 0.154))
+        v["dr3_row"] = f"{best['broken_rate']:.3f} broken / {best['copy_rate']:.3f} copy (step {best['step']})"
     dep = J("reports/gates/P8/RESULT.json") or {}
     v["deployed_pass"] = "PASS" if dep.get("pass") else "n/a"
     return v
