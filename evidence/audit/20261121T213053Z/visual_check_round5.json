@@ -1,0 +1,347 @@
+[
+ {
+  "id": "cnt_pipe_1",
+  "seed": 1000,
+  "text": "one pipe",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 1,
+   "enemy": 1
+  }
+ },
+ {
+  "id": "cnt_pipe_2",
+  "seed": 1000,
+  "text": "two pipes",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 2,
+   "enemy": 2
+  }
+ },
+ {
+  "id": "cnt_enemy_3",
+  "seed": 1000,
+  "text": "three enemies",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "enemy",
+    "want": [
+     3,
+     3
+    ],
+    "got": 3,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "enemy": 3
+  }
+ },
+ {
+  "id": "cnt_platform_3",
+  "seed": 1000,
+  "text": "three platforms",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "platform",
+    "want": [
+     3,
+     3
+    ],
+    "got": 3,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "platform": 3
+  }
+ },
+ {
+  "id": "cnt_tower_2",
+  "seed": 1000,
+  "text": "two towers",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "tower",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "staircase": 1,
+   "tower": 2
+  }
+ },
+ {
+  "id": "cnt_cannon_2",
+  "seed": 1000,
+  "text": "two cannons",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "cannon",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "cannon": 2
+  }
+ },
+ {
+  "id": "ex_button_2",
+  "seed": 1000,
+  "text": "flat ground, one pipe, then several coins and a staircase",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "coin",
+    "want": [
+     5,
+     9
+    ],
+    "got": 7,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "staircase",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 1,
+   "enemy": 1,
+   "coin": 7,
+   "staircase": 1,
+   "coin line": 3
+  }
+ },
+ {
+  "id": "ex_button_3",
+  "seed": 1000,
+  "text": "an underground level: three platforms, then a cannon and two enemies",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "platform",
+    "want": [
+     3,
+     3
+    ],
+    "got": 3,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "cannon",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "enemy",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "enemy": 2,
+   "cannon": 1,
+   "platform": 3
+  }
+ },
+ {
+  "id": "ord_three",
+  "seed": 1000,
+  "text": "one pipe, then two enemies, then a cannon",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "enemy",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   },
+   {
+    "scene": 2,
+    "topic": "cannon",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 1,
+   "enemy": 2,
+   "cannon": 1
+  }
+ },
+ {
+  "id": "neg_two_pipes_no_enemies",
+  "seed": 1000,
+  "text": "two pipes and no enemies",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   },
+   {
+    "scene": 0,
+    "topic": "enemy",
+    "want": [
+     0,
+     0
+    ],
+    "got": 0,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 2
+  }
+ },
+ {
+  "id": "syn_chimney",
+  "seed": 1000,
+  "text": "a chimney",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 1,
+   "enemy": 1
+  }
+ },
+ {
+  "id": "two_scene_same",
+  "seed": 1000,
+  "text": "one pipe, then two pipes",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "pipe",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "pipe",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "pipe": 3,
+   "enemy": 2
+  }
+ }
+]

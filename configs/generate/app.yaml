@@ -13,7 +13,7 @@ modes:
   full: {steps: 50, resample_r: 2, checker_budget: 20000}    # drills 7 and 8: change steps / resample_r
 verify: {max_window_attempts: 5, max_total_attempts: 20}      # ledger G5
 validation: {max_prompt_chars: 400}
-cloud: {time_budget_s: 45}                                    # drill 18: lower it to trigger the 'time budget' fallback
+cloud: {time_budget_s: 45}      # also applied whenever there is no GPU (service.run), whatever T2M_PROFILE says                                    # drill 18: lower it to trigger the 'time budget' fallback
 examples:                                                     # drill 14: add a chip
   - "full floor with two pipes and a few enemies"
   - "flat ground, one pipe, then several coins and a staircase"

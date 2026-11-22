@@ -136,7 +136,10 @@ class LevelService:
             if not ok:
                 raise ValueError(msg)
         s = FAST if (fast or self.fast_forced) else FULL
-        budget = time_budget_s if time_budget_s is not None else (float(_C["cloud"]["time_budget_s"]) if self.profile == "cloud" else None)
+        # the time guard applies on the cloud profile AND on any machine without a GPU: a CPU server cannot afford an unbounded search for a hard prompt
+        # (Streamlit Community Cloud is CPU-only, and the profile variable may not have been set in its settings)
+        guarded = self.profile == "cloud" or self.device != "cuda"
+        budget = time_budget_s if time_budget_s is not None else (float(_C["cloud"]["time_budget_s"]) if guarded else None)
         t0 = time.time()
         lvl = generate(self.bundle, text, seed=seed, w=w, width=width, steps=s["steps"], resample_r=s["resample_r"],
                        device=self.device, verify=verify, profile=self.profile, time_budget_s=budget, checker_budget=s["checker_budget"])

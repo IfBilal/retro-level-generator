@@ -1,0 +1,252 @@
+[
+ {
+  "check": "viewport 1920x1080: no horizontal overflow before generating",
+  "pass": true,
+  "px": 0
+ },
+ {
+  "check": "viewport 1920x1080: Generate button reachable",
+  "pass": true,
+  "visible": true
+ },
+ {
+  "check": "viewport 1920x1080: no horizontal overflow after generating",
+  "pass": true,
+  "px": 0
+ },
+ {
+  "check": "viewport 1920x1080: no exception box",
+  "pass": true
+ },
+ {
+  "check": "viewport 1920x1080: no page errors",
+  "pass": true,
+  "errors": []
+ },
+ {
+  "check": "viewport 1280x720: no horizontal overflow before generating",
+  "pass": true,
+  "px": 0
+ },
+ {
+  "check": "viewport 1280x720: Generate button reachable",
+  "pass": true,
+  "visible": true
+ },
+ {
+  "check": "viewport 1280x720: no horizontal overflow after generating",
+  "pass": true,
+  "px": 0
+ },
+ {
+  "check": "viewport 1280x720: no exception box",
+  "pass": true
+ },
+ {
+  "check": "viewport 1280x720: no page errors",
+  "pass": true,
+  "errors": []
+ },
+ {
+  "check": "viewport 390x844: no horizontal overflow before generating",
+  "pass": true,
+  "px": 0
+ },
+ {
+  "check": "viewport 390x844: Generate button reachable",
+  "pass": true,
+  "visible": true
+ },
+ {
+  "check": "viewport 390x844: no horizontal overflow after generating",
+  "pass": true,
+  "px": 0
+ },
+ {
+  "check": "viewport 390x844: no exception box",
+  "pass": true
+ },
+ {
+  "check": "viewport 390x844: no page errors",
+  "pass": true,
+  "errors": []
+ },
+ {
+  "check": "state: edited prompt -> old level is labelled as an earlier sentence",
+  "pass": true,
+  "snippet": "earlier sentence (shown here as plain text). Press Generate & Play to make one f"
+ },
+ {
+  "check": "state: double click while generating -> no exception",
+  "pass": true
+ },
+ {
+  "check": "state: after double click the level matches the NEW sentence",
+  "pass": true
+ },
+ {
+  "check": "state: reload mid-generation -> app usable again, no exception",
+  "pass": true
+ },
+ {
+  "check": "state: page Gallery opens without exception",
+  "pass": true
+ },
+ {
+  "check": "state: page About opens without exception",
+  "pass": true
+ },
+ {
+  "check": "state: page Studio opens without exception",
+  "pass": true
+ },
+ {
+  "check": "state: Gallery level picker works without exception",
+  "pass": true
+ },
+ {
+  "check": "state: browser back/forward -> no exception",
+  "pass": true
+ },
+ {
+  "check": "state: no page errors in the whole state scenario",
+  "pass": true,
+  "errors": []
+ },
+ {
+  "check": "state: no own console errors",
+  "pass": true,
+  "errors": []
+ },
+ {
+  "check": "state: first level existed",
+  "pass": true
+ },
+ {
+  "check": "state: two tabs generating at once -> both finish, no exception",
+  "pass": true
+ },
+ {
+  "check": "seed: typed value -> no exception and a sane field value",
+  "pass": true,
+  "value": "4242"
+ },
+ {
+  "check": "seed: huge value -> no exception and a sane field value",
+  "pass": true,
+  "value": "1152921504606846976"
+ },
+ {
+  "check": "seed: negative -> no exception and a sane field value",
+  "pass": true,
+  "value": "-5"
+ },
+ {
+  "check": "seed: empty -> no exception and a sane field value",
+  "pass": true,
+  "value": "0"
+ },
+ {
+  "check": "seed: text -> no exception and a sane field value",
+  "pass": true,
+  "value": "0"
+ },
+ {
+  "check": "seed: decimal -> no exception and a sane field value",
+  "pass": true,
+  "value": "3"
+ },
+ {
+  "check": "seed: step up increments by one",
+  "pass": true,
+  "value": "4243"
+ },
+ {
+  "check": "seed: step down decrements by one",
+  "pass": true,
+  "value": "4242"
+ },
+ {
+  "check": "seed: the seed shown is the seed used",
+  "pass": true,
+  "caption": "57 columns | 5.21 s to generate and verify | seed 4242 | steps 25 | attempts 0"
+ },
+ {
+  "check": "seed: the iframe level records the same seed",
+  "pass": true,
+  "got": 4242
+ },
+ {
+  "check": "seed: CFG slider by keyboard -> no exception",
+  "pass": true
+ },
+ {
+  "check": "keyboard: Tab reaches the Generate & Play button from the prompt box",
+  "pass": true
+ },
+ {
+  "check": "keyboard: Enter on the focused button generates a level",
+  "pass": true
+ },
+ {
+  "check": "keyboard: every visible text input has an accessible name",
+  "pass": true,
+  "unlabeled": []
+ },
+ {
+  "check": "offline: generation works with every non-local request blocked",
+  "pass": true,
+  "blocked": []
+ },
+ {
+  "check": "offline: Phaser is bundled in the game page (works with the network blocked)",
+  "pass": true
+ },
+ {
+  "check": "offline: the game page itself requested no external URL",
+  "pass": true,
+  "blocked": []
+ },
+ {
+  "check": "play: the frame changes after pressing right + jump (Mario / camera moved)",
+  "pass": true
+ },
+ {
+  "check": "play: nothing threw inside the game iframe",
+  "pass": true,
+  "errors": []
+ },
+ {
+  "check": "play: the click-to-play overlay hides after the click",
+  "pass": true
+ },
+ {
+  "check": "equality: same prompt+seed+settings twice through the UI -> identical raw_grid",
+  "pass": true
+ },
+ {
+  "check": "equality: the iframe level equals a direct service run (same machine)",
+  "pass": true
+ },
+ {
+  "check": "equality: displayed columns are true",
+  "pass": true
+ },
+ {
+  "check": "equality: the caption's column count matches the level",
+  "pass": true,
+  "caption": "57 columns | 5.43 s to generate and verify | seed 777 | steps 25 | attempts 0"
+ },
+ {
+  "check": "equality: the 'what the model will understand' panel shows exactly the scene captions recorded in the level",
+  "pass": true,
+  "panel": [
+   "one pipe",
+   "two enemies"
+  ],
+  "recorded": [
+   "one pipe",
+   "two enemies"
+  ]
+ }
+]

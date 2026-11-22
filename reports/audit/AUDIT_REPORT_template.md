@@ -36,27 +36,34 @@ be met is reported in the page; **no tile is ever edited** for adherence.
 
 ## 4. Before / after (the same 630 levels: 63 prompts x 10 seeds, or 20 input-safety checks)
 
-Baseline = the unmodified code (git `{{base_git}}`, UTC {{base_utc}}; its input-safety rows were re-run with the corrected injection check on the same code). Round A = final code (git `{{A_git}}`, UTC {{A_utc}}).
+Baseline = the unmodified code (git `{{base_git}}`, UTC {{base_utc}}; its input-safety rows were re-run with the corrected injection check on the same code). Round C = final code (git `{{A_git}}`, UTC {{A_utc}}), same prompts and seeds as the baseline.
 
 {{table_base_A}}
 
-Prompts below target in round A: {{misses_A}}
+Prompts below target in round C: {{misses_A}}
 
-**Round B, fresh seeds** (5000-5009, never used while tuning; git `{{B1_git}}`, UTC {{B1_utc}}; code unchanged since round A):
+**Round D, fresh seeds** (7000-7009, used only for this round; git `{{B1_git}}`, UTC {{B1_utc}}; code unchanged since round C):
 
 {{table_B1}}
 
-Prompts below target in round B: {{misses_B1}}
+Prompts below target in round D: {{misses_B1}}
 
-**Round B, held-out prompts** (written before any tuning, `configs/audit/adherence.yaml: prompts_fresh`, fresh seeds): {{B2_overall}} levels match.
+**Round D, held-out prompts** (written before any tuning, `configs/audit/adherence.yaml: prompts_fresh`, the pristine seeds): {{B2_overall}} levels match.
 
 {{table_B2}}
 
 Held-out prompts below target: {{misses_B2}}
 
-Stop condition: rounds A and B are two consecutive full rounds with no code change between them (`git log` shows no `src/` or `configs/` commit after `{{A_git}}` and before round B ended; the working tree was clean apart from
-generated reports). Round time per level (median / p95 / max seconds, GPU): baseline {{base_t50}} / {{base_t95}} / {{base_tmax}}, round A {{A_t50}} / {{A_t95}} / {{A_tmax}}, round B {{B1_t50}} / {{B1_t95}} / {{B1_tmax}}.
-Levels with a route found by the playability checker: baseline {{base_verified}} of {{base_levels}}, round A {{A_verified}} of {{A_levels}} (the fix did not make the checker's job worse).
+Stop condition: rounds C and D are two consecutive full rounds with no code change between them (`git log` shows no `src/` or `configs/` commit after `{{A_git}}` and before round D ended; the working tree was clean apart from
+generated reports). Round time per level (median / p95 / max seconds, GPU): baseline {{base_t50}} / {{base_t95}} / {{base_tmax}}, round C {{A_t50}} / {{A_t95}} / {{A_tmax}}, round D {{B1_t50}} / {{B1_t95}} / {{B1_tmax}}.
+Levels with a route found by the playability checker: baseline {{base_verified}} of {{base_levels}}, round C {{A_verified}} of {{A_levels}} (the fix did not make the checker's job worse).
+
+**The earlier confirmation attempt (rounds A and B, history).** Round A (baseline seeds) matched 630/630 and round B (fresh seeds 5000-5009) 629/630 with 100/100 on the held-out prompts:
+
+{{table_dev}}
+
+The one miss in round B ("three staircases" produced four because an unrequested descending staircase appeared; within the per-prompt target, but a real defect) was fixed (D18) and the confirmation was
+repeated from scratch on pristine seeds as rounds C and D above, because a code change invalidates "no change between rounds".
 
 ## 5. Every defect found (severity, root cause, fix, regression test)
 
@@ -78,6 +85,7 @@ Levels with a route found by the playability checker: baseline {{base_verified}}
 | D14 | low | Wilson interval excluded its own point estimate for k = n (float rounding) | `0.9999999999999999 < 1.0` | clamp to the estimate | `test_wilson_interval_properties` (found by hypothesis) |
 | D15 | low | cryptic warning codes shown to users (`CLAMPED:tower:a few->two`) | raw codes in the UI | plain-English texts | `tests/test_normalizer_want.py` |
 | D16 | tool | `gate_p8.py` could not see the Streamlit Cloud app (it lives in an iframe) and clicked the hint text instead of the button | selector | frame-aware, role-based selector | run against the deployed URL |
+| D18 | low | "three staircases" matched the generator's check but a person saw four (an unrequested staircase going down) | the check counted ascending staircases only | asking for staircases of one direction rules out the other direction in that scene | `test_asking_for_staircases_of_one_direction_rules_out_the_other_direction_in_that_scene`, `test_a_stray_descending_staircase_makes_three_staircases_unmet` |
 | D17 | hygiene | 259 lint findings repo-wide | accumulated | all fixed or exempted with a written reason (`pyproject.toml`) | `ruff check src scripts app tests` clean |
 
 ## 6. Contrarian checks (each run on purpose; outcome)
@@ -85,7 +93,7 @@ Levels with a route found by the playability checker: baseline {{base_verified}}
 1. **Is the counter right?** Hand-built grids (two touching pipes, pipe next to a tower, hanging pipe, boundaries): `tests/test_count_audit.py`. An independent re-count of pipes, enemies, coins, cannons and question
    blocks agrees with the detector on {{A_counter_levels}} levels with {{A_counter_disagree}} disagreements. A contact sheet of 12 levels was checked by eye (`evidence/audit/*/visual_check_*.png`): 11 matched; the
    12th exposed the tower definition problem (D11), which is why towers are now counted as a person sees them.
-2. **Lucky seeds / easy prompts?** Round B uses 10 seeds and 10 prompts that were never used while tuning. Result above.
+2. **Lucky seeds / easy prompts?** Round D uses 10 seeds and 10 prompts that were never used while tuning (round B used another 10 seeds that were no longer pristine after its miss was analysed). Result above.
 3. **Does it hurt variety?** No collapse to one level: distinct grids per prompt {{var_distinct_b}} -> {{var_distinct_a}} of 10 (fewest for any prompt: {{var_min}}, the "no X" prompts, which are flat floors by
    definition). **But the levels are sparser**: mean pairwise cell difference {{var_ham_b}} -> {{var_ham_a}}, share of plain floor/sky cells {{var_plain_b}} -> {{var_plain_a}}. That is the price of windows that must
    hold exactly zero of an unrequested thing (`reports/audit/variety.md`).
@@ -109,7 +117,7 @@ Levels with a route found by the playability checker: baseline {{base_verified}}
   "Route found" still means "found by our checker", not "beatable by every player".
 * **No human played the levels**, and the visual count check covered 12 levels.
 * **Windows clock / Windows asyncio:** the server log shows one benign `ConnectionResetError` when a browser is killed mid-request (Windows); no application traceback appeared in any run.
-* `reports/audit/round1_partial_counts`, `round2_noncount`, `round3`-`round5` are intermediate development rounds kept as history; the numbers of record are `baseline_full`, `roundA`, `roundB_*`, `cloud_cpu`.
+* `reports/audit/round1_partial_counts`, `round2_noncount`, `round3`-`round5`, `roundA`, `roundB_*` are development rounds kept as history; the numbers of record are `baseline_full`, `roundC_baseline_seeds`, `roundD_*`, `cloud_cpu`.
 
 ## 8. Browser audit (real Chromium against the running app)
 
@@ -122,9 +130,9 @@ The deployed app: `scripts/gate_p8.py` {{deployed_pass}}; the deployed run is in
 ```
 python scripts/audit_adherence.py --label NAME --seeds baseline      # or --seeds fresh, --fresh-prompts, --only cat,cat, --device cpu with T2M_PROFILE=cloud
 python scripts/merge_audit_rounds.py --out baseline_full --parts baseline:non-adversarial baseline_adv:adversarial
-python scripts/audit_variety.py --before baseline_full --after roundA
-python scripts/audit_towers.py --run baseline_full --run roundA
-python scripts/audit_visual_check.py --run roundA --out evidence/audit/<ts>
+python scripts/audit_variety.py --before baseline_full --after roundC_baseline_seeds
+python scripts/audit_towers.py --run baseline_full --run roundC_baseline_seeds
+python scripts/audit_visual_check.py --run roundC_baseline_seeds --out evidence/audit/<ts>
 python scripts/audit_window_exactness.py                              # per-window exact-count rates
 python scripts/audit_browser.py http://localhost:8501 --dice 30 --out evidence/audit/<ts> --name final_local
 python scripts/audit_browser_states.py http://localhost:8501 --out evidence/audit/<ts>

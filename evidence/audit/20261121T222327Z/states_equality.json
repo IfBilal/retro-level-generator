@@ -1,0 +1,17 @@
+{
+ "panel_scene_captions": [
+  "one pipe",
+  "two enemies"
+ ],
+ "level_scene_captions": [
+  "one pipe",
+  "two enemies"
+ ],
+ "window_captions_actually_sent_to_the_model": [
+  "full floor.",
+  "full floor. one pipe.",
+  "full floor.",
+  "full floor. one enemy.",
+  "full floor. one enemy."
+ ]
+}

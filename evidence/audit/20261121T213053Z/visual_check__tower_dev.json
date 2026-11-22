@@ -1,0 +1,102 @@
+[
+ {
+  "id": "cnt_tower_2",
+  "seed": 1002,
+  "text": "two towers",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "tower",
+    "want": [
+     2,
+     2
+    ],
+    "got": 2,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "tower": 2,
+   "tower_detector": 2
+  }
+ },
+ {
+  "id": "cnt_tower_3",
+  "seed": 1002,
+  "text": "three towers",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "tower",
+    "want": [
+     3,
+     3
+    ],
+    "got": 3,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "enemy": 1,
+   "tower": 3,
+   "tower_detector": 3
+  }
+ },
+ {
+  "id": "ord_stair_tower",
+  "seed": 1002,
+  "text": "a staircase, then a tower",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "staircase",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   },
+   {
+    "scene": 1,
+    "topic": "tower",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "staircase": 1,
+   "tower": 1,
+   "tower_detector": 1
+  }
+ },
+ {
+  "id": "cnt_tower_1",
+  "seed": 1002,
+  "text": "one tower",
+  "ok": true,
+  "checks": [
+   {
+    "scene": 0,
+    "topic": "tower",
+    "want": [
+     1,
+     1
+    ],
+    "got": 1,
+    "ok": true
+   }
+  ],
+  "all_counts": {
+   "tower": 1,
+   "tower_detector": 1
+  }
+ }
+]

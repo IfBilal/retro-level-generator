@@ -1,0 +1,31 @@
+[
+ {
+  "check": "equality: same prompt+seed+settings twice through the UI -> identical raw_grid",
+  "pass": true
+ },
+ {
+  "check": "equality: the iframe level equals a direct service run (same machine)",
+  "pass": true
+ },
+ {
+  "check": "equality: displayed columns are true",
+  "pass": true
+ },
+ {
+  "check": "equality: the caption's column count matches the level",
+  "pass": true,
+  "caption": "57 columns | 7.75 s to generate and verify | seed 777 | steps 25 | attempts 0"
+ },
+ {
+  "check": "equality: the 'what the model will understand' panel shows exactly the scene captions recorded in the level",
+  "pass": true,
+  "panel": [
+   "one pipe",
+   "two enemies"
+  ],
+  "recorded": [
+   "one pipe",
+   "two enemies"
+  ]
+ }
+]

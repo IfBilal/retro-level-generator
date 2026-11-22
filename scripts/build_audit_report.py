@@ -22,6 +22,8 @@ from text2mario.data import tiles as T
 from text2mario.eval.count_audit import detector_objects, visible_towers
 
 AUD = ROOT / "reports/audit"
+R_BASE, R_FINAL, R_FRESH, R_PROMPTS = "baseline_full", "roundC_baseline_seeds", "roundD_fresh2_seeds", "roundD_fresh2_prompts"   # the numbers of record
+R_DEV_A, R_DEV_B = "roundA", "roundB_fresh_seeds"                                                                     # earlier confirmation attempt (history)
 
 
 def J(p):
@@ -99,34 +101,35 @@ def browser_summary():
 
 def values():
     v = {}
-    base, A, B1, B2, cl = (J(f"reports/audit/{r}/results.json") for r in ("baseline_full", "roundA", "roundB_fresh_seeds", "roundB_fresh_prompts", "cloud_cpu"))
+    base, A, B1, B2, cl = (J(f"reports/audit/{r}/results.json") for r in (R_BASE, R_FINAL, R_FRESH, R_PROMPTS, "cloud_cpu"))
     for key, d in (("base", base), ("A", A), ("B1", B1), ("B2", B2), ("cloud", cl)):
         v[f"{key}_overall"] = f"{d['overall'][0]}/{d['overall'][1]}" if d else "n/a (not run)"
         v[f"{key}_pct"] = f"{100 * d['overall'][0] / d['overall'][1]:.1f}" if d else "n/a (not run)"
         v[f"{key}_git"] = d["meta"]["git"] if d else "n/a (not run)"
         v[f"{key}_utc"] = d["meta"]["utc"] if d else "n/a (not run)"
-    v["table_base_A"] = cat_table(["baseline_full", "roundA"])
-    v["table_B1"] = cat_table(["roundA", "roundB_fresh_seeds"])
-    v["table_B2"] = cat_table(["roundB_fresh_prompts"])
-    v["misses_A"], v["misses_B1"], v["misses_B2"] = misses("roundA"), misses("roundB_fresh_seeds"), misses("roundB_fresh_prompts")
+    v["table_base_A"] = cat_table([R_BASE, R_FINAL])
+    v["table_B1"] = cat_table([R_FINAL, R_FRESH])
+    v["table_B2"] = cat_table([R_PROMPTS])
+    v["misses_A"], v["misses_B1"], v["misses_B2"] = misses(R_FINAL), misses(R_FRESH), misses(R_PROMPTS)
+    v["table_dev"] = cat_table([R_DEV_A, R_DEV_B, "roundB_fresh_prompts"])
     var = J("reports/audit/variety.json")
     if var:
         s = var["summary"]
         v.update(var_distinct_b=s["before"]["distinct"], var_distinct_a=s["after"]["distinct"], var_ham_b=s["before"]["mean_pairwise_hamming"], var_ham_a=s["after"]["mean_pairwise_hamming"],
                  var_plain_b=s["before"]["plain_floor_or_sky_share"], var_plain_a=s["after"]["plain_floor_or_sky_share"], var_min=s["min_distinct_after"])
-    for tag, run in (("base", "baseline_full"), ("r5", "round5"), ("A", "roundA")):
+    for tag, run in (("base", R_BASE), ("r5", "round5"), ("A", R_FINAL)):
         n, det, vis = tower_stats(run)
         v[f"tw_{tag}_n"], v[f"tw_{tag}_det"], v[f"tw_{tag}_vis"] = n, det, vis
-    rows = rows_of("roundA")
+    rows = rows_of(R_FINAL)
     v["A_counter_levels"] = sum(1 for r in rows if r.get("independent"))
     v["A_counter_disagree"] = sum(1 for r in rows if r.get("counter_disagreement"))
     v["A_tower_disagree"] = sum(1 for r in rows if r.get("counts") and r["counts"].get("tower", 0) != r["counts"].get("tower_detector", 0))
     v["A_verified"] = sum(1 for r in rows if r.get("verification") == "verified")
     v["A_levels"] = sum(1 for r in rows if r.get("verification"))
-    bro = rows_of("baseline_full")
+    bro = rows_of(R_BASE)
     v["base_verified"] = sum(1 for r in bro if r.get("verification") == "verified")
     v["base_levels"] = sum(1 for r in bro if r.get("verification"))
-    for tag, run in (("base", "baseline_full"), ("A", "roundA"), ("B1", "roundB_fresh_seeds")):
+    for tag, run in (("base", R_BASE), ("A", R_FINAL), ("B1", R_FRESH)):
         p50, p95, mx = timing(run)
         v[f"{tag}_t50"], v[f"{tag}_t95"], v[f"{tag}_tmax"] = f"{p50:.1f}", f"{p95:.1f}", f"{mx:.1f}"
     crow = rows_of("cloud_cpu")

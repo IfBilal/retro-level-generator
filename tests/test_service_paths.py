@@ -64,3 +64,21 @@ def test_validate_settings_cfg_boundaries(w, ok):
                                      ("5-6 coins", True), ("- 3 pipes", False), ("one pipe -2", False)])
 def test_validate_prompt_boundaries(text, ok):
     assert S.validate_prompt(text)[0] is ok
+
+
+@pytest.mark.parametrize("device,profile,explicit,expected", [("cpu", "local", None, 45.0), ("cuda", "local", None, None), ("cuda", "cloud", None, 45.0),
+                                                              ("cpu", "cloud", None, 45.0), ("cpu", "local", 7.0, 7.0), ("cuda", "local", 3.0, 3.0)])
+def test_time_guard_applies_on_the_cloud_profile_and_on_any_machine_without_a_gpu(monkeypatch, device, profile, explicit, expected):
+    """Streamlit Community Cloud is CPU-only and T2M_PROFILE may not be set in its settings: a CPU server must still stop a hard search at 45 s."""
+    seen = {}
+
+    def spy(bundle, text, **kw):
+        seen["tb"] = kw["time_budget_s"]
+        raise RuntimeError("stop here")
+
+    monkeypatch.setattr(S, "generate", spy)
+    svc = S.LevelService.__new__(S.LevelService)
+    svc.device, svc.profile, svc.bundle = device, profile, None
+    with pytest.raises(RuntimeError, match="stop here"):
+        svc.run("one pipe", seed=1, w=7.5, width=48, fast=True, time_budget_s=explicit)
+    assert seen["tb"] == expected
