@@ -643,3 +643,32 @@ def test_route_search_stops_at_the_time_budget(monkeypatch):
     lvl = FL.generate(None, "full floor", seed=1, width=48, device="cpu", time_budget_s=-1.0)          # already expired
     v = lvl["verification"]
     assert v["reason"] == "time budget" and v["status"] == "not_verified" and len(v["attempt_log"]) == 1
+
+
+def test_asking_for_staircases_of_one_direction_rules_out_the_other_direction_in_that_scene():
+    """Fresh-seed audit miss: 'three staircases' got 4 because an unrequested DESCENDING staircase appeared; a person counts it as a staircase."""
+    n = normalize("three staircases")
+    assert A.scene_forbids(n) == [{"descending staircase"}]
+    rows = A.constraints(n)
+    assert {"scene": 0, "topic": "descending staircase", "lo": 0, "hi": 0, "implicit": True} in rows
+    n = normalize("one ascending staircase and one descending staircase")                    # both asked for: nothing to rule out
+    assert A.scene_forbids(n) == [set()]
+    n = normalize("stairs going down")
+    assert A.scene_forbids(n) == [{"ascending staircase"}]
+
+
+def test_a_stray_descending_staircase_makes_three_staircases_unmet():
+    norm = normalize("three staircases")
+    so = FL.scene_for_windows([s.caption for s in norm.scenes], 5)
+    g = np.zeros((16, 48), np.uint8)
+    g[15, :] = T.GROUND
+    for start in (2, 12, 22):                                                                # three ascending staircases (3 steps each)
+        for k in range(3):
+            g[15 - (k + 1):15, start + k] = T.GROUND
+    for k in range(3):                                                                       # one DESCENDING staircase
+        g[15 - (3 - k):15, 34 + k] = T.GROUND
+    r = A.evaluate(g, norm, so, 48)
+    assert r["status"] == "unmet" and [(u["topic"], u["got"]) for u in r["unmet"]] == [("descending staircase", 1)]
+    g[:, 34:37] = 0
+    g[15, 34:37] = T.GROUND
+    assert A.evaluate(g, norm, so, 48)["status"] == "met"

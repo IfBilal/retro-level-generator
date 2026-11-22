@@ -71,6 +71,10 @@ def scene_forbids(norm) -> list[set]:
         f = {t for t in sc.forbid if t in COUNTED}
         if _A["exclusive_scenes"] and len(norm.scenes) > 1:
             f |= set().union(*(wanted[j] for j in range(len(wanted)) if j != i)) - wanted[i]
+        # a person counts a staircase going the other way as a staircase too: "three staircases" must not become four because one goes down
+        for asked, other in (("ascending staircase", "descending staircase"), ("descending staircase", "ascending staircase")):
+            if asked in wanted[i] and other not in wanted[i]:
+                f.add(other)
         out.append(f)
     return out
 

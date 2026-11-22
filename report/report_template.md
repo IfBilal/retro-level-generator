@@ -112,8 +112,9 @@ control-character prompts and out-of-range settings with a readable message inst
 
 **Measured latency** (this machine; `reports/app/latency.json`; thresholds were pinned *after* measuring, not before). Fast mode (25 steps, no resampling, checker budget 1,000 nodes) is the app default:
 48 columns {{lat_cuda_48_fast_p50}} s median (p95 {{lat_cuda_48_fast_p95}} s), 112 columns {{lat_cuda_112_fast_p50}} s (p95 {{lat_cuda_112_fast_p95}} s) on the RTX 3060 Ti; CPU fast mode {{lat_cpu_48_p50}} s and {{lat_cpu_112_p50}} s; cold start {{lat_cold_start_s}} s.
-Full quality (50 steps, resampling) takes {{lat_cuda_48_p50}} s and {{lat_cuda_112_p50}} s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is **not met**;
-the long p95 comes from levels the checker cannot verify, which use the whole retry budget.
+Full quality (50 steps, resampling) takes {{lat_cuda_48_p50}} s and {{lat_cuda_112_p50}} s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns on the GPU is **met** ({{lat_cuda_112_fast_p50}} s; G-P7 passes) after the app's window sampler started replaying a CUDA graph of the U-Net forward
+(same operations, no launch overhead: about 4.6 times faster per window, `src/text2mario/diffusion/graph.py`, `tests/test_cuda_graph.py`); on a CPU it is not ({{lat_cpu_112_p50}} s, and the cloud profile stops at 45 s).
+The long p95 comes from levels the checker cannot verify, which use the whole retry budget.
 
 **Engineering.** {{tests_pass}} automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.

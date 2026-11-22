@@ -1,0 +1,48 @@
+{
+  "phase": "P8",
+  "pass": true,
+  "metrics": {
+    "url": "https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/",
+    "load_seconds": 13.3,
+    "generate_seconds": 4.9,
+    "badge": true,
+    "iframe": true,
+    "validation_message": true,
+    "git_sha": "ec4d73ddfbc6ddb2e25e0d93500a0858947698d3"
+  },
+  "checks": [
+    {
+      "id": "P8.01",
+      "name": "app loads",
+      "value": 13.3,
+      "pass": true
+    },
+    {
+      "id": "P8.02",
+      "name": "generation produces a result badge",
+      "value": 4.9,
+      "pass": true
+    },
+    {
+      "id": "P8.03",
+      "name": "game iframe present",
+      "value": true,
+      "pass": true
+    },
+    {
+      "id": "P8.04",
+      "name": "empty prompt shows the validation message",
+      "value": true,
+      "pass": true
+    },
+    {
+      "id": "P8.05",
+      "name": "no uncaught page errors",
+      "value": 0,
+      "pass": true
+    }
+  ],
+  "timestamp": "2026-11-21T15:07:45Z",
+  "git_sha": "ec4d73ddfbc6ddb2e25e0d93500a0858947698d3",
+  "page_errors": []
+}

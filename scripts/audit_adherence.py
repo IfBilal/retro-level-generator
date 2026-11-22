@@ -189,7 +189,7 @@ def main():
     ap.add_argument("--fresh-prompts", action="store_true", help="run the held-out prompt set (configs/audit/adherence.yaml prompts_fresh) instead")
     ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
-    seeds = CFG["seeds_baseline"] if a.seeds == "baseline" else CFG["seeds_fresh"] if a.seeds == "fresh" else [int(x) for x in a.seeds.split(",")]
+    seeds = {"baseline": CFG["seeds_baseline"], "fresh": CFG["seeds_fresh"], "fresh2": CFG["seeds_fresh2"]}.get(a.seeds) or [int(x) for x in a.seeds.split(",")]
     seeds = seeds[:a.n_seeds] if a.n_seeds else seeds
     out = ROOT / "reports/audit" / a.label
     out.mkdir(parents=True, exist_ok=True)

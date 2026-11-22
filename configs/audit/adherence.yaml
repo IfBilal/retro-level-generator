@@ -1,7 +1,8 @@
 # Adherence audit settings (scripts/audit_adherence.py).  Quantity ranges follow ledger F15 / caption grammar (one=1, two=2, a few=3-4, several=5-9, many>=10).
 defaults: {width: 48, w: 7.5, fast: true}
 seeds_baseline: [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009]
-seeds_fresh: [5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009]      # never used while tuning
+seeds_fresh: [5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009]      # never used while tuning (round B; its one miss was then analysed, so they are no longer pristine)
+seeds_fresh2: [7000, 7001, 7002, 7003, 7004, 7005, 7006, 7007, 7008, 7009]     # pristine: used only for the final confirmation round
 quantity_ranges: {zero: [0, 0], one: [1, 1], two: [2, 2], three: [3, 3], a few: [3, 4], several: [5, 9], many: [10, 999]}
 # topic -> singular, plural, detector topics summed to get the count
 topics:

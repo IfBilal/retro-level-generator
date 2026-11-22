@@ -1,0 +1,179 @@
+{
+ "meta": {
+  "device": "cuda",
+  "profile": "local",
+  "width": 48,
+  "seeds": [
+   5000,
+   5001,
+   5002,
+   5003,
+   5004,
+   5005,
+   5006,
+   5007,
+   5008,
+   5009
+  ],
+  "git": "ddcd869",
+  "utc": "2026-11-22T00:34:03Z"
+ },
+ "mode": "fast",
+ "overall": [
+  100,
+  100
+ ],
+ "by_category": {
+  "fresh": {
+   "pass": 100,
+   "n": 100,
+   "rate": 1.0,
+   "ci95": [
+    0.963,
+    1.0
+   ]
+  }
+ },
+ "per_prompt": {
+  "fr_mix1": {
+   "cat": "fresh",
+   "text": "one pipe, then three coins, then one enemy",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "fr_mix2": {
+   "cat": "fresh",
+   "text": "two platforms and one question block",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3499999999999996
+  },
+  "fr_mix3": {
+   "cat": "fresh",
+   "text": "a staircase and two pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.355
+  },
+  "fr_mix4": {
+   "cat": "fresh",
+   "text": "three enemies and no pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.31
+  },
+  "fr_mix5": {
+   "cat": "fresh",
+   "text": "one tower, then one cannon",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3200000000000003
+  },
+  "fr_mix6": {
+   "cat": "fresh",
+   "text": "two question blocks, then a coin line",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.32
+  },
+  "fr_mix7": {
+   "cat": "fresh",
+   "text": "several coins and one platform",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3200000000000003
+  },
+  "fr_mix8": {
+   "cat": "fresh",
+   "text": "a warp pipe, then two goombas",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.325
+  },
+  "fr_mix9": {
+   "cat": "fresh",
+   "text": "make me a level with exactly three pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.325
+  },
+  "fr_mix10": {
+   "cat": "fresh",
+   "text": "no enemies, just two platforms",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  }
+ }
+}
