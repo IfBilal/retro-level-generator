@@ -68,7 +68,7 @@ def main():
               ROOT / "reports/audit/NOTES_towers.md", ROOT / "reports/audit/window_exactness.json", ROOT / "reports/audit/gate_p5_compare.json", *sorted((ROOT / "reports/audit").glob("*/results.json")),
               *sorted((ROOT / "reports/audit").glob("*/RESULTS.md"))]:                  # a snapshot of the audit's results (rows.jsonl stay in reports/audit)
         if f.exists():
-            d = EV / "audit_runs" / (f.parent.name if f.parent.name != "audit" else "")
+            d = EV / "audit_results" / (f.parent.name if f.parent.name != "audit" else "")
             d.mkdir(parents=True, exist_ok=True)
             shutil.copy(f, d / f.name)
     man = {str(p.relative_to(EV)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(EV.rglob("*")) if p.is_file()}
