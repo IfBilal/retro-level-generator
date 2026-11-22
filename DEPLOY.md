@@ -1,6 +1,6 @@
-# Deploying to Streamlit Community Cloud (needs the team's GitHub and Streamlit login)
+# Deploying to Streamlit Community Cloud (done: https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/)
 
-The build prepared everything that does not need a login. What is left is clicking through the Streamlit Community Cloud form.
+The app is deployed from `T361/retro-level-generator` (branch `main`, main file `app/streamlit_app.py`). The steps below are how it was done and how to redo it. The 45 s time guard applies automatically because the cloud has no GPU (setting `T2M_PROFILE=cloud` is optional).
 
 1. **Export the model bundle** from the frozen checkpoint (about 120 MB, each file below GitHub's 100 MB limit):
    `python scripts/export_cloud_ckpt.py runs/C-main/step_XXXXXXX.pt` -> `app/model/{t2m_ema.safetensors, config.json, minilm/, EXPORT.json}`.

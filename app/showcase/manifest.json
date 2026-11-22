@@ -8,9 +8,26 @@
    "w": 7.5,
    "file": "showcase_00.level.json",
    "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "pipe",
+     "lo": 2,
+     "hi": 2,
+     "got": 2,
+     "met": true
+    },
+    {
+     "topic": "enemy",
+     "lo": 3,
+     "hi": 4,
+     "got": 3,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 17.26
+   "seconds": 11.19
   },
   {
    "prompt": "flat ground, one pipe, then several coins and a staircase",
@@ -18,9 +35,61 @@
    "w": 7.5,
    "file": "showcase_01.level.json",
    "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "pipe",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "ascending staircase",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "coin",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "coin",
+     "lo": 5,
+     "hi": 9,
+     "got": 7,
+     "met": true
+    },
+    {
+     "topic": "ascending staircase",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "descending staircase",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "pipe",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 18.5
+   "seconds": 13.05
   },
   {
    "prompt": "an underground level: three platforms, then a cannon and two enemies",
@@ -28,9 +97,54 @@
    "w": 7.5,
    "file": "showcase_02.level.json",
    "verified": true,
+   "counts": "unmet",
+   "counts_detail": [
+    {
+     "topic": "platform",
+     "lo": 3,
+     "hi": 3,
+     "got": 2,
+     "met": false
+    },
+    {
+     "topic": "cannon",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "enemy",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "cannon",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "enemy",
+     "lo": 2,
+     "hi": 2,
+     "got": 1,
+     "met": false
+    },
+    {
+     "topic": "platform",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 17.66
+   "seconds": 72.31
   },
   {
    "prompt": "mostly pits with two islands of ground, then a coin line",
@@ -38,9 +152,40 @@
    "w": 7.5,
    "file": "showcase_03.level.json",
    "verified": false,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "coin",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "coin line",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "coin line",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "coin",
+     "lo": 3,
+     "hi": 4,
+     "got": 3,
+     "met": true
+    }
+   ],
    "bot_reached_flag": null,
    "human_played": false,
-   "seconds": 106.06
+   "seconds": 70.58
   },
   {
    "prompt": "two pipes followed by a coin line",
@@ -48,19 +193,81 @@
    "w": 7.5,
    "file": "showcase_04.level.json",
    "verified": true,
-   "bot_reached_flag": false,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "pipe",
+     "lo": 2,
+     "hi": 2,
+     "got": 2,
+     "met": true
+    },
+    {
+     "topic": "coin",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "coin line",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "coin line",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "coin",
+     "lo": 3,
+     "hi": 4,
+     "got": 3,
+     "met": true
+    },
+    {
+     "topic": "pipe",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
+   "bot_reached_flag": true,
    "human_played": false,
-   "seconds": 18.81
+   "seconds": 12.81
   },
   {
    "prompt": "a few question blocks and several enemies",
    "seed": 105,
    "w": 7.5,
    "file": "showcase_05.level.json",
-   "verified": true,
-   "bot_reached_flag": false,
+   "verified": false,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "question block",
+     "lo": 3,
+     "hi": 4,
+     "got": 3,
+     "met": true
+    },
+    {
+     "topic": "enemy",
+     "lo": 5,
+     "hi": 9,
+     "got": 7,
+     "met": true
+    }
+   ],
+   "bot_reached_flag": null,
    "human_played": false,
-   "seconds": 16.98
+   "seconds": 42.37
   },
   {
    "prompt": "full floor. one ascending staircase. two towers.",
@@ -68,9 +275,33 @@
    "w": 7.5,
    "file": "showcase_06.level.json",
    "verified": true,
-   "bot_reached_flag": false,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "ascending staircase",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "tower",
+     "lo": 2,
+     "hi": 2,
+     "got": 2,
+     "met": true
+    },
+    {
+     "topic": "descending staircase",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
+   "bot_reached_flag": true,
    "human_played": false,
-   "seconds": 18.06
+   "seconds": 12.95
   },
   {
    "prompt": "lots of coins and a couple of goombas",
@@ -78,9 +309,26 @@
    "w": 7.5,
    "file": "showcase_07.level.json",
    "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "coin",
+     "lo": 10,
+     "hi": 99,
+     "got": 10,
+     "met": true
+    },
+    {
+     "topic": "enemy",
+     "lo": 2,
+     "hi": 2,
+     "got": 2,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 75.07
+   "seconds": 12.86
   },
   {
    "prompt": "begin with a platform and end with stairs going down",
@@ -88,19 +336,74 @@
    "w": 7.5,
    "file": "showcase_08.level.json",
    "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "platform",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "descending staircase",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "descending staircase",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "ascending staircase",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "platform",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 92.38
+   "seconds": 12.99
   },
   {
    "prompt": "three pipes and no enemies",
    "seed": 109,
    "w": 7.5,
    "file": "showcase_09.level.json",
-   "verified": false,
-   "bot_reached_flag": null,
+   "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "pipe",
+     "lo": 3,
+     "hi": 3,
+     "got": 3,
+     "met": true
+    },
+    {
+     "topic": "enemy",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
+   "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 110.47
+   "seconds": 13.08
   },
   {
    "prompt": "full floor with a few gaps and one cannon",
@@ -108,9 +411,19 @@
    "w": 7.5,
    "file": "showcase_10.level.json",
    "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "cannon",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 19.02
+   "seconds": 12.97
   },
   {
    "prompt": "several platforms, then two pipes and a tower",
@@ -118,9 +431,54 @@
    "w": 7.5,
    "file": "showcase_11.level.json",
    "verified": true,
+   "counts": "met",
+   "counts_detail": [
+    {
+     "topic": "platform",
+     "lo": 5,
+     "hi": 9,
+     "got": 5,
+     "met": true
+    },
+    {
+     "topic": "pipe",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "tower",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    },
+    {
+     "topic": "pipe",
+     "lo": 2,
+     "hi": 2,
+     "got": 2,
+     "met": true
+    },
+    {
+     "topic": "tower",
+     "lo": 1,
+     "hi": 1,
+     "got": 1,
+     "met": true
+    },
+    {
+     "topic": "platform",
+     "lo": 0,
+     "hi": 0,
+     "got": 0,
+     "met": true
+    }
+   ],
    "bot_reached_flag": false,
    "human_played": false,
-   "seconds": 52.9
+   "seconds": 24.44
   }
  ]
 }

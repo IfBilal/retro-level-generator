@@ -1,7 +1,7 @@
 {
  "meta": {
   "device": "cpu",
-  "profile": "cloud",
+  "profile": "local",
   "width": 48,
   "seeds": [
    1000,
@@ -10,12 +10,12 @@
    1003,
    1004
   ],
-  "git": "3c1649d",
-  "utc": "2026-11-21T22:15:21Z"
+  "git": "cb7d3e2",
+  "utc": "2026-11-22T02:22:30Z"
  },
  "mode": "fast",
  "overall": [
-  47,
+  48,
   50
  ],
  "by_category": {
@@ -29,12 +29,12 @@
    ]
   },
   "example": {
-   "pass": 7,
+   "pass": 8,
    "n": 10,
-   "rate": 0.7,
+   "rate": 0.8,
    "ci95": [
-    0.397,
-    0.892
+    0.49,
+    0.943
    ]
   },
   "negation": {
@@ -83,7 +83,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 3.17
+   "median_s": 3.12
   },
   "cnt_enemy_2": {
    "cat": "count",
@@ -97,7 +97,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 5.8
+   "median_s": 5.9
   },
   "cnt_coin_3": {
    "cat": "count",
@@ -111,7 +111,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 5.96
+   "median_s": 6.26
   },
   "cnt_platform_2": {
    "cat": "count",
@@ -125,7 +125,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 3.16
+   "median_s": 3.22
   },
   "cnt_tower_2": {
    "cat": "count",
@@ -139,7 +139,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 3.23
+   "median_s": 3.38
   },
   "ex_button_2": {
    "cat": "example",
@@ -153,21 +153,21 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 5.86
+   "median_s": 5.91
   },
   "ex_button_3": {
    "cat": "example",
    "text": "an underground level: three platforms, then a cannon and two enemies",
    "n": 5,
-   "pass": 2,
-   "rate": 0.4,
+   "pass": 3,
+   "rate": 0.6,
    "ci95": [
-    0.118,
-    0.769
+    0.231,
+    0.882
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 45.45
+   "median_s": 45.56
   },
   "neg_two_pipes_no_enemies": {
    "cat": "negation",
@@ -181,7 +181,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 5.85
+   "median_s": 5.89
   },
   "ord_three": {
    "cat": "ordering",
@@ -195,7 +195,7 @@
    ],
    "errors": 0,
    "rejected": 0,
-   "median_s": 7.67
+   "median_s": 7.41
   }
  }
 }

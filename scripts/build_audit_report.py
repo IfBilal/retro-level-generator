@@ -161,6 +161,18 @@ def values():
     import subprocess
     log = subprocess.run(["git", "log", "--reverse", "--format=%h %s", "main..HEAD"], cwd=ROOT, capture_output=True, text=True, check=False).stdout.strip().splitlines()
     v["commits"] = "\n".join(f"* `{x.split(' ', 1)[0]}` {x.split(' ', 1)[1][:160]}" for x in log) or "n/a (no commits ahead of main)"
+    cmp_ = J("reports/audit/gate_p5_compare.json")
+    if cmp_:
+        b_, a_ = cmp_["before_unmodified_pipeline"], cmp_["after_final_pipeline"]
+        v.update(p5_b_mean=b_["mean"], p5_b_med=b_["median"], p5_b_max=b_["max"], p5_b_ver=f"{b_['verified']}/{b_['n']}",
+                 p5_a_mean=a_["mean"], p5_a_med=a_["median"], p5_a_max=a_["max"], p5_a_ver=f"{a_['verified']}/{a_['n']}")
+    br = J("reports/audit/bot_replay.json")
+    if br:
+        rb, ra = br["results"][br["runs"][0]], br["results"][br["runs"][1]]
+        v.update(bot_jobs=rb["jobs"], bot_b_solved=rb["checker_solved"], bot_b_won=rb["bot_won"], bot_a_solved=ra["checker_solved"], bot_a_won=ra["bot_won"])
+    for tag, f in (("sc", "replay_levels_showcase"), ("p5f", "replay_levels_p5_final")):
+        rl = J(f"reports/gates/P5b/{f}.json")
+        v[f"rl_{tag}"] = f"{round(rl['success_rate'] * rl['n'])} of {rl['n']}" if rl and rl.get("n") else "n/a (not run)"
     dep = J("reports/gates/P8/RESULT.json") or {}
     v["deployed_pass"] = "PASS" if dep.get("pass") else "n/a"
     return v

@@ -1,0 +1,48 @@
+{
+  "phase": "P8",
+  "pass": true,
+  "metrics": {
+    "url": "http://localhost:8501",
+    "load_seconds": 2.2,
+    "generate_seconds": 5.6,
+    "badge": true,
+    "iframe": true,
+    "validation_message": true,
+    "git_sha": "ddcd869c4450a1e579a85a3d42fe69e4983b5ed3"
+  },
+  "checks": [
+    {
+      "id": "P8.01",
+      "name": "app loads",
+      "value": 2.2,
+      "pass": true
+    },
+    {
+      "id": "P8.02",
+      "name": "generation produces a result badge",
+      "value": 5.6,
+      "pass": true
+    },
+    {
+      "id": "P8.03",
+      "name": "game iframe present",
+      "value": true,
+      "pass": true
+    },
+    {
+      "id": "P8.04",
+      "name": "empty prompt shows the validation message",
+      "value": true,
+      "pass": true
+    },
+    {
+      "id": "P8.05",
+      "name": "no uncaught page errors",
+      "value": 0,
+      "pass": true
+    }
+  ],
+  "timestamp": "2026-11-21T23:12:43Z",
+  "git_sha": "ddcd869c4450a1e579a85a3d42fe69e4983b5ed3",
+  "page_errors": []
+}

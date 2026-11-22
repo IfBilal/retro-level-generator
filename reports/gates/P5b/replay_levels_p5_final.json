@@ -1,0 +1,136 @@
+{
+ "n": 19,
+ "success_rate": 0.8947368421052632,
+ "mean_replans_when_won": 0.9411764705882353,
+ "enemies_removed": true,
+ "failures": [
+  {
+   "level": "008.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "018.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  }
+ ],
+ "rows": [
+  {
+   "level": "000.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 34.1
+  },
+  {
+   "level": "001.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 38.5
+  },
+  {
+   "level": "002.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 31.3
+  },
+  {
+   "level": "003.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 32.9
+  },
+  {
+   "level": "004.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 36.7
+  },
+  {
+   "level": "005.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 35.9
+  },
+  {
+   "level": "006.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 36.2
+  },
+  {
+   "level": "007.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 36.4
+  },
+  {
+   "level": "008.json",
+   "won": false,
+   "replans": 8,
+   "why": "replan budget"
+  },
+  {
+   "level": "009.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 33.2
+  },
+  {
+   "level": "010.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 32.5
+  },
+  {
+   "level": "011.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 37.1
+  },
+  {
+   "level": "012.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 34.7
+  },
+  {
+   "level": "013.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 36.2
+  },
+  {
+   "level": "014.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 38.1
+  },
+  {
+   "level": "015.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 39.0
+  },
+  {
+   "level": "017.json",
+   "won": true,
+   "replans": 0,
+   "seconds": 36.3
+  },
+  {
+   "level": "018.json",
+   "won": false,
+   "replans": 8,
+   "why": "died too often"
+  },
+  {
+   "level": "019.json",
+   "won": true,
+   "replans": 7,
+   "seconds": 54.4
+  }
+ ]
+}

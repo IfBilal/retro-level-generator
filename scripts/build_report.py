@@ -175,7 +175,8 @@ def values() -> dict:
     v["replay_rate"], v["replay_n"] = fmt(rv.get("replay_success_rate")), fmt(rv.get("n"))
     for tag in ("showcase", "p5"):
         rl = J(f"reports/gates/P5b/replay_levels_{tag}.json") or {}
-        v[f"rl_{tag}_rate"], v[f"rl_{tag}_n"] = fmt(rl.get("success_rate")), fmt(rl.get("n"))
+        v[f"rl_{tag}_rate"] = fmt(round(rl["success_rate"] * rl["n"])) if rl.get("n") else "n/a (not run)"        # count, so the sentence reads "10 of 10"
+        v[f"rl_{tag}_n"] = fmt(rl.get("n"))
     gr = J("reports/gates/P5b/game_replay.json") or {}
     v["game_unsound"] = fmt(len(gr.get("unsound_checker_solved_game_failed", [])) if gr else None)
     v["game_cases"] = fmt(gr.get("n"))

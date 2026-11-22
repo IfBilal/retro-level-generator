@@ -1,0 +1,662 @@
+{
+ "runs": [
+  "baseline_full",
+  "roundC_baseline_seeds"
+ ],
+ "ids": [
+  "cnt_pipe_1",
+  "cnt_pipe_2",
+  "cnt_enemy_2",
+  "cnt_coin_3",
+  "cnt_platform_2",
+  "cnt_cannon_2",
+  "cnt_question_block_2",
+  "cnt_staircase_1",
+  "ex_button_1",
+  "ex_button_2",
+  "ord_three",
+  "neg_two_pipes_no_enemies",
+  "two_scene_same"
+ ],
+ "seeds_per_prompt": 4,
+ "results": {
+  "baseline_full": {
+   "jobs": 52,
+   "checker_solved": 42,
+   "bot_won": 3,
+   "rows": [
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1000,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1000,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1001,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1003,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1000,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1001,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1002,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ord_three",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ord_three",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ord_three",
+     "seed": 1002,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "ord_three",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1000,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1003,
+     "checker": "unsolved",
+     "bot_won": null
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    }
+   ]
+  },
+  "roundC_baseline_seeds": {
+   "jobs": 52,
+   "checker_solved": 52,
+   "bot_won": 12,
+   "rows": [
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_pipe_1",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_pipe_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_enemy_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_coin_3",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_platform_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_cannon_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_question_block_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "cnt_staircase_1",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_1",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ex_button_2",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ord_three",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": true
+    },
+    {
+     "id": "ord_three",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ord_three",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "ord_three",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "neg_two_pipes_no_enemies",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1000,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1001,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1002,
+     "checker": "solved",
+     "bot_won": false
+    },
+    {
+     "id": "two_scene_same",
+     "seed": 1003,
+     "checker": "solved",
+     "bot_won": false
+    }
+   ]
+  }
+ }
+}

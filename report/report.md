@@ -111,11 +111,12 @@ a high-quality toggle (50 steps with resampling; fast mode, 25 steps, is the def
 control-character prompts and out-of-range settings with a readable message instead of a stack trace.
 
 **Measured latency** (this machine; `reports/app/latency.json`; thresholds were pinned *after* measuring, not before). Fast mode (25 steps, no resampling, checker budget 1,000 nodes) is the app default:
-48 columns 4.8 s median (p95 15.3 s), 112 columns 12.9 s (p95 58.4 s) on the RTX 3060 Ti; CPU fast mode 3.9 s and 25.9 s; cold start 3.6 s.
-Full quality (50 steps, resampling) takes 35.5 s and 167.3 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns is **not met**;
-the long p95 comes from levels the checker cannot verify, which use the whole retry budget.
+48 columns 3.3 s median (p95 6.8 s), 112 columns 8.6 s (p95 46.5 s) on the RTX 3060 Ti; CPU fast mode 7.2 s and 17.6 s; cold start 3.5 s.
+Full quality (50 steps, resampling) takes 12.7 s and 35.4 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns on the GPU is **met** (8.6 s; G-P7 passes) after the app's window sampler started replaying a CUDA graph of the U-Net forward
+(same operations, no launch overhead: about 4.6 times faster per window, `src/text2mario/diffusion/graph.py`, `tests/test_cuda_graph.py`); on a CPU it is not (17.6 s, and the cloud profile stops at 45 s).
+The long p95 comes from levels the checker cannot verify, which use the whole retry budget.
 
-**Engineering.** 269 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
+**Engineering.** 436 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.
 Bugs found by this process and fixed (each with a regression test): an LRU-cache eviction that crashed long training runs, a CPU/CUDA generator mismatch that crashed resampling,
 a pluralisation bug that corrupted caption augmentation ("bad guies"), and a detector crash on generated rows without floor.
@@ -242,7 +243,7 @@ broken structures after the display repair 0 PASS, verify-loop limits {'max_wind
 ![Showcase: stairs](figures/fig13_showcase_stairs.png)
 ![Showcase: platforms](figures/fig14_showcase_platforms.png)
 ![Showcase: coins](figures/fig15_showcase_coins.png)
-*Figure 13-15. Generated 57-column levels (sprite render, fast mode) for the prompts "flat ground, one pipe, then several coins and a staircase" (seed 101), "a few question blocks and several enemies" (seed 105) and "lots of coins and a couple of goombas" (seed 107). Selected by index from the showcase set, not by looks; the 12-level showcase manifest lists every prompt and seed.*
+*Figure 13-15. Generated 57-column levels (sprite render, full quality: 50 steps with resampling, final pipeline with count planning) for the prompts "flat ground, one pipe, then several coins and a staircase" (seed 101), "a few question blocks and several enemies" (seed 105) and "lots of coins and a couple of goombas" (seed 107). Selected by index from the showcase set, not by looks; the 12-level showcase manifest lists every prompt and seed.*
 
 ### 5.4 The playability checker: how far can "verified" be trusted?
 
@@ -255,7 +256,7 @@ levels, so it is not a usable oracle in this setting. Following the documented f
 Independent evidence for the badge instead: (i) a *physics-contract* test in the real Phaser engine (8 micro-levels): gaps of 1-6 tiles and walls/steps of 1-4 tiles that
 the checker accepts are cleared by the game, gap 7 and height 5 are not accepted (0 unsound cases); (ii) replaying the checker's own path with a closed-loop bot in the
 game on 40 real windows reaches the flag in 0.750 of cases (a lower bound: the bot, not the level, fails the rest). (iii) The same replay on **generated** full levels (enemies removed, because the bot cannot stomp while the checker assumes stomps; the bot re-plans from where it stands
-after a slip or a death): 0.700 of 10 verified showcase levels and 0.400 of 20 verified levels sampled from the G-P5 set are finished. Debugging this exposed two real limits: the bot first stalled at wall
+after a slip or a death): 10 of 10 verified showcase levels and 8 of 20 verified levels sampled from the G-P5 set are finished. Debugging this exposed two real limits: the bot first stalled at wall
 feet and overshot narrow landings (it did not brake in the air the way the game allows), both fixed in the bot; what remains is a bot weaker than a human, plus the checker's assumption that a player can stop where they want in the air.
 The app and the game therefore say "route found by the checker (not a guarantee)" instead of "verified beatable". **So "verified" is a statement about the checker under optimistic-but-documented assumptions, and its end-to-end reliability is the number above, not 100 %.**
 
@@ -318,14 +319,41 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 
 **Error analysis.** Held-out levels score well on prompts built from real windows (C-score far above the prompt-ignoring null and above every constant generator) but a second set of *random seven-topic* prompts (P-rand) is a stress test the model fails: its C-score is below an always-empty generator, because unseen topic combinations produce broken structures (each costs 2/18 of the C-score) and over-generated phrases. P-rand has no source levels, so it has no level-clustered interval and no cross-level null. The per-concept table shows rare and countable concepts are weakest; the failure gallery shows the 20 worst samples; `reports/final/NOTES.md` records the one crashed-then-repeated run of the test script.
 
+### 6b. Prompt adherence of a whole level (app level; added by the end-to-end audit)
+
+The metrics above score single windows. The app, however, builds whole levels, and a user checks counts: "one pipe" must be one pipe. An audit of the real pipeline
+(`reports/audit/`, harness `scripts/audit_adherence.py`, counter `src/text2mario/eval/count_audit.py`, targets written before measuring in `reports/audit/TARGETS.md`) found
+that the unmodified app matched the prompt in only **116/630** generated levels (the example prompt "flat ground, one pipe, then several coins and a staircase": 3/40).
+The root cause was not the model alone: the scene caption was sent to **every** 16-column window (one pipe per window), the caption can only say five quantity buckets, and the
+model's own count inside one window is loose (exactly one pipe in about half of the windows, `reports/audit/window_exactness.json`). The fix keeps the frozen model and plans the counts across windows
+(each window is told only what it must add), redraws a window until its new columns match, counts the raw level with the caption detector and resamples the owning window when a count is unmet,
+within hard budgets. Nothing is edited: a count that cannot be met is reported to the user. Final round (cuda, git cb7d3e2): **630/630** levels match
+(example prompt: 40/40).
+
+| category (10 seeds per prompt) | baseline (before the fix) | final round (after the fix) |
+|---|---|---|
+| adversarial | 17/20 = 0.85 [0.64, 0.95] | 20/20 = 1.00 [0.84, 1.00] |
+| count | 86/320 = 0.27 [0.22, 0.32] | 320/320 = 1.00 [0.99, 1.00] |
+| example | 3/40 = 0.07 [0.03, 0.20] | 40/40 = 1.00 [0.91, 1.00] |
+| negation | 10/40 = 0.25 [0.14, 0.40] | 40/40 = 1.00 [0.91, 1.00] |
+| ordering | 0/30 = 0.00 [0.00, 0.11] | 30/30 = 1.00 [0.89, 1.00] |
+| phrasing | 0/80 = 0.00 [0.00, 0.05] | 80/80 = 1.00 [0.95, 1.00] |
+| synonym | 0/80 = 0.00 [0.00, 0.05] | 80/80 = 1.00 [0.95, 1.00] |
+| two scene counts | 0/20 = 0.00 [0.00, 0.16] | 20/20 = 1.00 [0.84, 1.00] |
+| **all levels** | 116/630 = 0.18 | 630/630 = 1.00 |
+
+![Prompt adherence before and after the fix](figures/fig16_adherence.png)
+
+Counting definition, ownership of columns by scene and quantity ranges are in ledger section 7b (AD1-AD7). Remaining misses are listed in `reports/audit/AUDIT_REPORT.md`.
+
 ## 7. Testing and reliability
 
 | Evidence | Where |
 |---|---|
-| 269 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
+| 436 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
 | representative inputs: normalizer dev set, 12 C-score golden vectors, checker micro-levels, 4 example prompts end to end | `tests/`, `reports/gates/*` |
 | invalid and boundary inputs: empty / whitespace / None / over-long / control-character prompts, out-of-range seed / w / width, malformed levels (9 schema violations) | `tests/test_level_schema.py` |
-| consistency: same prompt + seed + settings gives the same level (identical: True); a different seed changes 0.083 of the cells; one window sampled alone or inside a batch is identical (1.000 of cells); checker and normalizer deterministic | `scripts/check_determinism.py`, `reports/gates/determinism.json`, `tests/test_full_level.py`, `tests/test_checker.py` |
+| consistency: same prompt + seed + settings gives the same level (identical: True); a different seed changes 0.057 of the cells; one window sampled alone or inside a batch is identical (1.000 of cells); checker and normalizer deterministic | `scripts/check_determinism.py`, `reports/gates/determinism.json`, `tests/test_full_level.py`, `tests/test_checker.py` |
 | fuzzing: arbitrary text and random tile grids never crash the normalizer, validators, detector, sanitizer or checker | `tests/test_app_fuzz.py` |
 | the real Streamlit app driven by Streamlit's AppTest (valid, empty, over-long, unrecognised prompts, example chip) | `tests/test_app_ui.py` |
 | end-to-end: the real game in headless Chromium (canvas, key presses, ghost-bot wins a level) | `tests/e2e/` |
@@ -336,13 +364,13 @@ P-casual-test (30 held-out casual prompts through the normalizer): scene-count a
 
 - **Small data:** 31 training levels. The unconditional baseline cannot satisfy both gate bounds (broken <= 0.05 and copy <= 0.154); the conditional model's copy rate and novelty are reported against the real reference (13).
 - **Random combinations fail:** on P-rand (random seven-topic prompts) the C-score is below an always-empty generator; the model follows prompts that look like real level segments, not arbitrary specifications.
-- **Absence cannot be expressed:** captions never say "no X"; the forbid list is a soft re-sampling filter (contrast test P4.04 failed).
+- **Absence is not a caption:** captions never say "no X" (contrast test P4.04 failed); the app now enforces "no X" by omitting the topic from window captions and by counting the raw level and resampling (section 6b), not by conditioning.
 - **Seams:** the seam ratio gate (1.3) was not met (G-P5.01); the first remedy (r = 5) was not enough.
 - **Conditioning is coarse:** captions have no positions, so "a pipe near the end" cannot be expressed; quantities are 5 buckets; rare concepts (descending stairs, ceilings with gaps) have few training examples and are clamped.
 - **Checker:** solves 0.694 of real full levels (target 0.90) and disagrees with the reference jar (agreement 0.663); "verified" is a conservative physics claim, with killable enemies assumed.
 - **Statistics:** only 5 dev and 6 test levels, so confidence intervals are wide; no human study of playability or enjoyment was run.
 - **Platform:** one game family (SMB1/SMB2 tiles), 16-row levels, no moving platforms, springs or bullets (cannons are static).
-- **Deployment:** the Streamlit Community Cloud deployment needs the team's GitHub/Streamlit login and could not be performed by the automated build; the repository is prepared for it (`DEPLOY.md`).
+- **Deployment:** the app is deployed on Streamlit Community Cloud (URL in `README.md` / `DEPLOY.md`; `scripts/gate_p8.py` and `scripts/audit_browser.py` drive the deployed page). The cloud runs on CPU, where candidate windows are cheaper to draw one at a time, so count matching is weaker there than on the GPU (measured in `reports/audit/AUDIT_REPORT.md`).
 
 ## 9. Conclusion
 

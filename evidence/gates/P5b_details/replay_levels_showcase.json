@@ -1,88 +1,69 @@
 {
  "n": 10,
- "success_rate": 0.7,
- "mean_replans_when_won": 0.8571428571428571,
+ "success_rate": 1.0,
+ "mean_replans_when_won": 0.5,
  "enemies_removed": true,
- "failures": [
-  {
-   "level": "showcase_04.level.json",
-   "won": false,
-   "replans": 0,
-   "why": "died too often"
-  },
-  {
-   "level": "showcase_08.level.json",
-   "won": false,
-   "replans": 0,
-   "why": "died too often"
-  },
-  {
-   "level": "showcase_10.level.json",
-   "won": false,
-   "replans": 6,
-   "why": "died too often"
-  }
- ],
+ "failures": [],
  "rows": [
   {
    "level": "showcase_00.level.json",
    "won": true,
-   "replans": 3,
-   "seconds": 27.6
+   "replans": 1,
+   "seconds": 13.7
   },
   {
    "level": "showcase_01.level.json",
    "won": true,
    "replans": 0,
-   "seconds": 13.7
+   "seconds": 16.7
   },
   {
    "level": "showcase_02.level.json",
    "won": true,
-   "replans": 1,
-   "seconds": 20.6
+   "replans": 0,
+   "seconds": 14.7
   },
   {
    "level": "showcase_04.level.json",
-   "won": false,
-   "replans": 0,
-   "why": "died too often"
-  },
-  {
-   "level": "showcase_05.level.json",
    "won": true,
    "replans": 0,
-   "seconds": 17.6
+   "seconds": 16.6
   },
   {
    "level": "showcase_06.level.json",
    "won": true,
-   "replans": 1,
-   "seconds": 13.6
+   "replans": 0,
+   "seconds": 16.3
   },
   {
    "level": "showcase_07.level.json",
    "won": true,
-   "replans": 1,
-   "seconds": 16.0
+   "replans": 0,
+   "seconds": 18.6
   },
   {
    "level": "showcase_08.level.json",
-   "won": false,
-   "replans": 0,
-   "why": "died too often"
+   "won": true,
+   "replans": 1,
+   "seconds": 16.6
+  },
+  {
+   "level": "showcase_09.level.json",
+   "won": true,
+   "replans": 1,
+   "seconds": 14.5
   },
   {
    "level": "showcase_10.level.json",
-   "won": false,
-   "replans": 6,
-   "why": "died too often"
+   "won": true,
+   "replans": 1,
+   "seconds": 13.7
   },
   {
    "level": "showcase_11.level.json",
    "won": true,
-   "replans": 0,
-   "seconds": 17.6
+   "replans": 1,
+   "seconds": 14.9
   }
  ]
 }

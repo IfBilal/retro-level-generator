@@ -1,0 +1,277 @@
+{
+ "meta": {
+  "device": "cuda",
+  "profile": "local",
+  "width": 48,
+  "seeds": [
+   1000,
+   1001,
+   1002,
+   1003,
+   1004,
+   1005,
+   1006,
+   1007,
+   1008,
+   1009
+  ],
+  "git": "f0e40e4",
+  "utc": "2026-11-21T19:32:29Z"
+ },
+ "mode": "fast",
+ "overall": [
+  20,
+  20
+ ],
+ "by_category": {
+  "adversarial": {
+   "pass": 20,
+   "n": 20,
+   "rate": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  }
+ },
+ "per_prompt": {
+  "adv_empty": {
+   "cat": "adversarial",
+   "text": "",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_spaces": {
+   "cat": "adversarial",
+   "text": "     ",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_long": {
+   "cat": "adversarial",
+   "text": "pipe pipe pipe pipe pipe pipe pipe pipe pipe pipe pipe pipe ",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_control": {
+   "cat": "adversarial",
+   "text": "one pipe\u0000\u0007",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_unicode": {
+   "cat": "adversarial",
+   "text": "one pipe \u30d1\u30a4\u30d7 \u00e9\u00e8\u4e2d\u6587",
+   "n": 2,
+   "pass": 2,
+   "rate": 1.0,
+   "ci95": [
+    0.342,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_emoji": {
+   "cat": "adversarial",
+   "text": "two pipes \ud83c\udf44\ud83d\udd25",
+   "n": 2,
+   "pass": 2,
+   "rate": 1.0,
+   "ci95": [
+    0.342,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_html": {
+   "cat": "adversarial",
+   "text": "<script>alert(1)</script> one pipe",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_img": {
+   "cat": "adversarial",
+   "text": "<img src=x onerror=alert(1)> two pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_comment": {
+   "cat": "adversarial",
+   "text": "<!--<script> one pipe",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_close_tag": {
+   "cat": "adversarial",
+   "text": "</script><script>alert(1)</script> two pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_sql": {
+   "cat": "adversarial",
+   "text": "one pipe'; DROP TABLE levels;--",
+   "n": 2,
+   "pass": 2,
+   "rate": 1.0,
+   "ci95": [
+    0.342,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_contradiction": {
+   "cat": "adversarial",
+   "text": "one pipe and no pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_absurd": {
+   "cat": "adversarial",
+   "text": "500 pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_negative": {
+   "cat": "adversarial",
+   "text": "-3 pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_gibberish": {
+   "cat": "adversarial",
+   "text": "asdf qwerty zxcv lkjh",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_foreign": {
+   "cat": "adversarial",
+   "text": "dos tuberias y tres monedas",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_unknown_words": {
+   "cat": "adversarial",
+   "text": "flibber the glorp and snazzle",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  }
+ }
+}

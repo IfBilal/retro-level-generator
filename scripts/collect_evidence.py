@@ -41,9 +41,13 @@ def main():
     ap.add_argument("--skip-tests", action="store_true")
     a = ap.parse_args()
     summ = None if a.skip_tests else run_tests()
+    KEEP = ("audit", "deployment")              # produced by the audit / the deployment gate, not by this script: never wipe them
     if EV.exists():
-        shutil.rmtree(EV)
-    EV.mkdir()
+        for child in EV.iterdir():
+            if child.name in KEEP:
+                continue
+            shutil.rmtree(child) if child.is_dir() else child.unlink()
+    EV.mkdir(exist_ok=True)
     plan = {"gates": [p for p in (ROOT / "reports/gates").glob("*/RESULT.json")], "metrics": [ROOT / "reports/final/RESULTS.md", ROOT / "reports/final/metrics.json"],
             "test_run": [ROOT / "reports/final/eval_plan.json", ROOT / "reports/final/test_invocations.jsonl", ROOT / "FROZEN.json"],
             "testing": [ROOT / "reports/testing/pytest_summary.json", ROOT / "reports/testing/pytest_fast.log", ROOT / "reports/testing/pytest_slow.log"],
@@ -60,6 +64,13 @@ def main():
             d = EV / sub
             d.mkdir(parents=True, exist_ok=True)
             shutil.copy(f, d / (f.parent.name + "_" + f.name if "P3_" in pat else f.name))
+    for f in [ROOT / "reports/audit/AUDIT_REPORT.md", ROOT / "reports/audit/TARGETS.md", ROOT / "reports/audit/DATAFLOW.md", ROOT / "reports/audit/variety.md",
+              ROOT / "reports/audit/NOTES_towers.md", ROOT / "reports/audit/window_exactness.json", ROOT / "reports/audit/gate_p5_compare.json", *sorted((ROOT / "reports/audit").glob("*/results.json")),
+              *sorted((ROOT / "reports/audit").glob("*/RESULTS.md"))]:                  # a snapshot of the audit's results (rows.jsonl stay in reports/audit)
+        if f.exists():
+            d = EV / "audit_runs" / (f.parent.name if f.parent.name != "audit" else "")
+            d.mkdir(parents=True, exist_ok=True)
+            shutil.copy(f, d / f.name)
     man = {str(p.relative_to(EV)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(EV.rglob("*")) if p.is_file()}
     (EV / "MANIFEST.json").write_text(json.dumps({"files": man, "pytest": summ}, indent=1))
     print(f"evidence/: {len(man)} files", summ or "")

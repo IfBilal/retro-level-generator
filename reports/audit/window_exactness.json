@@ -1,0 +1,252 @@
+{
+ "device": "cuda",
+ "n": 30,
+ "exact": {
+  "one pipe.": {
+   "topic": "pipe",
+   "want": 1,
+   "exact": 16,
+   "dist": {
+    "1": 16,
+    "2": 14
+   }
+  },
+  "full floor. one pipe.": {
+   "topic": "pipe",
+   "want": 1,
+   "exact": 21,
+   "dist": {
+    "1": 21,
+    "2": 9
+   }
+  },
+  "two pipes.": {
+   "topic": "pipe",
+   "want": 2,
+   "exact": 4,
+   "dist": {
+    "2": 4,
+    "3": 21,
+    "4": 5
+   }
+  },
+  "full floor. two pipes.": {
+   "topic": "pipe",
+   "want": 2,
+   "exact": 11,
+   "dist": {
+    "2": 11,
+    "3": 17,
+    "4": 2
+   }
+  },
+  "one enemy.": {
+   "topic": "enemy",
+   "want": 1,
+   "exact": 8,
+   "dist": {
+    "0": 6,
+    "1": 8,
+    "2": 13,
+    "3": 2,
+    "4": 1
+   }
+  },
+  "full floor. one enemy.": {
+   "topic": "enemy",
+   "want": 1,
+   "exact": 7,
+   "dist": {
+    "0": 15,
+    "1": 7,
+    "2": 6,
+    "3": 2
+   }
+  },
+  "two enemies.": {
+   "topic": "enemy",
+   "want": 2,
+   "exact": 6,
+   "dist": {
+    "1": 7,
+    "2": 6,
+    "3": 7,
+    "4": 7,
+    "5": 2,
+    "6": 1
+   }
+  },
+  "full floor. a few enemies.": {
+   "topic": "enemy",
+   "want": 3,
+   "exact": 0,
+   "dist": {
+    "4": 1,
+    "5": 5,
+    "6": 7,
+    "7": 5,
+    "8": 6,
+    "9": 5,
+    "11": 1
+   }
+  },
+  "one coin.": {
+   "topic": "coin",
+   "want": 1,
+   "exact": 13,
+   "dist": {
+    "0": 5,
+    "1": 13,
+    "2": 9,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   }
+  },
+  "full floor. a few coins.": {
+   "topic": "coin",
+   "want": 3,
+   "exact": 0,
+   "dist": {
+    "1": 1,
+    "4": 7,
+    "5": 7,
+    "6": 3,
+    "7": 7,
+    "10": 4,
+    "11": 1
+   }
+  },
+  "one cannon.": {
+   "topic": "cannon",
+   "want": 1,
+   "exact": 6,
+   "dist": {
+    "1": 6,
+    "2": 13,
+    "3": 7,
+    "4": 2,
+    "5": 2
+   }
+  },
+  "full floor. one cannon.": {
+   "topic": "cannon",
+   "want": 1,
+   "exact": 11,
+   "dist": {
+    "1": 11,
+    "2": 8,
+    "3": 9,
+    "4": 1,
+    "5": 1
+   }
+  },
+  "one platform.": {
+   "topic": "platform",
+   "want": 1,
+   "exact": 20,
+   "dist": {
+    "1": 20,
+    "2": 10
+   }
+  },
+  "full floor. one platform.": {
+   "topic": "platform",
+   "want": 1,
+   "exact": 25,
+   "dist": {
+    "0": 1,
+    "1": 25,
+    "2": 4
+   }
+  },
+  "one question block.": {
+   "topic": "question block",
+   "want": 1,
+   "exact": 10,
+   "dist": {
+    "0": 3,
+    "1": 10,
+    "2": 7,
+    "3": 7,
+    "4": 3
+   }
+  },
+  "full floor. one tower.": {
+   "topic": "tower",
+   "want": 1,
+   "exact": 12,
+   "dist": {
+    "0": 13,
+    "1": 12,
+    "2": 4,
+    "3": 1
+   }
+  },
+  "full floor. one ascending staircase.": {
+   "topic": "ascending staircase",
+   "want": 1,
+   "exact": 19,
+   "dist": {
+    "1": 19,
+    "2": 9,
+    "3": 2
+   }
+  },
+  "full floor. one coin line.": {
+   "topic": "coin line",
+   "want": 1,
+   "exact": 16,
+   "dist": {
+    "0": 1,
+    "1": 16,
+    "2": 8,
+    "3": 5
+   }
+  }
+ },
+ "known_half": {
+  "one pipe.": {
+   "new_half_pipes": {
+    "0": 4,
+    "1": 25,
+    "2": 1
+   }
+  },
+  "full floor.": {
+   "new_half_pipes": {
+    "0": 30
+   }
+  },
+  "full floor. one pipe.": {
+   "new_half_pipes": {
+    "0": 9,
+    "1": 20,
+    "2": 1
+   }
+  },
+  "full floor. two pipes.": {
+   "new_half_pipes": {
+    "1": 12,
+    "2": 18
+   }
+  }
+ },
+ "neutral": {
+  "full floor.": {
+   "pipes_mean": 0.0,
+   "enemies_mean": 0.16666666666666666,
+   "windows_without_pipe": 30
+  },
+  "": {
+   "pipes_mean": 0.5666666666666667,
+   "enemies_mean": 1.2333333333333334,
+   "windows_without_pipe": 18
+  },
+  "full floor. one enemy.": {
+   "pipes_mean": 0.0,
+   "enemies_mean": 0.8,
+   "windows_without_pipe": 30
+  }
+ }
+}

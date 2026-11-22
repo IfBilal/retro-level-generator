@@ -1,0 +1,201 @@
+{
+ "meta": {
+  "device": "cpu",
+  "profile": "cloud",
+  "width": 48,
+  "seeds": [
+   1000,
+   1001,
+   1002,
+   1003,
+   1004
+  ],
+  "git": "3c1649d",
+  "utc": "2026-11-21T22:15:21Z"
+ },
+ "mode": "fast",
+ "overall": [
+  47,
+  50
+ ],
+ "by_category": {
+  "count": {
+   "pass": 30,
+   "n": 30,
+   "rate": 1.0,
+   "ci95": [
+    0.886,
+    1.0
+   ]
+  },
+  "example": {
+   "pass": 7,
+   "n": 10,
+   "rate": 0.7,
+   "ci95": [
+    0.397,
+    0.892
+   ]
+  },
+  "negation": {
+   "pass": 5,
+   "n": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ]
+  },
+  "ordering": {
+   "pass": 5,
+   "n": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ]
+  }
+ },
+ "per_prompt": {
+  "cnt_pipe_1": {
+   "cat": "count",
+   "text": "one pipe",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.21
+  },
+  "cnt_pipe_2": {
+   "cat": "count",
+   "text": "two pipes",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.17
+  },
+  "cnt_enemy_2": {
+   "cat": "count",
+   "text": "two enemies",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 5.8
+  },
+  "cnt_coin_3": {
+   "cat": "count",
+   "text": "three coins",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 5.96
+  },
+  "cnt_platform_2": {
+   "cat": "count",
+   "text": "two platforms",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.16
+  },
+  "cnt_tower_2": {
+   "cat": "count",
+   "text": "two towers",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.23
+  },
+  "ex_button_2": {
+   "cat": "example",
+   "text": "flat ground, one pipe, then several coins and a staircase",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 5.86
+  },
+  "ex_button_3": {
+   "cat": "example",
+   "text": "an underground level: three platforms, then a cannon and two enemies",
+   "n": 5,
+   "pass": 2,
+   "rate": 0.4,
+   "ci95": [
+    0.118,
+    0.769
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 45.45
+  },
+  "neg_two_pipes_no_enemies": {
+   "cat": "negation",
+   "text": "two pipes and no enemies",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 5.85
+  },
+  "ord_three": {
+   "cat": "ordering",
+   "text": "one pipe, then two enemies, then a cannon",
+   "n": 5,
+   "pass": 5,
+   "rate": 1.0,
+   "ci95": [
+    0.566,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 7.67
+  }
+ }
+}

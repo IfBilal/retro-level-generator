@@ -39,11 +39,15 @@ python scripts/gate_p4.py --ckpt runs/C-main/step_XXXXXXX.pt && python scripts/g
 python scripts/freeze.py --ckpt runs/C-main/step_XXXXXXX.pt --w 5 && python scripts/eval_test.py          # one shot
 python scripts/export_cloud_ckpt.py runs/C-main/step_XXXXXXX.pt && python scripts/make_figures.py && python scripts/build_report.py
 ```
-Deployment to Streamlit Community Cloud: see [DEPLOY.md](DEPLOY.md) (needs the team's login).
+Deployed on Streamlit Community Cloud: https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/ (how: [DEPLOY.md](DEPLOY.md)).
+
+## Prompt adherence (end-to-end audit)
+The app is audited against what a sentence asks for: counts ("one pipe"), ordering ("X, then Y"), negation ("no pipes") and unsatisfiable input. Before the audit only 116/630 generated levels matched; now 630/630 (same prompts and seeds), 630/630 on pristine seeds and 100/100 on held-out prompts.
+Counts are planned across the 16-column windows and verified on the raw level, never edited; what could not be met is said in the page. Report: [reports/audit/AUDIT_REPORT.md](reports/audit/AUDIT_REPORT.md); evidence index: [evidence/audit/INDEX.md](evidence/audit/INDEX.md); reproduce with `python scripts/audit_adherence.py --label try --seeds fresh`.
 
 ## Honest status
-Several gates failed and are documented with their evidence and fallbacks, not hidden: G-P3 (unconditional baseline; waiver),
-G-P5b (checker vs reference solver; `S_noplay` used for selection), and the checker's real-level solve-rate target. See the report (sections 5-8) and `reports/gates/*/RESULT.json`.
+Several gates failed and are documented with their evidence and fallbacks, not hidden: G-P3 (unconditional baseline; waiver), G-P4 (P4.04), G-P5 (seam ratio),
+G-P5b (checker vs reference solver; `S_noplay` used for selection), and the checker's real-level solve-rate target. G-P6, G-P7 and G-P8 pass. See the report (sections 5-8) and `reports/gates/*/RESULT.json`.
 
 ## Credits
 Builds on the MarioDiffusion dataset and idea (Schrum et al., arXiv 2507.00184, MIT). Phaser 3 (MIT), Kenney Pixel Platformer (CC0), all-MiniLM-L6-v2 (Apache-2.0).

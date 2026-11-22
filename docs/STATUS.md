@@ -15,13 +15,12 @@ sanitizer, playability checker, Phaser game, level schema/exports, Streamlit app
 Trained: unconditional baselines (15k steps, linear and cosine, plus dense and aux-CE variants), conditional C-main (early-stopped at 36,295; **frozen step 18,000, CFG w = 7.5**), X1 ablation (aux CE, run to 40,000).
 
 ## Gate outcomes (honest)
-G-P1, G-P2 pass. **G-P3 fail** (waiver), **G-P4 fail on P4.04**, **G-P5 fail on P5.01** (seam ratio), **G-P5b fail** (jar agreement 0.663; `S_noplay` fallback). **G-P6 (one-shot protocol) pass.** G-P7 FAIL on its provisional target (`scripts/gate_p7.py`; latency measured, 112 columns in fast mode:
-12.9 s median). G-P8 (Streamlit Cloud) not done: needs the team's login (`DEPLOY.md`).
+G-P1, G-P2 pass. **G-P3 fail** (waiver), **G-P4 fail on P4.04**, **G-P5 fail on P5.01** (seam ratio), **G-P5b fail** (jar agreement 0.663; `S_noplay` fallback). **G-P6 (one-shot protocol) pass.** **G-P7 pass** (112 columns 8.64 s median in fast mode after the CUDA-graph sampler). **G-P8 pass** against the deployed app (https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/).
 
 ## Still open (honest list)
-- Streamlit Community Cloud deployment, viva and live-modification drills, laptops, GCR upload, human playthrough of showcase levels (`human_played: false`), the hand-labelled checker set (needs two people).
+- Viva and live-modification drills, laptops, GCR upload, human playthrough of showcase levels (`human_played: false`), the hand-labelled checker set (needs two people).
 - Checker: 69 % of real full levels solved (target 90 %); end-to-end replay of 'verified' levels by a re-planning bot finishes 40-70 % (lower bound). UI wording: 'route found (not a guarantee)'.
-- Model: seam ratio 1.54 (limit 1.3); P-rand stress prompts score below an always-empty generator; absence ('no enemies') cannot be conditioned.
+- Model: seam ratio 1.54 (limit 1.3); P-rand stress prompts score below an always-empty generator; absence ('no enemies') cannot be conditioned (the app enforces it by omitting the topic and verifying the raw level, see `reports/audit/AUDIT_REPORT.md`).
 - X1 (aux CE) was evaluated after the freeze: better early, tied with C-main on the dev composite at the shared step (fewer broken structures, more copying); C-main remains the reported model.
 
 Change history: `docs/00_DECISIONS_LEDGER.md` §14 and `docs/02_SCOPE_AND_REQUIREMENTS.md` §12.

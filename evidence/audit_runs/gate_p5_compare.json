@@ -1,0 +1,18 @@
+{
+ "limit": 1.3,
+ "n_levels": 20,
+ "before_unmodified_pipeline": {
+  "mean": 1.42,
+  "median": 1.44,
+  "max": 2.07,
+  "verified": 17,
+  "n": 20
+ },
+ "after_final_pipeline": {
+  "mean": 1.911,
+  "median": 1.494,
+  "max": 5.86,
+  "verified": 19,
+  "n": 20
+ }
+}

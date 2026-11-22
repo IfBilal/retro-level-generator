@@ -1,0 +1,1194 @@
+{
+ "meta": {
+  "device": "cuda",
+  "profile": "local",
+  "width": 48,
+  "seeds": [
+   7000,
+   7001,
+   7002,
+   7003,
+   7004,
+   7005,
+   7006,
+   7007,
+   7008,
+   7009
+  ],
+  "git": "cb7d3e2",
+  "utc": "2026-11-22T02:05:47Z"
+ },
+ "mode": "fast",
+ "overall": [
+  630,
+  630
+ ],
+ "by_category": {
+  "count": {
+   "pass": 320,
+   "n": 320,
+   "rate": 1.0,
+   "ci95": [
+    0.988,
+    1.0
+   ]
+  },
+  "example": {
+   "pass": 40,
+   "n": 40,
+   "rate": 1.0,
+   "ci95": [
+    0.912,
+    1.0
+   ]
+  },
+  "phrasing": {
+   "pass": 80,
+   "n": 80,
+   "rate": 1.0,
+   "ci95": [
+    0.954,
+    1.0
+   ]
+  },
+  "negation": {
+   "pass": 40,
+   "n": 40,
+   "rate": 1.0,
+   "ci95": [
+    0.912,
+    1.0
+   ]
+  },
+  "ordering": {
+   "pass": 30,
+   "n": 30,
+   "rate": 1.0,
+   "ci95": [
+    0.886,
+    1.0
+   ]
+  },
+  "two_scene_counts": {
+   "pass": 20,
+   "n": 20,
+   "rate": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  },
+  "synonym": {
+   "pass": 80,
+   "n": 80,
+   "rate": 1.0,
+   "ci95": [
+    0.954,
+    1.0
+   ]
+  },
+  "adversarial": {
+   "pass": 20,
+   "n": 20,
+   "rate": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  }
+ },
+ "per_prompt": {
+  "cnt_pipe_0": {
+   "cat": "count",
+   "text": "full floor with no pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "cnt_pipe_1": {
+   "cat": "count",
+   "text": "one pipe",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.29
+  },
+  "cnt_pipe_2": {
+   "cat": "count",
+   "text": "two pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "cnt_pipe_3": {
+   "cat": "count",
+   "text": "three pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "cnt_enemy_0": {
+   "cat": "count",
+   "text": "full floor with no enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "cnt_enemy_1": {
+   "cat": "count",
+   "text": "one enemy",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "cnt_enemy_2": {
+   "cat": "count",
+   "text": "two enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "cnt_enemy_3": {
+   "cat": "count",
+   "text": "three enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "cnt_coin_0": {
+   "cat": "count",
+   "text": "full floor with no coins",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "cnt_coin_1": {
+   "cat": "count",
+   "text": "one coin",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "cnt_coin_2": {
+   "cat": "count",
+   "text": "two coins",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "cnt_coin_3": {
+   "cat": "count",
+   "text": "three coins",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "cnt_cannon_0": {
+   "cat": "count",
+   "text": "full floor with no cannons",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "cnt_cannon_1": {
+   "cat": "count",
+   "text": "one cannon",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "cnt_cannon_2": {
+   "cat": "count",
+   "text": "two cannons",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "cnt_cannon_3": {
+   "cat": "count",
+   "text": "three cannons",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "cnt_platform_0": {
+   "cat": "count",
+   "text": "full floor with no platforms",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.31
+  },
+  "cnt_platform_1": {
+   "cat": "count",
+   "text": "one platform",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3200000000000003
+  },
+  "cnt_platform_2": {
+   "cat": "count",
+   "text": "two platforms",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "cnt_platform_3": {
+   "cat": "count",
+   "text": "three platforms",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.335
+  },
+  "cnt_question_block_0": {
+   "cat": "count",
+   "text": "full floor with no question blocks",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "cnt_question_block_1": {
+   "cat": "count",
+   "text": "one question block",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.325
+  },
+  "cnt_question_block_2": {
+   "cat": "count",
+   "text": "two question blocks",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "cnt_question_block_3": {
+   "cat": "count",
+   "text": "three question blocks",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3200000000000003
+  },
+  "cnt_staircase_0": {
+   "cat": "count",
+   "text": "full floor with no staircases",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.31
+  },
+  "cnt_staircase_1": {
+   "cat": "count",
+   "text": "one staircase",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.325
+  },
+  "cnt_staircase_2": {
+   "cat": "count",
+   "text": "two staircases",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.385
+  },
+  "cnt_staircase_3": {
+   "cat": "count",
+   "text": "three staircases",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.395
+  },
+  "cnt_tower_0": {
+   "cat": "count",
+   "text": "full floor with no towers",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.29
+  },
+  "cnt_tower_1": {
+   "cat": "count",
+   "text": "one tower",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.32
+  },
+  "cnt_tower_2": {
+   "cat": "count",
+   "text": "two towers",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.32
+  },
+  "cnt_tower_3": {
+   "cat": "count",
+   "text": "three towers",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 4.995
+  },
+  "ex_button_1": {
+   "cat": "example",
+   "text": "full floor with two pipes and a few enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.32
+  },
+  "ex_button_2": {
+   "cat": "example",
+   "text": "flat ground, one pipe, then several coins and a staircase",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "ex_button_3": {
+   "cat": "example",
+   "text": "an underground level: three platforms, then a cannon and two enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 8.585
+  },
+  "ex_button_4": {
+   "cat": "example",
+   "text": "mostly pits with two islands of ground, then a coin line",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 14.26
+  },
+  "ph_only_one": {
+   "cat": "phrasing",
+   "text": "only one pipe",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "ph_single": {
+   "cat": "phrasing",
+   "text": "a single pipe",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "ph_exactly_two": {
+   "cat": "phrasing",
+   "text": "exactly two pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "ph_just_2": {
+   "cat": "phrasing",
+   "text": "just 2 pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "ph_digit": {
+   "cat": "phrasing",
+   "text": "1 pipe",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "ph_case": {
+   "cat": "phrasing",
+   "text": "one PIPE",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "ph_spaces": {
+   "cat": "phrasing",
+   "text": "  one    pipe  ",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.29
+  },
+  "ph_punct": {
+   "cat": "phrasing",
+   "text": "One pipe!!!",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "neg_no_pipes": {
+   "cat": "negation",
+   "text": "no pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.295
+  },
+  "neg_without_pipes": {
+   "cat": "negation",
+   "text": "a flat level without pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "neg_two_pipes_no_enemies": {
+   "cat": "negation",
+   "text": "two pipes and no enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "neg_coins_no_enemies": {
+   "cat": "negation",
+   "text": "several coins and no enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.31
+  },
+  "ord_three": {
+   "cat": "ordering",
+   "text": "one pipe, then two enemies, then a cannon",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.31
+  },
+  "ord_stair_tower": {
+   "cat": "ordering",
+   "text": "a staircase, then a tower",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.45
+  },
+  "ord_coin_pipe": {
+   "cat": "ordering",
+   "text": "several coins, then one pipe",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "two_scene_same": {
+   "cat": "two_scene_counts",
+   "text": "one pipe, then two pipes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3099999999999996
+  },
+  "two_scene_same_enemy": {
+   "cat": "two_scene_counts",
+   "text": "one enemy, then three enemies",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "syn_tube": {
+   "cat": "synonym",
+   "text": "one tube",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "syn_warp": {
+   "cat": "synonym",
+   "text": "one warp pipe",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "syn_chimney": {
+   "cat": "synonym",
+   "text": "a chimney",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3099999999999996
+  },
+  "syn_tubes2": {
+   "cat": "synonym",
+   "text": "two tubes",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.31
+  },
+  "syn_goomba": {
+   "cat": "synonym",
+   "text": "one goomba",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3049999999999997
+  },
+  "syn_bullet": {
+   "cat": "synonym",
+   "text": "a bullet bill",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.315
+  },
+  "syn_ledges": {
+   "cat": "synonym",
+   "text": "two ledges",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3
+  },
+  "syn_stairway": {
+   "cat": "synonym",
+   "text": "a stairway",
+   "n": 10,
+   "pass": 10,
+   "rate": 1.0,
+   "ci95": [
+    0.722,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": 3.3200000000000003
+  },
+  "adv_empty": {
+   "cat": "adversarial",
+   "text": "",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_spaces": {
+   "cat": "adversarial",
+   "text": "     ",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_long": {
+   "cat": "adversarial",
+   "text": "pipe pipe pipe pipe pipe pipe pipe pipe pipe pipe pipe pipe ",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_control": {
+   "cat": "adversarial",
+   "text": "one pipe\u0000\u0007",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_unicode": {
+   "cat": "adversarial",
+   "text": "one pipe \u30d1\u30a4\u30d7 \u00e9\u00e8\u4e2d\u6587",
+   "n": 2,
+   "pass": 2,
+   "rate": 1.0,
+   "ci95": [
+    0.342,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_emoji": {
+   "cat": "adversarial",
+   "text": "two pipes \ud83c\udf44\ud83d\udd25",
+   "n": 2,
+   "pass": 2,
+   "rate": 1.0,
+   "ci95": [
+    0.342,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_html": {
+   "cat": "adversarial",
+   "text": "<script>alert(1)</script> one pipe",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_img": {
+   "cat": "adversarial",
+   "text": "<img src=x onerror=alert(1)> two pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_comment": {
+   "cat": "adversarial",
+   "text": "<!--<script> one pipe",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_close_tag": {
+   "cat": "adversarial",
+   "text": "</script><script>alert(1)</script> two pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_sql": {
+   "cat": "adversarial",
+   "text": "one pipe'; DROP TABLE levels;--",
+   "n": 2,
+   "pass": 2,
+   "rate": 1.0,
+   "ci95": [
+    0.342,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_contradiction": {
+   "cat": "adversarial",
+   "text": "one pipe and no pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_absurd": {
+   "cat": "adversarial",
+   "text": "500 pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_negative": {
+   "cat": "adversarial",
+   "text": "-3 pipes",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 1,
+   "median_s": null
+  },
+  "adv_gibberish": {
+   "cat": "adversarial",
+   "text": "asdf qwerty zxcv lkjh",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_foreign": {
+   "cat": "adversarial",
+   "text": "dos tuberias y tres monedas",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  },
+  "adv_unknown_words": {
+   "cat": "adversarial",
+   "text": "flibber the glorp and snazzle",
+   "n": 1,
+   "pass": 1,
+   "rate": 1.0,
+   "ci95": [
+    0.207,
+    1.0
+   ],
+   "errors": 0,
+   "rejected": 0,
+   "median_s": null
+  }
+ }
+}
