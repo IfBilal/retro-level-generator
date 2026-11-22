@@ -6,6 +6,9 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+# The tests run in ONE process whose text2mario modules are current.  The app's drop_stale_modules() guard (for a redeploy into a running server) would otherwise
+# purge them on the first AppTest run and leave other test modules holding old module objects (isinstance / monkeypatch mismatches).  Declare them current.
+sys._t2m_src_signature = max((f.stat().st_mtime_ns for f in (ROOT / "src").rglob("*.py")), default=0)
 
 needs_data = pytest.mark.skipif(not (ROOT / "data/processed/index.parquet").exists(),
                                 reason="run scripts/fetch_data.py and scripts/build_index.py first")

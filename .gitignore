@@ -22,3 +22,4 @@ reports/audit_*.err
 reports/bench_app_audit*.log
 reports/streamlit_local.*
 reports/*.err
+reports/*.log

@@ -21,6 +21,28 @@ import streamlit as st
 
 st.set_page_config(page_title="text2mario", page_icon=":video_game:", layout="wide")
 
+
+def drop_stale_modules() -> bool:
+    """Make a push to the repository safe for a RUNNING server (Streamlit Community Cloud keeps one Python process across deployments).
+
+    Streamlit re-reads the script folder (app/) on a change but never reloads src/, so after a redeploy the new script met the OLD text2mario modules in memory
+    and failed with an ImportError (found when the audit re-tested the deployed app).  We remember a signature of src/ in sys; if the modules are already loaded
+    and the signature differs (or is unknown: the previous script did not store one), the stale modules and the cached model are dropped so they are re-imported.
+    Returns True when something was dropped."""
+    sig = max((f.stat().st_mtime_ns for f in (ROOT / "src").rglob("*.py")), default=0)
+    seen = getattr(sys, "_t2m_src_signature", None)
+    loaded = [m for m in sys.modules if m == "text2mario" or m.startswith("text2mario.")]
+    dropped = bool(loaded) and seen != sig
+    if dropped:
+        for m in loaded:
+            del sys.modules[m]
+        st.cache_resource.clear()
+    sys._t2m_src_signature = sig
+    return dropped
+
+
+drop_stale_modules()
+
 from text2mario.utils import appcfg
 
 CFG = appcfg.load()                    # configs/generate/app.yaml

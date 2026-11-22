@@ -157,3 +157,40 @@ def test_app_shows_the_per_window_captions_and_no_raw_warning_codes(monkeypatch)
     at.run()
     body = " ".join(c.value for c in at.caption)
     assert "CLAMPED" not in body and "BARE_PLURAL" not in body and "_" not in "".join(c.value for c in at.caption if c.value.startswith("Notes"))
+
+
+def test_app_survives_a_redeploy_into_a_running_process_with_stale_modules():
+    """Production incident found by re-testing the deployed app: Streamlit Cloud keeps ONE process across deployments and only reloads app/, so the new
+    script met the OLD text2mario.app.service (no explain_warning) -> ImportError on every page load.  Simulate that process: a stale module already in
+    sys.modules and no signature stored; the app must drop the stale modules, re-import the current ones and work.  Everything is restored afterwards so
+    other tests keep the module objects they imported."""
+    import sys
+    import types
+
+    mine = lambda k: k == "text2mario" or k.startswith("text2mario.")
+    saved = {k: v for k, v in sys.modules.items() if mine(k)}
+    saved_sig = getattr(sys, "_t2m_src_signature", None)
+    stale = types.ModuleType("text2mario.app.service")                                       # an old version: has validate_prompt but NOT explain_warning
+    stale.validate_prompt = lambda text: (True, "")
+    sys.modules["text2mario.app.service"] = stale
+    del sys._t2m_src_signature                                                                # the previous script never stored one
+    try:
+        at = fresh()                                                                          # fresh() asserts there is no exception
+        assert at.text_area(key="prompt").value
+        assert sys.modules["text2mario.app.service"] is not stale and hasattr(sys.modules["text2mario.app.service"], "explain_warning")
+        go(at)
+        assert not at.exception, at.exception
+    finally:
+        for k in [k for k in sys.modules if mine(k)]:
+            del sys.modules[k]
+        sys.modules.update(saved)
+        sys._t2m_src_signature = saved_sig
+
+
+def test_unchanged_sources_do_not_drop_modules_on_every_rerun():
+    """The guard must not reload the model on every interaction: with an unchanged src/ the second run keeps the loaded modules."""
+    import sys
+    at = fresh()
+    mod = sys.modules["text2mario.generate.full_level"]
+    at.run()
+    assert sys.modules["text2mario.generate.full_level"] is mod
