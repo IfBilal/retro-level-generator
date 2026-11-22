@@ -21,14 +21,16 @@ def test_normalizer_never_crashes_and_only_emits_canonical_captions(text):
     out = normalize(text)
     for sc in out.scenes:
         for ph in [p.strip() for p in sc.caption.split(".") if p.strip()]:
-            parse_phrase(ph)                          # raises if the output is outside the training grammar
+            concept, code = parse_phrase(ph)          # raises if the output is outside the training grammar
+            assert concept and code >= 1
 
 
 @FAST
 @given(st.lists(st.sampled_from(["pipe", "pipes", "goomba", "coin", "no", "without", "then", "three", "a few", "lots of", "gap", "ceiling",
                                  "staircase", "stairs going down", "?", ",", ".", "and", "zero", "big", "left", "castle", "10", "2-3"]), max_size=30))
 def test_normalizer_on_vocabulary_soup(words):
-    normalize(" ".join(words))
+    out = normalize(" ".join(words))
+    assert isinstance(out.scenes, list) and all(sc.caption and isinstance(sc.want, dict) for sc in out.scenes)
 
 
 @FAST
@@ -64,5 +66,5 @@ def test_detector_sanitizer_and_checker_survive_random_grids(seed, width, densit
 @pytest.mark.parametrize("g", [np.zeros((16, 16), np.uint8), np.full((16, 16), 8, np.uint8), np.full((16, 16), 5, np.uint8), np.full((16, 16), 12, np.uint8),
                                np.full((16, 1), 8, np.uint8), np.zeros((16, 200), np.uint8)])
 def test_degenerate_grids(g):
-    caption(g)
-    check_level(g, mode="scene", budget_nodes=300)
+    assert isinstance(caption(g), str)
+    assert check_level(g, mode="scene", budget_nodes=300).status in ("solved", "unsolved", "timeout")

@@ -1,0 +1,29 @@
+{
+ "runs": [
+  {
+   "args": "-m not slow --hypothesis-seed=1",
+   "returncode": 0,
+   "summary": "445 passed, 1 skipped, 19 deselected in 57.10s",
+   "seconds": 59
+  },
+  {
+   "args": "-m not slow --hypothesis-seed=2",
+   "returncode": 0,
+   "summary": "445 passed, 1 skipped, 19 deselected in 57.67s",
+   "seconds": 59
+  },
+  {
+   "args": "-m not slow --hypothesis-seed=3",
+   "returncode": 0,
+   "summary": "445 passed, 1 skipped, 19 deselected in 57.77s",
+   "seconds": 60
+  },
+  {
+   "args": "ALL tests (fast + slow), test files in REVERSE order",
+   "returncode": 0,
+   "summary": "464 passed, 1 skipped in 204.81s (0:03:24)",
+   "seconds": 207
+  }
+ ],
+ "all_pass": true
+}

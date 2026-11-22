@@ -122,6 +122,18 @@ repeated from scratch on pristine seeds as rounds C and D above, because a code 
 * **Windows clock / Windows asyncio:** the server log shows one benign `ConnectionResetError` when a browser is killed mid-request (Windows); no application traceback appeared in any run.
 * `reports/audit/round1_partial_counts`, `round2_noncount`, `round3`-`round5`, `roundA`, `roundB_*` are development rounds kept as history; the numbers of record are `baseline_full`, `roundC_baseline_seeds`, `roundD_*`, `cloud_cpu`.
 
+## 7b. The tests were tested too
+
+A test suite that cannot fail proves nothing, so the new tests were put on trial (`scripts/audit_tests_mutation.py`, `audit_test_hygiene.py`, `audit_test_robustness.py`):
+
+* **Mutation audit:** {{mut_total}} deliberate bugs were injected one at a time into the new code (a flipped comparison, a deleted guard, a changed constant, a removed escape...); the tests caught {{mut_killed}} of them
+  (`reports/audit/test_mutation.md`). Survivors: {{mut_survivors}}; proven-equivalent mutants: {{mut_equiv}}. The first pass caught 55 of 58 and the next batch 7 of 11: **every survivor exposed a real gap** (the
+  height threshold of a tower, the Wilson interval's lower clamp, the draw cap and best-candidate choice of the sequential redraw loop, scene-specific prohibitions, the "earlier sentence" notice, the draw budget of whole-level
+  resamples), each is now pinned by a test that fails when the bug is put back. A mutation that created an infinite loop was caught by the timeout, and the harness restores the source after every mutation and heals itself after a forced kill (it did once).
+* **Hygiene scan:** {{hyg_tests}} test functions parsed; flagged: {{hyg_flagged}}. The scan found five weak OLD tests (one `assert ... or True` that could never fail, four fuzz tests whose only check was "does not raise"); they now assert something.
+* **Flakiness and order:** the fast suite under three different hypothesis seeds and the whole suite (fast + slow) in reverse file order: {{rob_summary}}.
+* **Coverage** (branch coverage of the changed modules, fast + slow tests together): count_audit 100 %, adherence 99 %, full_level 98 %, game_html 100 %, schema 94 %, normalizer 94 %, service 86 % (the rest of `service.py` is model loading, covered by the real-model UI tests).
+
 ## 8. Browser audit (real Chromium against the running app)
 
 Evidence directory `evidence/audit/{{br_dir}}/` (screenshots + JSON; index in `evidence/audit/INDEX.md`): 30 Dice clicks {{br_dice}} without error, own console errors / page errors / failed requests: {{br_defects}};

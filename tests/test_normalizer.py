@@ -66,7 +66,7 @@ def test_output_is_always_canonical_grammar():
     for t in ["3 goombas and 2 pipes", "a ledge with a ? block above it", "5 coins in a row", "pyramid", "lava castle at night"]:
         for s in normalize(t).scenes:
             for ph in [p.strip() for p in s.caption.split(".") if p.strip()]:
-                parse_phrase(ph)
+                assert parse_phrase(ph)                                                       # raises (or is empty) outside the grammar
 
 
 @needs_data

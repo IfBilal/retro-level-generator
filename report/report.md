@@ -116,7 +116,7 @@ Full quality (50 steps, resampling) takes 12.7 s and 35.4 s median, dominated by
 (same operations, no launch overhead: about 4.6 times faster per window, `src/text2mario/diffusion/graph.py`, `tests/test_cuda_graph.py`); on a CPU it is not (17.6 s, and the cloud profile stops at 45 s).
 The long p95 comes from levels the checker cannot verify, which use the whole retry budget.
 
-**Engineering.** 436 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
+**Engineering.** 445 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.
 Bugs found by this process and fixed (each with a regression test): an LRU-cache eviction that crashed long training runs, a CPU/CUDA generator mismatch that crashed resampling,
 a pluralisation bug that corrupted caption augmentation ("bad guies"), and a detector crash on generated rows without floor.
@@ -350,7 +350,7 @@ Counting definition, ownership of columns by scene and quantity ranges are in le
 
 | Evidence | Where |
 |---|---|
-| 436 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
+| 445 fast automated tests passing | `tests/`, `reports/testing/pytest_summary.json` |
 | representative inputs: normalizer dev set, 12 C-score golden vectors, checker micro-levels, 4 example prompts end to end | `tests/`, `reports/gates/*` |
 | invalid and boundary inputs: empty / whitespace / None / over-long / control-character prompts, out-of-range seed / w / width, malformed levels (9 schema violations) | `tests/test_level_schema.py` |
 | consistency: same prompt + seed + settings gives the same level (identical: True); a different seed changes 0.057 of the cells; one window sampled alone or inside a batch is identical (1.000 of cells); checker and normalizer deterministic | `scripts/check_determinism.py`, `reports/gates/determinism.json`, `tests/test_full_level.py`, `tests/test_checker.py` |

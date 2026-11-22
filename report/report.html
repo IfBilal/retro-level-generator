@@ -91,7 +91,7 @@ control-character prompts and out-of-range settings with a readable message inst
 Full quality (50 steps, resampling) takes 12.7 s and 35.4 s median, dominated by the diffusion passes and by the checker exhausting unsolvable levels, so it is an opt-in toggle. The provisional target of 10 s for 112 columns on the GPU is <strong>met</strong> (8.6 s; G-P7 passes) after the app's window sampler started replaying a CUDA graph of the U-Net forward
 (same operations, no launch overhead: about 4.6 times faster per window, <code>src/text2mario/diffusion/graph.py</code>, <code>tests/test_cuda_graph.py</code>); on a CPU it is not (17.6 s, and the cloud profile stops at 45 s).
 The long p95 comes from levels the checker cannot verify, which use the whole retry budget.</p>
-<p><strong>Engineering.</strong> 436 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
+<p><strong>Engineering.</strong> 445 automated tests (fast suite) cover data, split leakage, detector, schedules, U-Net, sampler, trainer, text path, normalizer, C-score golden vectors,
 checker micro-levels, level schema/export, full-level generation with a stub sampler, and input validation; end-to-end tests drive the real game in headless Chromium.
 Bugs found by this process and fixed (each with a regression test): an LRU-cache eviction that crashed long training runs, a CPU/CUDA generator mismatch that crashed resampling,
 a pluralisation bug that corrupted caption augmentation ("bad guies"), and a detector crash on generated rows without floor.</p>
@@ -881,7 +881,7 @@ within hard budgets. Nothing is edited: a count that cannot be met is reported t
 </thead>
 <tbody>
 <tr>
-<td>436 fast automated tests passing</td>
+<td>445 fast automated tests passing</td>
 <td><code>tests/</code>, <code>reports/testing/pytest_summary.json</code></td>
 </tr>
 <tr>

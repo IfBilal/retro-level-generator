@@ -1,0 +1,563 @@
+{
+ "mutations": 69,
+ "killed": 68,
+ "survived": [],
+ "equivalent_mutants": {
+  "H11": "json.dumps(..., ensure_ascii=True) already writes U+2028 as the ASCII text \u2028, so this replace never has a character to replace (tests/test_level_schema.py::test_json_is_ascii_so_line_separators_never_reach_the_script proves it)"
+ },
+ "source_untouched_after_run": true,
+ "results": [
+  {
+   "id": "A1",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "scene regions start 8 columns too early",
+   "outcome": "KILLED",
+   "seconds": 3.5,
+   "pytest": "1 failed, 11 passed in 2.52s"
+  },
+  {
+   "id": "A2",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a vague quantity is planned at its top instead of its middle",
+   "outcome": "KILLED",
+   "seconds": 8.7,
+   "pytest": "1 failed, 33 passed in 7.71s"
+  },
+  {
+   "id": "A3",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "an open-ended range (many) is planned at 54 objects",
+   "outcome": "KILLED",
+   "seconds": 8.7,
+   "pytest": "1 failed, 33 passed in 7.70s"
+  },
+  {
+   "id": "A4",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a topic asked for in this scene is also forbidden here",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 8 passed in 2.29s"
+  },
+  {
+   "id": "A5",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "'then' is not exclusive",
+   "outcome": "KILLED",
+   "seconds": 13.1,
+   "pytest": "1 failed, 53 passed in 12.10s"
+  },
+  {
+   "id": "A6",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a stray staircase of the other direction is allowed",
+   "outcome": "KILLED",
+   "seconds": 13.7,
+   "pytest": "1 failed, 64 passed in 12.64s"
+  },
+  {
+   "id": "A7",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "implied prohibitions are reported as asked for",
+   "outcome": "KILLED",
+   "seconds": 3.6,
+   "pytest": "1 failed, 19 passed in 2.57s"
+  },
+  {
+   "id": "A8",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a self-contradicting prompt is not refused",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 2 passed in 2.27s"
+  },
+  {
+   "id": "A9",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "more scenes than windows is not refused",
+   "outcome": "KILLED",
+   "seconds": 13.1,
+   "pytest": "1 failed, 52 passed in 12.16s"
+  },
+  {
+   "id": "A10",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "impossible counts are not refused",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 3 passed in 2.27s"
+  },
+  {
+   "id": "A11",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "capacity ignores the level width",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 3 passed in 2.24s"
+  },
+  {
+   "id": "A12",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a single object lands at the end of the scene",
+   "outcome": "KILLED",
+   "seconds": 8.3,
+   "pytest": "1 failed, 30 passed in 7.36s"
+  },
+  {
+   "id": "A13",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "objects of earlier scenes count towards this scene's quota",
+   "outcome": "KILLED",
+   "seconds": 90.1,
+   "pytest": "1 failed, 24 passed in 89.04s (0:01:29)"
+  },
+  {
+   "id": "A14",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "already-placed objects are requested again (the original doubling bug)",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 5 passed in 2.29s"
+  },
+  {
+   "id": "A15",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "eight coins in a one-window level become impossible",
+   "outcome": "KILLED",
+   "seconds": 8.7,
+   "pytest": "1 failed, 35 passed in 7.69s"
+  },
+  {
+   "id": "A16",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "windows lose their default floor phrase",
+   "outcome": "KILLED",
+   "seconds": 8.7,
+   "pytest": "1 failed, 31 passed in 7.72s"
+  },
+  {
+   "id": "A17",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a forbidden topic can still be requested in the caption",
+   "outcome": "KILLED",
+   "seconds": 13.6,
+   "pytest": "1 failed, 66 passed in 12.66s"
+  },
+  {
+   "id": "A18",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "the known half is counted as new",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 7 passed in 2.28s"
+  },
+  {
+   "id": "A19",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "a window with too FEW objects counts as exact",
+   "outcome": "KILLED",
+   "seconds": 12.8,
+   "pytest": "1 failed, 47 passed in 11.80s"
+  },
+  {
+   "id": "A20",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "forbidden objects are not penalised",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 7 passed in 2.28s"
+  },
+  {
+   "id": "A21",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "too many objects are accepted",
+   "outcome": "KILLED",
+   "seconds": 12.6,
+   "pytest": "1 failed, 56 passed in 11.65s"
+  },
+  {
+   "id": "A22",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "objects right of a scene region are counted in it",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 8 passed in 2.29s"
+  },
+  {
+   "id": "A23",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "unmet is never reported",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 8 passed in 2.26s"
+  },
+  {
+   "id": "A24",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "the wrong window is redrawn for a surplus",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 9 passed in 2.26s"
+  },
+  {
+   "id": "A25",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "column to window ownership is off by one window",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 9 passed in 2.29s"
+  },
+  {
+   "id": "A26",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "the plan-guided shortfall rule is inverted",
+   "outcome": "KILLED",
+   "seconds": 13.0,
+   "pytest": "1 failed, 57 passed in 12.06s"
+  },
+  {
+   "id": "A27",
+   "file": "src/text2mario/generate/adherence.py",
+   "bug": "the shortfall fallback picks the wrong window",
+   "outcome": "KILLED",
+   "seconds": 10.2,
+   "pytest": "1 failed, 42 passed in 9.22s"
+  },
+  {
+   "id": "C1",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "2-high stubs count as towers",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 90 passed in 13.17s"
+  },
+  {
+   "id": "C2",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "3-wide blocks count as towers",
+   "outcome": "KILLED",
+   "seconds": 14.1,
+   "pytest": "1 failed, 86 passed in 13.12s"
+  },
+  {
+   "id": "C3",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "a step of one counts as a tower edge",
+   "outcome": "KILLED",
+   "seconds": 14.1,
+   "pytest": "1 failed, 85 passed in 13.16s"
+  },
+  {
+   "id": "C4",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "pipes and cannons count as towers",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 74 passed in 13.21s"
+  },
+  {
+   "id": "C5",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "the Wilson interval can exclude its own estimate",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 91 passed in 13.21s"
+  },
+  {
+   "id": "C6",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "the audit's scene ownership differs from the generator's",
+   "outcome": "KILLED",
+   "seconds": 3.4,
+   "pytest": "1 failed, 11 passed in 2.47s"
+  },
+  {
+   "id": "C7",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "ordering is never checked",
+   "outcome": "KILLED",
+   "seconds": 14.1,
+   "pytest": "1 failed, 80 passed in 13.11s"
+  },
+  {
+   "id": "C8",
+   "file": "src/text2mario/eval/count_audit.py",
+   "bug": "a scene-count mismatch is not handled",
+   "outcome": "KILLED",
+   "seconds": 14.1,
+   "pytest": "1 failed, 81 passed in 13.13s"
+  },
+  {
+   "id": "F1",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "the draw cap does not stop whole-level resampling",
+   "outcome": "KILLED",
+   "seconds": 13.3,
+   "pytest": "1 failed, 45 passed in 12.32s"
+  },
+  {
+   "id": "F2",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "counts stop being fixed after the route budget",
+   "outcome": "KILLED",
+   "seconds": 240.3,
+   "pytest": "TIMEOUT: the mutated code hangs (an infinite loop), the test run was killed after 240 s"
+  },
+  {
+   "id": "F3",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "attempts_total can exceed the ledger cap and invalidate the level",
+   "outcome": "KILLED",
+   "seconds": 13.4,
+   "pytest": "1 failed, 59 passed in 12.44s"
+  },
+  {
+   "id": "F4",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "the draw cap does not stop window redraws",
+   "outcome": "KILLED",
+   "seconds": 13.7,
+   "pytest": "1 failed, 67 passed in 12.73s"
+  },
+  {
+   "id": "F5",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "verify=False still redraws windows",
+   "outcome": "KILLED",
+   "seconds": 14.3,
+   "pytest": "1 failed, 160 passed in 13.29s"
+  },
+  {
+   "id": "F6",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "impossible requests are not refused in generate()",
+   "outcome": "KILLED",
+   "seconds": 15.6,
+   "pytest": "1 failed, 170 passed in 14.56s"
+  },
+  {
+   "id": "F7",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "the planner forgets what is already in the level",
+   "outcome": "KILLED",
+   "seconds": 114.2,
+   "pytest": "1 failed, 23 passed in 113.17s (0:01:53)"
+  },
+  {
+   "id": "F8",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "the WORST candidate window is kept",
+   "outcome": "KILLED",
+   "seconds": 13.9,
+   "pytest": "1 failed, 68 passed in 12.92s"
+  },
+  {
+   "id": "F9",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "the first candidate is kept instead of the best",
+   "outcome": "KILLED",
+   "seconds": 12.8,
+   "pytest": "1 failed, 47 passed in 11.85s"
+  },
+  {
+   "id": "N1",
+   "file": "src/text2mario/text/normalizer.py",
+   "bug": "vague words become exact numbers",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 96 passed in 13.24s"
+  },
+  {
+   "id": "N2",
+   "file": "src/text2mario/text/normalizer.py",
+   "bug": "a bare prohibition has no scene again",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 1 passed in 2.27s"
+  },
+  {
+   "id": "N3",
+   "file": "src/text2mario/text/normalizer.py",
+   "bug": "contradictions are not detected",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 2 passed in 2.24s"
+  },
+  {
+   "id": "N4",
+   "file": "src/text2mario/text/normalizer.py",
+   "bug": "'a few' keeps no range",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 100 passed in 13.19s"
+  },
+  {
+   "id": "S1",
+   "file": "src/text2mario/app/service.py",
+   "bug": "negative numbers are accepted",
+   "outcome": "KILLED",
+   "seconds": 3.3,
+   "pytest": "1 failed, 4 passed in 2.31s"
+  },
+  {
+   "id": "S2",
+   "file": "src/text2mario/app/service.py",
+   "bug": "a CPU server has no time guard",
+   "outcome": "KILLED",
+   "seconds": 14.1,
+   "pytest": "1 failed, 150 passed in 13.18s"
+  },
+  {
+   "id": "G1",
+   "file": "src/text2mario/render/game_html.py",
+   "bug": "'<!--' can break the game page",
+   "outcome": "KILLED",
+   "seconds": 12.6,
+   "pytest": "1 failed, 40 passed in 11.51s"
+  },
+  {
+   "id": "G2",
+   "file": "src/text2mario/render/game_html.py",
+   "bug": "'</script>' can break out of the page",
+   "outcome": "KILLED",
+   "seconds": 11.6,
+   "pytest": "1 failed, 40 passed in 10.57s"
+  },
+  {
+   "id": "H1",
+   "file": "src/text2mario/render/schema.py",
+   "bug": "count resamples are held to the route limit of 5 per window",
+   "outcome": "KILLED",
+   "seconds": 9.3,
+   "pytest": "1 failed, 37 passed in 8.27s"
+  },
+  {
+   "id": "H2",
+   "file": "src/text2mario/render/schema.py",
+   "bug": "the adherence budget is not enforced by the schema",
+   "outcome": "KILLED",
+   "seconds": 15.7,
+   "pytest": "1 failed, 206 passed in 14.68s"
+  },
+  {
+   "id": "H3",
+   "file": "src/text2mario/render/schema.py",
+   "bug": "adherence could be judged on the repaired display grid",
+   "outcome": "KILLED",
+   "seconds": 15.8,
+   "pytest": "1 failed, 206 passed in 14.81s"
+  },
+  {
+   "id": "H4",
+   "file": "src/text2mario/app/service.py",
+   "bug": "over-long prompts are accepted",
+   "outcome": "KILLED",
+   "seconds": 14.3,
+   "pytest": "1 failed, 142 passed in 13.31s"
+  },
+  {
+   "id": "H5",
+   "file": "src/text2mario/app/service.py",
+   "bug": "control characters are accepted",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 145 passed in 13.25s"
+  },
+  {
+   "id": "H6",
+   "file": "src/text2mario/generate/sanitizer.py",
+   "bug": "the display repair ADDS ground instead of deleting broken parts",
+   "outcome": "KILLED",
+   "seconds": 16.0,
+   "pytest": "1 failed, 60 passed in 14.88s"
+  },
+  {
+   "id": "H7",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "a later scene uses the first scene's prohibitions",
+   "outcome": "KILLED",
+   "seconds": 13.9,
+   "pytest": "1 failed, 69 passed in 12.95s"
+  },
+  {
+   "id": "H8",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "scenes whose only constraint is an implied prohibition are not checked",
+   "outcome": "KILLED",
+   "seconds": 14.0,
+   "pytest": "1 failed, 70 passed in 13.05s"
+  },
+  {
+   "id": "H9",
+   "file": "src/text2mario/generate/full_level.py",
+   "bug": "whole-level resamples do not count towards the draw cap",
+   "outcome": "KILLED",
+   "seconds": 15.7,
+   "pytest": "1 failed, 71 passed in 14.77s"
+  },
+  {
+   "id": "H10",
+   "file": "src/text2mario/app/service.py",
+   "bug": "clamp warnings are shown as raw codes",
+   "outcome": "KILLED",
+   "seconds": 14.2,
+   "pytest": "1 failed, 115 passed in 13.22s"
+  },
+  {
+   "id": "H11",
+   "file": "src/text2mario/render/game_html.py",
+   "bug": "a U+2028 in a prompt breaks the game script",
+   "outcome": "SURVIVED",
+   "seconds": 16.3,
+   "pytest": "230 passed in 15.19s"
+  },
+  {
+   "id": "P1",
+   "file": "src/text2mario/diffusion/graph.py",
+   "bug": "the CUDA graph reads freed autocast weights",
+   "outcome": "KILLED",
+   "seconds": 17.8,
+   "pytest": "1 failed, 6 passed in 16.26s"
+  },
+  {
+   "id": "P2",
+   "file": "src/text2mario/diffusion/graph.py",
+   "bug": "two sessions corrupt each other's graph buffers",
+   "outcome": "KILLED",
+   "seconds": 3.2,
+   "pytest": "1 failed, 3 passed in 2.13s"
+  },
+  {
+   "id": "U1",
+   "file": "app/streamlit_app.py",
+   "bug": "Dice does nothing",
+   "outcome": "KILLED",
+   "seconds": 13.2,
+   "pytest": "1 failed, 5 passed in 11.67s"
+  },
+  {
+   "id": "U2",
+   "file": "app/streamlit_app.py",
+   "bug": "a redeploy into a running process breaks the app again",
+   "outcome": "KILLED",
+   "seconds": 19.6,
+   "pytest": "1 failed, 11 passed in 18.00s"
+  },
+  {
+   "id": "U3",
+   "file": "app/streamlit_app.py",
+   "bug": "an old level is not labelled as belonging to an earlier sentence",
+   "outcome": "KILLED",
+   "seconds": 27.6,
+   "pytest": "1 failed, 13 passed in 25.89s"
+  },
+  {
+   "id": "U4",
+   "file": "app/streamlit_app.py",
+   "bug": "unmet counts are shown as a success",
+   "outcome": "KILLED",
+   "seconds": 18.7,
+   "pytest": "1 failed, 7 passed in 17.11s"
+  }
+ ]
+}

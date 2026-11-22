@@ -64,7 +64,8 @@ def test_game_html_is_self_contained_and_offline():
     assert "window.__LEVEL__" in html and "Phaser" in html and len(html) < 4_000_000
     # no external resource may be referenced by the page itself (doc 26 §11)
     assert not re.findall(r'(?:src|href)=["\']https?://', html)
-    assert "XMLHttpRequest" not in html.split("window.__ATLAS__")[0][-1] or True
+    game_js = html.split("window.__ATLAS__")[1]                       # the game's own script (Phaser, which has an XHR loader, comes earlier)
+    assert "XMLHttpRequest" not in game_js and "navigator.sendBeacon" not in game_js
     body = html.split("</script>")[-2]   # game.js
     assert not re.findall(r"fetch\(\s*[\"']https?://", body)
 
@@ -133,3 +134,11 @@ def test_a_prompt_cannot_break_out_of_the_game_page(payload):
     json_part = html.split("window.__LEVEL__=")[1].split(";window.__PHYSICS__")[0]
     assert "</" not in json_part and "<!--" not in json_part
     assert "\u2028" not in json_part and "\u2029" not in json_part
+
+
+def test_json_is_ascii_so_line_separators_never_reach_the_script():
+    """Proof that the U+2028/2029 replaces in game_html._js_json are redundant (mutation H11 is an equivalent mutant): json.dumps escapes every non-ASCII character."""
+    from text2mario.render.game_html import _js_json
+    out = _js_json({"x": "a\u2028b\u2029c\u00e9\u4e2d"})
+    assert "\u2028" not in out and "\u2029" not in out and out.isascii()
+    assert "\\u2028" in out and "\\u2029" in out                      # written as the six ASCII characters backslash-u-2-0-2-8

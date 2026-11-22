@@ -672,3 +672,97 @@ def test_a_stray_descending_staircase_makes_three_staircases_unmet():
     g[:, 34:37] = 0
     g[15, 34:37] = T.GROUND
     assert A.evaluate(g, norm, so, 48)["status"] == "met"
+
+
+def test_a_topic_that_is_both_requested_and_forbidden_is_never_put_in_the_caption():
+    """Mutation audit (A17): normalize() refuses a contradiction, but plan_caption must also be safe on its own (defence in depth)."""
+    from types import SimpleNamespace
+    scene = SimpleNamespace(want={"pipe": [2, 2], "coin": [3, 3]}, forbid=["pipe"], caption="two pipes. a few coins.")
+    cap, plan = A.plan_caption(scene, scene.caption, 2, 0, 4, None, 0)
+    assert "pipe" not in cap and "pipe" not in plan and "coin" in cap
+
+
+# ----------------------------------------------------------------------------------------------- mutation audit: the sequential (CPU, batch off) redraw loop
+def test_sequential_redraws_stop_at_the_extra_draw_cap(monkeypatch):
+    """Mutation audit (F4): with batches off, the per-window redraw loop must obey adherence.max_extra_draws, not only max_window_tries."""
+    monkeypatch.setitem(A._A, "batch_tries_cpu", 1)
+    monkeypatch.setitem(A._A, "max_extra_draws", 3)
+    monkeypatch.setitem(A._A, "max_window_tries", 50)                      # far above the cap: only the cap can stop the loop
+    monkeypatch.setitem(A._A, "max_attempts", 0)                           # no whole-level resampling, isolate the local loop
+    calls = []
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: (calls.append(1), flat())[1])    # never has the pipe
+    FL.generate(None, "one pipe", seed=1, width=16, device="cpu")
+    assert len(calls) <= 1 + 3 + 1, len(calls)                              # first draw + 3 extra draws (+ one of slack for the last check)
+
+
+def test_sequential_redraws_keep_the_closest_candidate_not_the_worst(monkeypatch):
+    """Mutation audit (F8): none of the draws is exact; the loop must keep the one with the smallest miss (2 pipes for 'one pipe'), not the worst (3)."""
+    monkeypatch.setitem(A._A, "batch_tries_cpu", 1)
+    monkeypatch.setitem(A._A, "max_attempts", 0)
+    pipes = iter([3, 2, 0, 3, 3, 3, 3, 3] * 20)
+
+    def scripted(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        g = flat()
+        for i in range(next(pipes)):
+            add_pipe(g, 1 + 5 * i)
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", scripted)
+    lvl = FL.generate(None, "one pipe", seed=1, width=16, device="cpu")
+    assert _count_pipes(lvl) == 2                                           # misses were 2, 1, 1, 2...: the first minimum (2 pipes) wins
+
+
+# ----------------------------------------------------------------------------------------------- mutation audit: scene-specific prohibitions and the draw budget
+def test_each_window_is_checked_against_ITS_scene_prohibitions(monkeypatch):
+    """Mutation audit (H7): 'no pipes, then one enemy' forbids pipes in scene 1 only.  A sampler that draws a pipe together with the enemy is therefore fine in scene 2:
+    with the right prohibition set the first draw of every window is accepted (5 draws); if scene 2 inherited scene 1's prohibition every such window would be redrawn."""
+    calls = []
+
+    def fake(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        calls.append(caption)
+        g = flat()
+        if known_cols is not None:
+            g[:, :known_cols.shape[1]] = known_cols
+        if "one enemy" in caption:
+            g[14, 14] = T.ENEMY_ID
+            add_pipe(g, 9)
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", fake)
+    lvl = FL.generate(None, "no pipes, then one enemy", seed=1, width=48, device="cpu")
+    assert len(calls) == 5, calls
+    assert lvl["verification"]["adherence"]["status"] == "met"
+
+
+def test_a_scene_with_only_an_implied_prohibition_is_still_checked_window_by_window(monkeypatch):
+    """Mutation audit (H8): 'flat ground, then one pipe' - the first scene asks for nothing counted, but a pipe there is a violation of 'then'.  A pipe drawn in its first
+    window must be redrawn LOCALLY (no whole-level resample needed)."""
+    state = {"n": 0}
+
+    def fake(bundle, caption, w, steps, r, gen_seed, known_cols, device):
+        state["n"] += 1
+        g = flat()
+        if known_cols is not None:
+            g[:, :known_cols.shape[1]] = known_cols
+        if state["n"] == 1:
+            add_pipe(g, 4)                                                          # a stray pipe in the very first window (scene 1)
+        elif "one pipe" in caption:
+            add_pipe(g, 9)
+        return g
+
+    monkeypatch.setattr(FL, "sample_window", fake)
+    lvl = FL.generate(None, "flat ground, then one pipe", seed=1, width=48, device="cpu")
+    adh = lvl["verification"]["adherence"]
+    assert adh["status"] == "met" and adh["attempts"] == 0 and adh["window_redraws"] >= 1
+
+
+def test_whole_level_resamples_spend_the_extra_draw_budget(monkeypatch):
+    """Mutation audit (H9): with window redraws off, only whole-level resamples can use the budget; they must stop at max_extra_draws, not at max_attempts."""
+    monkeypatch.setitem(A._A, "batch_tries_cpu", 1)
+    monkeypatch.setitem(A._A, "max_window_tries", 1)
+    monkeypatch.setitem(A._A, "max_extra_draws", 10)
+    monkeypatch.setitem(A._A, "max_attempts", 16)
+    monkeypatch.setattr(FL, "sample_window", lambda *a, **k: flat())                 # three enemies are never drawn
+    lvl = FL.generate(None, "three enemies", seed=1, width=48, device="cpu")
+    adh = lvl["verification"]["adherence"]
+    assert adh["attempts"] < 16 and adh["extra_draws"] <= 10 + FL.n_windows(48), adh

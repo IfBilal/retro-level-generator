@@ -173,6 +173,13 @@ def values():
     for tag, f in (("sc", "replay_levels_showcase"), ("p5f", "replay_levels_p5_final")):
         rl = J(f"reports/gates/P5b/{f}.json")
         v[f"rl_{tag}"] = f"{round(rl['success_rate'] * rl['n'])} of {rl['n']}" if rl and rl.get("n") else "n/a (not run)"
+    mu, hy, rb = J("reports/audit/test_mutation.json"), J("reports/audit/test_hygiene.json"), J("reports/audit/test_robustness.json")
+    if mu:
+        v.update(mut_total=mu["mutations"], mut_killed=mu["killed"], mut_survivors=", ".join(mu["survived"]) or "none", mut_equiv=", ".join(mu.get("equivalent_mutants", {})) or "none")
+    if hy:
+        v.update(hyg_tests=hy["tests"], hyg_flagged=len(hy["flagged"]))
+    if rb:
+        v["rob_summary"] = "; ".join(f"{r['summary']} ({'3 seeds' if 'not slow' in r['args'] else 'reverse order'})" for r in rb["runs"])
     dep = J("reports/gates/P8/RESULT.json") or {}
     v["deployed_pass"] = "PASS" if dep.get("pass") else "n/a"
     return v

@@ -192,3 +192,21 @@ def test_detector_tower_count_is_kept_as_a_cross_check():
     obj = CA.detector_objects(g)
     assert "tower (detector)" in obj and obj["tower"] == []
     assert "tower (detector)" not in CA.detector_objects(g, visible_tower_rule=False)            # the old definition is still available
+
+
+def test_a_two_high_stub_is_not_a_tower_but_a_three_high_pillar_is():
+    """Mutation audit (C1): the height threshold of 3 was not pinned by any test."""
+    g = floor()
+    column_stack(g, 6, 2)
+    assert CA.visible_towers(g) == []
+    h = floor()
+    column_stack(h, 6, 3)
+    assert CA.visible_towers(h) == [6]
+
+
+def test_wilson_interval_contains_its_own_estimate_for_every_k_and_n():
+    """Mutation audit (C5): the lower clamp was not pinned.  Exhaustive, not sampled: every (k, n) with n <= 150."""
+    for n in range(1, 151):
+        for k in range(n + 1):
+            lo, hi = CA.wilson(k, n)
+            assert 0.0 <= lo <= k / n <= hi <= 1.0, (k, n, lo, hi)

@@ -3,24 +3,24 @@
   "pass": true,
   "metrics": {
     "url": "https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/",
-    "load_seconds": 13.3,
-    "generate_seconds": 4.9,
+    "load_seconds": 14.8,
+    "generate_seconds": 24.3,
     "badge": true,
     "iframe": true,
     "validation_message": true,
-    "git_sha": "ec4d73ddfbc6ddb2e25e0d93500a0858947698d3"
+    "git_sha": "f1dd2eb665f9ea22c4809f6feaed55fa9ac73b12"
   },
   "checks": [
     {
       "id": "P8.01",
       "name": "app loads",
-      "value": 13.3,
+      "value": 14.8,
       "pass": true
     },
     {
       "id": "P8.02",
       "name": "generation produces a result badge",
-      "value": 4.9,
+      "value": 24.3,
       "pass": true
     },
     {
@@ -42,7 +42,7 @@
       "pass": true
     }
   ],
-  "timestamp": "2026-11-21T15:07:45Z",
-  "git_sha": "ec4d73ddfbc6ddb2e25e0d93500a0858947698d3",
+  "timestamp": "2026-11-22T05:02:24Z",
+  "git_sha": "f1dd2eb665f9ea22c4809f6feaed55fa9ac73b12",
   "page_errors": []
 }

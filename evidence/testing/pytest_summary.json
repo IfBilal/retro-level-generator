@@ -1,7 +1,7 @@
 {
- "passed": 436,
+ "passed": 445,
  "failed": 0,
- "total": 436,
- "summary_line": "436 passed, 1 skipped, 16 deselected in 57.24s",
- "slow_suite": "16 passed, 437 deselected in 140.83s (0:02:20)"
+ "total": 445,
+ "summary_line": "445 passed, 1 skipped, 19 deselected in 58.20s",
+ "slow_suite": "19 passed, 446 deselected in 152.10s (0:02:32)"
 }

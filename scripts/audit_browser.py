@@ -28,6 +28,8 @@ def main():
     ap.add_argument("--viewport", default="1400x1000")
     ap.add_argument("--name", default="run")
     ap.add_argument("--timeout", type=float, default=300.0)
+    ap.add_argument("--settle", type=float, default=3.0, help="seconds to wait after the result badge before looking for the game iframe (a cloud server needs longer)")
+    ap.add_argument("--use-example", type=int, default=3, help="which example chip (0-3) is the prompt that gets generated")
     ap.add_argument("--offline-after-load", action="store_true", help="block all non-local requests after the first load")
     a = ap.parse_args()
     out = Path(a.out) if a.out else ROOT / "evidence/audit" / time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
@@ -92,7 +94,9 @@ def main():
                     defects.append(f"example{i}: prompt box holds '{filled}' instead of '{label}'")
             except Exception as e:
                 defects.append(f"example{i}: {e}")
-        step("examples")
+        app().locator("button[kind=secondary]").nth(a.use_example).click()          # the prompt that is generated below
+        pg.wait_for_timeout(900)
+        step("examples", generated_example=a.use_example)
         # generate
         app().get_by_role("button", name="Generate & Play").click()
         t1 = time.time()
@@ -101,7 +105,7 @@ def main():
             step("generated", seconds=round(time.time() - t1, 1))
         except Exception:
             defects.append("generate: no result badge before timeout")
-        pg.wait_for_timeout(3000)
+        pg.wait_for_timeout(int(a.settle * 1000))
         check("after_generate")
         pg.screenshot(path=str(out / f"{a.name}_02_generated.png"), full_page=True)
         n_if = app().locator("iframe").count()

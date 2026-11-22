@@ -1,0 +1,113 @@
+{
+ "url": "https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/",
+ "viewport": "1400x1000",
+ "steps": [
+  {
+   "step": "loaded",
+   "t": 18.8
+  },
+  {
+   "step": "dice",
+   "t": 40.8,
+   "clicks": 30,
+   "ok": 30
+  },
+  {
+   "step": "seed_after_dice",
+   "t": 40.8,
+   "seed": "585870650"
+  },
+  {
+   "step": "examples",
+   "t": 44.6
+  },
+  {
+   "step": "generated",
+   "t": 98.0,
+   "seconds": 53.4
+  },
+  {
+   "step": "game_iframe",
+   "t": 101.1,
+   "count": 0
+  },
+  {
+   "step": "horizontal_overflow_px",
+   "t": 101.1,
+   "px": 0
+  }
+ ],
+ "console": [
+  [
+   "error",
+   "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'ambient-light-sensor'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'battery'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'document-domain'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'layout-animations'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'legacy-image-formats'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'oversized-images'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'vr'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'wake-lock'."
+  ],
+  [
+   "warning",
+   "An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing."
+  ],
+  [
+   "error",
+   "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  [
+   "error",
+   "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  [
+   "error",
+   "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  [
+   "error",
+   "Failed to load resource: the server responded with a status of 404 ()"
+  ]
+ ],
+ "failed_requests": [
+  [
+   "https://cdn.heapanalytics.com/js/heap-.js",
+   "net::ERR_ABORTED"
+  ]
+ ],
+ "defects": [
+  "no game iframe",
+  "console error: Failed to load resource: the server responded with a status of 404 ()",
+  "console error: Failed to load resource: the server responded with a status of 404 ()",
+  "console error: Failed to load resource: the server responded with a status of 404 ()",
+  "console error: Failed to load resource: the server responded with a status of 404 ()",
+  "console error: Failed to load resource: the server responded with a status of 404 ()",
+  "failed request: https://cdn.heapanalytics.com/js/heap-.js (net::ERR_ABORTED)"
+ ]
+}
