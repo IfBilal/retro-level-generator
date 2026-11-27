@@ -4,3 +4,4 @@
 - The old test `test_verify_loop_respects_budgets` used the junk prompt "x"; now refused by design, test changed to a real prompt.
 - No subagents were spawned (cost); the adversary round is run by a separate fresh-seed audit instead.
 - Not run: H5 retraining (see MODEL_RCA.md).
+- 27 Nov, after all audit2 changes: `audit_adherence.py --label audit2_fresh --seeds fresh` = 630/630 (count 320/320, example 40/40, negation 40/40, ordering 30/30, synonyms 80/80, adversarial 20/20): no regression (A2-7). Browser pass 1920x1080 / 1280x720 / 390x844, 50 Dice each: 0 defects (A2-8).
