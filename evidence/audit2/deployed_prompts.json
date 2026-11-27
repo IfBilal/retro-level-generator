@@ -1,5 +1,5 @@
 {
- "url": "http://localhost:8501",
+ "url": "https://retro-level-generator-24i301524i3166-seb-aiproj.streamlit.app/",
  "rows": [
   {
    "prompt": "three pipes and 5 enemies, 2 enemies before the first pipe and the rest after the 4th pipe",
@@ -11,31 +11,31 @@
    "prompt": "flatland",
    "expect": "Flat level confirmed",
    "ok": true,
-   "seconds": 6.1
+   "seconds": 6.0
   },
   {
    "prompt": "no enemies",
    "expect": "enemy: asked none",
    "ok": true,
-   "seconds": 6.0
+   "seconds": 6.1
   },
   {
    "prompt": "castle with lava",
    "expect": "could not find anything",
    "ok": true,
-   "seconds": 1.5
+   "seconds": 4.6
   },
   {
    "prompt": "tall pipe at the start and cannon at the end",
    "expect": "cannon (part 2): asked 1",
    "ok": true,
-   "seconds": 6.0
+   "seconds": 6.1
   },
   {
    "prompt": "full floor with two pipes and a few enemies",
    "expect": "enemy: asked 3-4",
    "ok": true,
-   "seconds": 6.0
+   "seconds": 12.1
   }
  ]
 }
