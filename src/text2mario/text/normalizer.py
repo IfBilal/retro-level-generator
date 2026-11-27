@@ -52,6 +52,9 @@ POSITIONAL = {"left", "right", "middle", "center", "centre", "top", "bottom", "a
 # an impossible reference ("the 4th pipe" of 3) is refused, and the rest is reported to the user as not controlled (POSITION_NOT_PLANNED).
 ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth": 6, "seventh": 7, "eighth": 8, "ninth": 9, "tenth": 10}
 REF_PREPS = {"before", "after", "between", "past", "beyond", "until", "since"}
+# bounds, multipliers, negated quantities and "everything but": the parser only knows exact amounts and plain prohibitions, so these are refused
+UNSUPPORTED_RE = re.compile(r"\b(?:at most|at least|no more than|no fewer than|up to|not (?:too )?(?:many|much|few)|(?:\d+|" + "|".join(NUMBERS)
+                            + r") or (?:\d+|" + "|".join(NUMBERS) + r")\b|each|per|sets? of|groups? of|everything but|anything but|all but|only (?:pipes|enemies|coins))\b")
 POSITION_RE = re.compile(r"\b(?:before|after|between|beyond|past|at the (?:start|end|beginning)|near the (?:start|end))\b")
 # a request for an empty / flat level: a plain floor with everything else ruled out (checked on the raw level like any "no X")
 FLAT_WORDS = {"flat", "flatland", "empty", "blank", "bare", "barren", "featureless"}
@@ -78,6 +81,7 @@ class Scene:
     # LEVEL-level quantity the user asked for, topic -> [lo, hi] (numerals are exact, vague words keep their bucket range).
     # The caption above can only say a bucket ("a few" = 3-4) and describes ONE 16-column window, so counts live here (audit P2).
     want: dict = field(default_factory=dict)
+    ignored: list = field(default_factory=list)     # words nothing understood (shown to the user, never silently dropped)
 
 
 # Bucket word -> the counts it stands for (ledger F15 / caption grammar quantity_word)
@@ -188,14 +192,19 @@ _COMPOUND = re.compile(r"\b(" + "|".join(_TENS) + r")[- ](one|two|three|four|fiv
 _NEG_PHRASES = re.compile(r"\b(?:i\s+)?(?:do\s*n[o']?t|don't|dont|do not)\s+(?:want|need|add|include|put|have|like)(?:\s+(?:any|a|an))?\b"
                           r"|\bnot\s+(?:a\s+single|even\s+one|one\s+single|any)\b"
                           r"|\b(?:free of|devoid of|lacking|avoid(?:ing)?|skip(?:ping)?|remov(?:e|ing)|exclud(?:e|ing)|delet(?:e|ing)|minus|get rid of|"
-                          r"getting rid of|leave out|leaving out|leave off)\b")
+                          r"getting rid of|leave out|leaving out|leave off|w/o|wo|sans|besides|other than|apart from|except(?: for)?|"
+                          r"stay(?:ing)? away from|keep(?:ing)? (?:the )?(?:\w+ )?out|ban|banning|don't use|dont use|do not use|"
+                          r"never use|no use of|rather not have|rather have no)\b"
+                          r"|\bwithout\s+(?:a\s+single|even\s+one|one)\b|\bnot\s+one\b|\b(?:neither|nor)\b|\bnot\b(?=\s+(?:a\s+|an\s+|the\s+)?[a-z])")
 _HYPHEN_FREE = re.compile(r"\b([a-z]+)-free\b")
-_NOUN_COLON_NUM = re.compile(r"\b([a-z]+)\s*:\s*(\d+|none|zero|no)\b")
+_NOUN_COLON_NUM = re.compile(r"\b([a-z]+)\s*[:=]\s*(\d+|none|zero|no|" + "|".join(NUMBERS) + r")\b")
 _NOUN_PAREN_NUM = re.compile(r"\b([a-z]+)\s*\((\d+)\)")
 
 
 def _colon_amount(m) -> str:
     """'pipes: 2' -> '2 pipes', 'enemies: none' -> 'no enemies'; but 'no pipes: 2 coins' keeps its prohibition ('no pipes, 2 coins')."""
+    if not _match_nouns([m.group(1)])[0]:                               # "hard: 3 goombas": the word before the colon is not an object
+        return f"{m.group(1)}, {m.group(2)}"
     before = m.string[:m.start()].rstrip().split(" ")[-1:] if m.string[:m.start()].strip() else []
     if before and before[0] in ("no", "without", "zero"):
         return f"{m.group(1)}, {m.group(2)}"
@@ -205,6 +214,8 @@ def _colon_amount(m) -> str:
 def _pre(seg: str) -> str:
     """Idioms that need two-word context: '? block', 'N coins in a row', 'stairs going down'; also ways of saying no and of writing numbers."""
     seg = unicodedata.normalize("NFKC", seg).lower()                    # full-width digits, ligatures, odd spaces
+    seg = re.sub(r"(?<=\d),(?=\d{3}\b)", "", seg)                   # 2,000 -> 2000
+    seg = re.sub(r"\d{6,}", "999999", seg)                            # absurd digit strings never reach int() limits
     seg = _COMPOUND.sub(lambda m: str(_TENS[m.group(1)] + NUMBERS[m.group(2)]), seg)
     seg = re.sub(r"\bwithout any\b", "without", seg)
     seg = _NEG_PHRASES.sub("no", seg)
@@ -286,6 +297,7 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
     neg_scope = False
     last_end = -1
     counts: dict[str, int] = {}
+    surfaces: dict[str, str] = {}               # topic -> the word the first mention used
     ordinals: dict[str, int] = {}               # topic -> highest "Nth <topic>" the sentence refers to
     vague: dict[str, bool] = {}                 # topic -> was the quantity a vague word ("several") rather than a numeral?
     floor_gap_q = floor_chunk_q = ceil_gap_q = None
@@ -386,13 +398,17 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
             # vague words ("several", "a few", "some", "lots of") keep their bucket range; numerals and "single/couple/pair" are exact
             is_vague = any(" ".join(toks[first:first + n]) in VAGUE for n in (4, 3, 2, 1)) and val > 2
         more = any(t in ("more", "another", "extra", "additional") for t in toks[max(0, a - 3):a])
+        surface = " ".join(toks[a:b])
         if topic in counts:
             sc.warnings.append("DUPLICATE_TOPIC")
-            counts[topic] = counts[topic] + val if more else val
+            adds = more or surfaces.get(topic) not in (None, surface)         # another word for the same thing is another one of them
+            counts[topic] = counts[topic] + val if adds else val
+            more = adds
             vague[topic] = vague.get(topic, False) and is_vague if more else is_vague
         else:
             counts[topic] = val
             vague[topic] = is_vague
+        surfaces.setdefault(topic, surface)
     # '? block' / 'coins in a row' idioms
     text = " ".join(toks)
     if re.search(r"(?:^|\s)\? block", text) and "question block" not in counts and "question block" not in sc.forbid:
@@ -428,6 +444,13 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
         sc.warnings.append("GAPS_NOT_VERIFIED")
     if POSITION_RE.search(" ".join(toks)) and "POSITION_NOT_PLANNED" not in sc.warnings:
         sc.warnings.append("POSITION_NOT_PLANNED")
+    known = (STOP | ADJ | POSITIONAL | THEMES | FLAT_WORDS | set(ORDINALS) | REF_PREPS | set(NUMBERS) | set(STYLE) | set(NEG)
+             | {"but", "also", "plus", "then", "and", "or", "not", "no", "x", "than", "more", "less", "up", "down", "out", "all", "i", "you", "me",
+                "my", "we", "it", "its", "this", "that", "so", "very", "really", "too", "ground", "floor", "start", "end", "half", "side", "row"})
+    vague_words = {w for ph in VAGUE for w in ph.split()}
+    sc.ignored = [t for k, t in enumerate(toks) if not consumed[k] and t.isalpha() and len(t) > 2 and t not in known and t not in vague_words]
+    if sc.ignored:
+        sc.warnings.append("UNKNOWN_WORDS")
     # ignored vocabulary
     for k, t in enumerate(toks):
         if t in POSITIONAL and not consumed[k]:
@@ -466,7 +489,7 @@ def _caption(sc: Scene) -> str:
 
 def _pre_colon(t: str) -> str:
     """'pipes: 2' / 'enemies: none' -> '2 pipes' / 'no enemies' (a colon after a bare noun introduces its amount, not a theme)."""
-    return _NOUN_COLON_NUM.sub(_colon_amount, t)
+    return _NOUN_COLON_NUM.sub(lambda m: _colon_amount(m) if _match_nouns([m.group(1)])[0] else m.group(0), t)   # 'underground level: two pipes' keeps its colon
 
 
 def _split_scenes(text: str, max_scenes: int):
@@ -583,6 +606,7 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
             sc.forbid = [c for c in CONCEPTS if c not in ("floor", "ceiling")]
             sc.warnings.append("FLAT_REQUEST")
         warns.append("FLAT_REQUEST")
+    ignored: list = []
     flat_words = any(t in FLAT_WORDS for t in toks_all) or re.search(r"\b(?:just|only) (?:a )?(?:floor|ground)\b", " ".join(toks_all))
     if not scenes and flat_words:
         from text2mario.captions.grammar import CONCEPTS
@@ -591,5 +615,12 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
         flat.warnings.append("FLAT_REQUEST")
         scenes.append(flat)
         warns = [w for w in warns if w != "EMPTY_SCENE"] + ["FLAT_REQUEST"]
-    ignored = []
+    m = UNSUPPORTED_RE.search(unicodedata.normalize("NFKC", text).lower())     # on the typed words: "not many" must not become "no many" first
+    if m:
+        warns.append(f"UNSUPPORTED_PHRASE:{m.group(0)}")
+    for sc in scenes:                                       # warnings that used to stay inside the scene and never reached the page
+        warns += [w for w in sc.warnings if w.startswith("CLAMPED:") or w in ("DUPLICATE_TOPIC", "BARE_PLURAL_DEFAULT")]
+        if sc.ignored:
+            warns.append("UNKNOWN_WORDS:" + ",".join(dict.fromkeys(sc.ignored)))
+        ignored += sc.ignored
     return Normalized(text, scenes, sorted(set(warns)), ignored, style)

@@ -70,7 +70,7 @@ def validate_prompt(text) -> tuple[bool, str]:
         return False, f"That is {len(t)} characters; please keep the prompt under {MAX_PROMPT_CHARS}."
     if any(ord(c) < 32 and c not in "\n\t\r" for c in t):
         return False, "The prompt contains control characters; please type plain text."
-    if re.search(r"\d\.\d|\d-\d|\d\s+to\s+\d", t):
+    if re.search(r"\d\.\d|\d,\d{1,2}(?!\d)|\d-\d|\d\s+to\s+\d", re.sub(r"\b(?:world|level|stage|area)\s+\d+-\d+", "", t, flags=re.IGNORECASE)):
         return False, "Ranges and decimals (3-4 pipes, 2.5 pipes) are not supported: please give one whole number, for example '4 pipes'."
     if re.search(r"(?:^|[\s(,;:])-\d|^-\s*\d", t):
         return False, "Negative numbers do not make sense for a level (for example '-3 pipes'). Use 'no pipes' to rule something out."
@@ -79,7 +79,7 @@ def validate_prompt(text) -> tuple[bool, str]:
 
 WARNING_TEXT = {      # normalizer warning code -> plain sentence for the person typing (the UI never shows raw codes)
     "BARE_PLURAL_DEFAULT": "You wrote a plural without a number, so a default amount was used.",
-    "DUPLICATE_TOPIC": "The same thing was mentioned twice with different amounts; the last amount was used.",
+    "DUPLICATE_TOPIC": "The same kind of object was mentioned more than once: different words are added together, a repeated word keeps the last amount.",
     "EMPTY_SCENE": "Part of the sentence had no level words and was ignored.",
     "IMPLIED_COINS": "A coin line implies coins, so some coins were added to the request.",
     "NEGATION_FORBID": "Things you ruled out (no ...) are checked on the generated level.",
@@ -100,6 +100,8 @@ def explain_warning(code: str) -> str:
     if code.startswith("CLAMPED:"):
         _, topic, change = code.split(":", 2)
         return f"The model only knows some amounts of {topic}: {change.replace('->', ' became ')}."
+    if code.startswith("UNKNOWN_WORDS:"):
+        return f"These words were not understood and were ignored: {code.split(':', 1)[1].replace(',', ', ')}."
     if code.startswith("CONTRADICTION_ORDINAL:"):
         _, t, n_ref, n_have = code.split(":")
         return f"You refer to {t} number {n_ref} but ask for only {n_have}."

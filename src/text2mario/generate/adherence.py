@@ -103,6 +103,10 @@ def check_feasible(norm, width: int) -> None:
     if bad:
         topics = ", ".join(sorted({w.split(":", 1)[1] for w in bad}))
         raise ValueError(f"The sentence asks for and rules out the same thing ({topics}). Please say one or the other.")
+    for w in norm.warnings:
+        if w.startswith("UNSUPPORTED_PHRASE:"):
+            raise ValueError(f"I can only build exact amounts and plain 'no X', so I cannot follow '{w.split(':', 1)[1]}'. "
+                             "Please say it another way, for example '2 pipes' or 'no pipes'.")
     if not norm.scenes:                                  # nothing mapped: an unconditioned random level would not be what was typed
         raise ValueError("I could not find anything I can build in that sentence (I know floors, gaps, pipes, enemies, coins, blocks, cannons, "
                          "platforms and staircases; themes such as castle or lava are not supported). Try: 'full floor with two pipes and a few "
