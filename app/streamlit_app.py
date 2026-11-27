@@ -171,7 +171,7 @@ def studio() -> None:
                 st.error(f"Generation failed ({type(e).__name__}). Please try another seed or a shorter prompt.")
     res = st.session_state.get("result")
     if res is None:
-        st.info("Pick an example or type a sentence, then press Generate & Play.")
+        st.info("Pick an example or type a sentence, then press Generate & Play. (On a phone the controls are in the side panel: tap the » arrow at the top left.)")
         return
     lvl = res.level
     shown = st.session_state.get("result_prompt")

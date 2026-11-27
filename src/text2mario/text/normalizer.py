@@ -61,6 +61,9 @@ STOP = {"with", "and", "or", "a", "an", "the", "of", "in", "on", "to", "level", 
 SPLIT_RE = re.compile(r"\s*(?:;|->|\||\n|,?\s+and then\s+|,?\s+then\s+|,?\s+followed by\s+|,?\s+after that\s+|,?\s+afterwards\s+|,?\s+later\s+|,\s*next\s+)\s*")
 ORD_RE = re.compile(r"^(?:first|second|third|fourth|fifth|last|finally|lastly)[,:]?\s+")
 START_RE = re.compile(r"^(?:start with|starting with|begin with|beginning with|open with)\s+")
+_AT = r"(?: of the level)?"
+AT_START_END = re.compile(r"^(.+?)" + r"\s+at the (?:start|beginning)" + _AT + r"\s*(?:,|and)\s*(.+?)\s+at the end" + _AT + r"$")
+AT_END_START = re.compile(r"^(.+?)\s+at the end" + _AT + r"\s*(?:,|and)\s*(.+?)\s+at the (?:start|beginning)" + _AT + r"$")
 END_RE = re.compile(r"^(?:end with|ending with|finish with|finishing with|at the end(?: of the level)?,?(?: with)?)\s+")
 
 
@@ -436,6 +439,13 @@ def _split_scenes(text: str, max_scenes: int):
         pre, rest = t.split(":", 1)
         if len(pre.split()) <= 8:
             prefix, t = pre, rest.strip()
+    # "X at the start and Y at the end" is two scenes in that order ("X, then Y"): the one position phrase the scene planner can honour
+    m, rev = AT_START_END.match(t), False
+    if not m:
+        m, rev = AT_END_START.match(t), True
+    if m:
+        first, second = (m.group(2), m.group(1)) if rev else (m.group(1), m.group(2))
+        t = f"{first} then {second}"
     segs = [s.strip(" ,.") for s in SPLIT_RE.split(t) if s and s.strip(" ,.")]
     segs = [re.sub(r"^and\s+", "", s) for s in segs]
     start, mid, end = [], [], []
@@ -529,13 +539,13 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
             sc.forbid = [c for c in CONCEPTS if c not in ("floor", "ceiling")]
             sc.warnings.append("FLAT_REQUEST")
         warns.append("FLAT_REQUEST")
-    if not scenes:
-        if any(t in FLAT_WORDS for t in toks_all) or re.search(r"\b(?:just|only) (?:a )?(?:floor|ground)\b", " ".join(toks_all)):
-            from text2mario.captions.grammar import CONCEPTS
-            flat = Scene(NEUTRAL_CAPTION)
-            flat.forbid = [c for c in CONCEPTS if c not in ("floor", "ceiling")]
-            flat.warnings.append("FLAT_REQUEST")
-            scenes.append(flat)
-            warns = [w for w in warns if w != "EMPTY_SCENE"] + ["FLAT_REQUEST"]
+    flat_words = any(t in FLAT_WORDS for t in toks_all) or re.search(r"\b(?:just|only) (?:a )?(?:floor|ground)\b", " ".join(toks_all))
+    if not scenes and flat_words:
+        from text2mario.captions.grammar import CONCEPTS
+        flat = Scene(NEUTRAL_CAPTION)
+        flat.forbid = [c for c in CONCEPTS if c not in ("floor", "ceiling")]
+        flat.warnings.append("FLAT_REQUEST")
+        scenes.append(flat)
+        warns = [w for w in warns if w != "EMPTY_SCENE"] + ["FLAT_REQUEST"]
     ignored = []
     return Normalized(text, scenes, sorted(set(warns)), ignored, style)

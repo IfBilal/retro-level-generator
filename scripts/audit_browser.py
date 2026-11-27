@@ -72,6 +72,14 @@ def main():
                     return False
             return True
 
+        # on a phone Streamlit collapses the side panel that holds Dice / Generate: open it the way a person would (tap the arrow)
+        for sel in ('[data-testid="stExpandSidebarButton"]', '[data-testid="stSidebarCollapsedControl"] button'):
+            btn = app().locator(sel)
+            if btn.count() and btn.first.is_visible():
+                btn.first.click()
+                pg.wait_for_timeout(800)
+                break
+
         # P1: Dice, repeatedly
         dice_ok = 0
         for i in range(a.dice):

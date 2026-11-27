@@ -218,7 +218,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
         checker_info = {"tier": 1, "physics_sha256": ph.sha256, "seconds": round(res.seconds, 3), "path_len": len(res.path),
                         "enemy_mode": enemies}
         out_of_time = bool(time_budget_s and time.time() - t0 > time_budget_s)
-        adh_now = adherence.evaluate(content, norm, scene_of, width) if use_adh else None
+        adh_now = adherence.evaluate_both(content, norm, scene_of, width) if use_adh else None
         adh_pending = bool(adh_verify and adh_now["unmet"] and adh_total < adh_max and adh_draws < adh_draw_cap and not out_of_time)
         if res.status == "solved" and forb_k is None and not adh_pending:
             status = "verified"
@@ -275,7 +275,7 @@ def generate(bundle, text: str, *, seed: int, w: float = 5.0, width: int = 48, s
     generation = {"seed": int(seed), "w": float(w), "width": int(width), "ddim_steps": int(steps), "resample_r": int(resample_r),
                   "fast_mode": bool(steps < 50), "profile": profile, "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                   "checkpoint_step": int(state.get("step", -1)), "seconds": round(time.time() - t0, 2), **(meta or {})}
-    adh_final = adherence.evaluate(content, norm, scene_of, width) if use_adh else {"status": "not_applicable", "constraints": [], "unmet": []}
+    adh_final = adherence.evaluate_both(content, norm, scene_of, width) if use_adh else {"status": "not_applicable", "constraints": [], "unmet": []}
     # the counts are judged on the RAW content (measure-before-repair); the display repair below never feeds this.
     # attempts_total is capped at the ledger limit: the attempt that hits the cap is logged but never executed.
     verification = {"status": status, "reason": reason, "attempts_total": int(min(total, max_total_attempts)), "attempt_log": attempt_log, "checker": checker_info,

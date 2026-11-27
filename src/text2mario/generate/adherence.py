@@ -199,6 +199,20 @@ def evaluate(content: np.ndarray, norm, scene_of: list[int], width: int) -> dict
     return {"status": "met" if not unmet else "unmet", "constraints": rows, "unmet": unmet}
 
 
+def evaluate_both(content: np.ndarray, norm, scene_of: list[int], width: int) -> dict:
+    """evaluate() on the RAW content AND on what the player will see (the display repair deletes a pipe/cannon cut in half by the end-of-level
+    template).  The worse of the two decides, so a count is never met only on paper (audit2 H8: 1 level in 15 showed 2 pipes for 3 raw).
+    Nothing is edited: the display copy is only counted, and the raw count stays the reported one when both agree."""
+    from text2mario.generate.framing import LEAD, frame
+    from text2mario.generate.sanitizer import repair
+    raw = evaluate(content, norm, scene_of, width)
+    if raw["status"] == "not_applicable":
+        return raw
+    shown = repair(frame(content)[0])[0][:, LEAD:LEAD + content.shape[1]]
+    disp = evaluate(shown, norm, scene_of, width)
+    return disp if len(disp["unmet"]) > len(raw["unmet"]) else raw
+
+
 def window_to_resample(row: dict, scene_of: list[int], n_windows: int, win_plans: list | None = None) -> int:
     """Which window to resample for one unmet constraint: the window that owns the first surplus object, or for a shortfall the first window
     whose PLAN asked for more of the topic than its owned columns hold (else the first window of the scene that holds none)."""

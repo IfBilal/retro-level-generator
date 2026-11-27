@@ -49,7 +49,7 @@ def test_unmapped_sentences_are_refused_not_generated_unconditioned(text):
 
 
 def test_position_words_are_reported_not_dropped():
-    n = normalize("tall pipe at the start and cannon at the end")
+    n = normalize("a pipe before the first coin and an enemy after it")
     assert "POSITION_NOT_PLANNED" in n.warnings
     assert "NOT controlled" in explain_warning("POSITION_NOT_PLANNED")
 
@@ -57,3 +57,34 @@ def test_position_words_are_reported_not_dropped():
 def test_negation_alone_still_works_and_is_not_flat():
     n = normalize("no enemies")
     assert n.scenes[0].forbid == ["enemy"] and "FLAT_REQUEST" not in n.warnings
+
+
+@pytest.mark.parametrize("text,expected", [("tall pipe at the start and cannon at the end", ["one pipe.", "one cannon."]),
+                                           ("cannon at the end and two coins at the start", ["two coins.", "one cannon."])])
+def test_start_and_end_phrases_become_ordered_scenes(text, expected):
+    n = normalize(text)
+    assert [s.caption for s in n.scenes] == expected      # was one scene 'one cannon. one pipe.' (order flipped, position dropped)
+    assert "POSITION_NOT_PLANNED" not in n.warnings       # honoured, so nothing to apologise for
+
+
+def test_counts_are_also_judged_on_what_the_player_sees(monkeypatch):
+    """audit2 H8: the display repair deletes a pipe cut in half by the end template, so 3 raw pipes could show as 2.  evaluate_both must say unmet."""
+    import numpy as np
+
+    from text2mario.generate import sanitizer
+    g = np.zeros((16, 48), np.uint8)
+    g[15, :] = 8
+    for c0 in (6, 20, 34):
+        g[11, c0:c0 + 2] = (1, 2)
+        g[12:15, c0:c0 + 2] = (9, 10)
+    n = normalize("exactly 3 pipes")
+    assert adherence.evaluate(g, n, [0] * 5, 48)["status"] == "met"          # the raw level is fine
+    assert adherence.evaluate_both(g, n, [0] * 5, 48)["status"] == "met"      # and so is the shown one while nothing is deleted
+
+    def delete_last_pipe(framed):
+        d = framed.copy()
+        d[11:15, 34 + 3:34 + 5] = 0                                          # +3: the spawn lead the framing puts in front
+        return d, 8
+    monkeypatch.setattr(sanitizer, "repair", delete_last_pipe)
+    both = adherence.evaluate_both(g, n, [0] * 5, 48)
+    assert both["status"] == "unmet" and both["constraints"][0]["got"] == 2

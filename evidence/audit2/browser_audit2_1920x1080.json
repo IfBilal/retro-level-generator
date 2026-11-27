@@ -1,0 +1,86 @@
+{
+ "url": "http://localhost:8501",
+ "viewport": "1920x1080",
+ "steps": [
+  {
+   "step": "loaded",
+   "t": 8.6
+  },
+  {
+   "step": "dice",
+   "t": 44.8,
+   "clicks": 50,
+   "ok": 50
+  },
+  {
+   "step": "seed_after_dice",
+   "t": 44.8,
+   "seed": "634046703"
+  },
+  {
+   "step": "examples",
+   "t": 49.4,
+   "generated_example": 3
+  },
+  {
+   "step": "generated",
+   "t": 74.2,
+   "seconds": 24.7
+  },
+  {
+   "step": "game_iframe",
+   "t": 77.3,
+   "count": 1
+  },
+  {
+   "step": "canvas_distinct_colours",
+   "t": 77.3,
+   "n": 20
+  },
+  {
+   "step": "horizontal_overflow_px",
+   "t": 77.3,
+   "px": 0
+  }
+ ],
+ "console": [
+  [
+   "warning",
+   "Unrecognized feature: 'ambient-light-sensor'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'battery'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'document-domain'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'layout-animations'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'legacy-image-formats'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'oversized-images'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'vr'."
+  ],
+  [
+   "warning",
+   "Unrecognized feature: 'wake-lock'."
+  ],
+  [
+   "warning",
+   "An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing."
+  ]
+ ],
+ "failed_requests": [],
+ "defects": []
+}
