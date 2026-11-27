@@ -1,0 +1,41 @@
+{
+ "url": "http://localhost:8501",
+ "rows": [
+  {
+   "prompt": "three pipes and 5 enemies, 2 enemies before the first pipe and the rest after the 4th pipe",
+   "expect": "no 4th pipe",
+   "ok": true,
+   "seconds": 1.5
+  },
+  {
+   "prompt": "flatland",
+   "expect": "Flat level confirmed",
+   "ok": true,
+   "seconds": 6.1
+  },
+  {
+   "prompt": "no enemies",
+   "expect": "enemy: asked none",
+   "ok": true,
+   "seconds": 6.0
+  },
+  {
+   "prompt": "castle with lava",
+   "expect": "could not find anything",
+   "ok": true,
+   "seconds": 1.5
+  },
+  {
+   "prompt": "tall pipe at the start and cannon at the end",
+   "expect": "cannon (part 2): asked 1",
+   "ok": true,
+   "seconds": 6.0
+  },
+  {
+   "prompt": "full floor with two pipes and a few enemies",
+   "expect": "enemy: asked 3-4",
+   "ok": true,
+   "seconds": 6.0
+  }
+ ]
+}

@@ -13,3 +13,6 @@ The app is deployed from `T361/retro-level-generator` (branch `main`, main file 
 5. Offline fallback for the demo: `streamlit run app/streamlit_app.py` on every laptop (the zip contains the exported bundle), and the Gallery page works without generation.
 
 Measured before deployment (CPU, fast mode, a clean venv from `app/requirements.txt`): 16 columns in about 1 s and 48 columns in about 5 s on this machine; the cloud CPU will be slower, which is why the cloud profile has a time budget.
+
+## Sleep and wake-up (measured 2026-11-27)
+The Community Cloud app goes to sleep after a period with no visitors and shows "Zzzz ... Yes, get this app back up!". Waking it took 30 s, and the first level after that took about 9-10 s. **Open the URL and press the button 10 minutes before a demo**, then generate one level to warm the model. `scripts/gate_p8.py` and `scripts/audit_browser.py` press the button themselves. A scheduled keep-alive job was considered and not added: it is a new CI workflow with a periodic visitor, which is the team's decision.

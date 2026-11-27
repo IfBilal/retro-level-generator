@@ -50,6 +50,17 @@ def main():
         pg.on("requestfailed", lambda r: failed.append((r.url[:200], str(r.failure))))
         t0 = time.time()
         pg.goto(a.url, wait_until="domcontentloaded", timeout=120000)
+        # a Community Cloud app sleeps after a period without visitors: wake it the way a person would and record how long that takes
+        wake_btn = pg.get_by_role("button", name="Yes, get this app back up!")
+        try:
+            wake_btn.wait_for(state="visible", timeout=8000)
+            tw = time.time()
+            wake_btn.click()
+            print("app was asleep; waking it")
+            pg.wait_for_function("() => [...document.querySelectorAll('iframe')].some(f => f.src.includes('/~/+/'))", timeout=300000)
+            print(f"woke in {time.time() - tw:.0f} s")
+        except Exception:
+            pass                                     # not asleep (or running locally): nothing to wake
 
         def app():
             for f in pg.frames:

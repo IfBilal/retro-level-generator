@@ -210,3 +210,14 @@ def test_an_edited_sentence_marks_the_old_level_as_belonging_to_an_earlier_sente
     assert any(c.value == "one pipe" for c in at.code)                      # the old sentence is shown verbatim as plain text
     go(at)
     assert not any("earlier sentence" in i.value for i in at.info)         # regenerating for the new sentence clears the notice
+
+
+def test_app_flat_level_gets_a_short_confirmation_not_a_list_of_fourteen_zeros(monkeypatch):
+    _stub_sampler(monkeypatch, draws_pipes=False)                                    # a model that draws nothing but floor
+    at = fresh()
+    at.text_area(key="prompt").set_value("flatland")
+    at.run()
+    go(at)
+    assert not at.exception, at.exception
+    texts = " ".join(s.value for s in at.success)
+    assert "Flat level confirmed" in texts and "asked none, got 0; cannon" not in texts

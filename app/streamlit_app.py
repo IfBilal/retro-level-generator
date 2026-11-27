@@ -84,7 +84,10 @@ def adherence_notice(level: dict) -> None:
     rows = a["constraints"]
     parts = len({r["scene"] for r in rows}) > 1
     asked = [r for r in rows if not r.get("implicit")]
-    if a["status"] == "met":
+    if a["status"] == "met" and len(asked) >= 6 and all(r["hi"] == 0 for r in asked):
+        st.success(f"Flat level confirmed: none of the {len(asked)} object kinds (enemies, pipes, coins, blocks, cannons, platforms, staircases...) "
+                   "is in the generated tiles. Checked on the tiles, never edited.")
+    elif a["status"] == "met":
         st.success("Counts match your sentence (" + "; ".join(describe_count(r, parts) for r in asked) + "). "
                    f"Checked on the generated tiles, never edited; {a['attempts']} whole-level re-sample(s).")
     else:

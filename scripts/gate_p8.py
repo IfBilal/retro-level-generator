@@ -35,6 +35,17 @@ def main():
         pg.on("pageerror", lambda e: errs.append(str(e)))
         t0 = time.time()
         pg.goto(a.url, wait_until="domcontentloaded", timeout=120000)
+        # a Community Cloud app sleeps after a period without visitors: wake it the way a person would and record how long that takes
+        wake_btn = pg.get_by_role("button", name="Yes, get this app back up!")
+        try:
+            wake_btn.wait_for(state="visible", timeout=8000)
+            tw = time.time()
+            wake_btn.click()
+            print("app was asleep; waking it")
+            pg.wait_for_function("() => [...document.querySelectorAll('iframe')].some(f => f.src.includes('/~/+/'))", timeout=300000)
+            print(f"woke in {time.time() - tw:.0f} s")
+        except Exception:
+            pass                                     # not asleep (or running locally): nothing to wake
         # Streamlit Community Cloud serves the app inside an iframe whose URL contains "/~/+/"; locally there is no such frame.
         def app():
             for f in pg.frames:
@@ -55,12 +66,19 @@ def main():
             res["badge"] = True
         except Exception:
             res["badge"] = False
-        pg.wait_for_timeout(2500)
+        # the badge appears before the game page is embedded, and a cold cloud server is slower: wait for the game (up to 60 s) instead of 2.5 s
+        for _ in range(60):
+            if app().locator("iframe").count() >= 1:
+                break
+            pg.wait_for_timeout(1000)
         res["iframe"] = app().locator("iframe").count() >= 1
         pg.screenshot(path=str(evid / "screenshot.png"))
         app().locator("textarea").first.fill("   ")
         app().get_by_role("button", name="Generate & Play").click()
-        pg.wait_for_timeout(2500)
+        for _ in range(30):
+            if "describing the level" in app().inner_text("body"):
+                break
+            pg.wait_for_timeout(1000)
         res["validation_message"] = "describing the level" in app().inner_text("body")
         b.close()
     checks = [{"id": "P8.01", "name": "app loads", "value": res.get("load_seconds"), "pass": "load_seconds" in res},
