@@ -54,11 +54,10 @@ def sample_unconditional(unet, schedule, n: int, seed_base: int, steps: int = 50
 def load_ema_conditional(path: str | Path, device: str = "cpu", max_len: int | None = None):
     """-> (unet with EMA weights, schedule, TextConditioner with EMA adapter, cfg, checkpoint dict).
     The frozen MiniLM is rebuilt from models/minilm and verified against the probe vector stored in the checkpoint."""
-    from text2mario.text.conditioner import TextConditioner
+    from text2mario.text.conditioner import build_conditioner
     unet, sched, cfg, s = load_ema_model(path, device)
     # max_len defaults to the training value; evaluation of synthetic prompts may need more (the check never truncates silently)
-    cond = TextConditioner(cfg["text"]["encoder_dir"], max_len or cfg["data"]["max_len"], cfg["text"]["adapter_hidden"],
-                           cfg["model"]["context_dim"], cfg["text"]["cache_max_mb"], device)
+    cond = build_conditioner(cfg["text"], max_len or cfg["data"]["max_len"], cfg["model"]["context_dim"], device)
     with torch.no_grad():
         for n, p in cond.adapter.named_parameters():
             p.copy_(s["ema"]["shadow"][f"adapter.{n}"].to(p.dtype))

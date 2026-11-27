@@ -43,10 +43,12 @@ def test_impossible_count_is_refused_not_clamped_silently():
         A.check_feasible(normalize("five pipes"), 16)              # 16 columns hold about two
 
 
-def test_negative_numbers_are_rejected_by_validation_but_ranges_are_not():
+def test_negative_numbers_and_ranges_are_rejected_by_validation():
     ok, msg = validate_prompt("-3 pipes")
     assert not ok and "Negative" in msg
-    assert validate_prompt("5-6 coins")[0] and validate_prompt("two pipes, then 3 coins")[0]
+    ok, msg = validate_prompt("5-6 coins")                         # a range used to be accepted and silently read as one number (audit2)
+    assert not ok and "whole number" in msg
+    assert validate_prompt("two pipes, then 3 coins")[0]
 
 
 def _pipe_window(cols):

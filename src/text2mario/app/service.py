@@ -68,9 +68,11 @@ def validate_prompt(text) -> tuple[bool, str]:
         return False, "Please type a sentence describing the level (for example: 'full floor with two pipes')."
     if len(t) > MAX_PROMPT_CHARS:
         return False, f"That is {len(t)} characters; please keep the prompt under {MAX_PROMPT_CHARS}."
-    if any(ord(c) < 32 and c not in "\n\t" for c in t):
+    if any(ord(c) < 32 and c not in "\n\t\r" for c in t):
         return False, "The prompt contains control characters; please type plain text."
-    if re.search(r"(?<![\w])-\s?\d", t):
+    if re.search(r"\d\.\d|\d-\d|\d\s+to\s+\d", t):
+        return False, "Ranges and decimals (3-4 pipes, 2.5 pipes) are not supported: please give one whole number, for example '4 pipes'."
+    if re.search(r"(?:^|[\s(,;:])-\d|^-\s*\d", t):
         return False, "Negative numbers do not make sense for a level (for example '-3 pipes'). Use 'no pipes' to rule something out."
     return True, ""
 
@@ -84,6 +86,7 @@ WARNING_TEXT = {      # normalizer warning code -> plain sentence for the person
     "NEGATION_ONLY": "Only prohibitions were given, so a plain flat level is used as the starting point.",
     "POSITION_NOT_PLANNED": "Where things go (before / after / at the start or end) is NOT controlled: only how many of each. Use 'then' to put scenes in order.",
     "FLAT_REQUEST": "A flat level was asked for: a plain floor, and the level is checked to contain no enemies, pipes, coins, blocks or cannons.",
+    "GAPS_NOT_VERIFIED": "Gaps in the floor or ceiling are requested from the model, but their number is NOT checked afterwards.",
     "POSITIONAL_IGNORED": "Words like left/right/top are not supported; the order of 'then' scenes is used instead.",
     "STYLE_HINT": "Difficulty words are noted but do not change the level yet.",
     "THEME_UNSUPPORTED": "Themes (castle, lava, snow...) are not supported and were ignored.",

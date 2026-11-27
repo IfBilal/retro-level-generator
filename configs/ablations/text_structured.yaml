@@ -1,0 +1,7 @@
+name: C-struct
+# audit2 H5 variant (c): count-aware structured conditioning instead of the frozen MiniLM text path.  Same everything else as C-main
+# (cosine schedule, same data, same seed, same steps), so the dev comparison isolates the text path.  24k steps, milestones every 6k.
+diffusion: {schedule: cosine}
+text: {enabled: true, kind: structured}
+train: {uncond: false, max_steps: 24000}
+checkpoint: {milestone_every_steps: 6000}

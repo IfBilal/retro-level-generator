@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -42,7 +43,8 @@ VAGUE = {"a couple of": 2, "couple of": 2, "a pair of": 2, "pair of": 2, "a sing
 NEG = ("no", "without", "zero", "none", "never", "not any", "don't add any", "dont add any", "don't add", "dont add", "no more")
 ADJ = {"green", "red", "golden", "gold", "shiny", "big", "small", "tall", "short", "long", "tiny", "huge", "floating", "fun", "cool",
        "awesome", "scary", "classic", "nice", "cute", "epic", "of", "the", "a", "an", "more", "another", "extra", "additional", "little",
-       "few", "some", "bad", "nasty", "evil", "angry", "walking", "just", "plain", "simple"}
+       "few", "some", "bad", "nasty", "evil", "angry", "walking", "just", "plain", "simple",
+       "separate", "individual", "distinct", "different", "isolated", "standalone", "all", "every", "any"}
 POSITIONAL = {"left", "right", "middle", "center", "centre", "top", "bottom", "above", "below", "under", "near", "next", "far", "corner",
               "high", "low", "over", "beginning", "ends"}
 # Position words.  The model is conditioned on what a 16-column window holds, not on where in the level it sits, so "before/after the Nth X" and
@@ -52,7 +54,7 @@ ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth
 REF_PREPS = {"before", "after", "between", "past", "beyond", "until", "since"}
 POSITION_RE = re.compile(r"\b(?:before|after|between|beyond|past|at the (?:start|end|beginning)|near the (?:start|end))\b")
 # a request for an empty / flat level: a plain floor with everything else ruled out (checked on the raw level like any "no X")
-FLAT_WORDS = {"flat", "flatland", "empty", "blank", "bare", "barren", "nothing", "plain", "featureless"}
+FLAT_WORDS = {"flat", "flatland", "empty", "blank", "bare", "barren", "featureless"}
 THEMES = {"castle", "lava", "water", "underwater", "snow", "snowy", "ice", "desert", "night", "forest", "space", "ghost"}
 STYLE = {"easy": "easy", "chill": "easy", "relaxed": "easy", "beginner": "easy", "medium": "medium", "normal": "medium",
          "hard": "hard", "difficult": "hard", "challenging": "hard", "brutal": "hard", "insane": "hard"}
@@ -135,8 +137,9 @@ def _build_nouns() -> list[tuple[str, str, bool, str]]:
     for sg, pl in L.floor("floor_nouns", "train") + L.floor("floor_nouns", "heldout"):
         out.append((sg, "floor", False, "floornoun"))
     # extras not in the lexicon
-    for w in ("stairs up", "steps up", "staircase up", "stairs"):
+    for w in ("stairs up", "steps up", "stairs"):
         out.append((w, "ascending staircase", True, "noun"))
+    out.append(("staircase up", "ascending staircase", False, "noun"))
     for w in ("descending staircase", "descending stairs", "descending steps"):
         out.append((w, "descending staircase", False, "noun"))
     for w in ("descending staircases",):
@@ -179,9 +182,36 @@ _DOWN = re.compile(r"\b(staircases?|stairs|steps|stairways?)\s+(?:going|heading|
 _ROW = re.compile(r"\b(\d+|" + "|".join(NUMBERS) + r")\s+coins?\s+(?:in a row|in a line|lined up)\b")
 
 
+_TENS = {"twenty": 20, "thirty": 30, "forty": 40, "fifty": 50, "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90}
+_COMPOUND = re.compile(r"\b(" + "|".join(_TENS) + r")[- ](one|two|three|four|five|six|seven|eight|nine)\b")
+# many ways to say "no": all become the one word the parser already understands ("avoid pipes" -> "no pipes")
+_NEG_PHRASES = re.compile(r"\b(?:i\s+)?(?:do\s*n[o']?t|don't|dont|do not)\s+(?:want|need|add|include|put|have|like)(?:\s+(?:any|a|an))?\b"
+                          r"|\bnot\s+(?:a\s+single|even\s+one|one\s+single|any)\b"
+                          r"|\b(?:free of|devoid of|lacking|avoid(?:ing)?|skip(?:ping)?|remov(?:e|ing)|exclud(?:e|ing)|delet(?:e|ing)|minus|get rid of|"
+                          r"getting rid of|leave out|leaving out|leave off)\b")
+_HYPHEN_FREE = re.compile(r"\b([a-z]+)-free\b")
+_NOUN_COLON_NUM = re.compile(r"\b([a-z]+)\s*:\s*(\d+|none|zero|no)\b")
+_NOUN_PAREN_NUM = re.compile(r"\b([a-z]+)\s*\((\d+)\)")
+
+
+def _colon_amount(m) -> str:
+    """'pipes: 2' -> '2 pipes', 'enemies: none' -> 'no enemies'; but 'no pipes: 2 coins' keeps its prohibition ('no pipes, 2 coins')."""
+    before = m.string[:m.start()].rstrip().split(" ")[-1:] if m.string[:m.start()].strip() else []
+    if before and before[0] in ("no", "without", "zero"):
+        return f"{m.group(1)}, {m.group(2)}"
+    return ("no " if m.group(2) in ("none", "zero", "no") else m.group(2) + " ") + m.group(1)
+
+
 def _pre(seg: str) -> str:
-    """Idioms that need two-word context: '? block', 'N coins in a row', 'stairs going down'."""
-    seg = seg.lower()
+    """Idioms that need two-word context: '? block', 'N coins in a row', 'stairs going down'; also ways of saying no and of writing numbers."""
+    seg = unicodedata.normalize("NFKC", seg).lower()                    # full-width digits, ligatures, odd spaces
+    seg = _COMPOUND.sub(lambda m: str(_TENS[m.group(1)] + NUMBERS[m.group(2)]), seg)
+    seg = re.sub(r"\bwithout any\b", "without", seg)
+    seg = _NEG_PHRASES.sub("no", seg)
+    seg = _HYPHEN_FREE.sub(r"no \1", seg)
+    seg = _NOUN_COLON_NUM.sub(_colon_amount, seg)
+    seg = _NOUN_PAREN_NUM.sub(r"\2 \1", seg)
+    seg = re.sub(r"(\d)(?!(?:st|nd|rd|th)\b)([a-z])", r"\1 \2", seg)        # "3pipes" -> "3 pipes" (but keep 4th)
     seg = re.sub(r"\?\s*-?\s*blocks?", "question block", seg)
     seg = _DOWN.sub(lambda m: "descending " + m.group(1), seg)
     seg = re.sub(r"\b(?:descending|downward|falling)\s+(staircases?|stairs|steps)\b", r"descending \1", seg)
@@ -273,7 +303,7 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
         if q is not None:
             for k in range(first, a):
                 consumed[k] = True
-        last_end = b
+        last_prev_end, last_end = max(last_end, 0), b
         if kind in ("floorfull", "giant", "floornoun", "ceilfull", "rowmarker"):
             if kind == "floorfull":
                 sc.topics["floor"] = "full"
@@ -321,10 +351,12 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
                 counts[t2] = counts.get(t2, 0) + n
             continue
         # counted topic.  A REFERENCE ("before the first pipe", "after the 4th pipe") is not a request for more of it.
-        near = toks[max(0, a - 3):a]
+        near = toks[max(last_prev_end, a - 3):a]                           # only tokens after the previous noun phrase
         ord_n = next((ORDINALS[t] if t in ORDINALS else int(re.sub(r"\D", "", t)) for t in near
                       if t in ORDINALS or re.fullmatch(r"\d+(?:st|nd|rd|th)", t)), None)
-        if not neg and (ord_n is not None or (q is None and any(t in REF_PREPS for t in near))):
+        # "the first pipe" / "before the pipe" refer to a pipe; "the first 3 pipes", "2 enemies" and "before a pipe" ask for objects
+        is_ref = q is None and (ord_n is not None or ("the" in near and any(t in REF_PREPS for t in near)))
+        if not neg and is_ref:
             if ord_n is not None:
                 ordinals[topic] = max(ordinals.get(topic, 0), ord_n)
             sc.warnings.append("POSITION_NOT_PLANNED")
@@ -392,6 +424,8 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
     for t, n_ref in ordinals.items():                       # "the 4th pipe" of 3 pipes can never exist
         if t in sc.want and sc.want[t][1] < n_ref:
             sc.warnings.append(f"CONTRADICTION_ORDINAL:{t}:{n_ref}:{sc.want[t][1]}")
+    if any(str(v).startswith(("gaps", "chunks")) for v in sc.topics.values()):
+        sc.warnings.append("GAPS_NOT_VERIFIED")
     if POSITION_RE.search(" ".join(toks)) and "POSITION_NOT_PLANNED" not in sc.warnings:
         sc.warnings.append("POSITION_NOT_PLANNED")
     # ignored vocabulary
@@ -430,15 +464,24 @@ def _caption(sc: Scene) -> str:
     return "".join(p + ". " for p in phrases).strip()
 
 
+def _pre_colon(t: str) -> str:
+    """'pipes: 2' / 'enemies: none' -> '2 pipes' / 'no enemies' (a colon after a bare noun introduces its amount, not a theme)."""
+    return _NOUN_COLON_NUM.sub(_colon_amount, t)
+
+
 def _split_scenes(text: str, max_scenes: int):
     """Split on sequence markers and order by start/end anchors (doc 12 §7)."""
     t = " " + text.strip().lower() + " "
     t = re.sub(r"\s+", " ", t).strip()
     prefix = None
+    t = _pre_colon(t)
     if ":" in t:                                            # global prefix before a colon
         pre, rest = t.split(":", 1)
-        if len(pre.split()) <= 8:
-            prefix, t = pre, rest.strip()
+        gs = _scene(pre) if len(pre.split()) <= 8 else None
+        if gs is not None and gs.topics and set(gs.topics) <= {"floor", "ceiling"} and not gs.forbid:
+            prefix, t = pre, rest.strip()                   # "underground: three platforms": the prefix only sets the floor / ceiling
+        else:
+            t = t.replace(":", ",")                         # "no pipes: 2 coins": the prefix has content, so it is part of the sentence
     # "X at the start and Y at the end" is two scenes in that order ("X, then Y"): the one position phrase the scene planner can honour
     m, rev = AT_START_END.match(t), False
     if not m:
@@ -517,7 +560,7 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
                 warns.append("STYLE_HINT")
         sc = _scene(s, g_topics)
         if sc is not None:
-            warns += [w for w in sc.warnings if w.startswith("CONTRADICTION") or w == "POSITION_NOT_PLANNED"]      # surfaced even if the scene ends up empty
+            warns += [w for w in sc.warnings if w.startswith("CONTRADICTION") or w in ("POSITION_NOT_PLANNED", "GAPS_NOT_VERIFIED")]      # surfaced even if the scene ends up empty
         if sc is None or not (sc.topics or sc.forbid):
             warns.append("EMPTY_SCENE")
             continue
@@ -532,7 +575,8 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
         else:
             warns.append("EMPTY_SCENE")
     toks_all = _tokens(text)
-    if scenes and any(t in FLAT_WORDS for t in toks_all) and not any(sc.want or sc.forbid for sc in scenes):
+    only_floor = all(not sc.want and not sc.forbid and set(sc.topics) <= {"floor"} and sc.topics.get("floor", "full") == "full" for sc in scenes)
+    if scenes and only_floor and any(t in FLAT_WORDS for t in toks_all):
         # "a completely flat level" already maps to a full floor, but flat also means nothing else is on it
         from text2mario.captions.grammar import CONCEPTS
         for sc in scenes:

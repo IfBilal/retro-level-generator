@@ -42,9 +42,8 @@ def main():
     unet.load_state_dict(s["unet"])
     cond = None
     if conditional:
-        from text2mario.text.conditioner import TextConditioner
-        cond = TextConditioner(cfg["text"]["encoder_dir"], cfg["data"]["max_len"], cfg["text"]["adapter_hidden"],
-                               cfg["model"]["context_dim"], cfg["text"]["cache_max_mb"], dev)
+        from text2mario.text.conditioner import build_conditioner
+        cond = build_conditioner(cfg["text"], cfg["data"]["max_len"], cfg["model"]["context_dim"], dev)
         cond.check_probe(s["text"]["probe"])
         cond.adapter.load_state_dict(s["text"]["adapter"])
     modules = {"unet": unet, **({"adapter": cond.adapter} if cond else {})}

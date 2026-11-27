@@ -1,0 +1,6 @@
+name: C-both
+# audit2 H5 variant (d): top-2 MiniLM layers trained AND the count-aware structured tokens, both fed to cross-attention.  24k steps, milestones every 6k.
+diffusion: {schedule: cosine}
+text: {enabled: true, kind: both, unfreeze_layers: 2}
+train: {uncond: false, max_steps: 24000}
+checkpoint: {milestone_every_steps: 6000}

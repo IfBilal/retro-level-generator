@@ -61,7 +61,7 @@ def test_validate_settings_cfg_boundaries(w, ok):
 
 
 @pytest.mark.parametrize("text,ok", [("a" * 400, True), ("a" * 401, False), ("  one pipe  ", True), ("one\npipe", True), ("one\x00pipe", False), ("\t", False),
-                                     ("5-6 coins", True), ("- 3 pipes", False), ("one pipe -2", False)])
+                                     ("5-6 coins", False), ("- 3 pipes", False), ("one pipe -2", False)])
 def test_validate_prompt_boundaries(text, ok):
     assert S.validate_prompt(text)[0] is ok
 

@@ -37,6 +37,8 @@ model:
   null_ctx_tokens: 1
 text:
   enabled: true               # false = unconditional (learned null context)
+  unfreeze_layers: 2          # only for kind minilm_tuned: how many top MiniLM layers are trained
+  kind: minilm                # minilm = frozen MiniLM + adapter (C-main) | structured = count-aware phrase embeddings (audit2 H5)
   encoder: sentence-transformers/all-MiniLM-L6-v2
   encoder_dir: models/minilm  # local snapshot (git-ignored); loaded with local_files_only
   adapter_hidden: 128

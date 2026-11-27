@@ -131,3 +131,19 @@ class TextConditioner(nn.Module):
         cos = F.cosine_similarity(cur, saved_probe.float(), dim=-1)
         if cos.min() < threshold:
             raise RuntimeError(f"text encoder probe mismatch (min cosine {cos.min():.4f} < {threshold}): wrong MiniLM revision?")
+
+
+def build_conditioner(text_cfg: dict, max_len: int, context_dim: int, device, encoder_dir: str | Path | None = None):
+    """The text path chosen by `text.kind` ('minilm' = frozen MiniLM + adapter, the default; 'structured' = count-aware phrase embeddings, audit2 H5)."""
+    if text_cfg.get("kind", "minilm") == "structured":
+        from text2mario.text.structured import StructuredConditioner
+        return StructuredConditioner(text_cfg["adapter_hidden"], context_dim, device)
+    if text_cfg.get("kind", "minilm") == "both":
+        from text2mario.text.minilm_tuned import BothConditioner
+        return BothConditioner(encoder_dir or text_cfg["encoder_dir"], max_len, text_cfg["adapter_hidden"], context_dim, device,
+                               int(text_cfg.get("unfreeze_layers", 2)))
+    if text_cfg.get("kind", "minilm") == "minilm_tuned":
+        from text2mario.text.minilm_tuned import TunedConditioner
+        return TunedConditioner(encoder_dir or text_cfg["encoder_dir"], max_len, text_cfg["adapter_hidden"], context_dim, device,
+                                int(text_cfg.get("unfreeze_layers", 2)))
+    return TextConditioner(encoder_dir or text_cfg["encoder_dir"], max_len, text_cfg["adapter_hidden"], context_dim, text_cfg["cache_max_mb"], device)

@@ -43,9 +43,8 @@ class Trainer:
         self.unet = build_unet(cfg["model"], conditional=self.conditional).to(self.device)
         self.cond = None
         if self.conditional:
-            from text2mario.text.conditioner import TextConditioner
-            self.cond = TextConditioner(cfg["text"]["encoder_dir"], cfg["data"]["max_len"], cfg["text"]["adapter_hidden"],
-                                        cfg["model"]["context_dim"], cfg["text"]["cache_max_mb"], self.device)
+            from text2mario.text.conditioner import build_conditioner
+            self.cond = build_conditioner(cfg["text"], cfg["data"]["max_len"], cfg["model"]["context_dim"], self.device)
         self.modules = {"unet": self.unet, **({"adapter": self.cond.adapter} if self.cond else {})}
         self.opt = build_optimizer(self.modules, cfg)
         self.ema = EMA(self.modules, cfg["ema"]["decay"])
