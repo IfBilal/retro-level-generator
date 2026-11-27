@@ -82,6 +82,8 @@ WARNING_TEXT = {      # normalizer warning code -> plain sentence for the person
     "IMPLIED_COINS": "A coin line implies coins, so some coins were added to the request.",
     "NEGATION_FORBID": "Things you ruled out (no ...) are checked on the generated level.",
     "NEGATION_ONLY": "Only prohibitions were given, so a plain flat level is used as the starting point.",
+    "POSITION_NOT_PLANNED": "Where things go (before / after / at the start or end) is NOT controlled: only how many of each. Use 'then' to put scenes in order.",
+    "FLAT_REQUEST": "A flat level was asked for: a plain floor, and the level is checked to contain no enemies, pipes, coins, blocks or cannons.",
     "POSITIONAL_IGNORED": "Words like left/right/top are not supported; the order of 'then' scenes is used instead.",
     "STYLE_HINT": "Difficulty words are noted but do not change the level yet.",
     "THEME_UNSUPPORTED": "Themes (castle, lava, snow...) are not supported and were ignored.",
@@ -95,6 +97,9 @@ def explain_warning(code: str) -> str:
     if code.startswith("CLAMPED:"):
         _, topic, change = code.split(":", 2)
         return f"The model only knows some amounts of {topic}: {change.replace('->', ' became ')}."
+    if code.startswith("CONTRADICTION_ORDINAL:"):
+        _, t, n_ref, n_have = code.split(":")
+        return f"You refer to {t} number {n_ref} but ask for only {n_have}."
     if code.startswith("CONTRADICTION:"):
         return f"The sentence asks for and rules out the same thing ({code.split(':', 1)[1]})."
     return WARNING_TEXT.get(code, code.replace("_", " ").lower())

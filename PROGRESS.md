@@ -201,3 +201,11 @@ See the HANDOVER section at the top: the friend runs Phase 3; the original devel
 
 ### Walk-through
 (To be filled by the group: area, presenter, a question nobody could answer, and its answer.)
+
+## 2026-11-27 audit2 (branch `audit2/fixes`, not pushed)
+Re-checked the pasted mission against current main: U1/U2/U4/U8-style count problems were already fixed by the earlier audit; three gaps were still real and are now fixed with tests (`tests/test_position_and_flat.py`):
+- U3: "the first / 4th pipe" and "2 enemies before the first pipe" were counted as new pipes/enemies (last mention won). They are now references; an impossible one ("4th pipe" of 3) is refused with a message.
+- U5: "flatland", "empty level", "just a floor", "completely flat" used to run the unconditioned model (or ignore "flat"); now a full floor with everything else ruled out, checked on the raw level (8/8 seeds met each).
+- U7: before/after/at the start/end are reported in the UI as NOT controlled (only counts are). Unmapped sentences ("castle with lava") are refused instead of generating a random level.
+What changed / why / see it: `text/normalizer.py` (ORDINALS, REF_PREPS, FLAT_WORDS), `generate/adherence.py: check_feasible`, `app/service.py` messages. Full suite 477 passed.
+NOT done: positional planning, model RCA/retraining (H3-H6), subagent rounds, UX pass at 3 viewports, deployed-app re-check.

@@ -81,7 +81,7 @@ def test_verify_loop_respects_budgets(monkeypatch):
             g[:, :known_cols.shape[1]] = known_cols
         return g
     monkeypatch.setattr(FL, "sample_window", pit_window)
-    lvl = FL.generate(None, "x", seed=1, width=48, device="cpu")
+    lvl = FL.generate(None, "full floor with two pipes", seed=1, width=48, device="cpu")
     v = lvl["verification"]
     assert v["status"] == "not_verified" and v["reason"] == "attempt budget exhausted"
     assert v["attempts_total"] <= 21 and all(a["attempt"] <= 5 for a in v["attempt_log"])

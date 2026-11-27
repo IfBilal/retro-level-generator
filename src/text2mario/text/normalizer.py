@@ -45,6 +45,14 @@ ADJ = {"green", "red", "golden", "gold", "shiny", "big", "small", "tall", "short
        "few", "some", "bad", "nasty", "evil", "angry", "walking", "just", "plain", "simple"}
 POSITIONAL = {"left", "right", "middle", "center", "centre", "top", "bottom", "above", "below", "under", "near", "next", "far", "corner",
               "high", "low", "over", "beginning", "ends"}
+# Position words.  The model is conditioned on what a 16-column window holds, not on where in the level it sits, so "before/after the Nth X" and
+# "at the start/end" cannot be steered.  They are parsed so they are NOT mistaken for counts (the 4th pipe is a reference, not a second pipe),
+# an impossible reference ("the 4th pipe" of 3) is refused, and the rest is reported to the user as not controlled (POSITION_NOT_PLANNED).
+ORDINALS = {"first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth": 6, "seventh": 7, "eighth": 8, "ninth": 9, "tenth": 10}
+REF_PREPS = {"before", "after", "between", "past", "beyond", "until", "since"}
+POSITION_RE = re.compile(r"\b(?:before|after|between|beyond|past|at the (?:start|end|beginning)|near the (?:start|end))\b")
+# a request for an empty / flat level: a plain floor with everything else ruled out (checked on the raw level like any "no X")
+FLAT_WORDS = {"flat", "flatland", "empty", "blank", "bare", "barren", "nothing", "plain", "featureless"}
 THEMES = {"castle", "lava", "water", "underwater", "snow", "snowy", "ice", "desert", "night", "forest", "space", "ghost"}
 STYLE = {"easy": "easy", "chill": "easy", "relaxed": "easy", "beginner": "easy", "medium": "medium", "normal": "medium",
          "hard": "hard", "difficult": "hard", "challenging": "hard", "brutal": "hard", "insane": "hard"}
@@ -245,6 +253,7 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
     neg_scope = False
     last_end = -1
     counts: dict[str, int] = {}
+    ordinals: dict[str, int] = {}               # topic -> highest "Nth <topic>" the sentence refers to
     vague: dict[str, bool] = {}                 # topic -> was the quantity a vague word ("several") rather than a numeral?
     floor_gap_q = floor_chunk_q = ceil_gap_q = None
     for idx, (a, b, topic, pl, kind) in enumerate(spans):
@@ -308,7 +317,21 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
             for t2 in ("ascending staircase", "descending staircase"):
                 counts[t2] = counts.get(t2, 0) + n
             continue
-        # counted topic
+        # counted topic.  A REFERENCE ("before the first pipe", "after the 4th pipe") is not a request for more of it.
+        near = toks[max(0, a - 3):a]
+        ord_n = next((ORDINALS[t] if t in ORDINALS else int(re.sub(r"\D", "", t)) for t in near
+                      if t in ORDINALS or re.fullmatch(r"\d+(?:st|nd|rd|th)", t)), None)
+        if not neg and (ord_n is not None or (q is None and any(t in REF_PREPS for t in near))):
+            if ord_n is not None:
+                ordinals[topic] = max(ordinals.get(topic, 0), ord_n)
+            sc.warnings.append("POSITION_NOT_PLANNED")
+            for k in range(max(0, a - 3), b):
+                consumed[k] = True
+            continue
+        after = toks[b:b + 4]                                              # "2 enemies before the first pipe" after "5 enemies": a part of the total
+        if q not in (None, 0) and topic in counts and any(t in REF_PREPS for t in after) and not neg:
+            sc.warnings.append("POSITION_NOT_PLANNED")
+            continue
         if neg or q == 0:
             if topic not in sc.forbid:
                 sc.forbid.append(topic)
@@ -363,6 +386,11 @@ def _scene(seg: str, g_prefix: dict | None = None) -> Scene | None:
         sc.want[t] = list(BUCKET_RANGE[bucket(v)]) if vague.get(t) else [v, v]
         if t in sc.forbid:                                  # "one pipe and no pipes": the prompt contradicts itself
             sc.warnings.append(f"CONTRADICTION:{t}")
+    for t, n_ref in ordinals.items():                       # "the 4th pipe" of 3 pipes can never exist
+        if t in sc.want and sc.want[t][1] < n_ref:
+            sc.warnings.append(f"CONTRADICTION_ORDINAL:{t}:{n_ref}:{sc.want[t][1]}")
+    if POSITION_RE.search(" ".join(toks)) and "POSITION_NOT_PLANNED" not in sc.warnings:
+        sc.warnings.append("POSITION_NOT_PLANNED")
     # ignored vocabulary
     for k, t in enumerate(toks):
         if t in POSITIONAL and not consumed[k]:
@@ -479,7 +507,7 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
                 warns.append("STYLE_HINT")
         sc = _scene(s, g_topics)
         if sc is not None:
-            warns += [w for w in sc.warnings if w.startswith("CONTRADICTION")]      # surfaced even if the scene ends up empty
+            warns += [w for w in sc.warnings if w.startswith("CONTRADICTION") or w == "POSITION_NOT_PLANNED"]      # surfaced even if the scene ends up empty
         if sc is None or not (sc.topics or sc.forbid):
             warns.append("EMPTY_SCENE")
             continue
@@ -493,5 +521,21 @@ def normalize(text: str, max_scenes: int = 8) -> Normalized:
             scenes.append(sc)
         else:
             warns.append("EMPTY_SCENE")
+    toks_all = _tokens(text)
+    if scenes and any(t in FLAT_WORDS for t in toks_all) and not any(sc.want or sc.forbid for sc in scenes):
+        # "a completely flat level" already maps to a full floor, but flat also means nothing else is on it
+        from text2mario.captions.grammar import CONCEPTS
+        for sc in scenes:
+            sc.forbid = [c for c in CONCEPTS if c not in ("floor", "ceiling")]
+            sc.warnings.append("FLAT_REQUEST")
+        warns.append("FLAT_REQUEST")
+    if not scenes:
+        if any(t in FLAT_WORDS for t in toks_all) or re.search(r"\b(?:just|only) (?:a )?(?:floor|ground)\b", " ".join(toks_all)):
+            from text2mario.captions.grammar import CONCEPTS
+            flat = Scene(NEUTRAL_CAPTION)
+            flat.forbid = [c for c in CONCEPTS if c not in ("floor", "ceiling")]
+            flat.warnings.append("FLAT_REQUEST")
+            scenes.append(flat)
+            warns = [w for w in warns if w != "EMPTY_SCENE"] + ["FLAT_REQUEST"]
     ignored = []
     return Normalized(text, scenes, sorted(set(warns)), ignored, style)

@@ -94,10 +94,19 @@ def constraints(norm) -> list[dict]:
 
 def check_feasible(norm, width: int) -> None:
     """Raise ValueError (a user-facing sentence) when the request cannot be met at this width."""
-    bad = [w for w in norm.warnings if w.startswith("CONTRADICTION")]
+    for w in norm.warnings:
+        if w.startswith("CONTRADICTION_ORDINAL:"):
+            _, t, n_ref, n_have = w.split(":")
+            raise ValueError(f"The sentence refers to pipe number {n_ref} but only asks for {n_have}: there is no {n_ref}th {t}. "
+                             f"Ask for at least {n_ref} or refer to an earlier one.".replace("pipe number", f"{t} number"))
+    bad = [w for w in norm.warnings if w.startswith("CONTRADICTION:")]
     if bad:
         topics = ", ".join(sorted({w.split(":", 1)[1] for w in bad}))
         raise ValueError(f"The sentence asks for and rules out the same thing ({topics}). Please say one or the other.")
+    if not norm.scenes:                                  # nothing mapped: an unconditioned random level would not be what was typed
+        raise ValueError("I could not find anything I can build in that sentence (I know floors, gaps, pipes, enemies, coins, blocks, cannons, "
+                         "platforms and staircases; themes such as castle or lava are not supported). Try: 'full floor with two pipes and a few "
+                         "enemies', or 'flat level'.")
     windows = (width - WINDOW) // STRIDE + 1
     if len(norm.scenes) > windows:                                    # scene_for_windows would silently drop the last scenes
         raise ValueError(f"The sentence has {len(norm.scenes)} scenes but a {width}-column level has room for {windows}. "
